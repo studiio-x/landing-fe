@@ -1,0 +1,23 @@
+{
+  "typescript": true,
+  "icon": true,
+  "titleProp": true,
+  "memo": true,
+  "svgo": true,
+  "svgProps": {
+    "role": "img",
+    "focusable": "false",
+    "aria-hidden": "true"
+  },
+  "replaceAttrValues": {
+    "#000": "currentColor",
+    "#000000": "currentColor"
+  },
+  "svgoConfig": {
+    "plugins": [
+      "preset-default",
+      { "name": "removeDimensions", "active": true },
+      { "name": "prefixIds", "params": { "prefix": "x" } }
+    ]
+  }
+}
