@@ -1,12 +1,7 @@
 import type { Config } from "tailwindcss";
-import plugin from "tailwindcss/plugin";
 
 const config: Config = {
-  content: [
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/common/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/assets/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
   theme: {
     extend: {
       colors: {
@@ -31,6 +26,7 @@ const config: Config = {
           "900": "#16181D",
         },
       },
+
       fontFamily: {
         pretendard: [
           "var(--font-pretendard)",
@@ -39,6 +35,21 @@ const config: Config = {
           "sans-serif",
         ],
         calSans: ["var(--font-calSans)", "system-ui", "sans-serif"],
+      },
+
+      keyframes: {
+        "marquee-left": {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+        "marquee-right": {
+          "0%": { transform: "translateX(-50%)" },
+          "100%": { transform: "translateX(0)" },
+        },
+      },
+      animation: {
+        "marquee-left": "marquee-left 30s linear infinite",
+        "marquee-right": "marquee-right 30s linear infinite",
       },
     },
   },

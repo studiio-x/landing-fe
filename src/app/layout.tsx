@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { pretendard, calSans } from "./font";
+import QueryProvider from "./query-provider";
 
 export const metadata: Metadata = {
   title: "Studio X",
@@ -13,8 +14,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className={`${pretendard.variable} ${calSans.variable}`}>
-      <body>{children}</body>
+    <html
+      lang="ko"
+      className={`${pretendard.variable} ${calSans.variable} scroll-smooth`}
+    >
+      <body className="h-full antialiased">
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   );
 }
