@@ -38,9 +38,18 @@ const MetricsSection = () => {
 
 const ContactSection = () => {
   const contactItems = [
-    { label: "Talk to representative" },
-    { label: "PR & Investor" },
-    { label: "Get support" },
+    {
+      label: "Talk to representative",
+      href: `mailto:${process.env.NEXT_PUBLIC_EMAIL_ADDRESS}`,
+    },
+    {
+      label: "PR & Investor",
+      href: `mailto:${process.env.NEXT_PUBLIC_EMAIL_ADDRESS}`,
+    },
+    {
+      label: "Get support",
+      href: `${process.env.NEXT_PUBLIC_INSTAGRAM_URL}`,
+    },
   ];
 
   return (
@@ -57,9 +66,10 @@ const ContactSection = () => {
       </div>
       {contactItems.map((item, index) => (
         <a
-          href={`mailto:${process.env.NEXT_PUBLIC_EMAIL_ADDRESS}`}
+          href={item.href}
           key={index}
           className="bg-Grey-800 px-10 py-6 flex justify-between items-center rounded-[0.625rem] w-[40rem] mb-5 Subhead_1_medium"
+          target="_blank"
         >
           {item.label}
           <Arrow className="w-12 h-12" />

@@ -1,47 +1,47 @@
 export const FaqData = [
   {
-    question: "Free 플랜은 정말 평생 무료인가요?",
+    question: "Is the Free plan really free for life?",
     answer:
-      "네, Free 플랜은 평생 무료로 제공됩니다. 다만 크레딧과 저장 공간이 제한되어 있어 체험 용도로 적합합니다.",
+      "Yes, the Free plan is provided free for life. However, it has limited credits and storage space, making it suitable for trial purposes.",
   },
   {
-    question: "크레딧은 어떻게 사용되나요?",
+    question: "How are credits used?",
     answer:
-      "크레딧은 이미지 또는 영상 생성 시 차감됩니다. 템플릿 적용, AI 채팅 수정, 비디오 생성 등 작업에 따라 소모량이 달라집니다.",
+      "Credits are deducted when generating images or videos. The consumption varies depending on the task, such as applying templates, AI chat modifications, and video generation.",
   },
   {
-    question: "AI 채팅 수정은 모든 플랜에서 무제한인가요?",
+    question: "Are AI chat modifications unlimited for all plans?",
     answer:
-      "네, 모든 플랜에서 무제한 제공됩니다. 단, 참고 이미지 첨부 기능은 Basic에서는 월 15회, Standard 이상에서는 무제한입니다.",
+      "Yes, they are provided unlimited for all plans. However, the reference image attachment feature is limited to 15 times per month for Basic, and unlimited for Standard and above.",
   },
   {
-    question: "연간 플랜은 어떻게 할인되나요?",
+    question: "How are annual plans discounted?",
     answer:
-      "연간 결제 시 월 요금이 50% 할인된 가격으로 제공됩니다. 예: Pro 플랜은 월 $59(월간 결제) → 월 $30(연간 결제, 연 $360 선결제).",
+      "Annual payments offer a 50% discount on monthly rates. Example: Pro plan is $59/month (monthly billing) → $30/month (annual billing, $360 paid upfront annually).",
   },
   {
-    question: "결제는 어떤 방식으로 가능한가요?",
+    question: "What payment methods are available?",
     answer:
-      "모든 주요 신용카드와 PayPal을 지원합니다. (추후 지역별 결제 옵션도 확대 예정)",
+      "All major credit cards and PayPal are supported. (Regional payment options will be expanded in the future)",
   },
   {
-    question: "업그레이드/다운그레이드가 가능한가요?",
+    question: "Can I upgrade/downgrade my plan?",
     answer:
-      "네, 언제든지 플랜을 업그레이드하거나 다운그레이드할 수 있습니다. 변경 시 잔여 크레딧과 결제 차액은 자동 조정됩니다.",
+      "Yes, you can upgrade or downgrade your plan at any time. When changing plans, remaining credits and payment differences are automatically adjusted.",
   },
   {
-    question: "저장 공간이 다 차면 어떻게 되나요?",
+    question: "What happens when storage space is full?",
     answer:
-      "저장 공간을 초과하면 더 이상 새로운 이미지/영상을 저장할 수 없습니다. 상위 플랜으로 업그레이드하거나, 필요 없는 프로젝트를 삭제하면 됩니다.",
+      "When storage space is exceeded, you cannot save new images/videos. You can upgrade to a higher plan or delete unnecessary projects.",
   },
   {
-    question: "환불 정책은 어떻게 되나요?",
+    question: "What is the refund policy?",
     answer:
-      "월간 플랜은 환불이 불가합니다. 연간 플랜은 구매 후 7일 이내 요청 시 전액 환불 가능합니다.",
+      "Monthly plans are non-refundable. Annual plans can be fully refunded if requested within 7 days of purchase.",
   },
   {
-    question: "Enterprise 플랜은 어떻게 신청하나요?",
+    question: "How do I apply for an Enterprise plan?",
     answer:
-      "Enterprise는 맞춤형 가격과 혜택을 제공합니다. 영업팀에 문의하시면 전담 매니저가 상담해드립니다.",
+      "Enterprise offers customized pricing and benefits. Contact our sales team and a dedicated manager will provide consultation.",
   },
 ];

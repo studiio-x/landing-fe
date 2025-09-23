@@ -1,14 +1,10 @@
 import * as React from "react";
 import type { SVGProps } from "react";
 import { memo } from "react";
-import Link from "next/link";
-import clsx from "clsx";
-
 interface SVGRProps {
   title?: string;
   titleId?: string;
 }
-
 const SvgLogo = ({
   title,
   titleId,
@@ -37,15 +33,5 @@ const SvgLogo = ({
     />
   </svg>
 );
-export const LogoIcon = memo(SvgLogo);
-
-export default function Logo({
-  className,
-  ...rest
-}: SVGProps<SVGSVGElement> & SVGRProps) {
-  return (
-    <Link href="/" aria-label="Go to home" className="inline-block">
-      <SvgLogo {...rest} className={clsx("cursor-pointer", className)} />
-    </Link>
-  );
-}
+const Memo = memo(SvgLogo);
+export default Memo;

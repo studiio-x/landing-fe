@@ -5,14 +5,17 @@ const Footer = () => {
     {
       title: "Follow us",
       items: ["Instagram"],
+      href: `${process.env.NEXT_PUBLIC_INSTAGRAM_URL}`,
     },
     {
       title: "Company",
       items: ["Feedback"],
+      href: `mailto:${process.env.NEXT_PUBLIC_EMAIL_ADDRESS}`,
     },
     {
       title: "Resources",
       items: ["Privacy policy"],
+      href: `${process.env.NEXT_PUBLIC_PRIVACY_POLICY_NOTION_URL}`,
     },
   ];
 
@@ -32,9 +35,9 @@ const Footer = () => {
           <div key={index} className="space-y-1">
             <div className="Body_2_semibold">{section.title}</div>
             {section.items.map((item, itemIndex) => (
-              <div key={itemIndex} className="Body_2_medium text-Grey-300">
+              <a key={itemIndex} className="Body_2_medium text-Grey-300">
                 {item}
-              </div>
+              </a>
             ))}
           </div>
         ))}
