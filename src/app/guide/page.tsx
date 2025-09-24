@@ -118,7 +118,18 @@ const GuidePage = () => {
               turns your products into ad-ready creatives.
             </div>
             <OpenBtn />
-            <div className="mt-[4.25rem] h-[30rem] w-[60rem] bg-Grey-700" />
+            <div className="mt-[4.25rem] h-[30rem] w-[60rem] bg-Grey-700">
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="inset-0 h-full w-full object-cover"
+              >
+                <source src="/videos/guide.mp4" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
           </section>
 
           <SectionWrapper>
