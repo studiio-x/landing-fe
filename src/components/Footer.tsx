@@ -35,7 +35,11 @@ const Footer = () => {
           <div key={index} className="space-y-1">
             <div className="Body_2_semibold">{section.title}</div>
             {section.items.map((item, itemIndex) => (
-              <a key={itemIndex} className="Body_2_medium text-Grey-300">
+              <a
+                href={section.href}
+                key={itemIndex}
+                className="Body_2_medium text-Grey-300"
+              >
                 {item}
               </a>
             ))}
