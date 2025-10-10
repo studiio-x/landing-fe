@@ -15,7 +15,28 @@ export default function Portfolio() {
 
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useItemsInfinite(category, 20);
+  console.log("data:", data);
 
+  // const data  = {
+  //   "urls": [
+  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image32.png",
+  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image36.png",
+  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/models/4.mp4",
+  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/studios/4.mp4",
+  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image52.png",
+  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image56.png",
+  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/models/5.mp4",
+  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/studios/5.mp4",
+  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image61.png",
+  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image62.png"
+  //   ],
+  //   "pageInfo": {
+  //     "pageNum": 1,
+  //     "limit": 10,
+  //     "totalPages": 14,
+  //     "totalElements": 140
+  //   }
+  // }
   const allUrls = data?.pages.flatMap((page) => page.urls) ?? [];
 
   const sentinelRef = useRef<HTMLDivElement | null>(null);
