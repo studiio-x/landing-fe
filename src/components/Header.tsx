@@ -4,7 +4,7 @@ import OpenBtn from "./OpenBtn";
 
 const Header = () => {
   return (
-    <header className="flex w-full justify-between 2xl:px-[6.12rem] lg:px-8 px-3 py-6">
+    <header className="flex w-full justify-between 2xl:px-[6.12rem] lg:px-8 px-3 pt-4 pb-3 lg:pt-5 lg:pb-3">
       <div className="flex w-fit self-center">
         <Link href="/">
           <Logo className="mr-12 w-[5.3125rem] self-center" />

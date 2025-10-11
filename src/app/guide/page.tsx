@@ -145,7 +145,7 @@ const GuidePage = () => {
             <div className="mb-2 font-calSans text-xl sm:text-[1.75rem] lg:text-[2.5rem]">
               Choose, Chat, and create your ads.
             </div>
-            <div className="Subhead_1_medium text-Grey-400 mb-11">
+            <div className="Body_3_medium sm:Subhead_1_medium text-Grey-400 mb-11">
               Turn Simple elements into polished ad images and videos in
               seconds.
             </div>
