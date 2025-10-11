@@ -119,7 +119,7 @@ const GuidePage = () => {
       >
         <div className="2xl:px-[6.12rem] lg:px-8 sm:px-[1.5rem] px-4">
           <section className="mb-[11.75rem] flex flex-col items-center gap-8 pt-20">
-            <div className="text-center font-calSans  text-2xl sm:text-[2rem] lg:text-[3rem]">
+            <div className="text-center font-calSans  text-[2rem] sm:text-[2rem] lg:text-[3rem]">
               StudioX <br /> Create Ads, Skip the Cost.
             </div>
             <div className="Body_3_medium sm:Body_2_medium lg:Subhead_1_medium text-center text-Grey-400">
