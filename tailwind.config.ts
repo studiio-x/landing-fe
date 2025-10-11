@@ -5,6 +5,7 @@ const config: Config = {
   theme: {
     extend: {
       screens: {
+        xs: "360px",
         sm: "600px",
         lg: "1024px",
         "2xl": "1440px",
@@ -31,7 +32,6 @@ const config: Config = {
           "900": "#16181D",
         },
       },
-
       fontFamily: {
         pretendard: [
           "var(--font-pretendard)",

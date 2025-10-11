@@ -11,6 +11,7 @@ import { Arrow } from "@/assets/icons";
 import Footer from "@/components/Footer";
 import Marquee from "@/components/Marquee";
 import SectionWrapper from "@/components/SectionWrapper";
+import { div } from "framer-motion/client";
 
 const MetricsSection = () => {
   const metrics = [
@@ -20,15 +21,19 @@ const MetricsSection = () => {
   ];
 
   return (
-    <div className="mt-[3.5rem] flex gap-7">
+    <div className="mt-[3.5rem] flex flex-col gap-7 lg:flex-row w-full items-center">
       {metrics.map((metric, index) => (
         <div
           key={index}
-          className="w-[24.75rem] rounded-[0.75rem] bg-gradient-to-b from-[#FF8686]/50 to-[#1D2025]/50 p-[1px]"
+          className="w-full flex-1 rounded-[0.75rem] bg-gradient-to-b from-[#FF8686]/50 to-[#1D2025]/50 p-[1px]"
         >
-          <div className="flex w-full flex-col items-center justify-center rounded-[0.75rem] bg-[rgb(23,24,27)] px-[4.81rem] py-[3.25rem]">
-            <div className="font-calSans text-[5rem]">{metric.value}</div>
-            <div className="Subhead_1_medium text-Grey-400">{metric.label}</div>
+          <div className="flex w-full py-[3.25rem] flex-col items-center justify-center rounded-[0.75rem] bg-[rgb(23,24,27)]">
+            <div className="font-calSans text-5xl sm:text-[4rem] lg:text-[5rem]">
+              {metric.value}
+            </div>
+            <div className="Subhead_1_medium text-Grey-400 whitespace-nowrap">
+              {metric.label}
+            </div>
           </div>
         </div>
       ))}
@@ -60,21 +65,25 @@ const ContactSection = () => {
       <div className="Body_2_medium rounded-full bg-[rgba(255,255,255,0.03)] px-5 py-2 mb-6">
         Our Users
       </div>
-      <div className="font-calSans text-[3rem] mb-2">Contact Us</div>
-      <div className="Subhead_1_medium text-Grey-400 mb-[3.75rem]">
+      <div className="font-calSans  text-[1.75rem] lg:text-[3rem] mb-2">
+        Contact Us
+      </div>
+      <div className="Body_2_medium lg:Subhead_1_medium text-Grey-400 mb-[3.75rem]">
         We Are Just A Massage Away
       </div>
-      {contactItems.map((item, index) => (
-        <a
-          href={item.href}
-          key={index}
-          className="bg-Grey-800 px-10 py-6 flex justify-between items-center rounded-[0.625rem] w-[40rem] mb-5 Subhead_1_medium"
-          target="_blank"
-        >
-          {item.label}
-          <Arrow className="w-12 h-12" />
-        </a>
-      ))}
+      <div className="flex flex-col w-full items-center">
+        {contactItems.map((item, index) => (
+          <div
+            className="flex-1 w-full bg-Grey-800 px-10 py-6 flex justify-between items-center rounded-[0.625rem] max-w-[40rem] mb-5 Body_2_medium sm:Subhead_1_medium"
+            key={index}
+          >
+            {item.label}
+            <a href={item.href} key={index} target="_blank">
+              <Arrow className="w-12 h-12" />
+            </a>
+          </div>
+        ))}
+      </div>
     </section>
   );
 };
@@ -108,7 +117,7 @@ const GuidePage = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="px-[6.12rem]">
+        <div className="2xl:px-[6.12rem] lg:px-8 sm:px-[1.5rem] px-4">
           <section className="mb-[11.75rem] flex flex-col items-center gap-8 pt-20">
             <div className="text-center font-calSans text-[3rem]">
               StudioX <br /> Create Ads, Skip the Cost.
@@ -118,7 +127,7 @@ const GuidePage = () => {
               turns your products into ad-ready creatives.
             </div>
             <OpenBtn />
-            <div className="mt-[4.25rem] h-[30rem] w-[60rem] bg-Grey-700">
+            <div className="mt-[4.25rem] max-h-[30rem] max-w-[60rem] min-2 bg-Grey-700">
               <video
                 autoPlay
                 loop
@@ -148,7 +157,7 @@ const GuidePage = () => {
           </SectionWrapper>
 
           <SectionWrapper>
-            <div className="mt-40 mb-60 grid grid-cols-2 gap-7">
+            <div className="mt-40 mb-60 grid grid-cols-1 gap-7 lg:grid-cols-2">
               {cardData.map((card) => (
                 <Card
                   key={card.id}
@@ -162,12 +171,12 @@ const GuidePage = () => {
 
           <SectionWrapper id="reviews">
             <section className="flex flex-col items-center">
-              <div className="mb-2 text-center font-calSans text-[2.5rem]">
-                Choose, Chat, and create your ads.
+              <div className="mb-2 text-center font-calSans text-xl sm:text-[1.75rem] lg:text-[2.5rem]">
+                Powering Thousands of Ads Every Day
               </div>
-              <div className="Subhead_1_medium text-center text-Grey-400">
-                Turn Simple elements into polished ad images and videos in
-                seconds.
+              <div className="Body_3_medium sm:Body_2_medium lg:Subhead_1_medium text-center text-Grey-400">
+                rom small businesses to global brands, StudioX is transforming
+                how ads are created — faster, easier, smarter.
               </div>
               <MetricsSection />
               <div className="w-screen py-28">
@@ -202,10 +211,10 @@ const GuidePage = () => {
 
           <SectionWrapper>
             <section className="flex flex-col items-center mb-40">
-              <div className="font-calSans text-[3rem] mb-6">
+              <div className="font-calSans text-[1.75rem] lg:text-[3rem] mb-6">
                 Ready to Creative?
               </div>
-              <div className="flex items-center gap-4 Subhead_1_semibold text-Grey-400 mb-14">
+              <div className="flex items-center gap-4 Subhead_2_semibold lg:Subhead_1_semibold text-Grey-400 mb-14">
                 Get Started For Free
                 <Arrow className="w-12 h-12" />
               </div>
