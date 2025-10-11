@@ -5,6 +5,7 @@ import MediaItem from "@/components/MediaItem";
 import { useItemsInfinite } from "@/hooks/useItemsInfinite";
 import type { Category } from "@/types/item";
 import { useSearchParams, useRouter } from "next/navigation";
+import { pages } from "next/dist/build/templates/app-page";
 
 const CATEGORIES: Category[] = ["all", "studio", "model", "image"];
 
@@ -13,30 +14,70 @@ export default function Portfolio() {
   const searchParams = useSearchParams();
   const category = (searchParams.get("category") as Category) || "all";
 
-  const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    useItemsInfinite(category, 20);
-  console.log("data:", data);
+  // const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
+  //   useItemsInfinite(category, 20);
 
-  // const data  = {
-  //   "urls": [
-  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image32.png",
-  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image36.png",
-  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/models/4.mp4",
-  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/studios/4.mp4",
-  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image52.png",
-  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image56.png",
-  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/models/5.mp4",
-  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/studios/5.mp4",
-  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image61.png",
-  //     "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image62.png"
-  //   ],
-  //   "pageInfo": {
-  //     "pageNum": 1,
-  //     "limit": 10,
-  //     "totalPages": 14,
-  //     "totalElements": 140
-  //   }
-  // }
+  const data = {
+    pageParams: [0, 1],
+    pages: [
+      {
+        pageInfo: { pageNum: 0, limit: 20, totalPages: 7, totalElements: 140 },
+        urls: [
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/models/1.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/studios/1.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image1.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image5.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/models/2.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/studios/2.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image14.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image19.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/models/3.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/studios/3.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image32.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image36.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/models/4.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/studios/4.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image52.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image56.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/models/5.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/studios/5.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image61.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image62.png",
+        ],
+      },
+      {
+        pageInfo: { pageNum: 0, limit: 20, totalPages: 7, totalElements: 140 },
+        urls: [
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/models/1.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/studios/1.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image1.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image5.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/models/2.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/studios/2.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image14.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image19.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/models/3.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/studios/3.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image32.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image36.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/models/4.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/studios/4.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image52.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image56.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/models/5.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/videos/studios/5.mp4",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image61.png",
+          "https://studioxs3bucket.s3.ap-northeast-2.amazonaws.com/images/image/image62.png",
+        ],
+      },
+    ],
+  };
+  const hasNextPage = true;
+  const fetchNextPage = () => {
+    console.log("fetchNextPage 호출됨");
+  };
+  const isFetchingNextPage = false;
+
   const allUrls = data?.pages.flatMap((page) => page.urls) ?? [];
 
   const sentinelRef = useRef<HTMLDivElement | null>(null);
@@ -92,13 +133,14 @@ export default function Portfolio() {
           );
         })}
       </div>
+
       {allUrls.length > 0 && (
-        <div className="columns-4 gap-2 [column-fill:balance]">
+        <div className="grid grid-cols-1 min-[600px]:grid-cols-2 lg:grid-cols-3 min-[1440px]:grid-cols-4 auto-rows-[1px] gap-x-2 [grid-auto-flow:dense]">
           {allUrls.map((u, i) => (
             <MediaItem key={`${u}-${i}`} src={u} />
           ))}
         </div>
-      )}{" "}
+      )}
       <div ref={sentinelRef} className="h-1" />
     </div>
   );
