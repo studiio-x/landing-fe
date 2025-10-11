@@ -4,3 +4,4 @@ export { default as Down } from "./Down";
 export { default as Logo } from "./Logo";
 export { default as Table } from "./Table";
 export { default as Up } from "./Up";
+export { default as Menu } from "./Menu";

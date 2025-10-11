@@ -52,7 +52,7 @@ export default function Portfolio() {
   };
 
   return (
-    <div className="px-[6.12rem] py-8">
+    <div className="px-4 sm:px-6 lg:px-8 2xl:px-[6.12rem] py-8">
       <div className="mb-8 flex gap-2">
         {CATEGORIES.map((c) => {
           const active = c === category;
