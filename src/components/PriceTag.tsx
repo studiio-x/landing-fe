@@ -30,7 +30,7 @@ const PriceTag = ({ plan, isMonthly }: PriceTagProps) => {
   return (
     <div
       className="
-        bg-Grey-800 rounded-lg py-8 px-5 w-full min-h-[46rem] group
+        bg-Grey-800 rounded-lg py-8 px-5 w-full min-w-[18.7rem]  min-h-[46rem] group
         hover:shadow-[inset_0_0_0_1px_rgba(255,134,134,0.25)]
         hover:bg-[radial-gradient(ellipse_400%_110%_at_0%_0%,_#1D2025_0%,_rgba(29,32,37,0.5)_26.99%,_rgba(29,32,37,0.25)_55.71%,_rgba(255,117,117,0.1)_100%)]
         transition-colors duration-300 ease-in-out

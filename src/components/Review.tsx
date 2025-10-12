@@ -8,7 +8,7 @@ interface ReviewProps {
 const Review: React.FC<ReviewProps> = ({ title, content }) => {
   return (
     <div
-      className="flex h-[16.3rem] w-[26rem] flex-col bg-cover bg-center bg-no-repeat px-7 pt-20"
+      className="flex h-[19.88rem] sm:h-[16.3rem]  sm:w-[26rem] w-[19rem] flex-col bg-cover bg-center bg-no-repeat px-7 pt-20"
       style={{
         backgroundImage: `url('/images/review.png')`,
       }}
