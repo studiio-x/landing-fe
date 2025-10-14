@@ -139,7 +139,6 @@ const PricePage = () => {
           </div>
 
           <SectionWrapper>
-            <Table className="w-full h-full mb-52" />
             <PricingTable />
           </SectionWrapper>
 
