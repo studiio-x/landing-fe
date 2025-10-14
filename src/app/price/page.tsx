@@ -13,6 +13,7 @@ import FaqBox from "@/components/FaqBox";
 import Marquee from "@/components/Marquee";
 import SectionWrapper from "@/components/SectionWrapper";
 import { FaqData } from "@/constants/faq";
+import PricingTable from "@/components/PricingTable";
 
 const FreePlanSection = ({ isMonthly }: { isMonthly: boolean }) => {
   const features = [
@@ -22,7 +23,7 @@ const FreePlanSection = ({ isMonthly }: { isMonthly: boolean }) => {
   ];
 
   return (
-    <div className="bg-Grey-900 px-16 py-9 w-full flex flex-col lg:flex-row justify-between mt-9 mb-5 rounded-lg">
+    <div className="bg-Grey-900 px-5 sm:px-10 lg:px-16 2xl:px-16 py-9 w-full flex flex-col lg:flex-row justify-between mt-9 mb-5 rounded-lg">
       <div className="flex justify-between gap-6">
         <div className="flex flex-col">
           <div className="font-calSans text-[2rem]">Free</div>
@@ -139,6 +140,7 @@ const PricePage = () => {
 
           <SectionWrapper>
             <Table className="w-full h-full mb-52" />
+            <PricingTable />
           </SectionWrapper>
 
           <SectionWrapper>
