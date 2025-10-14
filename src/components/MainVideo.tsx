@@ -17,10 +17,14 @@ const MainVideo = () => {
       <div className="relative z-10 flex h-full w-full flex-col items-center justify-center px-4 sm:px-6 lg:px-8 2xl:px-[6.12rem]">
         <div className="mb-14 space-y-2 text-center">
           <div className="font-calSans text-[2rem] lg:text-[2.5rem] text-white">
-            Chat Your Way to perfect Ads
+            Chat Your Way
+            <br className="sm:hidden" />
+            to perfect Ads
           </div>
           <div className="Body_2_medium lg:Subhead_1_medium text-Grey-300">
-            Upload, generate, and refine ads in real-time with StudioX.
+            Upload, generate, and refine ads
+            <br className="sm:hidden" />
+            in real-time with StudioX.
           </div>
         </div>
 
