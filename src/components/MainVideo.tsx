@@ -18,14 +18,14 @@ const MainVideo = () => {
         <div className="mb-14 space-y-2 text-center">
           <div className="font-calSans text-[2rem] lg:text-[2.5rem] text-white">
             Chat Your Way
-            <br className="min-[445px]:hidden" />
-            <span className="max-[444px]:hidden"> </span>
+            <br className="min-[444px]:hidden" />
+            <span className="max-[443px]:hidden"> </span>
             to perfect Ads
           </div>
           <div className="Body_2_medium lg:Subhead_1_medium text-Grey-300">
             Upload, generate, and refine
-            <br className="min-[454px]:hidden" />
-            <span className="max-[453px]:hidden"> </span>
+            <br className="min-[453px]:hidden" />
+            <span className="max-[454px]:hidden"> </span>
             ads in real-time with StudioX.
           </div>
         </div>
