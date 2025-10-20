@@ -20,7 +20,7 @@ const MainVideo = () => {
             Chat Your Way
             <br className="min-[444px]:hidden" />
             <span className="max-[443px]:hidden"> </span>
-            to perfect Ads
+            to Perfect Ads
           </div>
           <div className="Body_2_medium lg:Subhead_1_medium text-Grey-300">
             Upload, generate, and refine
