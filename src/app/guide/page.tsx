@@ -150,7 +150,7 @@ const GuidePage = () => {
               Turn Simple elements into polished ad images and videos in
               seconds.
             </div>
-            <Image
+            <img
               width={1244}
               height={625}
               src="/images/guide.png"
