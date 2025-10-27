@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Close, Logo, Menu } from "@/assets/icons";
 import OpenBtn from "./OpenBtn";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const NAV_LINKS = [
   { href: "/guide", label: "User Guide" },
@@ -17,8 +17,10 @@ const Header = () => {
   const closeMenu = () => setIsMenuOpen(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
-  isMenuOpen && document.body.classList.add("overflow-hidden");
-  !isMenuOpen && document.body.classList.remove("overflow-hidden");
+  useEffect(() => {
+    isMenuOpen && document.body.classList.add("overflow-hidden");
+    !isMenuOpen && document.body.classList.remove("overflow-hidden");
+  }, [isMenuOpen]);
 
   return (
     <>
