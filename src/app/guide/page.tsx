@@ -11,7 +11,7 @@ import { Arrow } from "@/assets/icons";
 import Footer from "@/components/Footer";
 import Marquee from "@/components/Marquee";
 import SectionWrapper from "@/components/SectionWrapper";
-import { div } from "framer-motion/client";
+import Image from "next/image";
 
 const MetricsSection = () => {
   const metrics = [
@@ -134,8 +134,9 @@ const GuidePage = () => {
                 muted
                 playsInline
                 className="inset-0 h-full w-full object-cover"
+                poster="/images/main-poster.png"
               >
-                <source src="/videos/guide.mp4" type="video/mp4" />
+                <source src="/videos/guide-optimized.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>
@@ -149,7 +150,9 @@ const GuidePage = () => {
               Turn Simple elements into polished ad images and videos in
               seconds.
             </div>
-            <img
+            <Image
+              width={1244}
+              height={625}
               src="/images/guide.png"
               alt="guide"
               className="w-full object-cover"
@@ -227,7 +230,7 @@ const GuidePage = () => {
                   className="mt-8"
                 >
                   {items.map((url, index) => (
-                    <img
+                    <Image
                       key={index}
                       src={url}
                       alt={`Portfolio item ${index}`}
