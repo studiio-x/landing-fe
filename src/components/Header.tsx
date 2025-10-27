@@ -17,6 +17,9 @@ const Header = () => {
   const closeMenu = () => setIsMenuOpen(false);
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
+  isMenuOpen && document.body.classList.add("overflow-hidden");
+  !isMenuOpen && document.body.classList.remove("overflow-hidden");
+
   return (
     <>
       {/* Header */}
