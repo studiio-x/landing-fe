@@ -18,8 +18,16 @@ const Header = () => {
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   useEffect(() => {
-    isMenuOpen && document.body.classList.add("overflow-hidden");
-    !isMenuOpen && document.body.classList.remove("overflow-hidden");
+    if (isMenuOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    // 언마운트 시 정리
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
   }, [isMenuOpen]);
 
   return (
