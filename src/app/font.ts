@@ -3,7 +3,6 @@ import { Cal_Sans } from "next/font/google";
 
 export const pretendard = localFont({
   src: [
-    { path: "./fonts/Pretendard-Light.woff2", weight: "300", style: "normal" },
     {
       path: "./fonts/Pretendard-Regular.woff2",
       weight: "400",
@@ -16,14 +15,10 @@ export const pretendard = localFont({
       style: "normal",
     },
     { path: "./fonts/Pretendard-Bold.woff2", weight: "700", style: "normal" },
-    {
-      path: "./fonts/Pretendard-ExtraBold.woff2",
-      weight: "800",
-      style: "normal",
-    },
   ],
   variable: "--font-pretendard",
   display: "swap",
+  preload: true,
 });
 
 export const calSans = Cal_Sans({

@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 interface CardProps {
   title: string;
   description: string;
@@ -10,10 +12,13 @@ const Card: React.FC<CardProps> = ({ title, description, imageSrc }) => {
       <div className="text-center font-calSans text-[1.4rem] lg:text-[1.75rem] mb-7">
         {title}
       </div>
-      <img
+      <Image
         src={imageSrc}
         alt={title}
         className="w-full aspect-[608/460] rounded-2xl object-cover"
+        loading="lazy"
+        width={608}
+        height={460}
       />
       <div
         style={{
