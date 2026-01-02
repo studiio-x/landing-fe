@@ -5,7 +5,6 @@ import MediaItem from "@/components/landing/MediaItem";
 import { useItemsInfinite } from "@/hooks/useItemsInfinite";
 import type { Category } from "@/types/item";
 import { useSearchParams, useRouter } from "next/navigation";
-import { pages } from "next/dist/build/templates/app-page";
 
 const CATEGORIES: Category[] = ["all", "studio", "model", "image"];
 
