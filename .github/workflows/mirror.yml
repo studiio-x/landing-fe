@@ -21,7 +21,10 @@ jobs:
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
 
-          REMOTE_REPO="https://${PERSONAL_TOKEN}@github.com/ryu-won/landing-fe.git"
+          REMOTE_REPO="https://x-access-token:${PERSONAL_TOKEN}@github.com/ryu-won/landing-fe.git"
 
-          git remote add destination $REMOTE_REPO
+          git remote remove destination || true
+
+          git remote add destination "$REMOTE_REPO"
+
           git push -f destination main
