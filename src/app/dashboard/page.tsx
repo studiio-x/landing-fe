@@ -15,7 +15,8 @@ const DashboardPage = () => {
   );
 
   return (
-    <main className="min-h-screen w-full flex">
+    <main className="relative min-h-screen w-full flex">
+      <div className="absolute inset-0 bg-[url('/images/dashboard/background.png')] bg-cover bg-center -z-10 pointer-events-none" />
       <aside className="w-[17.625rem]">
         {/* 추후 사이드바 컴포넌트 추가 */}
       </aside>
