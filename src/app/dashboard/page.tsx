@@ -48,7 +48,7 @@ const DashboardPage = () => {
             </div>
 
             {activeIndex !== null && (
-              <section className="mt-[3.44rem]">
+              <section className="mt-[3.44rem] mb-[3.75rem]">
                 <h2 className="text-Grey-100 Subhead_1_semibold mb-4 ml-4">
                   예시 템플릿으로 시작하기
                 </h2>
