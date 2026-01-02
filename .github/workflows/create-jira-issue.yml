@@ -75,7 +75,7 @@ jobs:
             | sed -E 's/[^a-z0-9-]+/-/g' \
             | sed -E 's/^-+|-+$//g')
 
-          BRANCH_NAME="$PREFIX/${{ steps.issue-parser.outputs.issueparser_parentKey }}-$NAME"
+          BRANCH_NAME="$PREFIX/${{ steps.create.outputs.issue }}-$NAME"
 
           echo "Creating branch: $BRANCH_NAME"
           git checkout -b "$BRANCH_NAME"
