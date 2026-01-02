@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import MediaItem from "@/components/MediaItem";
+import MediaItem from "@/components/landing/MediaItem";
 import { useItemsInfinite } from "@/hooks/useItemsInfinite";
 import type { Category } from "@/types/item";
 import { useSearchParams, useRouter } from "next/navigation";

@@ -1,16 +1,16 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Header from "@/components/Header";
-import OpenBtn from "@/components/OpenBtn";
-import Card from "@/components/Card";
-import { cardData } from "@/constants/card";
-import Review from "@/components/Review";
-import { reviewData } from "@/constants/review";
+import Header from "@/components/landing/Header";
+import OpenBtn from "@/components/landing/OpenBtn";
+import Card from "@/components/landing/Card";
+import { cardData } from "@/constants/landing/card";
+import Review from "@/components/landing/Review";
+import { reviewData } from "@/constants/landing/review";
 import { Arrow } from "@/assets/icons";
-import Footer from "@/components/Footer";
-import Marquee from "@/components/Marquee";
-import SectionWrapper from "@/components/SectionWrapper";
+import Footer from "@/components/landing/Footer";
+import Marquee from "@/components/landing/Marquee";
+import SectionWrapper from "@/components/landing/SectionWrapper";
 import Image from "next/image";
 
 const MetricsSection = () => {
@@ -111,7 +111,7 @@ const GuidePage = () => {
       <div
         className="flex w-full flex-col"
         style={{
-          backgroundImage: `url('/images/background1.png')`,
+          backgroundImage: `url('/images/landing/background1.png')`,
           backgroundSize: "100% auto",
           backgroundPosition: "top",
           backgroundRepeat: "no-repeat",
@@ -134,7 +134,7 @@ const GuidePage = () => {
                 muted
                 playsInline
                 className="inset-0 h-full w-full object-cover"
-                poster="/images/main-poster.png"
+                poster="/images/landing/main-poster.png"
               >
                 <source src="/videos/guide-optimized.mp4" type="video/mp4" />
                 Your browser does not support the video tag.
@@ -153,7 +153,7 @@ const GuidePage = () => {
             <Image
               width={1244}
               height={625}
-              src="/images/guide.png"
+              src="/images/landing/guide.png"
               alt="guide"
               className="w-full object-cover"
             />

@@ -1,10 +1,10 @@
 "use client";
 
-import Header from "@/components/Header";
-import MainVideo from "@/components/MainVideo";
+import Header from "@/components/landing/Header";
+import MainVideo from "@/components/landing/MainVideo";
 import dynamic from "next/dynamic";
 
-const Portfolio = dynamic(() => import("@/components/Portfolio"), {
+const Portfolio = dynamic(() => import("@/components/landing/Portfolio"), {
   ssr: false,
 });
 

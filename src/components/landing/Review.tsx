@@ -10,7 +10,7 @@ const Review: React.FC<ReviewProps> = ({ title, content }) => {
     <div
       className="flex h-[16.3rem] w-[26rem] flex-col bg-cover bg-center bg-no-repeat px-7 pt-20"
       style={{
-        backgroundImage: `url('/images/review.png')`,
+        backgroundImage: `url('/images/landing/review.png')`,
       }}
     >
       <div className="Subhead_1_semibold w-[22rem] whitespace-normal">

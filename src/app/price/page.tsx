@@ -1,19 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import PriceTag from "@/components/PriceTag";
-import { priceData } from "@/constants/price";
+import Header from "@/components/landing/Header";
+import Footer from "@/components/landing/Footer";
+import PriceTag from "@/components/landing/PriceTag";
+import { priceData } from "@/constants/landing/price";
 import { Table, Check, Arrow } from "@/assets/icons";
-import OpenBtn from "@/components/OpenBtn";
-import Review from "@/components/Review";
-import { reviewData } from "@/constants/review";
-import FaqBox from "@/components/FaqBox";
-import Marquee from "@/components/Marquee";
-import SectionWrapper from "@/components/SectionWrapper";
-import { FaqData } from "@/constants/faq";
-import PricingTable from "@/components/PricingTable";
+import OpenBtn from "@/components/landing/OpenBtn";
+import Review from "@/components/landing/Review";
+import { reviewData } from "@/constants/landing/review";
+import FaqBox from "@/components/landing/FaqBox";
+import Marquee from "@/components/landing/Marquee";
+import SectionWrapper from "@/components/landing/SectionWrapper";
+import { FaqData } from "@/constants/landing/faq";
+import PricingTable from "@/components/landing/PricingTable";
 
 const FreePlanSection = ({ isMonthly }: { isMonthly: boolean }) => {
   const features = [
@@ -85,7 +85,7 @@ const PricePage = () => {
       <div
         className="flex w-full flex-col"
         style={{
-          backgroundImage: `url('/images/background2.png')`,
+          backgroundImage: `url('/images/landing/background2.png')`,
           backgroundSize: "100% auto",
           backgroundPosition: "top",
           backgroundRepeat: "no-repeat",
