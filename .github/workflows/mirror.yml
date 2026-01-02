@@ -1,0 +1,27 @@
+name: Mirror to Personal Repo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  git-mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to Personal Repo
+        env:
+          PERSONAL_TOKEN: ${{ secrets.PERSONAL_TOKEN }}
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+          REMOTE_REPO="https://${PERSONAL_TOKEN}@github.com/ryu-won/landing-fe.git"
+
+          git remote add destination $REMOTE_REPO
+          git push -f destination main
