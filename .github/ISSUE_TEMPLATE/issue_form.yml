@@ -1,7 +1,7 @@
 name: 'StudioX 이슈 생성'
 description: 'studioX FE Repo에 이슈를 생성하며, 생성된 이슈는 Jira와 연동됩니다.'
 labels: [ order ]
-title: '[STUD-00] 이슈 제목'
+title: '이슈 제목'
 body:
   - type: input
     id: parentKey 
