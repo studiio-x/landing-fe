@@ -6,4 +6,5 @@ export { default as Table } from "./Table";
 export { default as Up } from "./Up";
 export { default as Circle } from "./Circle";
 export { default as Close } from "./Close";
+export { default as Download } from "./Download";
 export { default as Menu } from "./Menu";
