@@ -9,26 +9,28 @@ interface HeaderProps {
   video?: boolean;
 }
 
-const tapList = ["스튜디오", "모델"];
+const TAB_CONFIG = {
+  스튜디오: "/dashboard/studio",
+  모델: "/dashboard/model",
+} as const;
+
+type TabName = keyof typeof TAB_CONFIG;
 
 const Header = ({ back = false, tap = false, video = false }: HeaderProps) => {
-  const [page, setPage] = useState("스튜디오");
+  const [activePage, setActivePage] = useState<TabName>("스튜디오");
   const router = useRouter();
-  const pathnname = usePathname();
+  const pathname = usePathname();
 
   useEffect(() => {
-    if (pathnname === "/dashboard/studio") {
-      setPage("스튜디오");
-    } else if (pathnname === "/dashboard/model") {
-      setPage("모델");
+    if (pathname === "/dashboard/studio") {
+      setActivePage("스튜디오");
+    } else if (pathname === "/dashboard/model") {
+      setActivePage("모델");
     }
-  }, []);
+  }, [pathname]);
 
-  const togglePage = () => {
-    setPage((prevPage) => (prevPage === "스튜디오" ? "모델" : "스튜디오"));
-    page === "studio"
-      ? router.push("/dashboard/studio")
-      : router.push("/dashboard/model");
+  const handleTabClick = (tabName: TabName) => {
+    router.push(TAB_CONFIG[tabName]);
   };
 
   return (
@@ -41,16 +43,21 @@ const Header = ({ back = false, tap = false, video = false }: HeaderProps) => {
       {/* 탭  */}
       <div className="flex-1 flex justify-center">
         {tap && (
-          <div className=" rounded-[100px] bg-Grey-800  px-1 py-[2px]">
+          <div className="rounded-[100px] bg-Grey-800 px-1 py-[2px]">
             <div>
-              {tapList.map((item, index) => (
-                <span
-                  key={index}
-                  onClick={togglePage}
-                  className={`px-4 py-[2px] rounded-[100px] Body_2_medium transition-all duration-300 ease-in-out ${page == item ? "bg-Grey-600 text-Grey-50" : "text-Grey-500"}`}
+              {Object.keys(TAB_CONFIG).map((tabName) => (
+                <button
+                  key={tabName}
+                  type="button"
+                  onClick={() => handleTabClick(tabName as TabName)}
+                  className={`px-4 py-[2px] rounded-[100px] Body_2_medium transition-all duration-300 ease-in-out ${
+                    activePage === tabName
+                      ? "bg-Grey-600 text-Grey-50"
+                      : "text-Grey-500"
+                  }`}
                 >
-                  {item}
-                </span>
+                  {tabName}
+                </button>
               ))}
             </div>
           </div>
