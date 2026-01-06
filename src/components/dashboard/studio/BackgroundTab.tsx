@@ -1,9 +1,55 @@
+import { Plus } from "@/assets/icons";
+import BackgroundSwiper from "./BackgroundSwiper";
 import SearchBar from "./SearchBar";
 
 const BackgroundTab = () => {
+  const displayBackgrounds = Array.from({ length: 6 }, (_, idx) => ({
+    id: `display-${idx}`,
+    src: "/images/landing/product1.png",
+  }));
+
+  const fabricBackgrounds = Array.from({ length: 6 }, (_, idx) => ({
+    id: `fabric-${idx}`,
+    src: "/images/landing/product2.png",
+  }));
+
+  const outdoorBackgrounds = Array.from({ length: 6 }, (_, idx) => ({
+    id: `outdoor-${idx}`,
+    src: "/images/landing/product3.png",
+  }));
+
   return (
     <div className="mt-5">
       <SearchBar />
+
+      <div className="flex flex-col gap-4 max-h-[413px] overflow-y-auto">
+        <BackgroundSwiper
+          id="display"
+          title="일반 디스플레이"
+          items={displayBackgrounds}
+        />
+        <BackgroundSwiper
+          id="fabric"
+          title="패브릭 & 벨벳"
+          items={fabricBackgrounds}
+        />
+        <BackgroundSwiper
+          id="outdoor"
+          title="아웃도어"
+          items={outdoorBackgrounds}
+        />
+      </div>
+
+      <div className="flex items-center justify-center gap-4 mt-6 Body_2_semibold">
+        <button className="py-[0.91rem] px-6 flex gap-2 justify-center items-center bg-Grey-500/20 text-Grey-50 w-1/2 rounded">
+          <Plus className="w-4 h-4" />
+          배경 업로드
+        </button>
+
+        <button className="py-[0.91rem] px-6 flex justify-center items-center w-1/2 bg-Red-500/45 text-White rounded">
+          생성하기
+        </button>
+      </div>
     </div>
   );
 };
