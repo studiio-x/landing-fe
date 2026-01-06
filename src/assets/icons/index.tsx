@@ -8,3 +8,4 @@ export { default as Circle } from "./Circle";
 export { default as Close } from "./Close";
 export { default as Download } from "./Download";
 export { default as Menu } from "./Menu";
+export { default as Search } from "./Search";
