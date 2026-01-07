@@ -5,11 +5,23 @@ import Image from "next/image";
 
 import TabContent from "@/components/dashboard/studio/TabContent";
 import TabPanel from "@/components/dashboard/studio/TabPanel";
+import StudioHistoryPanel, {
+  StudioHistoryItem,
+} from "@/components/dashboard/studio/StudioHistoryPanel";
+
+const DUMMY_HISTORY: StudioHistoryItem[] = [
+  {
+    id: "dummy-1",
+    imageUrls: ["/images/dashboard/model.png", "/images/dashboard/studio.png"],
+  },
+];
 
 const StudioPage = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const [history, setHistory] = useState<StudioHistoryItem[]>(DUMMY_HISTORY);
 
   useEffect(() => {
     if (!uploadedImage) {
@@ -62,16 +74,7 @@ const StudioPage = () => {
           )}
         </section>
 
-        <section className="w-[12.375rem] h-[28.125rem] flex flex-col gap-3 text-center items-center justify-center ml-8 rounded-lg bg-Grey-900">
-          <h2 className="Body_2_semibold text-Grey-400">
-            첫 번째 이미지를 <br />
-            생성해 보세요
-          </h2>
-          <span className="Body_3_medium text-Grey-500">
-            텍스트 하나로 <br />
-            이미지를 만들어 보세요.
-          </span>
-        </section>
+        <StudioHistoryPanel history={history} />
       </main>
     </div>
   );
