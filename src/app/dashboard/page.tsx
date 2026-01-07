@@ -40,7 +40,7 @@ const DashboardPage = () => {
             <div className="flex items-center gap-9">
               {DASHBOARD_CARDS.map((card, idx) => (
                 <div
-                  key={card.imageSrc}
+                  key={idx}
                   onMouseEnter={() => setHoverIndex(idx)}
                   onClick={() =>
                     setPinnedIndex((prev) => (prev === idx ? null : idx))
@@ -49,7 +49,7 @@ const DashboardPage = () => {
                   <DashboardCard
                     title={card.title}
                     content={card.content}
-                    imageSrc={card.imageSrc}
+                   mediaSrc={card.mediaSrc}
                     isActive={activeIndex === idx}
                   />
                 </div>
