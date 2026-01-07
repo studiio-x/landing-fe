@@ -7,6 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import Image from "next/image";
 import { Down } from "@/assets/icons";
+import clsx from "clsx";
 
 type BackgroundItem = {
   id: string;
@@ -18,9 +19,17 @@ interface BackgroundSwiperProps {
   id: string;
   title: string;
   items: BackgroundItem[];
+  selectedId: string | null;
+  onSelect: (id: string) => void;
 }
 
-const BackgroundSwiper = ({ id, title, items }: BackgroundSwiperProps) => {
+const BackgroundSwiper = ({
+  id,
+  title,
+  items,
+  selectedId,
+  onSelect,
+}: BackgroundSwiperProps) => {
   return (
     <section className="w-full flex flex-col gap-2">
       <h3 className="pl-9 Body_2_medium text-Grey-100">{title}</h3>
@@ -41,18 +50,37 @@ const BackgroundSwiper = ({ id, title, items }: BackgroundSwiperProps) => {
               nextEl: `.swiper-next-${id}`,
             }}
           >
-            {items.map((item) => (
-              <SwiperSlide key={item.id}>
-                <div className="relative w-full h-[6.25rem] rounded overflow-hidden bg-Grey-800">
-                  <Image
-                    src={item.src}
-                    alt={item.alt ?? ""}
-                    fill
-                    className="object-cover cursor-pointer"
-                  />
-                </div>
-              </SwiperSlide>
-            ))}
+            {items.map((item) => {
+              const isSelected = selectedId === item.id;
+
+              return (
+                <SwiperSlide key={item.id}>
+                  <button
+                    type="button"
+                    onClick={() => onSelect(item.id)}
+                    className="w-full"
+                  >
+                    <div
+                      className={clsx(
+                        "relative w-full h-[6.25rem] rounded overflow-hidden",
+                        isSelected
+                          ? "bg-gradient-to-b from-Red-350 to-Red-500 p-[1.5px]"
+                          : "bg-Grey-800"
+                      )}
+                    >
+                      <div className="relative w-full h-full rounded overflow-hidden bg-Grey-800">
+                        <Image
+                          src={item.src}
+                          alt={item.alt ?? ""}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    </div>
+                  </button>
+                </SwiperSlide>
+              );
+            })}
           </Swiper>
         </div>
 

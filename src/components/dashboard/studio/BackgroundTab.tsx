@@ -8,6 +8,9 @@ import clsx from "clsx";
 
 const BackgroundTab = () => {
   const [isSearching, setIsSearching] = useState(false);
+  const [selectedBackgroundId, setSelectedBackgroundId] = useState<
+    string | null
+  >(null);
 
   const displayBackgrounds = Array.from({ length: 6 }, (_, idx) => ({
     id: `display-${idx}`,
@@ -39,21 +42,29 @@ const BackgroundTab = () => {
           id="display"
           title="일반 디스플레이"
           items={displayBackgrounds}
+          selectedId={selectedBackgroundId}
+          onSelect={setSelectedBackgroundId}
         />
         <BackgroundSwiper
           id="fabric"
           title="패브릭 & 벨벳"
           items={fabricBackgrounds}
+          selectedId={selectedBackgroundId}
+          onSelect={setSelectedBackgroundId}
         />
         <BackgroundSwiper
           id="outdoor"
           title="아웃도어"
           items={outdoorBackgrounds}
+          selectedId={selectedBackgroundId}
+          onSelect={setSelectedBackgroundId}
         />
         <BackgroundSwiper
           id="outdoor"
           title="아웃도어"
           items={outdoorBackgrounds}
+          selectedId={selectedBackgroundId}
+          onSelect={setSelectedBackgroundId}
         />
       </div>
 
