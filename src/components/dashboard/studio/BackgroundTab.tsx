@@ -1,8 +1,14 @@
+"use client";
+
 import { Plus } from "@/assets/icons";
 import BackgroundSwiper from "./BackgroundSwiper";
 import SearchBar from "./SearchBar";
+import { useState } from "react";
+import clsx from "clsx";
 
 const BackgroundTab = () => {
+  const [isSearching, setIsSearching] = useState(false);
+
   const displayBackgrounds = Array.from({ length: 6 }, (_, idx) => ({
     id: `display-${idx}`,
     src: "/images/landing/product1.png",
@@ -20,9 +26,14 @@ const BackgroundTab = () => {
 
   return (
     <div className="mt-5">
-      <SearchBar />
+      <SearchBar isSearching={isSearching} setIsSearching={setIsSearching} />
 
-      <div className="flex flex-col gap-4 max-h-[413px] overflow-y-auto">
+      <div
+        className={clsx(
+          "flex flex-col gap-4 overflow-y-auto",
+          isSearching ? "h-[413px]" : "h-[452px]"
+        )}
+      >
         <BackgroundSwiper
           id="display"
           title="일반 디스플레이"
@@ -32,6 +43,11 @@ const BackgroundTab = () => {
           id="fabric"
           title="패브릭 & 벨벳"
           items={fabricBackgrounds}
+        />
+        <BackgroundSwiper
+          id="outdoor"
+          title="아웃도어"
+          items={outdoorBackgrounds}
         />
         <BackgroundSwiper
           id="outdoor"

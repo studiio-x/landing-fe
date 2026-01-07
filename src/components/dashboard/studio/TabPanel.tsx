@@ -27,7 +27,7 @@ const TabPanel = ({ activeTab, onChange }: TabPanelProps) => {
               key={label}
               onClick={() => onChange(idx)}
               className={clsx(
-                "Subhead_2_medium text-center relative pb-2",
+                "Subhead_2_medium text-center relative pb-2 transition-colors",
                 widthClass,
                 paddingClass,
                 isActive ? "text-Red-400" : "text-Grey-400"
@@ -36,7 +36,7 @@ const TabPanel = ({ activeTab, onChange }: TabPanelProps) => {
               {label}
               <span
                 className={clsx(
-                  "absolute left-0 bottom-[-1px] h-px w-full",
+                  "absolute left-0 bottom-[-1px] h-px w-full transition-colors",
                   isActive ? "bg-Red-400" : "bg-transparent"
                 )}
               />

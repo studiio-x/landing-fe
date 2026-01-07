@@ -10,7 +10,7 @@ const StudioPage = () => {
 
   return (
     <div className="flex justify-center">
-      <main className="flex items-center mt-[2.81rem]">
+      <main className="flex justify-center mt-[2.81rem]">
         <div className="flex flex-col">
           <TabPanel activeTab={activeTab} onChange={setActiveTab} />
           <TabContent activeTab={activeTab} />
@@ -28,6 +28,17 @@ const StudioPage = () => {
               <span>달에서 촬영한 자동차 광고 이미지</span>
             </div>
           </div>
+        </section>
+
+        <section className="w-[12.375rem] h-[28.125rem] flex flex-col gap-3 text-center items-center justify-center ml-8 rounded-lg bg-Grey-900">
+          <h2 className="Body_2_semibold text-Grey-400">
+            첫 번째 이미지를 <br />
+            생성해 보세요
+          </h2>
+          <span className="Body_3_medium text-Grey-500">
+            텍스트 하나로 <br />
+            이미지를 만들어 보세요.
+          </span>
         </section>
       </main>
     </div>
