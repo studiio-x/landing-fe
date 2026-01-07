@@ -1,7 +1,8 @@
 "use client";
 import { Back, Logo, Person, Video } from "@/assets/icons";
-import { usePathname, useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useActivePage } from "@/hooks/useActivePage";
 
 interface HeaderProps {
   back?: boolean;
@@ -21,14 +22,7 @@ const TAB_NAMES = Object.keys(TAB_CONFIG) as TabName[];
 const Header = ({ back = false, tap = false, video = false }: HeaderProps) => {
   const [userIsOpen, setUserIsOpen] = useState(false);
   const router = useRouter();
-  const pathname = usePathname();
-
-  const activePage = useMemo(() => {
-    const entry = Object.entries(TAB_CONFIG).find(
-      ([_, path]) => pathname === path
-    );
-    return entry?.[0] as TabName | undefined;
-  }, [pathname]);
+  const activePage = useActivePage(TAB_CONFIG);
 
   const handleTabClick = (tabName: TabName) => {
     router.push(TAB_CONFIG[tabName]);

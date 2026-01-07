@@ -2,9 +2,7 @@
 
 import { Down } from "@/assets/icons";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-
-import { useMemo } from "react";
+import { useActivePage } from "@/hooks/useActivePage";
 
 const PAGE_CONFIG = {
   대시보드: "/dashboard",
@@ -16,14 +14,7 @@ type PageName = keyof typeof PAGE_CONFIG;
 const PAGE_NAMES = Object.keys(PAGE_CONFIG) as PageName[];
 
 export default function SideBar() {
-  const pathname = usePathname();
-
-  const currentPage = useMemo(() => {
-    const entry = Object.entries(PAGE_CONFIG).find(
-      ([_, path]) => pathname === path
-    );
-    return entry?.[0] as PageName | undefined;
-  }, [pathname]);
+  const currentPage = useActivePage(PAGE_CONFIG);
 
   return (
     <aside className="bg-Grey-800 max-w-[17.625rem] h-screen px-7 pt-7 pb-[3.25rem] border-r border-Grey-600">
