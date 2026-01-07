@@ -4,13 +4,21 @@ import ProductTab from "./ProductTab";
 
 interface TabContentProps {
   activeTab: number;
+  setUploadedImage: (file: File | null) => void;
 }
 
-const TAB_COMPONENTS = [ProductTab, BackgroundTab, ChatbotTab] as const;
-
-const TabContent = ({ activeTab }: TabContentProps) => {
-  const ActiveComponent = TAB_COMPONENTS[activeTab];
-  return ActiveComponent ? <ActiveComponent /> : null;
+const TabContent = ({ activeTab, setUploadedImage }: TabContentProps) => {
+  switch (activeTab) {
+    case 0:
+      return <ProductTab setUploadedImage={setUploadedImage} />;
+    case 1:
+      return <BackgroundTab />;
+    case 2:
+      return <ChatbotTab />;
+    default:
+      return null;
+  }
 };
+
 
 export default TabContent;

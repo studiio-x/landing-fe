@@ -48,7 +48,7 @@ const BackgroundSwiper = ({ id, title, items }: BackgroundSwiperProps) => {
                     src={item.src}
                     alt={item.alt ?? ""}
                     fill
-                    className="object-cover"
+                    className="object-cover cursor-pointer"
                   />
                 </div>
               </SwiperSlide>

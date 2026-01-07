@@ -1,6 +1,45 @@
 import { Download } from "@/assets/icons";
+import { useState, useRef } from "react";
 
-const ProductTab = () => {
+interface ProductTabProps {
+  setUploadedImage: (file: File | null) => void;
+}
+
+const ProductTab = ({ setUploadedImage }: ProductTabProps) => {
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && file.type.startsWith("image/")) {
+      setUploadedImage(file);
+    }
+  };
+
+  const handleClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleDragOver = (event: React.DragEvent) => {
+    event.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (event: React.DragEvent) => {
+    event.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (event: React.DragEvent) => {
+    event.preventDefault();
+    setIsDragging(false);
+
+    const file = event.dataTransfer.files?.[0];
+    if (file && file.type.startsWith("image/")) {
+      setUploadedImage(file);
+    }
+  };
+
   return (
     <div className="relative w-full h-[35.1875rem] mt-[1.88rem] rounded-lg">
       <svg
@@ -23,7 +62,21 @@ const ProductTab = () => {
         />
       </svg>
 
-      <button className="w-full h-full rounded-lg bg-Grey-900 flex items-center justify-center">
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleFileChange}
+        accept="image/*"
+        className="hidden"
+      />
+
+      <button
+        onClick={handleClick}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        className="w-full h-full rounded-lg bg-Grey-900 flex items-center justify-center"
+      >
         <div className="flex flex-col items-center gap-5">
           <Download className="w-7 h-7" />
           <span className="Body_1_medium text-Grey-200 text-center">

@@ -34,6 +34,7 @@ const BackgroundTab = () => {
           isSearching ? "h-[413px]" : "h-[452px]"
         )}
       >
+        {/* 임시 텍스트/ 데이터 */}
         <BackgroundSwiper
           id="display"
           title="일반 디스플레이"
