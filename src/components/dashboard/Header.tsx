@@ -1,7 +1,7 @@
 "use client";
 import { Back, Logo, Person, Video } from "@/assets/icons";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 
 interface HeaderProps {
   back?: boolean;
@@ -16,18 +16,18 @@ const TAB_CONFIG = {
 
 type TabName = keyof typeof TAB_CONFIG;
 
+const TAB_NAMES = Object.keys(TAB_CONFIG) as TabName[];
+
 const Header = ({ back = false, tap = false, video = false }: HeaderProps) => {
-  const [activePage, setActivePage] = useState<TabName>("스튜디오");
   const [userIsOpen, setUserIsOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    if (pathname === "/dashboard/studio") {
-      setActivePage("스튜디오");
-    } else if (pathname === "/dashboard/model") {
-      setActivePage("모델");
-    }
+  const activePage = useMemo(() => {
+    const entry = Object.entries(TAB_CONFIG).find(
+      ([_, path]) => pathname === path
+    );
+    return entry?.[0] as TabName | undefined;
   }, [pathname]);
 
   const handleTabClick = (tabName: TabName) => {
@@ -53,22 +53,20 @@ const Header = ({ back = false, tap = false, video = false }: HeaderProps) => {
       <div className="flex-1 flex justify-center">
         {tap && (
           <div className="rounded-[100px] bg-Grey-800 px-1 py-[2px]">
-            <div>
-              {Object.keys(TAB_CONFIG).map((tabName) => (
-                <button
-                  key={tabName}
-                  type="button"
-                  onClick={() => handleTabClick(tabName as TabName)}
-                  className={`px-4 py-[2px] rounded-[100px] Body_2_medium transition-all duration-300 ease-in-out ${
-                    activePage === tabName
-                      ? "bg-Grey-600 text-Grey-50"
-                      : "text-Grey-500"
-                  }`}
-                >
-                  {tabName}
-                </button>
-              ))}
-            </div>
+            {TAB_NAMES.map((tabName) => (
+              <button
+                key={tabName}
+                type="button"
+                onClick={() => handleTabClick(tabName)}
+                className={`px-4 py-[2px] rounded-[100px] Body_2_medium transition-all duration-300 ease-in-out ${
+                  activePage === tabName
+                    ? "bg-Grey-600 text-Grey-50"
+                    : "text-Grey-500"
+                }`}
+              >
+                {tabName}
+              </button>
+            ))}
           </div>
         )}
       </div>

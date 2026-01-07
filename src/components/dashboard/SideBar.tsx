@@ -4,7 +4,7 @@ import { Down } from "@/assets/icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
 const PAGE_CONFIG = {
   대시보드: "/dashboard",
@@ -13,26 +13,26 @@ const PAGE_CONFIG = {
 
 type PageName = keyof typeof PAGE_CONFIG;
 
+const PAGE_NAMES = Object.keys(PAGE_CONFIG) as PageName[];
+
 export default function SideBar() {
-  const [currentPage, setCurrentPage] = useState<PageName>();
   const pathname = usePathname();
 
-  useEffect(() => {
-    if (pathname === "/dashboard") {
-      setCurrentPage("대시보드");
-    } else if (pathname === "/dashboard/project") {
-      setCurrentPage("프로젝트");
-    }
+  const currentPage = useMemo(() => {
+    const entry = Object.entries(PAGE_CONFIG).find(
+      ([_, path]) => pathname === path
+    );
+    return entry?.[0] as PageName | undefined;
   }, [pathname]);
 
   return (
     <aside className="bg-Grey-800 max-w-[17.625rem] h-screen px-7 pt-7 pb-[3.25rem] border-r border-Grey-600">
       <div className="flex flex-col">
-        {Object.keys(PAGE_CONFIG).map((pageName, index) => {
+        {PAGE_NAMES.map((pageName, index) => {
           const isActive = currentPage === pageName;
           return (
             <Link
-              href={PAGE_CONFIG[pageName as PageName]}
+              href={PAGE_CONFIG[pageName]}
               key={pageName}
               className={`py-2 pl-8 rounded-[4px] ${index > 0 ? "mt-4" : ""} ${
                 isActive
@@ -57,7 +57,6 @@ export default function SideBar() {
           </div>
         </div>
       </div>
-      <div></div>
     </aside>
   );
 }
