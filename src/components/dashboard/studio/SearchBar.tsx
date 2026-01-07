@@ -1,7 +1,8 @@
 "use client";
 
-import { Close, Search } from "@/assets/icons";
 import { useCallback, useEffect, useRef, useState } from "react";
+
+import { Close, Search } from "@/assets/icons";
 
 interface SearchBarProps {
   isSearching: boolean;

@@ -1,10 +1,12 @@
 "use client";
 
-import { Plus } from "@/assets/icons";
-import BackgroundSwiper from "./BackgroundSwiper";
-import SearchBar from "./SearchBar";
 import { useState } from "react";
 import clsx from "clsx";
+
+import { Plus } from "@/assets/icons";
+
+import BackgroundSwiper from "./BackgroundSwiper";
+import SearchBar from "./SearchBar";
 
 const BackgroundTab = () => {
   const [isSearching, setIsSearching] = useState(false);

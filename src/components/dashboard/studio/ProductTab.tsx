@@ -1,5 +1,6 @@
-import { Download } from "@/assets/icons";
 import { useState, useRef } from "react";
+
+import { Download } from "@/assets/icons";
 
 interface ProductTabProps {
   setUploadedImage: (file: File | null) => void;
