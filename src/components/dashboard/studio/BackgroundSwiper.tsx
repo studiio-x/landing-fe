@@ -73,6 +73,7 @@ const BackgroundSwiper = ({
                           src={item.src}
                           alt={item.alt ?? ""}
                           fill
+                          sizes="6.25rem"
                           className="object-cover"
                         />
                       </div>

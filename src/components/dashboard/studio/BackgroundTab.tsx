@@ -29,7 +29,13 @@ const BackgroundTab = () => {
 
   return (
     <div className="mt-5">
-      <SearchBar isSearching={isSearching} setIsSearching={setIsSearching} />
+      <SearchBar
+        isSearching={isSearching}
+        setIsSearching={setIsSearching}
+        onSearch={(keyword) => {
+          console.log("검색어:", keyword);
+        }}
+      />
 
       <div
         className={clsx(
