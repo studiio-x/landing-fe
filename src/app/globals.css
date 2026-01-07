@@ -10,9 +10,11 @@
   }
   html {
     background: #0f1114;
+    height: 100%;
   }
   body {
     color: #ffffff;
+    height: 100%;
   }
   button {
     background-color: transparent;

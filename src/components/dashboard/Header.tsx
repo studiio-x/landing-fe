@@ -35,7 +35,7 @@ const Header = ({ back = false, tap = false, video = false }: HeaderProps) => {
   };
 
   return (
-    <header className="px-[6.125rem] pt-5 py-3 flex relative">
+    <header className="px-[6.125rem] pt-5 py-3 flex relative border-b-Grey-800 border-b-[1.5px]">
       <div className="flex gap-4 items-center">
         {back && (
           <Back
