@@ -17,7 +17,7 @@ export default function SideBar() {
   const currentPage = useActivePage(PAGE_CONFIG);
 
   return (
-    <aside className="bg-Grey-800 max-w-[17.625rem] h-screen px-7 pt-7 pb-[3.25rem] border-r border-Grey-600">
+    <aside className="bg-Grey-800 max-w-[17.625rem] w-full left-0  sticky top-[var(--header-height))] h-[calc(100vh-var(--header-height))] px-7 pt-7 pb-[3.25rem] border-r border-Grey-600">
       <div className="flex flex-col">
         {PAGE_NAMES.map((pageName, index) => {
           const isActive = currentPage === pageName;
@@ -37,7 +37,7 @@ export default function SideBar() {
         })}
 
         <div className="flex flex-col Body_2_medium ">
-          <div className="pt-3 pb-2 pl-8 flex items-center gap-2">
+          <div className="pt-3 pb-2 pl-8 flex items-center gap-2 border-b border-Grey-700">
             <span className="text-Grey-300">⋅</span>
             <span className=" text-Grey-300">내 프로젝트</span>
           </div>

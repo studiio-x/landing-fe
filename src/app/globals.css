@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --header-height: 3.75rem;
+}
+
 @layer base {
   * {
     margin: 0;

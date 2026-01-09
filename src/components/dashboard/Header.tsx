@@ -20,7 +20,7 @@ type TabName = keyof typeof TAB_CONFIG;
 const TAB_NAMES = Object.keys(TAB_CONFIG) as TabName[];
 
 const Header = ({ back = false, tap = false, video = false }: HeaderProps) => {
-  const [userIsOpen, setUserIsOpen] = useState(false);
+  const [isUserOpen, setIsUserOpen] = useState(false);
   const router = useRouter();
   const activePage = useActivePage(TAB_CONFIG);
 
@@ -29,18 +29,24 @@ const Header = ({ back = false, tap = false, video = false }: HeaderProps) => {
   };
 
   return (
-    <header className="px-[6.125rem] pt-5 py-3 flex relative border-b-Grey-800 border-b-[1.5px]">
+    <header className="px-[6.125rem] pt-5 py-3 flex border-b-Grey-800 border-b-[1.5px] sticky top-0 left-0 h-[var(--header-height)]">
       <div className="flex gap-4 items-center">
         {back && (
-          <Back
-            className="w-[1.5625rem] h-[1.5625rem] cursor-pointer"
+          <button
+            type="button"
             onClick={() => router.back()}
-          />
+            aria-label="뒤로 가기"
+          >
+            <Back className="w-7 h-7" />
+          </button>
         )}
-        <Logo
-          className="w-[5.3125rem] cursor-pointer"
+        <button
+          type="button"
           onClick={() => router.push("/dashboard")}
-        />
+          aria-label="대시보드로 이동"
+        >
+          <Logo className="w-[5.3125rem]" />
+        </button>
       </div>
 
       {/* 탭  */}
@@ -70,22 +76,22 @@ const Header = ({ back = false, tap = false, video = false }: HeaderProps) => {
         {video && (
           <button type="button" className="flex gap-1 items-center">
             <Video className="w-7 h-7" />
-            <span className="Body_1_medium text-Grey-400">사용방법</span>
+            <span className="Body_1_medium text-Grey-400">사용 방법</span>
           </button>
         )}
         <div
           className="relative"
-          onMouseEnter={() => setUserIsOpen(true)}
-          onMouseLeave={() => setUserIsOpen(false)}
+          onMouseEnter={() => setIsUserOpen(true)}
+          onMouseLeave={() => setIsUserOpen(false)}
         >
           <Person
-            className="w-[1.16875rem] h-[1.16875rem] cursor-pointer"
-            onClick={() => setUserIsOpen((pre) => !pre)}
+            className="w-7 h-7 cursor-pointer"
+            onClick={() => setIsUserOpen((pre) => !pre)}
           />
 
-          {userIsOpen && (
-            <div className="absolute top-full right-0 pt-6">
-              <div className="px-3 py-4 bg-[rgba(40,44,52,0.90)] rounded-[8px] flex flex-col gap-3 Caption_medium text-Grey-100 min-w-[228px] transition-opacity">
+          {isUserOpen && (
+            <div className="absolute top-full right-0 pt-5">
+              <div className="px-3 py-4 bg-[rgba(40,44,52,0.90)] backdrop-blur-[5px] rounded-[8px] flex flex-col gap-3 Caption_medium text-Grey-100 min-w-[252px] transition-opacity">
                 <div className="px-5 py-2">cnskdjnksc@gmail.com</div>
                 <div className=" Body_2_medium text-Grey-300 flex flex-col gap-14 ">
                   <div className="border-t-Grey-500 border-t pt-2">
