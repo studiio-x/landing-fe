@@ -2,17 +2,23 @@
 
 import { useState } from "react";
 import clsx from "clsx";
-
 import { Plus } from "@/assets/icons";
 
 import BackgroundSwiper from "./BackgroundSwiper";
 import SearchBar from "./SearchBar";
+import ProductImageRequiredModal from "./ProductImageRequiredModal";
 
-const BackgroundTab = () => {
+interface BackgroundTabProps {
+  uploadedImage: File | null;
+}
+
+const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
   const [isSearching, setIsSearching] = useState(false);
   const [selectedBackgroundId, setSelectedBackgroundId] = useState<
     string | null
   >(null);
+
+  const [isProductImageModalOpen, setIsProductImageModalOpen] = useState(false);
 
   const displayBackgrounds = Array.from({ length: 6 }, (_, idx) => ({
     id: `display-${idx}`,
@@ -28,6 +34,15 @@ const BackgroundTab = () => {
     id: `outdoor-${idx}`,
     src: "/images/landing/product3.png",
   }));
+
+  const handleClickGenerate = () => {
+    if (!uploadedImage) {
+      setIsProductImageModalOpen(true);
+      return;
+    }
+
+    console.log("생성 시작", { uploadedImage, selectedBackgroundId });
+  };
 
   return (
     <div className="mt-5">
@@ -45,7 +60,6 @@ const BackgroundTab = () => {
           isSearching ? "h-[413px]" : "h-[452px]"
         )}
       >
-        {/* 임시 텍스트/ 데이터 */}
         <BackgroundSwiper
           id="display"
           title="일반 디스플레이"
@@ -67,13 +81,6 @@ const BackgroundTab = () => {
           selectedId={selectedBackgroundId}
           onSelect={setSelectedBackgroundId}
         />
-        <BackgroundSwiper
-          id="outdoor"
-          title="아웃도어"
-          items={outdoorBackgrounds}
-          selectedId={selectedBackgroundId}
-          onSelect={setSelectedBackgroundId}
-        />
       </div>
 
       <div className="flex items-center justify-center gap-4 mt-6 Body_2_semibold">
@@ -82,10 +89,20 @@ const BackgroundTab = () => {
           배경 업로드
         </button>
 
-        <button className="py-[0.91rem] px-6 flex justify-center items-center w-1/2 bg-Red-500/45 text-White rounded">
+        <button
+          type="button"
+          onClick={handleClickGenerate}
+          className="py-[0.91rem] px-6 flex justify-center items-center w-1/2 bg-Red-500/45 text-White rounded"
+        >
           생성하기
         </button>
       </div>
+
+      {isProductImageModalOpen && (
+        <ProductImageRequiredModal
+          onClose={() => setIsProductImageModalOpen(false)}
+        />
+      )}
     </div>
   );
 };

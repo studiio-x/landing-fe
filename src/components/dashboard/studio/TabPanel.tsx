@@ -1,6 +1,6 @@
+import { TABS } from "@/constants/dashboard/tab";
 import clsx from "clsx";
 
-const TABS = ["제품", "배경", "AI 챗봇"] as const;
 
 interface TabPanelProps {
   activeTab: number;
