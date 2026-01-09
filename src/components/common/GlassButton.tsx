@@ -11,7 +11,7 @@ interface GlassButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: GlassButtonSize;
   gap?: GlassButtonGap;
   leftIcon?: ReactNode;
-  fullWidth?: boolean; 
+  fullWidth?: boolean;
   className?: string;
 }
 
@@ -33,8 +33,7 @@ const VARIANT_CLASS: Record<GlassButtonVariant, string> = {
   red: "bg-Red-500/45 text-White hover:bg-Red-500/75",
 };
 
-const DISABLED_CLASS =
-  "bg-Grey-600/45 text-Grey-500";
+const DISABLED_CLASS = "bg-Grey-600/45 text-Grey-500";
 
 const GlassButton = ({
   children,
@@ -53,7 +52,7 @@ const GlassButton = ({
       {...props}
       type={type}
       className={clsx(
-        "flex items-center justify-center rounded",
+        "relative flex items-center justify-center rounded overflow-hidden",
         "shadow-[0_1px_8px_rgba(18,18,18,0.12)]",
         "transition-colors",
 
@@ -66,6 +65,26 @@ const GlassButton = ({
         className
       )}
     >
+      <div
+        className="absolute inset-0 rounded-[inherit] pointer-events-none"
+        style={{
+          border: "0.9px solid transparent",
+          backgroundImage: `
+            radial-gradient(120% 120% at 0% 0%, rgba(255,255,255,0.36), rgba(255,255,255,0.00) 55%),
+            radial-gradient(120% 120% at 100% 0%, rgba(255,255,255,0.36), rgba(255,255,255,0.00) 55%),
+            radial-gradient(120% 120% at 100% 100%, rgba(255,255,255,0.36), rgba(255,255,255,0.00) 55%),
+            radial-gradient(120% 120% at 0% 100%, rgba(255,255,255,0.36), rgba(255,255,255,0.00) 55%)
+            `,
+          backgroundOrigin: "border-box",
+          backgroundClip: "border-box",
+          WebkitMask:
+            "linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)",
+          WebkitMaskComposite: "xor",
+          maskComposite: "exclude",
+        }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-30"></div>
+
       {leftIcon && <span className="flex items-center">{leftIcon}</span>}
       {children}
     </button>
