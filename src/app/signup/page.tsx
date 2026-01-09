@@ -1,6 +1,11 @@
-import { LogoRed } from "@/assets/icons";
+"use client";
+import { Checkbox, LogoRed, SelectedCheckbox } from "@/assets/icons";
+import { useState } from "react";
 
 export default function SignUp() {
+  const [isCheckboxClicked, setIsCheckboxClicked] = useState(false);
+  console.log(isCheckboxClicked);
+
   return (
     <div className="flex h-full">
       {/* 좌측 영상 */}
@@ -28,16 +33,21 @@ export default function SignUp() {
             placeholder="이메일을 입력해주세요"
             className="bg-Grey-800 py-3 px-4 mb-4 placeholder:text-Body_2_medium w-full rounded-[4px]"
           />
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              className="appearance-none  w-[1.125rem] h-[1.125rem] rounded-sm border-Grey-300 border-2 checked:bg-Grey-300 checked:border-Grey-300 "
-            />
+          <button
+            type="button"
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={() => setIsCheckboxClicked((pre) => !pre)}
+          >
+            {isCheckboxClicked ? <SelectedCheckbox /> : <Checkbox />}
+
             <span className="Body_3_regular text-Grey-300">
               약관 및 개인정보 처리방침에 동의합니다.
             </span>
-          </label>
-          <button className="mt-10 w-full bg-[rgba(255,48,48,0.45)] rounded-[4px] Body_2_semibold py-[0.78125rem]">
+          </button>
+          <button
+            type="submit"
+            className="mt-10 w-full bg-[rgba(255,48,48,0.45)] rounded-[4px] Body_2_semibold py-[0.78125rem]"
+          >
             등록하기
           </button>
         </form>
@@ -45,7 +55,7 @@ export default function SignUp() {
           <span className="Body_3_regular text-Grey-400">
             이미 계정이 있나요?
           </span>
-          <span className="Body_3_semibold text-Grey-200">로그인 하기</span>
+          <span className="Body_3_semibold text-Grey-200">로그인하기</span>
         </div>
       </section>
     </div>
