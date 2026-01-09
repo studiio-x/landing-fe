@@ -36,15 +36,17 @@ export default function SideBar() {
           );
         })}
 
-        <div className="flex flex-col Body_2_medium ">
-          <div className="pt-3 pb-2 pl-8 flex items-center gap-2 border-b border-Grey-700">
+        <div className="flex flex-col Body_2_medium">
+          <div className="pt-3 pb-2 pl-9 flex items-center gap-2">
             <span className="text-Grey-300">⋅</span>
-            <span className=" text-Grey-300">내 프로젝트</span>
+            <span className="text-Grey-300">내 프로젝트</span>
           </div>
-          <div className="pt-3 pb-2 pl-8  flex items-center gap-2">
+          <span className="self-end w-[11.625rem] h-px bg-Grey-700" />
+
+          <div className="pt-3 pb-2 pl-9 flex items-center gap-2">
             <span className="text-Grey-300">⋅</span>
-            <span className=" text-Grey-300 flex-1">공유된 프로젝트</span>
-            <Down className="text-Grey-300 w-5 h-5 text-right" />
+            <span className="text-Grey-300 flex-1">공유된 프로젝트</span>
+            <Down className="text-Grey-300 w-5 h-5" />
           </div>
         </div>
       </div>
