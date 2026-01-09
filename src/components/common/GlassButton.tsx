@@ -83,8 +83,6 @@ const GlassButton = ({
           maskComposite: "exclude",
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-30"></div>
-
       {leftIcon && <span className="flex items-center">{leftIcon}</span>}
       {children}
     </button>
