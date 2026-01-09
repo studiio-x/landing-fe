@@ -44,6 +44,7 @@ const StudioPage = () => {
           <TabPanel activeTab={activeTab} onChange={setActiveTab} />
           <TabContent
             activeTab={activeTab}
+            uploadedImage={uploadedImage}
             setUploadedImage={setUploadedImage}
           />
         </div>
