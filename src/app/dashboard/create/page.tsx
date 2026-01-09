@@ -2,6 +2,7 @@
 
 import { Back } from "@/assets/icons";
 import DashboardCard from "@/components/dashboard/DashboardCard";
+import Header from "@/components/dashboard/Header";
 import { DASHBOARD_CARDS } from "@/constants/dashboard/card";
 import { useRouter } from "next/navigation";
 
@@ -9,9 +10,10 @@ const CreatePage = () => {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col items-center h-screen relative">
+    <div className="flex flex-col  h-screen relative">
       <div className="fixed inset-0 bg-[url('/images/dashboard/create-background.png')]  bg-no-repeat bg-top [background-size:100%_auto] -z-10 pointer-events-none" />
-      <header className="w-full h-[3.75rem] sticky">{/* 교체 예정 */}</header>
+      <Header />
+
       <button
         type="button"
         onClick={() => router.back()}

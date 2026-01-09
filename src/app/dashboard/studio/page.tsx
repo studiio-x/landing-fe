@@ -8,6 +8,7 @@ import TabPanel from "@/components/dashboard/studio/common/TabPanel";
 import StudioHistoryPanel, {
   StudioHistoryItem,
 } from "@/components/dashboard/studio/StudioHistoryPanel";
+import Header from "@/components/dashboard/Header";
 
 const DUMMY_HISTORY: StudioHistoryItem[] = [
   {
@@ -37,7 +38,9 @@ const StudioPage = () => {
   }, [uploadedImage]);
 
   return (
-    <div className="flex justify-center min-h-screen overflow-auto relative">
+    <div className="flex min-h-screen flex-col w-full overflow-auto relative">
+      <Header back={true} tap={true} video={true} />
+      
       <div className="fixed rounded-full opacity-15 -z-10 w-[97.4375rem] h-[97.4375rem] -right-[48.71875rem] -bottom-[48.71875rem] blur-[1.5625rem] bg-[radial-gradient(50%_50%_at_50%_50%,rgba(255,48,48,0.50)_0%,rgba(153,29,29,0.00)_100%)]" />
       <main className="flex justify-center mt-[2.81rem]">
         <div className="flex flex-col">

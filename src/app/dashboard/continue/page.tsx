@@ -1,15 +1,16 @@
 "use client";
 
 import { Back } from "@/assets/icons";
+import Header from "@/components/dashboard/Header";
 import { useRouter } from "next/navigation";
 
 const ContinuePage = () => {
   const router = useRouter();
 
   return (
-    <div className="flex flex-col items-center h-screen relative">
+    <div className="flex flex-col h-screen relative">
       <div className="fixed inset-0 bg-[url('/images/dashboard/continue-background.png')]  bg-no-repeat bg-top [background-size:100%_auto] -z-10 pointer-events-none" />
-      <header className="w-full h-[3.75rem] sticky">{/* 교체 예정 */}</header>
+      <Header/>
 
       <button
         type="button"
