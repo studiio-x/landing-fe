@@ -79,7 +79,7 @@ const Header = ({ back = false, tap = false, video = false }: HeaderProps) => {
   };
 
   return (
-    <header className="px-[6.125rem] pt-5 py-3 flex border-b-Grey-800 border-b-[1.5px] sticky top-0 left-0 h-[var(--header-height)] items-center">
+    <header className="px-[6.125rem] pt-5 py-3 flex bg-Black border-b-Grey-800 border-b-[1.5px] sticky top-0 left-0 h-[var(--header-height)] items-center z-[100]">
       <div className="flex gap-4 items-center">
         {back && (
           <button
