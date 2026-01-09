@@ -7,6 +7,7 @@ import { Plus } from "@/assets/icons";
 import BackgroundSwiper from "./BackgroundSwiper";
 import SearchBar from "./SearchBar";
 import ProductImageRequiredModal from "./ProductImageRequiredModal";
+import GlassButton from "@/components/common/GlassButton";
 
 interface BackgroundTabProps {
   uploadedImage: File | null;
@@ -84,18 +85,24 @@ const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
       </div>
 
       <div className="flex items-center justify-center gap-4 mt-6 Body_2_semibold">
-        <button className="py-[0.91rem] px-6 flex gap-2 justify-center items-center bg-Grey-500/20 text-Grey-50 w-1/2 rounded">
-          <Plus className="w-4 h-4" />
+        <GlassButton
+          size="md"
+          gap="sm"
+          className="Body_3_semibold"
+          leftIcon={<Plus className="w-4 h-4" />}
+        >
           배경 업로드
-        </button>
+        </GlassButton>
 
-        <button
+        <GlassButton
+          size="md"
+          variant="red"
           type="button"
+          className="Body_2_semibold"
           onClick={handleClickGenerate}
-          className="py-[0.91rem] px-6 flex justify-center items-center w-1/2 bg-Red-500/45 text-White rounded"
         >
           생성하기
-        </button>
+        </GlassButton>
       </div>
 
       {isProductImageModalOpen && (
