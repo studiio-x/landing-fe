@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
-import TabContent from "@/components/dashboard/studio/TabContent";
-import TabPanel from "@/components/dashboard/studio/TabPanel";
+import TabContent from "@/components/dashboard/studio/common/TabContent";
+import TabPanel from "@/components/dashboard/studio/common/TabPanel";
 import StudioHistoryPanel, {
   StudioHistoryItem,
 } from "@/components/dashboard/studio/StudioHistoryPanel";

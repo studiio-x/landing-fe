@@ -1,6 +1,6 @@
-import BackgroundTab from "./BackgroundTab";
-import ChatbotTab from "./ChatbotTab";
-import ProductTab from "./ProductTab";
+import BackgroundTab from "../background/BackgroundTab";
+import ChatbotTab from "../chatbot/ChatbotTab";
+import ProductTab from "../product/ProductTab";
 
 interface TabContentProps {
   activeTab: number;
