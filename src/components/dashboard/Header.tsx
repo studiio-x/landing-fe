@@ -1,8 +1,10 @@
 "use client";
 import { Back, Logo, Person, Video } from "@/assets/icons";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useActivePage } from "@/hooks/useActivePage";
+import { on } from "events";
+import { i } from "framer-motion/client";
 
 interface HeaderProps {
   back?: boolean;
@@ -21,11 +23,59 @@ const TAB_NAMES = Object.keys(TAB_CONFIG) as TabName[];
 
 const Header = ({ back = false, tap = false, video = false }: HeaderProps) => {
   const [isUserOpen, setIsUserOpen] = useState(false);
+  const [isUserClicked, setIsUserClicked] = useState(false);
   const router = useRouter();
   const activePage = useActivePage(TAB_CONFIG);
+  const userMenuRef = useRef<HTMLDivElement>(null);
 
   const handleTabClick = (tabName: TabName) => {
     router.push(TAB_CONFIG[tabName]);
+  };
+
+  //외부 클릭감지
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsUserOpen(false);
+        setIsUserClicked(false);
+      }
+    };
+
+    if (isUserOpen) document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isUserOpen]);
+
+  // 유저클릭 이벤트 핸들러
+  const onUserClick = () => {
+    // 호버 모드에서 클릭 → 클릭 모드로 전환 (열린 상태 유지)
+    if (!isUserClicked) {
+      setIsUserClicked(true);
+      setIsUserOpen(true);
+    }
+    // 클릭 모드에서 재클릭 → 토글
+    else {
+      setIsUserOpen(!isUserOpen);
+      if (isUserOpen) {
+        setIsUserClicked(false);
+      }
+    }
+  };
+
+  //유저 호버 이벤트 핸들러
+  const userHover = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isUserClicked) {
+      if (e.type === "mouseenter") {
+        setIsUserOpen(true);
+      } else if (e.type === "mouseleave") {
+        setIsUserOpen(false);
+      }
+    }
   };
 
   return (
@@ -80,14 +130,12 @@ const Header = ({ back = false, tap = false, video = false }: HeaderProps) => {
           </button>
         )}
         <div
+          ref={userMenuRef}
           className="relative"
-          onMouseEnter={() => setIsUserOpen(true)}
-          onMouseLeave={() => setIsUserOpen(false)}
+          onMouseEnter={userHover}
+          onMouseLeave={userHover}
         >
-          <Person
-            className="w-7 h-7 cursor-pointer"
-            onClick={() => setIsUserOpen((pre) => !pre)}
-          />
+          <Person className="w-7 h-7 cursor-pointer" onClick={onUserClick} />
 
           {isUserOpen && (
             <div className="absolute top-full right-0 pt-5">
