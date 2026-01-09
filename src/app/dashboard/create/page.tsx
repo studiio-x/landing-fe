@@ -38,7 +38,7 @@ const CreatePage = () => {
                 <DashboardCard
                   title={card.title}
                   content={card.content}
-                  imageSrc={card.imageSrc}
+                  mediaSrc={card.mediaSrc}
                 />
               </li>
             ))}
