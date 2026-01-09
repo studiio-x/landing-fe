@@ -1,0 +1,44 @@
+"use client";
+
+import { Back } from "@/assets/icons";
+import { useRouter } from "next/navigation";
+
+const ContinuePage = () => {
+  const router = useRouter();
+
+  return (
+    <div className="flex flex-col items-center h-screen relative">
+      <div className="fixed inset-0 bg-[url('/images/dashboard/continue-background.png')]  bg-no-repeat bg-top [background-size:100%_auto] -z-10 pointer-events-none" />
+      <header className="w-full h-[3.75rem] sticky">{/* 교체 예정 */}</header>
+      <div className="p-[1px] rounded-full bg-gradient-to-b from-Grey-300 to-Grey-800 absolute left-[6.13rem] top-[7rem]">
+        <button
+          type="button"
+          onClick={() => router.back()}
+          aria-label="이전 페이지로 이동"
+          className="p-[0.625rem] rounded-full bg-Grey-800"
+        >
+          <Back />
+        </button>
+      </div>
+
+      <main className="w-full flex flex-col items-center gap-[4.5rem] flex-1 justify-center mb-[6.75rem]">
+        <div className="flex flex-col gap-3 items-center">
+          <span className="py-2 px-5 border border-Grey-700 bg-[rgba(255,255,255,0.03)] Body_2_medium text-Grey-100 rounded-[5rem]">
+            프로젝트 이어하기
+          </span>
+          <h1 className="Heading_1_bold text-White">
+            원하는 작업을 선택해 주세요
+          </h1>
+        </div>
+
+        <section aria-label="작업 선택">
+          <ul className="flex items-center gap-9">
+           {/* 폴더 디자인 확정 후 작업 */}
+          </ul>
+        </section>
+      </main>
+    </div>
+  );
+};
+
+export default ContinuePage;
