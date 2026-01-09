@@ -8,3 +8,5 @@ export { default as Back } from "./Back";
 export { default as Circle } from "./Circle";
 export { default as Close } from "./Close";
 export { default as Menu } from "./Menu";
+export { default as Person } from "./Person";
+export { default as Video } from "./Video";

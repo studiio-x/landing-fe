@@ -10,16 +10,15 @@ const ContinuePage = () => {
     <div className="flex flex-col items-center h-screen relative">
       <div className="fixed inset-0 bg-[url('/images/dashboard/continue-background.png')]  bg-no-repeat bg-top [background-size:100%_auto] -z-10 pointer-events-none" />
       <header className="w-full h-[3.75rem] sticky">{/* 교체 예정 */}</header>
-      <div className="p-[1px] rounded-full bg-gradient-to-b from-Grey-300 to-Grey-800 absolute left-[6.13rem] top-[7rem]">
-        <button
-          type="button"
-          onClick={() => router.back()}
-          aria-label="이전 페이지로 이동"
-          className="p-[0.625rem] rounded-full bg-Grey-800"
-        >
-          <Back />
-        </button>
-      </div>
+
+      <button
+        type="button"
+        onClick={() => router.back()}
+        aria-label="이전 페이지로 이동"
+        className="absolute left-[6.13rem] top-[7rem]"
+      >
+        <Back className="w-11 h-11" />
+      </button>
 
       <main className="w-full flex flex-col items-center gap-[4.5rem] flex-1 justify-center mb-[6.75rem]">
         <div className="flex flex-col gap-3 items-center">
@@ -33,7 +32,7 @@ const ContinuePage = () => {
 
         <section aria-label="작업 선택">
           <ul className="flex items-center gap-9">
-           {/* 폴더 디자인 확정 후 작업 */}
+            {/* 폴더 디자인 확정 후 작업 */}
           </ul>
         </section>
       </main>
