@@ -79,7 +79,7 @@ const Header = ({ back = false, tap = false, video = false }: HeaderProps) => {
   };
 
   return (
-    <header className="px-[6.125rem] pt-5 py-3 flex border-b-Grey-800 border-b-[1.5px] sticky top-0 left-0 h-[var(--header-height)]">
+    <header className="px-[6.125rem] pt-5 py-3 flex border-b-Grey-800 border-b-[1.5px] sticky top-0 left-0 h-[var(--header-height)] items-center">
       <div className="flex gap-4 items-center">
         {back && (
           <button
@@ -102,7 +102,7 @@ const Header = ({ back = false, tap = false, video = false }: HeaderProps) => {
       {/* 탭  */}
       <div className="flex-1 flex justify-center">
         {tap && (
-          <div className="rounded-[100px] bg-Grey-800 px-1 py-[2px]">
+          <div className="rounded-[100px] bg-Grey-800 px-1 py-1 h-[2.1875rem]">
             {TAB_NAMES.map((tabName) => (
               <button
                 key={tabName}
