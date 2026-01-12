@@ -1,13 +1,14 @@
 "use client";
 import { Checkbox, LogoRed, SelectedCheckbox } from "@/assets/icons";
+import Header from "@/components/landing/Header";
 import { useState } from "react";
 
-export default function SignUp() {
+const SignUp = () => {
   const [isCheckboxClicked, setIsCheckboxClicked] = useState(false);
-  console.log(isCheckboxClicked);
 
   return (
     <div className="flex h-full">
+      {/* 헤더추가 */}
       {/* 좌측 영상 */}
       <section className="flex-[56%] h-full relative flex justify-center items-center">
         <video
@@ -25,20 +26,24 @@ export default function SignUp() {
       </section>
 
       {/* 우측 로그인 */}
-      <section className="flex-[44%] pt-[11.25rem] px-[8.5rem]">
+      <section className="flex-[44%] pb-[5.75rem] flex flex-col justify-center h-full px-[8.5rem]">
         <div className="Heading_1_semibold text-Grey-50 mb-10">회원가입</div>
         <form>
           <input
             type="text"
             placeholder="이메일을 입력해주세요"
-            className="bg-Grey-800 py-3 px-4 mb-4 placeholder:text-Body_2_medium w-full rounded-[4px]"
+            className="bg-Grey-800 py-3 px-4 mb-4 placeholder:text-Grey-400 text-Grey-100 text-Body_2_medium w-full rounded-[4px]"
           />
           <button
             type="button"
-            className="flex items-center gap-2 cursor-pointer"
+            className="flex items-center  gap-3 pl-4 cursor-pointer"
             onClick={() => setIsCheckboxClicked((pre) => !pre)}
           >
-            {isCheckboxClicked ? <SelectedCheckbox /> : <Checkbox />}
+            {isCheckboxClicked ? (
+              <SelectedCheckbox className="w-6 h-6" />
+            ) : (
+              <Checkbox className="w-6 h-6" />
+            )}
 
             <span className="Body_3_regular text-Grey-300">
               약관 및 개인정보 처리방침에 동의합니다.
@@ -55,9 +60,11 @@ export default function SignUp() {
           <span className="Body_3_regular text-Grey-400">
             이미 계정이 있나요?
           </span>
-          <span className="Body_3_semibold text-Grey-200">로그인하기</span>
+          <button className="Body_3_semibold text-Grey-200">로그인하기</button>
         </div>
       </section>
     </div>
   );
-}
+};
+
+export default SignUp;
