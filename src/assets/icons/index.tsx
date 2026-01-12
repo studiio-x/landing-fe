@@ -1,7 +1,10 @@
 export { default as Arrow } from "./Arrow";
 export { default as Check } from "./Check";
+export { default as Checkbox } from "./Checkbox";
 export { default as Down } from "./Down";
 export { default as Logo } from "./Logo";
+export { default as LogoRed } from "./LogoRed";
+export { default as SelectedCheckbox } from "./SelectedCheckbox";
 export { default as Table } from "./Table";
 export { default as Up } from "./Up";
 export { default as Back } from "./Back";
