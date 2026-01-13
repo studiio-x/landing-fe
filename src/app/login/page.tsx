@@ -4,7 +4,7 @@ import SideBar from "@/components/dashboard/SideBar";
 export default function Login() {
   return (
     <>
-      <Header tap={true} video={true} back={true} />
+      <Header tab={true} video={true} back={true} />
       <SideBar />
     </>
   );
