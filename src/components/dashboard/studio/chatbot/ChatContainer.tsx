@@ -22,7 +22,6 @@ const ChatContainer = () => {
       <div className="flex-1 overflow-y-auto py-4" />
 
       {/* Input */}
-
       <div className="flex flex-col gap-[0.65rem] items-center mt-5">
         <ChatInput />
         <span className="Caption_medium text-Grey-500">
