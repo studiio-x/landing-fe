@@ -101,7 +101,11 @@ const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
               <button
                 type="button"
                 className="flex flex-col items-center gap-2 group"
-                onClick={onClickMark}
+                onClick={() => {
+                  setIsPlusPinned(false);
+                  setIsPlusOpen(false);
+                  onClickMark();
+                }}
               >
                 <div className="group rounded-full p-[1px] bg-gradient-to-b from-Grey-500 to-Grey-700 group-hover:from-Red-300 group-hover:to-Red-500">
                   <div className="h-[2.75rem] w-[2.75rem] rounded-full bg-Grey-800 group-hover:bg-Red-500 flex items-center justify-center">

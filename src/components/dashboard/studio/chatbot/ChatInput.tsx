@@ -4,6 +4,7 @@ import { Send } from "@/assets/icons";
 import { useLayoutEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import PlusMenu from "./PlusMenu";
+import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 
 const MIN_H = 24;
 const MAX_H = 80;
@@ -16,6 +17,7 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [value, setValue] = useState("");
 
+  const { setMarkMode, setRects } = useStudioMarkStore();
   const sendMessage = () => {
     const text = value.trim();
     if (!text) return;
@@ -68,10 +70,12 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
         />
 
         <div className="flex items-start gap-[0.625rem]">
-          <PlusMenu
+        <PlusMenu
             onUploadImage={(file) => console.log(file)}
             onClickMark={() => {
-              // TODO: 수정할 부분 표시하기 로직
+              
+              setMarkMode(true);
+              setRects([]);
             }}
           />
 

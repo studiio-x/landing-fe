@@ -6,8 +6,18 @@ import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
 import { CHAT_RECOMMENDATIONS } from "@/constants/dashboard/chat-recommendations";
 import { ChatItem } from "@/types/chat";
+import clsx from "clsx";
+import GlassButton from "@/components/common/GlassButton";
+import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 
-const ChatContainer = () => {
+interface ChatContainerProps {
+  onOpenContentInput: () => void;
+}
+
+const ChatContainer = ({ onOpenContentInput }: ChatContainerProps) => {
+  const { isMarkMode, rects, setMarkMode } = useStudioMarkStore();
+  const hasMarkRects = rects.length > 0;
+
   const [messages, setMessages] = useState<ChatItem[]>([]);
   const timersRef = useRef<number[]>([]);
   const bottomRef = useRef<HTMLDivElement | null>(null);
@@ -61,7 +71,7 @@ const ChatContainer = () => {
   }, [messages]);
 
   return (
-    <div className="w-[24.75rem] h-[35.8125rem] rounded-lg border border-Grey-600 bg-Grey-900 p-5 pb-4 flex flex-col">
+    <div className="relative w-[24.75rem] h-[35.8125rem] rounded-lg border border-Grey-600 bg-Grey-900 p-5 pb-4 flex flex-col overflow-hidden">
       <div className="flex gap-1 flex-col pb-2 border-b border-Grey-600 shrink-0">
         <div className="flex gap-3 items-center">
           <div className="rounded-full h-[3.25rem] w-[3.25rem] p-[1px] bg-gradient-to-b from-Grey-400 to-Grey-700">
@@ -98,6 +108,40 @@ const ChatContainer = () => {
           AI가 부정확한 결과를 생성할 수 있어요.
         </span>
       </div>
+
+      {isMarkMode && (
+        <div className="absolute inset-0 z-40 flex flex-col items-center justify-center rounded-lg bg-Grey-900/90">
+          <p className="text-center Body_1_medium text-Grey-50">
+            수정할 부분을 표시한 뒤,
+            <br />
+            변경 내용을 입력하세요.
+          </p>
+
+          <div className="mt-9 flex items-center justify-center gap-3">
+            <GlassButton
+              variant="default"
+              size="sm"
+              className="Body_2_semibold"
+              onClick={() => setMarkMode(false)}
+            >
+              취소
+            </GlassButton>
+            
+            <GlassButton
+              variant="red"
+              size="sm"
+              className={clsx(
+                "Body_2_semibold",
+                !hasMarkRects && "cursor-not-allowed"
+              )}
+              disabled={!hasMarkRects}
+              onClick={onOpenContentInput}
+            >
+              내용 입력
+            </GlassButton>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
