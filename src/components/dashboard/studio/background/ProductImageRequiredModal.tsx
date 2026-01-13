@@ -7,7 +7,11 @@ const ProductImageRequiredModal = ({ onClose }: { onClose: () => void }) => {
   return (
     <ModalOverlay onClose={onClose}>
       <div className="relative w-[30rem] h-[31.0625rem] rounded-lg bg-Grey-700/90 p-5 flex flex-col items-center justify-center">
-        <button onClick={onClose} className="absolute top-5 right-5">
+        <button
+          onClick={onClose}
+          className="absolute top-5 right-5"
+          aria-label="닫기"
+        >
           <Close className="w-6 h-6" />
         </button>
 
