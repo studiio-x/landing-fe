@@ -8,15 +8,18 @@ import PlusMenu from "./PlusMenu";
 const MIN_H = 24;
 const MAX_H = 80;
 
-const ChatInput = () => {
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
+interface ChatInputProps {
+  onSend: (text: string) => void;
+}
 
+const ChatInput = ({ onSend }: ChatInputProps) => {
+  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [value, setValue] = useState("");
 
   const sendMessage = () => {
     const text = value.trim();
     if (!text) return;
-    // TODO: 메시지 전송 api 연동
+    onSend(text);
     setValue("");
   };
 
@@ -31,7 +34,7 @@ const ChatInput = () => {
   const autosize = () => {
     const el = textareaRef.current;
     if (!el) return;
-    
+
     el.style.height = "0px";
     const next = Math.min(Math.max(el.scrollHeight, MIN_H), MAX_H);
     el.style.height = `${next}px`;
@@ -66,15 +69,17 @@ const ChatInput = () => {
 
         <div className="flex items-start gap-[0.625rem]">
           <PlusMenu
-            onUploadImage={(file) => {
-              console.log(file);
-            }}
+            onUploadImage={(file) => console.log(file)}
             onClickMark={() => {
               // TODO: 수정할 부분 표시하기 로직
             }}
           />
 
-          <button type="button" aria-label="전송" onClick={sendMessage}>
+          <button
+            type="button"
+            aria-label="전송"
+            onClick={sendMessage}
+          >
             <Send className="w-6 h-6 transition-colors text-Grey-200 hover:text-Red-500" />
           </button>
         </div>

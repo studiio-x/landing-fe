@@ -1,7 +1,39 @@
+"use client";
+
+import { useCallback, useMemo, useState } from "react";
 import { LogoRed } from "@/assets/icons";
 import ChatInput from "./ChatInput";
+import ChatMessage from "./ChatMessage";
+import { CHAT_RECOMMENDATIONS } from "@/constants/dashboard/chat-recommendations";
+import { ChatItem } from "@/types/chat";
 
 const ChatContainer = () => {
+  const [messages, setMessages] = useState<ChatItem[]>([]);
+  const isEmpty = messages.length === 0;
+
+  const sendUserMessage = useCallback((text: string) => {
+    const trimmed = text.trim();
+    if (!trimmed) return;
+
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: crypto.randomUUID(),
+        role: "user",
+        text: trimmed,
+      },
+    ]);
+
+    // TODO: 여기서 API 호출 후 assistant 메시지 append
+  }, []);
+
+  const handleClickRecommendation = useCallback(
+    (text: string) => {
+      sendUserMessage(text);
+    },
+    [sendUserMessage]
+  );
+
   return (
     <div className="w-[24.75rem] h-[35.8125rem] rounded-lg border border-Grey-600 bg-Grey-900 p-5 pb-4 flex flex-col">
       <div className="flex gap-1 flex-col pb-2 border-b border-Grey-600 shrink-0">
@@ -19,11 +51,21 @@ const ChatContainer = () => {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto py-4" />
+      <div className="flex-1 overflow-y-auto pt-5 pb-2">
+        {isEmpty ? (
+          <ChatMessage.Recommendations
+            title="추천"
+            items={CHAT_RECOMMENDATIONS}
+            onClickItem={handleClickRecommendation}
+          />
+        ) : (
+          <ChatMessage.List messages={messages} />
+        )}
+      </div>
 
       {/* Input */}
       <div className="flex flex-col gap-[0.65rem] items-center mt-5">
-        <ChatInput />
+        <ChatInput onSend={sendUserMessage} />
         <span className="Caption_medium text-Grey-500">
           AI가 부정확한 결과를 생성할 수 있어요.
         </span>
