@@ -1,5 +1,11 @@
+import ChatContainer from "./ChatContainer";
+
 const ChatbotTab = () => {
-  return <></>;
+  return (
+    <div className="mt-5">
+      <ChatContainer />
+    </div>
+  );
 };
 
 export default ChatbotTab;
