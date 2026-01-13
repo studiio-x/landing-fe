@@ -4,21 +4,18 @@ import { memo } from "react";
 interface SVGRProps {
   title?: string;
   titleId?: string;
-  width?: string;
-  height?: string;
 }
 const SvgClose = ({
   title,
   titleId,
-  width,
-  height,
   ...props
 }: SVGProps<SVGSVGElement> & SVGRProps) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 25 25"
-    className="mx-auto block w-[0.44rem] h-[0.44rem] lg:w-[0.44rem] lg:h-[0.44rem] 2xl:w-[1.5rem] 2xl:h-[1.5rem]"
+    width="1em"
+    height="1em"
     role="img"
     focusable="false"
     aria-hidden="true"

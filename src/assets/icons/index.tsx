@@ -1,6 +1,7 @@
 export { default as Arrow } from "./Arrow";
 export { default as Check } from "./Check";
 export { default as Down } from "./Down";
+export { default as Google } from "./Google";
 export { default as Logo } from "./Logo";
 export { default as Table } from "./Table";
 export { default as Up } from "./Up";
@@ -8,3 +9,4 @@ export { default as Back } from "./Back";
 export { default as Circle } from "./Circle";
 export { default as Close } from "./Close";
 export { default as Menu } from "./Menu";
+export { default as Watch } from "./Watch";
