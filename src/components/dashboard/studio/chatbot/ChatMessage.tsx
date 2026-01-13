@@ -45,18 +45,16 @@ const ChatMessageList = ({ messages }: { messages: ChatItem[] }) => {
 };
 
 const ChatRecommendations = ({
-  title,
   items,
   onClickItem,
 }: {
-  title: string;
   items: readonly string[];
   onClickItem: (text: string) => void;
 }) => {
   return (
     <div className="flex flex-col gap-2 h-full justify-end">
       <span className="Body_3_semibold text-Grey-300 pr-1 self-end">
-        {title}
+        추천
       </span>
 
       <div className="flex flex-col gap-2 items-end">

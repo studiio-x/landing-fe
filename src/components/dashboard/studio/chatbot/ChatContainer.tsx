@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { LogoRed } from "@/assets/icons";
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
@@ -10,6 +10,7 @@ import { ChatItem } from "@/types/chat";
 const ChatContainer = () => {
   const [messages, setMessages] = useState<ChatItem[]>([]);
   const timersRef = useRef<number[]>([]);
+  const bottomRef = useRef<HTMLDivElement | null>(null);
 
   const isEmpty = messages.length === 0;
 
@@ -49,6 +50,16 @@ const ChatContainer = () => {
     [sendUserMessage]
   );
 
+  useEffect(() => {
+    const isTyping = messages.some(
+      (m) => m.role === "assistant" && m.status === "typing"
+    );
+
+    bottomRef.current?.scrollIntoView({
+      behavior: isTyping ? "smooth" : "auto",
+    });
+  }, [messages]);
+
   return (
     <div className="w-[24.75rem] h-[35.8125rem] rounded-lg border border-Grey-600 bg-Grey-900 p-5 pb-4 flex flex-col">
       <div className="flex gap-1 flex-col pb-2 border-b border-Grey-600 shrink-0">
@@ -69,12 +80,14 @@ const ChatContainer = () => {
       <div className="flex-1 overflow-y-auto pt-5 pb-2">
         {isEmpty ? (
           <ChatMessage.Recommendations
-            title="추천"
             items={CHAT_RECOMMENDATIONS}
             onClickItem={handleClickRecommendation}
           />
         ) : (
-          <ChatMessage.List messages={messages} />
+          <>
+            <ChatMessage.List messages={messages} />
+            <div ref={bottomRef} />
+          </>
         )}
       </div>
 
