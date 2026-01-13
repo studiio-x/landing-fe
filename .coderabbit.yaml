@@ -1,0 +1,33 @@
+language: "ko-KR"
+early_access: false
+reviews:
+  profile: "chill"
+  request_changes_workflow: true
+  high_level_summary: true
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  auto_review:
+    enabled: true
+    drafts: false
+  instructions: |
+    우리 팀은 Next.js + React + TypeScript + TailwindCSS 기반 프로젝트입니다.
+    아래 기준에 따라 PR을 리뷰해주세요.
+
+    [리뷰 우선순위]
+    - React / TypeScript 공식 가이드 및 Best Practices를 최우선으로 적용해주세요.
+    - 타입 안정성, null/에러 처리, useEffect 의존성, 불필요한 렌더링 가능성을 중점적으로 봐주세요.
+    - 유지보수성, 테스트 용이성, 접근성(a11y) 이슈도 함께 검토해주세요.
+
+    [리뷰 방식]
+    - 꼭 필요한 핵심 리뷰에 집중하고, 사소한 개선 사항은 간단히 요약해주세요.
+    - 주요 리뷰 포인트에는 문제점과 개선 방향을 함께 제시해주세요.
+    - 리뷰 코멘트는 해당 코드 라인 범위에 직접 남겨주세요.
+
+    [코드 스타일]
+    - 변수는 const 사용을 기본으로 합니다.
+    - 일반적으로 arrow function 기반 function component (default export) 스타일을 사용합니다.
+    - TailwindCSS 사용 시 클래스 가독성과 중복을 검토해주세요.
+    - 불필요한 복잡도는 지양합니다.
+chat:
+  auto_reply: true
