@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { LogoRed } from "@/assets/icons";
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
@@ -9,28 +9,43 @@ import { ChatItem } from "@/types/chat";
 
 const ChatContainer = () => {
   const [messages, setMessages] = useState<ChatItem[]>([]);
+  const timersRef = useRef<number[]>([]);
+
   const isEmpty = messages.length === 0;
 
   const sendUserMessage = useCallback((text: string) => {
     const trimmed = text.trim();
     if (!trimmed) return;
 
+    const userId = crypto.randomUUID();
+    const typingId = crypto.randomUUID();
+
     setMessages((prev) => [
       ...prev,
-      {
-        id: crypto.randomUUID(),
-        role: "user",
-        text: trimmed,
-      },
+      { id: userId, role: "user", text: trimmed, status: "sent" },
+      { id: typingId, role: "assistant", text: "", status: "typing" },
     ]);
 
-    // TODO: 여기서 API 호출 후 assistant 메시지 append
+    // 로딩 상태 확인을 위한 임시 응답, TODO: api 연동
+    const t = window.setTimeout(() => {
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === typingId
+            ? {
+                ...m,
+                status: "done",
+                text: "알겠어. 전달해준 내용을 기준으로 이어서 진행할게.",
+              }
+            : m
+        )
+      );
+    }, 1200);
+
+    timersRef.current.push(t);
   }, []);
 
   const handleClickRecommendation = useCallback(
-    (text: string) => {
-      sendUserMessage(text);
-    },
+    (text: string) => sendUserMessage(text),
     [sendUserMessage]
   );
 

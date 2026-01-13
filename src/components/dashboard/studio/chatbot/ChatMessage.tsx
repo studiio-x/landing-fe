@@ -1,27 +1,45 @@
 import { ChatItem } from "@/types/chat";
 import clsx from "clsx";
 
+const TypingDots = () => {
+  return (
+    <div className="inline-flex items-center gap-1.5 px-2 py-1 h-7 rounded-md bg-Grey-800">
+      <span className="w-1.5 h-1.5 rounded-full bg-Red-500 animate-bounce [animation-delay:0ms]" />
+      <span className="w-1.5 h-1.5 rounded-full bg-Red-400 animate-bounce [animation-delay:120ms]" />
+      <span className="w-1.5 h-1.5 rounded-full bg-Red-350 animate-bounce [animation-delay:240ms]" />
+    </div>
+  );
+};
+
 const ChatMessageList = ({ messages }: { messages: ChatItem[] }) => {
   return (
     <div className="flex flex-col gap-4">
-      {messages.map((m) => (
-        <div
-          key={m.id}
-          className={clsx(
-            "flex",
-            m.role === "user" ? "justify-end" : "justify-start"
-          )}
-        >
+      {messages.map((m) => {
+        const isUser = m.role === "user";
+        const isTyping = m.role === "assistant" && m.status === "typing";
+
+        return (
           <div
-            className={clsx(
-              "max-w-80 px-3 py-1.5 rounded-lg Body_3_medium whitespace-pre-line",
-              m.role === "user" ? "bg-Grey-700 text-Grey-50" : "text-Grey-100v bg-transparent"
-            )}
+            key={m.id}
+            className={clsx("flex", isUser ? "justify-end" : "justify-start")}
           >
-            {m.text}
+            {isTyping ? (
+              <TypingDots />
+            ) : (
+              <div
+                className={clsx(
+                  "max-w-80 px-3 py-1.5 rounded-lg Body_3_medium whitespace-pre-line",
+                  isUser
+                    ? "bg-Grey-700 text-Grey-50"
+                    : "text-Grey-100 bg-transparent"
+                )}
+              >
+                {m.text}
+              </div>
+            )}
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
@@ -37,7 +55,9 @@ const ChatRecommendations = ({
 }) => {
   return (
     <div className="flex flex-col gap-2 h-full justify-end">
-      <span className="Body_3_semibold text-Grey-300 pr-1 self-end">{title}</span>
+      <span className="Body_3_semibold text-Grey-300 pr-1 self-end">
+        {title}
+      </span>
 
       <div className="flex flex-col gap-2 items-end">
         {items.map((text) => (
