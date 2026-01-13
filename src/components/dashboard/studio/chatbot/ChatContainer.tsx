@@ -77,7 +77,7 @@ const ChatContainer = () => {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto pt-5 pb-2">
+      <div className="flex-1 overflow-y-auto pt-5 pb-2 -mr-2">
         {isEmpty ? (
           <ChatMessage.Recommendations
             items={CHAT_RECOMMENDATIONS}

@@ -68,8 +68,9 @@ const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
             : "opacity-0 translate-y-1 pointer-events-none"
         )}
       >
-        <div className="relative w-[13.25rem] rounded-md">
-          <div className="relative px-8 pt-5 pb-4 rounded-md bg-Grey-600/75 backdrop-blur-[8px] shadow-[0_0px_20px_rgba(8,8,8,0.12)]">
+        <div className="relative w-[13.25rem] rounded-md p-[1px] bg-gradient-to-b from-Red-500/25 backdrop-blur-[8px] to-Red-500/10 shadow-[0_0px_20px_rgba(8,8,8,0.12)]">
+          <div className="absolute inset-px bg-Grey-600/75 pointer-events-none rounded-md" />
+          <div className="relative px-8 pt-5 pb-4 rounded-md bg-Grey-600/75">
             <div className="grid grid-cols-2 gap-7">
               <label className="group flex flex-col items-center gap-2 cursor-pointer ">
                 <input
