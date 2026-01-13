@@ -8,7 +8,7 @@ import { i } from "framer-motion/client";
 
 interface HeaderProps {
   back?: boolean;
-  tap?: boolean;
+  tab?: boolean;
   video?: boolean;
 }
 
@@ -21,7 +21,7 @@ type TabName = keyof typeof TAB_CONFIG;
 
 const TAB_NAMES = Object.keys(TAB_CONFIG) as TabName[];
 
-const Header = ({ back = false, tap = false, video = false }: HeaderProps) => {
+const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
   const [isUserOpen, setIsUserOpen] = useState(false);
   const [isUserClicked, setIsUserClicked] = useState(false);
   const router = useRouter();
@@ -101,7 +101,7 @@ const Header = ({ back = false, tap = false, video = false }: HeaderProps) => {
 
       {/* 탭  */}
       <div className="flex-1 flex justify-center">
-        {tap && (
+        {tab && (
           <div className="rounded-[100px] bg-Grey-800 px-1 py-1 h-[2.1875rem]">
             {TAB_NAMES.map((tabName) => (
               <button

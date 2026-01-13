@@ -4,16 +4,18 @@ import Image from "next/image";
 interface DashboardCardProps {
   title: string;
   content: string;
-  imageSrc: string;
+  mediaSrc: string;
   isActive?: boolean;
 }
 
 const DashboardCard = ({
   title,
   content,
-  imageSrc,
+  mediaSrc,
   isActive,
 }: DashboardCardProps) => {
+  const isVideo = (src: string) => /\.(mp4|webm|ogg)$/i.test(src);
+
   return (
     <div
       role="button"
@@ -43,7 +45,19 @@ const DashboardCard = ({
         </div>
 
         <div className="relative h-full w-[11.9375rem] shrink-0">
-          <Image src={imageSrc} alt={title} fill className="object-cover" />
+          {isVideo(mediaSrc) ? (
+            <video
+              className="h-full w-full object-cover"
+              src={mediaSrc}
+              muted
+              loop
+              playsInline
+              autoPlay
+              preload="metadata"
+            />
+          ) : (
+            <Image src={mediaSrc} alt={title} fill className="object-cover" />
+          )}
         </div>
       </div>
     </div>
