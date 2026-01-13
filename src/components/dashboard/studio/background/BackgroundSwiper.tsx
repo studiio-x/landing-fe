@@ -44,6 +44,7 @@ const BackgroundSwiper = ({
           <Swiper
             modules={[Navigation]}
             slidesPerView={3}
+            slidesPerGroup={3}
             spaceBetween={12}
             loop
             navigation={{
