@@ -3,28 +3,35 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
-
-type RectDraft = { x: number; y: number; w: number; h: number };
+import { useCropCapture } from "@/hooks/useCropCapture";
+import type { MarkRect } from "@/types/mark";
 
 const MIN_SIZE_PX = 6;
-
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
-const MarkCanvas = () => {
+type MarkCanvasProps = {
+  imageContainerRef: React.RefObject<HTMLElement | null>;
+};
+
+const MarkCanvas = ({ imageContainerRef }: MarkCanvasProps) => {
   const wrapRef = useRef<HTMLDivElement | null>(null);
   const pointerIdRef = useRef<number | null>(null);
   const startRef = useRef<{ x: number; y: number } | null>(null);
 
   const { isMarkMode, rects, addRect } = useStudioMarkStore();
+  const [draft, setDraft] = useState<Omit<MarkRect, "id" | "imageUrl"> | null>(null);
 
-  const [draft, setDraft] = useState<RectDraft | null>(null);
+  const { cropFromRect } = useCropCapture(
+    imageContainerRef,
+    wrapRef,
+    { scale: 2, debug: true }
+  );
 
   const enabled = isMarkMode;
 
   const rectPxList = useMemo(() => {
     const el = wrapRef.current;
     if (!el) return [];
-
     const { width, height } = el.getBoundingClientRect();
 
     return rects.map((r) => ({
@@ -33,11 +40,11 @@ const MarkCanvas = () => {
       top: r.y * height,
       width: r.w * width,
       height: r.h * height,
+      raw: r,
     }));
   }, [rects]);
 
   useEffect(() => {
-    // 마킹 모드 꺼지면 임시 드래그 상태 초기화
     if (!enabled) {
       setDraft(null);
       startRef.current = null;
@@ -57,8 +64,6 @@ const MarkCanvas = () => {
 
   const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     if (!enabled) return;
-
-    // 마우스 왼쪽 버튼만
     if (e.pointerType === "mouse" && e.button !== 0) return;
 
     const p = getLocalPoint(e.clientX, e.clientY);
@@ -93,12 +98,11 @@ const MarkCanvas = () => {
     setDraft({ x, y, w, h });
   };
 
-  const finish = (e: React.PointerEvent<HTMLDivElement>) => {
+  const finish = async (e: React.PointerEvent<HTMLDivElement>) => {
     if (!enabled) return;
     if (pointerIdRef.current !== e.pointerId) return;
 
     const el = wrapRef.current;
-    const start = startRef.current;
     const d = draft;
 
     pointerIdRef.current = null;
@@ -108,17 +112,22 @@ const MarkCanvas = () => {
       e.currentTarget.releasePointerCapture(e.pointerId);
     } catch {}
 
-    if (!el || !start || !d) {
+    if (!el || !d) {
       setDraft(null);
       return;
     }
 
-    // 너무 작은 드래그는 무시 (px 기준)
     const { width, height } = el.getBoundingClientRect();
     const wPx = d.w * width;
     const hPx = d.h * height;
 
     if (wPx < MIN_SIZE_PX || hPx < MIN_SIZE_PX) {
+      setDraft(null);
+      return;
+    }
+
+    const imageUrl = await cropFromRect(d);
+    if (!imageUrl) {
       setDraft(null);
       return;
     }
@@ -129,6 +138,7 @@ const MarkCanvas = () => {
       y: d.y,
       w: d.w,
       h: d.h,
+      imageUrl,
     });
 
     setDraft(null);
@@ -146,18 +156,17 @@ const MarkCanvas = () => {
       onPointerUp={finish}
       onPointerCancel={finish}
     >
-      {/* 기존 rect 렌더 */}
       {rectPxList.map((r) => (
-          <div
-            key={r.id}
-            className="absolute rounded-full border border-Red-300/25 bg-Red-300/25"
-            style={{
-              left: r.left,
-              top: r.top,
-              width: r.width,
-              height: r.height,
-            }}
-          />
+        <div
+          key={r.id}
+          className="absolute rounded-lg border border-Red-300/25 bg-Red-300/25"
+          style={{
+            left: r.left,
+            top: r.top,
+            width: r.width,
+            height: r.height,
+          }}
+        />
       ))}
 
       {draft && <DraftRect draft={draft} containerRef={wrapRef} />}
@@ -169,7 +178,7 @@ const DraftRect = ({
   draft,
   containerRef,
 }: {
-  draft: RectDraft;
+  draft: Omit<MarkRect, "id" | "imageUrl">;
   containerRef: React.RefObject<HTMLDivElement | null>;
 }) => {
   const el = containerRef.current;
@@ -179,7 +188,7 @@ const DraftRect = ({
 
   return (
     <div
-      className="absolute rounded-full border border-Red-300/25 bg-Red-300/25"
+      className="absolute rounded-lg border border-Red-300/25 bg-Red-300/25"
       style={{
         left: draft.x * width,
         top: draft.y * height,

@@ -17,6 +17,7 @@ const ChatMessageList = ({ messages }: { messages: ChatItem[] }) => {
       {messages.map((m) => {
         const isUser = m.role === "user";
         const isTyping = m.role === "assistant" && m.status === "typing";
+        const hasAttachments = (m.attachments?.length ?? 0) > 0;
 
         return (
           <div
@@ -26,15 +27,40 @@ const ChatMessageList = ({ messages }: { messages: ChatItem[] }) => {
             {isTyping ? (
               <TypingDots />
             ) : (
-              <div
-                className={clsx(
-                  "max-w-80 px-3 py-1.5 rounded-lg Body_3_medium whitespace-pre-line",
-                  isUser
-                    ? "bg-Grey-700 text-Grey-50"
-                    : "text-Grey-100 bg-transparent"
+              <div className={clsx("max-w-80 flex flex-col gap-2")}>
+                {hasAttachments && (
+                  <div
+                    className={clsx(
+                      "grid gap-2",
+                      (m.attachments?.length ?? 0) === 1
+                        ? "grid-cols-1"
+                        : "grid-cols-2"
+                    )}
+                  >
+                    {m.attachments!.map((a) => (
+                      <img
+                        key={a.id}
+                        src={a.imageUrl}
+                        alt="attachment"
+                        className="w-[8.25rem] h-[8.25rem] rounded object-cover"
+                        loading="lazy"
+                      />
+                    ))}
+                  </div>
                 )}
-              >
-                {m.text}
+
+                {m.text?.trim() && (
+                  <div
+                    className={clsx(
+                  "max-w-80 px-3 py-1.5 rounded-lg Body_3_medium whitespace-pre-line",
+                      isUser
+                        ? "bg-Grey-700 text-Grey-50"
+                        : "text-Grey-100 bg-transparent"
+                    )}
+                  >
+                    {m.text}
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -53,9 +79,7 @@ const ChatRecommendations = ({
 }) => {
   return (
     <div className="flex flex-col gap-2 h-full justify-end">
-      <span className="Body_3_semibold text-Grey-300 pr-1 self-end">
-        추천
-      </span>
+      <span className="Body_3_semibold text-Grey-300 pr-1 self-end">추천</span>
 
       <div className="flex flex-col gap-2 items-end">
         {items.map((text) => (

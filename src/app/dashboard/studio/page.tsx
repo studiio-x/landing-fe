@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import TabContent from "@/components/dashboard/studio/common/TabContent";
@@ -21,10 +21,13 @@ const DUMMY_HISTORY: StudioHistoryItem[] = [
 
 const StudioPage = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const { isMarkMode } = useStudioMarkStore();
+  const { isMarkMode, rects } = useStudioMarkStore();
+  const imageContainerRef = useRef<HTMLElement>(null);
 
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const showMarkGuideToast = isMarkMode && rects.length === 0;
 
   const [history] = useState<StudioHistoryItem[]>(DUMMY_HISTORY);
 
@@ -57,6 +60,14 @@ const StudioPage = () => {
         </div>
 
         <div className="relative ml-[1.75rem] w-[36.875rem] h-[40.375rem] rounded-lg">
+          {showMarkGuideToast && (
+            <div className="absolute left-1/2 bottom-6 -translate-x-1/2 z-40">
+              <div className="relative w-fit whitespace-nowrap rounded-md bg-Grey-900 px-6 py-2 Subhead_2_medium text-White">
+                수정하고 싶은 모든 부분을 표시해 주세요.
+              </div>
+            </div>
+          )}
+
           {isMarkMode && (
             <svg
               className="absolute -inset-1  w-[calc(100%+8px)] h-[calc(100%+8px)] pointer-events-none z-30"
@@ -79,7 +90,10 @@ const StudioPage = () => {
             </svg>
           )}
 
-          <section className="relative w-full h-full flex items-center justify-center bg-Grey-800/75 rounded-lg overflow-hidden">
+          <section
+            ref={imageContainerRef}
+            className="relative w-full h-full flex items-center justify-center bg-Grey-800/75 rounded-lg overflow-hidden"
+          >
             {previewUrl ? (
               <>
                 <Image
@@ -90,7 +104,9 @@ const StudioPage = () => {
                   className="w-full h-full object-contain"
                 />
 
-                {isMarkMode && <MarkCanvas />}
+                {isMarkMode && previewUrl && (
+                  <MarkCanvas imageContainerRef={imageContainerRef} />
+                )}
               </>
             ) : (
               <div className="flex flex-col gap-3 items-center">

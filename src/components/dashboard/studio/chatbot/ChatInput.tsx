@@ -5,12 +5,13 @@ import { useLayoutEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import PlusMenu from "./PlusMenu";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
+import { ChatAttachment, ChatSendPayload } from "@/types/chat";
 
 const MIN_H = 24;
 const MAX_H = 80;
 
 interface ChatInputProps {
-  onSend: (text: string) => void;
+  onSend: (payload: ChatSendPayload) => void;
 }
 
 const ChatInput = ({ onSend }: ChatInputProps) => {
@@ -21,9 +22,20 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
   const sendMessage = () => {
     const text = value.trim();
     if (!text) return;
-    onSend(text);
+    onSend({ text });
     setValue("");
   };
+
+   const handleUploadReferenceImage = (file: File) => {
+     const url = URL.createObjectURL(file);
+
+     const attachment: ChatAttachment = {
+       id: crypto.randomUUID(),
+       imageUrl: url,
+     };
+
+     onSend({ attachments: [attachment] });
+   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.nativeEvent.isComposing) return;
@@ -70,20 +82,15 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
         />
 
         <div className="flex items-start gap-[0.625rem]">
-        <PlusMenu
-            onUploadImage={(file) => console.log(file)}
+          <PlusMenu
+            onUploadImage={handleUploadReferenceImage}
             onClickMark={() => {
-              
               setMarkMode(true);
               setRects([]);
             }}
           />
 
-          <button
-            type="button"
-            aria-label="전송"
-            onClick={sendMessage}
-          >
+          <button type="button" aria-label="전송" onClick={sendMessage}>
             <Send className="w-6 h-6 transition-colors text-Grey-200 hover:text-Red-500" />
           </button>
         </div>

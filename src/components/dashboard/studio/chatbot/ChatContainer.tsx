@@ -5,16 +5,12 @@ import { LogoRed } from "@/assets/icons";
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
 import { CHAT_RECOMMENDATIONS } from "@/constants/dashboard/chat-recommendations";
-import { ChatItem } from "@/types/chat";
+import { ChatAttachment, ChatItem, ChatSendPayload } from "@/types/chat";
 import clsx from "clsx";
 import GlassButton from "@/components/common/GlassButton";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 
-interface ChatContainerProps {
-  onOpenContentInput: () => void;
-}
-
-const ChatContainer = ({ onOpenContentInput }: ChatContainerProps) => {
+const ChatContainer = () => {
   const { isMarkMode, rects, setMarkMode } = useStudioMarkStore();
   const hasMarkRects = rects.length > 0;
 
@@ -24,16 +20,24 @@ const ChatContainer = ({ onOpenContentInput }: ChatContainerProps) => {
 
   const isEmpty = messages.length === 0;
 
-  const sendUserMessage = useCallback((text: string) => {
-    const trimmed = text.trim();
-    if (!trimmed) return;
+  const sendUserMessage = useCallback((payload: ChatSendPayload) => {
+    const text = payload.text?.trim() ?? "";
+    const attachments = payload.attachments ?? [];
+
+    if (!text && (!attachments || attachments.length === 0)) return;
 
     const userId = crypto.randomUUID();
     const typingId = crypto.randomUUID();
 
     setMessages((prev) => [
       ...prev,
-      { id: userId, role: "user", text: trimmed, status: "sent" },
+      {
+        id: userId,
+        role: "user",
+        text: text ?? "",
+        status: "sent",
+        attachments,
+      },
       { id: typingId, role: "assistant", text: "", status: "typing" },
     ]);
 
@@ -55,8 +59,18 @@ const ChatContainer = ({ onOpenContentInput }: ChatContainerProps) => {
     timersRef.current.push(t);
   }, []);
 
+  const sendMarkImages = useCallback(() => {
+    const attachments: ChatAttachment[] = rects.map((r) => ({
+      id: r.id,
+      imageUrl: r.imageUrl,
+    }));
+
+    sendUserMessage({ attachments });
+    setMarkMode(false);
+  }, [rects, sendUserMessage, setMarkMode]);
+
   const handleClickRecommendation = useCallback(
-    (text: string) => sendUserMessage(text),
+    (text: string) => sendUserMessage({ text }),
     [sendUserMessage]
   );
 
@@ -103,7 +117,7 @@ const ChatContainer = ({ onOpenContentInput }: ChatContainerProps) => {
 
       {/* Input */}
       <div className="flex flex-col gap-[0.65rem] items-center mt-5">
-        <ChatInput onSend={sendUserMessage} />
+        <ChatInput onSend={(payload) => sendUserMessage(payload)} />
         <span className="Caption_medium text-Grey-500">
           AI가 부정확한 결과를 생성할 수 있어요.
         </span>
@@ -126,7 +140,7 @@ const ChatContainer = ({ onOpenContentInput }: ChatContainerProps) => {
             >
               취소
             </GlassButton>
-            
+
             <GlassButton
               variant="red"
               size="sm"
@@ -135,7 +149,7 @@ const ChatContainer = ({ onOpenContentInput }: ChatContainerProps) => {
                 !hasMarkRects && "cursor-not-allowed"
               )}
               disabled={!hasMarkRects}
-              onClick={onOpenContentInput}
+              onClick={sendMarkImages}
             >
               내용 입력
             </GlassButton>

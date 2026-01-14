@@ -80,6 +80,8 @@ const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (!file) return;
+                    setIsPlusPinned(false);
+                    setIsPlusOpen(false);
                     onUploadImage(file);
                     e.target.value = "";
                   }}
