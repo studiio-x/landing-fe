@@ -24,6 +24,12 @@ const ChatContainer = () => {
 
   const isEmpty = messages.length === 0;
 
+  useEffect(() => {
+    return () => {
+      timersRef.current.forEach((t) => clearTimeout(t));
+    };
+  }, []);
+
   const sendUserMessage = useCallback((payload: ChatSendPayload) => {
     const text = payload.text?.trim() ?? "";
     const attachments = payload.attachments ?? [];

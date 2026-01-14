@@ -1,13 +1,16 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
+import { useSearchParams } from "next/navigation";
+
 import Header from "@/components/dashboard/Header";
 import StudioMode from "@/components/dashboard/studio/StudioMode";
 import ModelMode from "@/components/dashboard/model/ModelMode";
 import { WorkbenchMode } from "@/types/dashboard/mode";
 
 const WorkbenchPage = () => {
-  const [mode, setMode] = useState<WorkbenchMode>("studio");
+  const searchParams = useSearchParams();
+  const mode = (searchParams.get("mode") as WorkbenchMode) ?? "studio";
 
   const content = useMemo(() => {
     return mode === "studio" ? <StudioMode /> : <ModelMode />;

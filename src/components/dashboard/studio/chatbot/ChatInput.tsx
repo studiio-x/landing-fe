@@ -33,7 +33,7 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
       id: crypto.randomUUID(),
       imageUrl: url,
     };
-
+    // TODO: URL.revokeObjectURL(imageUrl) when done
     onSend({ attachments: [attachment] });
   };
 

@@ -18,6 +18,7 @@ const MarkCanvas = ({ imageContainerRef }: MarkCanvasProps) => {
   const pointerIdRef = useRef<number | null>(null);
   const startRef = useRef<{ x: number; y: number } | null>(null);
 
+  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const { isMarkMode, rects, addRect } = useStudioMarkStore();
   const [draft, setDraft] = useState<Omit<MarkRect, "id" | "imageUrl"> | null>(
     null
@@ -30,10 +31,24 @@ const MarkCanvas = ({ imageContainerRef }: MarkCanvasProps) => {
 
   const enabled = isMarkMode;
 
-  const rectPxList = useMemo(() => {
+  useEffect(() => {
     const el = wrapRef.current;
-    if (!el) return [];
-    const { width, height } = el.getBoundingClientRect();
+    if (!el) return;
+
+    const observer = new ResizeObserver(([entry]) => {
+      setContainerSize({
+        width: entry.contentRect.width,
+        height: entry.contentRect.height,
+      });
+    });
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  const rectPxList = useMemo(() => {
+    const { width, height } = containerSize;
+    if (!width || !height) return [];
 
     return rects.map((r) => ({
       id: r.id,
@@ -43,7 +58,7 @@ const MarkCanvas = ({ imageContainerRef }: MarkCanvasProps) => {
       height: r.h * height,
       raw: r,
     }));
-  }, [rects]);
+  }, [rects, containerSize]);
 
   useEffect(() => {
     if (!enabled) {

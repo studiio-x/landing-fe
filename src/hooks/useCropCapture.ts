@@ -51,16 +51,15 @@ export const useCropCapture = (
     async (r: Omit<MarkRect, "id" | "imageUrl">) => {
       const container = containerRef.current;
       const overlay = overlayRef.current;
-      if (!container) return;
+      if (!container) return null;
 
       const containerRect = container.getBoundingClientRect();
       if (r.w * containerRect.width <= 1 || r.h * containerRect.height <= 1)
-        return;
+        return null;
 
       try {
         const fullCanvas = await html2canvas(container, {
           useCORS: true,
-          allowTaint: true,
           backgroundColor: null,
           scale,
           width: containerRect.width,
@@ -90,7 +89,7 @@ export const useCropCapture = (
         cropCanvas.height = srcH;
 
         const ctx = cropCanvas.getContext("2d");
-        if (!ctx) return;
+        if (!ctx) return null;
 
         ctx.drawImage(fullCanvas, srcX, srcY, srcW, srcH, 0, 0, srcW, srcH);
 
