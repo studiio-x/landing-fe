@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 import { useCropCapture } from "@/hooks/useCropCapture";
-import type { MarkRect } from "@/types/mark";
+import type { MarkRect } from "@/types/dashboard/mark";
 
 const MIN_SIZE_PX = 6;
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
@@ -19,13 +19,14 @@ const MarkCanvas = ({ imageContainerRef }: MarkCanvasProps) => {
   const startRef = useRef<{ x: number; y: number } | null>(null);
 
   const { isMarkMode, rects, addRect } = useStudioMarkStore();
-  const [draft, setDraft] = useState<Omit<MarkRect, "id" | "imageUrl"> | null>(null);
-
-  const { cropFromRect } = useCropCapture(
-    imageContainerRef,
-    wrapRef,
-    { scale: 2, debug: true }
+  const [draft, setDraft] = useState<Omit<MarkRect, "id" | "imageUrl"> | null>(
+    null
   );
+
+  const { cropFromRect } = useCropCapture(imageContainerRef, wrapRef, {
+    scale: 2,
+    debug: true,
+  });
 
   const enabled = isMarkMode;
 

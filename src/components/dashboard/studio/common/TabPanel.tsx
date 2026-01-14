@@ -1,4 +1,4 @@
-import { TABS } from "@/constants/dashboard/tab";
+import { STUDIO_TABS } from "@/constants/dashboard/tab";
 import clsx from "clsx";
 
 
@@ -13,7 +13,7 @@ const TabPanel = ({ activeTab, onChange }: TabPanelProps) => {
       <div className="absolute left-0 right-0 bottom-[-1px] h-px bg-Grey-400" />
 
       <div className="flex">
-        {TABS.map((label, idx) => {
+        {STUDIO_TABS.map((label, idx) => {
           const isActive = activeTab === idx;
 
           const widthClass = idx === 1 ? "w-[9.94rem]" : "w-[7.41rem]";

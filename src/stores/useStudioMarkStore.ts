@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { MarkRect } from "@/types/mark";
+import type { MarkRect } from "@/types/dashboard/mark";
 
 interface StudioMarkState {
   isMarkMode: boolean;

@@ -5,7 +5,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import PlusMenu from "./PlusMenu";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
-import { ChatAttachment, ChatSendPayload } from "@/types/chat";
+import { ChatAttachment, ChatSendPayload } from "@/types/dashboard/chat";
 
 const MIN_H = 24;
 const MAX_H = 80;
@@ -26,16 +26,16 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
     setValue("");
   };
 
-   const handleUploadReferenceImage = (file: File) => {
-     const url = URL.createObjectURL(file);
+  const handleUploadReferenceImage = (file: File) => {
+    const url = URL.createObjectURL(file);
 
-     const attachment: ChatAttachment = {
-       id: crypto.randomUUID(),
-       imageUrl: url,
-     };
+    const attachment: ChatAttachment = {
+      id: crypto.randomUUID(),
+      imageUrl: url,
+    };
 
-     onSend({ attachments: [attachment] });
-   };
+    onSend({ attachments: [attachment] });
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.nativeEvent.isComposing) return;

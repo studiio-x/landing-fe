@@ -5,7 +5,11 @@ import { LogoRed } from "@/assets/icons";
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
 import { CHAT_RECOMMENDATIONS } from "@/constants/dashboard/chat-recommendations";
-import { ChatAttachment, ChatItem, ChatSendPayload } from "@/types/chat";
+import {
+  ChatAttachment,
+  ChatItem,
+  ChatSendPayload,
+} from "@/types/dashboard/chat";
 import clsx from "clsx";
 import GlassButton from "@/components/common/GlassButton";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";

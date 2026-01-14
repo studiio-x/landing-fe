@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import html2canvas from "html2canvas";
-import type { MarkRect } from "@/types/mark";
+import type { MarkRect } from "@/types/dashboard/mark";
 
 interface UseCropCaptureOptions {
   scale?: number;
@@ -28,7 +28,8 @@ export const useCropCapture = (
         if (imageRatio > containerRatio) {
           displayW = containerRect.width;
           displayH = containerRect.width / imageRatio;
-          offsetY = (containerRect.height - displayH) / 2 / containerRect.height;
+          offsetY =
+            (containerRect.height - displayH) / 2 / containerRect.height;
         } else {
           displayH = containerRect.height;
           displayW = containerRect.height * imageRatio;
@@ -53,7 +54,8 @@ export const useCropCapture = (
       if (!container) return;
 
       const containerRect = container.getBoundingClientRect();
-      if (r.w * containerRect.width <= 1 || r.h * containerRect.height <= 1) return;
+      if (r.w * containerRect.width <= 1 || r.h * containerRect.height <= 1)
+        return;
 
       try {
         const fullCanvas = await html2canvas(container, {
@@ -63,11 +65,15 @@ export const useCropCapture = (
           scale,
           width: containerRect.width,
           height: containerRect.height,
-          ignoreElements: (el) => el === overlay || overlay?.contains(el) || false,
+          ignoreElements: (el) =>
+            el === overlay || overlay?.contains(el) || false,
         });
 
         const imgEl = container.querySelector("img") as HTMLImageElement | null;
-        const { offsetX, offsetY, scaleW, scaleH } = getImageDisplayInfo(containerRect, imgEl);
+        const { offsetX, offsetY, scaleW, scaleH } = getImageDisplayInfo(
+          containerRect,
+          imgEl
+        );
 
         const adjustedX = (r.x - offsetX) / scaleW;
         const adjustedY = (r.y - offsetY) / scaleH;

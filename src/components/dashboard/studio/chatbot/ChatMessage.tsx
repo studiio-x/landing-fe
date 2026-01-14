@@ -1,4 +1,4 @@
-import { ChatItem } from "@/types/chat";
+import { ChatItem } from "@/types/dashboard/chat";
 import clsx from "clsx";
 
 const TypingDots = () => {
@@ -52,7 +52,7 @@ const ChatMessageList = ({ messages }: { messages: ChatItem[] }) => {
                 {m.text?.trim() && (
                   <div
                     className={clsx(
-                  "max-w-80 px-3 py-1.5 rounded-lg Body_3_medium whitespace-pre-line",
+                      "max-w-80 px-3 py-1.5 rounded-lg Body_3_medium whitespace-pre-line",
                       isUser
                         ? "bg-Grey-700 text-Grey-50"
                         : "text-Grey-100 bg-transparent"
