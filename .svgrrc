@@ -16,8 +16,16 @@
   "svgoConfig": {
     "plugins": [
       "preset-default",
-      { "name": "removeDimensions", "active": true },
-      { "name": "prefixIds", "params": { "prefix": "x" } }
+      {
+        "name": "removeDimensions",
+        "active": true
+      },
+      {
+        "name": "prefixIds",
+        "params": {
+          "prefix": "x"
+        }
+      }
     ]
   }
 }

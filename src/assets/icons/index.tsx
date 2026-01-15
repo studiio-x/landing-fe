@@ -9,4 +9,5 @@ export { default as Back } from "./Back";
 export { default as Circle } from "./Circle";
 export { default as Close } from "./Close";
 export { default as Menu } from "./Menu";
+export { default as WatchOff } from "./WatchOff";
 export { default as Watch } from "./Watch";
