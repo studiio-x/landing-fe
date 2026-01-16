@@ -89,7 +89,7 @@ const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
           size="md"
           gap="sm"
           className="Body_3_semibold"
-          leftIcon={<Plus className="w-4 h-4" />}
+          leftIcon={<Plus className="w-[1.375rem] h-[1.375rem]" />}
         >
           배경 업로드
         </GlassButton>

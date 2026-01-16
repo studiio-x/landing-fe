@@ -27,7 +27,7 @@ const SvgBack = ({
       <div
         style={{
           backdropFilter: "blur(2.55px)",
-          clipPath: "url(#x__a)",
+          clipPath: "url(#back_svg__a)",
           height: "100%",
           width: "100%",
         }}
@@ -44,7 +44,7 @@ const SvgBack = ({
       <rect
         width={28}
         height={28}
-        stroke="url(#x__b)"
+        stroke="url(#back_svg__b)"
         strokeWidth={0.318}
         rx={14}
         transform="matrix(-1 0 0 1 28.16 .16)"
@@ -58,7 +58,7 @@ const SvgBack = ({
     </g>
     <defs>
       <linearGradient
-        id="x__b"
+        id="back_svg__b"
         x1={14}
         x2={14.758}
         y1={28}
@@ -68,7 +68,7 @@ const SvgBack = ({
         <stop stopColor="#1D2025" />
         <stop offset={1} stopColor="#808A9D" />
       </linearGradient>
-      <clipPath id="x__a" transform="translate(5.09 5.09)">
+      <clipPath id="back_svg__a" transform="translate(5.09 5.09)">
         <rect
           width={28}
           height={28}

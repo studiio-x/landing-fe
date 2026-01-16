@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { Close, Download } from "@/assets/icons";
-import { TABS } from "@/constants/dashboard/tab";
+import { STUDIO_TABS } from "@/constants/dashboard/tab";
 import ModalOverlay from "@/components/common/ModalOverlay";
 
 const ProductImageRequiredModal = ({ onClose }: { onClose: () => void }) => {
@@ -29,7 +29,7 @@ const ProductImageRequiredModal = ({ onClose }: { onClose: () => void }) => {
           <div className="absolute left-0 right-0 bottom-[-1px] h-px bg-Grey-400" />
 
           <div className="flex">
-            {TABS.map((label, idx) => {
+            {STUDIO_TABS.map((label, idx) => {
               const isActive = idx === 0;
 
               return (

@@ -5,7 +5,7 @@ interface SVGRProps {
   title?: string;
   titleId?: string;
 }
-const SvgPlus = ({
+const SvgWatch = ({
   title,
   titleId,
   ...props
@@ -23,11 +23,15 @@ const SvgPlus = ({
     {...props}
   >
     {title ? <title id={titleId}>{title}</title> : null}
+    <path fill="#626B7F" d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
     <path
-      fill="currentColor"
-      d="M3.99 12.996q-.627 0-.877-.501a1.17 1.17 0 0 1 0-1.002q.25-.501.877-.501h16.033q.626 0 .852.5.25.502 0 1.003-.225.5-.852.5zm7.014-9.019q0-.625.501-.852a1.07 1.07 0 0 1 1.002 0q.501.225.501.852V20.01q0 .627-.5.877a1.17 1.17 0 0 1-1.003 0q-.5-.25-.5-.877z"
+      stroke="#626B7F"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M2 12c1.72-3.83 5.53-6.5 10-6.5s8.28 2.67 10 6.5c-1.72 3.83-5.53 6.5-10 6.5S3.72 15.83 2 12"
     />
   </svg>
 );
-const Memo = memo(SvgPlus);
+const Memo = memo(SvgWatch);
 export default Memo;
