@@ -15,7 +15,14 @@
   },
   "svgoConfig": {
     "plugins": [
-      "preset-default",
+      {
+        "name": "preset-default",
+        "params": {
+          "overrides": {
+            "convertColors": false
+          }
+        }
+      },
       {
         "name": "removeDimensions",
         "active": true

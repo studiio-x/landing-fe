@@ -35,15 +35,15 @@ const SvgWatchOff = ({
       }}
     >
       <path
-        stroke="#fff"
+        stroke="white"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
         d="M2 12c1.72-3.83 5.53-6.5 10-6.5s8.28 2.67 10 6.5c-1.72 3.83-5.53 6.5-10 6.5S3.72 15.83 2 12"
       />
-      <path fill="#fff" d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+      <path fill="white" d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
       <path
-        stroke="currentColor"
+        stroke="black"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth={2}
