@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 
 import { Download } from "@/assets/icons";
+import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 
 interface ProductTabProps {
   setUploadedImage: (file: File | null) => void;
@@ -9,14 +10,17 @@ interface ProductTabProps {
 const ProductTab = ({ setUploadedImage }: ProductTabProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { clearRects } = useStudioMarkStore();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type.startsWith("image/")) {
+      clearRects();
       setUploadedImage(file);
     }
+    event.target.value = "";
   };
-
+  
   const handleClick = () => {
     fileInputRef.current?.click();
   };
@@ -37,6 +41,7 @@ const ProductTab = ({ setUploadedImage }: ProductTabProps) => {
 
     const file = event.dataTransfer.files?.[0];
     if (file && file.type.startsWith("image/")) {
+      clearRects();
       setUploadedImage(file);
     }
   };

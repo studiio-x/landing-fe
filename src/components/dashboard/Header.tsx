@@ -1,10 +1,11 @@
 "use client";
+
 import { Back, Logo, Person, Video } from "@/assets/icons";
-import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
-import { useActivePage } from "@/hooks/useActivePage";
-import { on } from "events";
-import { i } from "framer-motion/client";
+import clsx from "clsx";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { WorkbenchMode } from "@/types/dashboard/mode";
+import { WORKBENCH_TABS } from "@/constants/dashboard/tab";
 
 interface HeaderProps {
   back?: boolean;
@@ -12,27 +13,32 @@ interface HeaderProps {
   video?: boolean;
 }
 
-const TAB_CONFIG = {
-  스튜디오: "/dashboard/studio",
-  모델: "/dashboard/model",
-} as const;
 
-type TabName = keyof typeof TAB_CONFIG;
 
-const TAB_NAMES = Object.keys(TAB_CONFIG) as TabName[];
 
 const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
   const [isUserOpen, setIsUserOpen] = useState(false);
   const [isUserClicked, setIsUserClicked] = useState(false);
+
   const router = useRouter();
-  const activePage = useActivePage(TAB_CONFIG);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  const handleTabClick = (tabName: TabName) => {
-    router.push(TAB_CONFIG[tabName]);
+  const mode = (searchParams.get("mode") as WorkbenchMode | null) ?? "studio";
+  const activeIndex = mode === "model" ? 1 : 0;
+
+  const setModeQuery = (nextMode: WorkbenchMode) => {
+    const next = new URLSearchParams(searchParams.toString());
+    next.set("mode", nextMode);
+    router.replace(`${pathname}?${next.toString()}`, { scroll: false });
   };
 
-  //외부 클릭감지
+  const pillTranslateX = useMemo(() => {
+    if (activeIndex === 0) return "0px";
+    return `calc(${WORKBENCH_TABS[0].width})`;
+  }, [activeIndex]);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -45,37 +51,26 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
     };
 
     if (isUserOpen) document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isUserOpen]);
 
   // 유저클릭 이벤트 핸들러
   const onUserClick = () => {
-    // 호버 모드에서 클릭 → 클릭 모드로 전환 (열린 상태 유지)
     if (!isUserClicked) {
       setIsUserClicked(true);
       setIsUserOpen(true);
+      return;
     }
-    // 클릭 모드에서 재클릭 → 토글
-    else {
-      setIsUserOpen(!isUserOpen);
-      if (isUserOpen) {
-        setIsUserClicked(false);
-      }
-    }
+
+    setIsUserOpen((prev) => !prev);
+    if (isUserOpen) setIsUserClicked(false);
   };
 
   //유저 호버 이벤트 핸들러
   const userHover = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isUserClicked) {
-      if (e.type === "mouseenter") {
-        setIsUserOpen(true);
-      } else if (e.type === "mouseleave") {
-        setIsUserOpen(false);
-      }
-    }
+    if (isUserClicked) return;
+    if (e.type === "mouseenter") setIsUserOpen(true);
+    if (e.type === "mouseleave") setIsUserOpen(false);
   };
 
   return (
@@ -90,6 +85,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
             <Back className="w-7 h-7" />
           </button>
         )}
+
         <button
           type="button"
           onClick={() => router.push("/dashboard")}
@@ -99,24 +95,40 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
         </button>
       </div>
 
-      {/* 탭  */}
+      {/* 탭 */}
       <div className="flex-1 flex justify-center">
         {tab && (
-          <div className="rounded-[100px] bg-Grey-800 px-1 py-1 h-[2.1875rem]">
-            {TAB_NAMES.map((tabName) => (
-              <button
-                key={tabName}
-                type="button"
-                onClick={() => handleTabClick(tabName)}
-                className={`px-4 py-[2px] rounded-[100px] Body_2_medium transition-all duration-300 ease-in-out ${
-                  activePage === tabName
-                    ? "bg-Grey-600 text-Grey-50"
-                    : "text-Grey-500"
-                }`}
-              >
-                {tabName}
-              </button>
-            ))}
+          <div className="relative rounded-[100px] bg-Grey-800 px-1 py-1">
+            <div
+              className="absolute top-1 bottom-1 left-1 rounded-[100px] bg-Grey-600 will-change-[transform,width] transition-[transform,width] duration-300 ease-out"
+              style={{
+                width: WORKBENCH_TABS[activeIndex].width,
+                transform: `translateX(${pillTranslateX})`,
+              }}
+            />
+
+            <div className="relative flex">
+              {WORKBENCH_TABS.map((t, idx) => {
+                const isActive = idx === activeIndex;
+
+                return (
+                  <button
+                    key={t.mode}
+                    type="button"
+                    onClick={() => setModeQuery(t.mode)}
+                    className={clsx(
+                      "relative z-10 rounded-[100px] px-4 py-[2px] transition-colors duration-200 whitespace-nowrap",
+                      isActive
+                        ? "text-Grey-50 Body_2_semibold"
+                        : "text-Grey-500 Body_2_medium"
+                    )}
+                    style={{ width: t.width }}
+                  >
+                    {t.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         )}
       </div>
@@ -129,6 +141,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
             <span className="Body_1_medium text-Grey-400">사용 방법</span>
           </button>
         )}
+
         <div
           ref={userMenuRef}
           className="relative"
@@ -141,7 +154,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
             <div className="absolute top-full right-0 pt-5">
               <div className="px-3 py-4 bg-[rgba(40,44,52,0.90)] backdrop-blur-[5px] rounded-[8px] flex flex-col gap-3 Caption_medium text-Grey-100 min-w-[252px] transition-opacity">
                 <div className="px-5 py-2">cnskdjnksc@gmail.com</div>
-                <div className=" Body_2_medium text-Grey-300 flex flex-col gap-14 ">
+                <div className="Body_2_medium text-Grey-300 flex flex-col gap-14">
                   <div className="border-t-Grey-500 border-t pt-2">
                     <button
                       type="button"
