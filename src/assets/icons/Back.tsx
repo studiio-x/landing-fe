@@ -25,7 +25,6 @@ const SvgBack = ({
     {title ? <title id={titleId}>{title}</title> : null}
     <foreignObject width={38.5} height={38.5} x={-5.091} y={-5.091}>
       <div
-        xmlns="http://www.w3.org/1999/xhtml"
         style={{
           backdropFilter: "blur(2.55px)",
           clipPath: "url(#x__a)",
