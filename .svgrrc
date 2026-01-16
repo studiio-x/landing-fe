@@ -15,9 +15,25 @@
   },
   "svgoConfig": {
     "plugins": [
-      "preset-default",
-      { "name": "removeDimensions", "active": true },
-      { "name": "prefixIds", "params": { "prefix": "x" } }
+      {
+        "name": "preset-default",
+        "params": {
+          "overrides": {
+            "convertColors": false
+          }
+        }
+      },
+      {
+        "name": "removeDimensions",
+        "active": true
+      },
+      {
+        "name": "prefixIds",
+        "params": {
+          "prefixIds": true,
+          "prefixClassNames": true
+        }
+      }
     ]
   }
 }
