@@ -24,7 +24,7 @@ const SvgWatchOff = ({
   >
     {title ? <title id={titleId}>{title}</title> : null}
     <mask
-      id="x__a"
+      id="watch-off_svg__a"
       width={22}
       height={20}
       x={1}
@@ -50,7 +50,7 @@ const SvgWatchOff = ({
         d="m4.222 2.808 16.97 16.97"
       />
     </mask>
-    <g mask="url(#x__a)">
+    <g mask="url(#watch-off_svg__a)">
       <path fill="#626B7F" d="M0 0h24v24H0z" />
     </g>
     <path

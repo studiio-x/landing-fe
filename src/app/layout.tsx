@@ -16,7 +16,7 @@ export default function RootLayout({
   return (
     <html
       lang="ko"
-      className={`${pretendard.variable} ${calSans.variable} scroll-smooth`}
+      className={`${pretendard.variable} ${calSans.variable} scroll-smooth h-full`}
     >
       <body className="h-full antialiased">
         <QueryProvider>{children}</QueryProvider>
