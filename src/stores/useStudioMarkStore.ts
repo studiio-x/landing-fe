@@ -1,22 +1,36 @@
 import { create } from "zustand";
-import type { MarkRect } from "@/types/dashboard/mark";
+import type { EditRegion } from "@/types/dashboard/mark";
+
+type CommitPaintFn = () => Promise<{ id: string; imageUrl: string } | null>;
 
 interface StudioMarkState {
-  isMarkMode: boolean;
-  rects: MarkRect[];
-  setMarkMode: (v: boolean) => void;
-  addRect: (r: MarkRect) => void;
-  setRects: (r: MarkRect[]) => void;
-  clearRects: () => void;
-  reset: () => void;
+  isEditMode: boolean;
+  setEditMode: (v: boolean) => void;
+
+  hasPaint: boolean;
+  setHasPaint: (v: boolean) => void;
+
+  commitPaint: CommitPaintFn | null;
+  setCommitPaint: (fn: CommitPaintFn | null) => void;
+
+  editRegions: EditRegion[];
+  addEditRegion: (r: EditRegion) => void;
+
+  resetPaint: () => void;
 }
 
 export const useStudioMarkStore = create<StudioMarkState>((set) => ({
-  isMarkMode: false,
-  rects: [],
-  setMarkMode: (v) => set({ isMarkMode: v }),
-  addRect: (r) => set((s) => ({ rects: [...s.rects, r] })),
-  setRects: (r) => set({ rects: r }),
-  clearRects: () => set({ rects: [] }),
-  reset: () => set({ isMarkMode: false, rects: [] }),
+  isEditMode: false,
+  setEditMode: (v) => set({ isEditMode: v }),
+
+  hasPaint: false,
+  setHasPaint: (v) => set({ hasPaint: v }),
+
+  commitPaint: null,
+  setCommitPaint: (fn) => set({ commitPaint: fn }),
+
+  editRegions: [],
+  addEditRegion: (r) => set((s) => ({ editRegions: [...s.editRegions, r] })),
+
+  resetPaint: () => set({ hasPaint: false }),
 }));

@@ -5,7 +5,7 @@ import { LogoRed } from "@/assets/icons";
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
 import { CHAT_RECOMMENDATIONS } from "@/constants/dashboard/chat-recommendations";
-import {
+import type {
   ChatAttachment,
   ChatItem,
   ChatSendPayload,
@@ -15,8 +15,9 @@ import GlassButton from "@/components/common/GlassButton";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 
 const ChatContainer = () => {
-  const { isMarkMode, rects, setMarkMode } = useStudioMarkStore();
-  const hasMarkRects = rects.length > 0;
+  const { isEditMode, hasPaint, commitPaint, setEditMode } =
+    useStudioMarkStore();
+  const canSubmit = hasPaint && !!commitPaint;
 
   const [messages, setMessages] = useState<ChatItem[]>([]);
   const timersRef = useRef<number[]>([]);
@@ -25,33 +26,24 @@ const ChatContainer = () => {
   const isEmpty = messages.length === 0;
 
   useEffect(() => {
-    return () => {
-      timersRef.current.forEach((t) => clearTimeout(t));
-    };
+    return () => timersRef.current.forEach((t) => clearTimeout(t));
   }, []);
 
   const sendUserMessage = useCallback((payload: ChatSendPayload) => {
     const text = payload.text?.trim() ?? "";
     const attachments = payload.attachments ?? [];
 
-    if (!text && (!attachments || attachments.length === 0)) return;
+    if (!text && attachments.length === 0) return;
 
     const userId = crypto.randomUUID();
     const typingId = crypto.randomUUID();
 
     setMessages((prev) => [
       ...prev,
-      {
-        id: userId,
-        role: "user",
-        text: text ?? "",
-        status: "sent",
-        attachments,
-      },
+      { id: userId, role: "user", text, status: "sent", attachments },
       { id: typingId, role: "assistant", text: "", status: "typing" },
     ]);
 
-    // 로딩 상태 확인을 위한 임시 응답, TODO: api 연동
     const t = window.setTimeout(() => {
       setMessages((prev) =>
         prev.map((m) =>
@@ -69,15 +61,19 @@ const ChatContainer = () => {
     timersRef.current.push(t);
   }, []);
 
-  const sendMarkImages = useCallback(() => {
-    const attachments: ChatAttachment[] = rects.map((r) => ({
-      id: r.id,
-      imageUrl: r.imageUrl,
-    }));
+  const sendMarkImages = useCallback(async () => {
+    if (!commitPaint) return;
+
+    const region = await commitPaint();
+    if (!region) return;
+
+    const attachments: ChatAttachment[] = [
+      { id: region.id, imageUrl: region.imageUrl },
+    ];
 
     sendUserMessage({ attachments });
-    setMarkMode(false);
-  }, [rects, sendUserMessage, setMarkMode]);
+    setEditMode(false);
+  }, [commitPaint, sendUserMessage, setEditMode]);
 
   const handleClickRecommendation = useCallback(
     (text: string) => sendUserMessage({ text }),
@@ -88,7 +84,6 @@ const ChatContainer = () => {
     const isTyping = messages.some(
       (m) => m.role === "assistant" && m.status === "typing"
     );
-
     bottomRef.current?.scrollIntoView({
       behavior: isTyping ? "smooth" : "auto",
     });
@@ -110,7 +105,6 @@ const ChatContainer = () => {
         </span>
       </div>
 
-      {/* Messages */}
       <div className="flex-1 overflow-y-auto pt-5 pb-2 -mr-2">
         {isEmpty ? (
           <ChatMessage.Recommendations
@@ -125,7 +119,6 @@ const ChatContainer = () => {
         )}
       </div>
 
-      {/* Input */}
       <div className="flex flex-col gap-[0.65rem] items-center mt-5">
         <ChatInput onSend={(payload) => sendUserMessage(payload)} />
         <span className="Caption_medium text-Grey-500">
@@ -133,7 +126,7 @@ const ChatContainer = () => {
         </span>
       </div>
 
-      {isMarkMode && (
+      {isEditMode && (
         <div className="absolute inset-0 z-40 flex flex-col items-center justify-center rounded-lg bg-Grey-900/90">
           <p className="text-center Body_1_medium text-Grey-50">
             수정할 부분을 표시한 뒤,
@@ -146,7 +139,7 @@ const ChatContainer = () => {
               variant="default"
               size="sm"
               className="Body_2_semibold"
-              onClick={() => setMarkMode(false)}
+              onClick={() => setEditMode(false)}
             >
               취소
             </GlassButton>
@@ -156,9 +149,9 @@ const ChatContainer = () => {
               size="sm"
               className={clsx(
                 "Body_2_semibold",
-                !hasMarkRects && "cursor-not-allowed"
+                !canSubmit && "cursor-not-allowed"
               )}
-              disabled={!hasMarkRects}
+              disabled={!canSubmit}
               onClick={sendMarkImages}
             >
               내용 입력

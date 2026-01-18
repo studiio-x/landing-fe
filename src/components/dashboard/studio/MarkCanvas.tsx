@@ -1,84 +1,162 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import clsx from "clsx";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
-import { useCropCapture } from "@/hooks/useCropCapture";
-import type { MarkRect } from "@/types/dashboard/mark";
-
-const MIN_SIZE_PX = 6;
-const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+import { usePaintCapture } from "@/hooks/usePaintCapture";
 
 type MarkCanvasProps = {
   imageContainerRef: React.RefObject<HTMLElement | null>;
 };
 
-const MarkCanvas = ({ imageContainerRef }: MarkCanvasProps) => {
-  const wrapRef = useRef<HTMLDivElement | null>(null);
-  const pointerIdRef = useRef<number | null>(null);
-  const startRef = useRef<{ x: number; y: number } | null>(null);
+const BRUSH = {
+  radius: 40,
+  step: 2,
+  fill: "rgba(255, 134, 134, 0.25)",
+};
 
-  const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
-  const { isMarkMode, rects, addRect } = useStudioMarkStore();
-  const [draft, setDraft] = useState<Omit<MarkRect, "id" | "imageUrl"> | null>(
-    null
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+
+const MarkCanvas = ({ imageContainerRef }: MarkCanvasProps) => {
+  const maskCanvasRef = useRef<HTMLCanvasElement | null>(null);
+  const previewCanvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  const pointerIdRef = useRef<number | null>(null);
+  const lastPtRef = useRef<{ x: number; y: number } | null>(null);
+
+  const { isEditMode, setHasPaint, resetPaint, setCommitPaint } =
+    useStudioMarkStore();
+
+  const enabled = isEditMode;
+
+  const { capturePaintedArea, clearMask } = usePaintCapture(
+    imageContainerRef,
+    maskCanvasRef,
+    { scale: 2, debug: false, tightCrop: true, padding: 8 }
   );
 
-  const { cropFromRect } = useCropCapture(imageContainerRef, wrapRef, {
-    scale: 2,
-    debug: true,
-  });
-
-  const enabled = isMarkMode;
-
   useEffect(() => {
-    const el = wrapRef.current;
-    if (!el) return;
+    const container = imageContainerRef.current;
+    const mask = maskCanvasRef.current;
+    const preview = previewCanvasRef.current;
+    if (!container || !mask || !preview) return;
 
-    const observer = new ResizeObserver(([entry]) => {
-      setContainerSize({
-        width: entry.contentRect.width,
-        height: entry.contentRect.height,
-      });
-    });
+    const resize = () => {
+      const rect = container.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
 
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+      for (const c of [mask, preview]) {
+        c.style.width = `${rect.width}px`;
+        c.style.height = `${rect.height}px`;
+        c.width = Math.max(1, Math.round(rect.width * dpr));
+        c.height = Math.max(1, Math.round(rect.height * dpr));
+        const ctx = c.getContext("2d");
+        if (!ctx) continue;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+      }
 
-  const rectPxList = useMemo(() => {
-    const { width, height } = containerSize;
-    if (!width || !height) return [];
+      renderPreview();
+    };
 
-    return rects.map((r) => ({
-      id: r.id,
-      left: r.x * width,
-      top: r.y * height,
-      width: r.w * width,
-      height: r.h * height,
-      raw: r,
-    }));
-  }, [rects, containerSize]);
-
-  useEffect(() => {
-    if (!enabled) {
-      setDraft(null);
-      startRef.current = null;
-      pointerIdRef.current = null;
-    }
-  }, [enabled]);
+    resize();
+    const ro = new ResizeObserver(resize);
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, [imageContainerRef]);
 
   const getLocalPoint = (clientX: number, clientY: number) => {
-    const el = wrapRef.current;
-    if (!el) return null;
-
-    const r = el.getBoundingClientRect();
-    const x = clamp01((clientX - r.left) / r.width);
-    const y = clamp01((clientY - r.top) / r.height);
-    return { x, y, r };
+    const c = maskCanvasRef.current;
+    if (!c) return null;
+    const r = c.getBoundingClientRect();
+    const x = clamp01((clientX - r.left) / r.width) * r.width;
+    const y = clamp01((clientY - r.top) / r.height) * r.height;
+    return { x, y, w: r.width, h: r.height };
   };
 
-  const onPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+  const stampMaskCircle = (x: number, y: number) => {
+    const c = maskCanvasRef.current;
+    const ctx = c?.getContext("2d");
+    if (!c || !ctx) return;
+
+    ctx.save();
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = "rgba(255,255,255,1)";
+    ctx.beginPath();
+    ctx.arc(x, y, BRUSH.radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
+    setHasPaint(true);
+  };
+
+  const stampMaskBetween = (
+    a: { x: number; y: number },
+    b: { x: number; y: number }
+  ) => {
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    const dist = Math.hypot(dx, dy);
+    const steps = Math.max(1, Math.floor(dist / BRUSH.step));
+
+    for (let i = 1; i <= steps; i++) {
+      const t = i / steps;
+      stampMaskCircle(a.x + dx * t, a.y + dy * t);
+    }
+  };
+
+  const renderPreview = () => {
+    const mask = maskCanvasRef.current;
+    const preview = previewCanvasRef.current;
+    const container = imageContainerRef.current;
+    if (!mask || !preview || !container) return;
+
+    const pctx = preview.getContext("2d");
+    if (!pctx) return;
+
+    const rect = container.getBoundingClientRect();
+    const w = rect.width;
+    const h = rect.height;
+
+    pctx.clearRect(0, 0, w, h);
+
+    pctx.save();
+    pctx.drawImage(mask, 0, 0, w, h);
+    pctx.globalCompositeOperation = "source-in";
+    pctx.fillStyle = BRUSH.fill;
+    pctx.fillRect(0, 0, w, h);
+    pctx.restore();
+  };
+
+  const clearPreview = () => {
+    const preview = previewCanvasRef.current;
+    const container = imageContainerRef.current;
+    const ctx = preview?.getContext("2d");
+    if (!preview || !container || !ctx) return;
+
+    const r = container.getBoundingClientRect();
+    ctx.clearRect(0, 0, r.width, r.height);
+  };
+
+  useEffect(() => {
+    setCommitPaint(async () => {
+      const imageUrl = await capturePaintedArea();
+      if (!imageUrl) return null;
+
+      // 캔버스/상태 초기화
+      clearMask();
+      clearPreview();
+      resetPaint();
+
+      return { id: crypto.randomUUID(), imageUrl };
+    });
+
+    return () => setCommitPaint(null);
+  }, [setCommitPaint, capturePaintedArea, clearMask, resetPaint]);
+
+  // ---- pointer events ----
+  const onPointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if (!enabled) return;
     if (e.pointerType === "mouse" && e.button !== 0) return;
 
@@ -86,132 +164,72 @@ const MarkCanvas = ({ imageContainerRef }: MarkCanvasProps) => {
     if (!p) return;
 
     pointerIdRef.current = e.pointerId;
-    startRef.current = { x: p.x, y: p.y };
-    setDraft({ x: p.x, y: p.y, w: 0, h: 0 });
+    lastPtRef.current = { x: p.x, y: p.y };
+
+    stampMaskCircle(p.x, p.y);
+    renderPreview();
 
     e.currentTarget.setPointerCapture(e.pointerId);
     e.preventDefault();
   };
 
-  const onPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+  const onPointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if (!enabled) return;
     if (pointerIdRef.current !== e.pointerId) return;
-    if (!startRef.current) return;
+
+    const last = lastPtRef.current;
+    if (!last) return;
 
     const p = getLocalPoint(e.clientX, e.clientY);
     if (!p) return;
 
-    const sx = startRef.current.x;
-    const sy = startRef.current.y;
-    const ex = p.x;
-    const ey = p.y;
+    const next = { x: p.x, y: p.y };
+    stampMaskBetween(last, next);
+    lastPtRef.current = next;
 
-    const x = Math.min(sx, ex);
-    const y = Math.min(sy, ey);
-    const w = Math.abs(ex - sx);
-    const h = Math.abs(ey - sy);
-
-    setDraft({ x, y, w, h });
+    renderPreview();
   };
 
-  const finish = async (e: React.PointerEvent<HTMLDivElement>) => {
+  const finish = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if (!enabled) return;
     if (pointerIdRef.current !== e.pointerId) return;
 
-    const el = wrapRef.current;
-    const d = draft;
-
     pointerIdRef.current = null;
-    startRef.current = null;
+    lastPtRef.current = null;
 
     try {
       e.currentTarget.releasePointerCapture(e.pointerId);
     } catch {}
-
-    if (!el || !d) {
-      setDraft(null);
-      return;
-    }
-
-    const { width, height } = el.getBoundingClientRect();
-    const wPx = d.w * width;
-    const hPx = d.h * height;
-
-    if (wPx < MIN_SIZE_PX || hPx < MIN_SIZE_PX) {
-      setDraft(null);
-      return;
-    }
-
-    const imageUrl = await cropFromRect(d);
-    if (!imageUrl) {
-      setDraft(null);
-      return;
-    }
-
-    addRect({
-      id: crypto.randomUUID(),
-      x: d.x,
-      y: d.y,
-      w: d.w,
-      h: d.h,
-      imageUrl,
-    });
-
-    setDraft(null);
   };
 
   return (
-    <div
-      ref={wrapRef}
-      className={clsx(
-        "absolute inset-0 z-20",
-        enabled ? "pointer-events-auto cursor-crosshair" : "pointer-events-none"
-      )}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={finish}
-      onPointerCancel={finish}
-    >
-      {rectPxList.map((r) => (
-        <div
-          key={r.id}
-          className="absolute rounded-lg border border-Red-300/25 bg-Red-300/25"
-          style={{
-            left: r.left,
-            top: r.top,
-            width: r.width,
-            height: r.height,
-          }}
-        />
-      ))}
+    <div className="absolute inset-0 z-20">
+      <canvas
+        ref={maskCanvasRef}
+        className="absolute inset-0 opacity-0 pointer-events-none"
+      />
 
-      {draft && <DraftRect draft={draft} containerRef={wrapRef} />}
+      <canvas
+        ref={previewCanvasRef}
+        data-capture-ignore="true"
+        className={clsx(
+          "absolute inset-0",
+          enabled ? "pointer-events-auto" : "pointer-events-none"
+        )}
+        style={
+          enabled
+            ? {
+                cursor:
+                  'url("/images/dashboard/edit-cursor.png") 20 20, crosshair',
+              }
+            : undefined
+        }
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={finish}
+        onPointerCancel={finish}
+      />
     </div>
-  );
-};
-
-const DraftRect = ({
-  draft,
-  containerRef,
-}: {
-  draft: Omit<MarkRect, "id" | "imageUrl">;
-  containerRef: React.RefObject<HTMLDivElement | null>;
-}) => {
-  const el = containerRef.current;
-  if (!el) return null;
-
-  const { width, height } = el.getBoundingClientRect();
-
-  return (
-    <div
-      className="absolute rounded-lg border border-Red-300/25 bg-Red-300/25"
-      style={{
-        left: draft.x * width,
-        top: draft.y * height,
-        width: draft.w * width,
-        height: draft.h * height,
-      }}
-    />
   );
 };
 

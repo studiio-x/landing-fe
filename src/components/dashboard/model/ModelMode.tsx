@@ -20,14 +20,14 @@ const DUMMY_HISTORY: StudioHistoryItem[] = [
 
 const ModelMode = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const { isMarkMode, rects } = useStudioMarkStore();
+  const { isEditMode, editRegions } = useStudioMarkStore();
 
   const imageContainerRef = useRef<HTMLElement>(null);
 
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  const showMarkGuideToast = isMarkMode && rects.length === 0;
+  const showMarkGuideToast = isEditMode && editRegions.length === 0;
   const [history] = useState<StudioHistoryItem[]>(DUMMY_HISTORY);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const ModelMode = () => {
           </div>
         )}
 
-        {isMarkMode && (
+        {isEditMode && (
           <svg
             className="absolute -inset-1 w-[calc(100%+8px)] h-[calc(100%+8px)] pointer-events-none z-30"
             viewBox="0 0 100 100"
@@ -100,7 +100,7 @@ const ModelMode = () => {
                 className="w-full h-full object-contain"
               />
 
-              {isMarkMode && (
+              {isEditMode && (
                 <MarkCanvas imageContainerRef={imageContainerRef} />
               )}
             </>

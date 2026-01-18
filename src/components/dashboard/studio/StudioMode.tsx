@@ -10,6 +10,7 @@ import StudioHistoryPanel, {
 } from "@/components/dashboard/studio/StudioHistoryPanel";
 import MarkCanvas from "@/components/dashboard/studio/MarkCanvas";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
+import { i } from "framer-motion/client";
 
 const DUMMY_HISTORY: StudioHistoryItem[] = [
   {
@@ -20,14 +21,14 @@ const DUMMY_HISTORY: StudioHistoryItem[] = [
 
 const StudioMode = () => {
   const [activeTab, setActiveTab] = useState(0);
-  const { isMarkMode, rects } = useStudioMarkStore();
+  const { isEditMode, editRegions} = useStudioMarkStore();
 
   const imageContainerRef = useRef<HTMLElement>(null);
 
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  const showMarkGuideToast = isMarkMode && rects.length === 0;
+  const showMarkGuideToast = isEditMode && editRegions.length === 0;
   const [history] = useState<StudioHistoryItem[]>(DUMMY_HISTORY);
 
   useEffect(() => {
@@ -64,7 +65,7 @@ const StudioMode = () => {
           </div>
         )}
 
-        {isMarkMode && (
+        {isEditMode && (
           <svg
             className="absolute -inset-1 w-[calc(100%+8px)] h-[calc(100%+8px)] pointer-events-none z-30"
             viewBox="0 0 100 100"
@@ -100,7 +101,7 @@ const StudioMode = () => {
                 className="w-full h-full object-contain"
               />
 
-              {isMarkMode && (
+              {isEditMode && (
                 <MarkCanvas imageContainerRef={imageContainerRef} />
               )}
             </>

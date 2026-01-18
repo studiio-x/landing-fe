@@ -1,8 +1,5 @@
-export type MarkRect = {
+export type EditRegion = {
   id: string;
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  imageUrl: string;
+  imageUrl: string; 
+  createdAt?: number;
 };
