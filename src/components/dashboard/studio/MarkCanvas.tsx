@@ -4,9 +4,11 @@ import { useEffect, useRef } from "react";
 import clsx from "clsx";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 import { usePaintCapture } from "@/hooks/usePaintCapture";
+import { clamp01, getContainedImageRect, inRect } from "@/utils/canvasUtils";
 
 type MarkCanvasProps = {
   imageContainerRef: React.RefObject<HTMLElement | null>;
+  naturalSize: { w: number; h: number };
 };
 
 const BRUSH = {
@@ -15,9 +17,7 @@ const BRUSH = {
   fill: "rgba(255, 134, 134, 0.25)",
 };
 
-const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
-
-const MarkCanvas = ({ imageContainerRef }: MarkCanvasProps) => {
+const MarkCanvas = ({ imageContainerRef, naturalSize }: MarkCanvasProps) => {
   const maskCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const previewCanvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -68,11 +68,24 @@ const MarkCanvas = ({ imageContainerRef }: MarkCanvasProps) => {
 
   const getLocalPoint = (clientX: number, clientY: number) => {
     const c = maskCanvasRef.current;
-    if (!c) return null;
+    const container = imageContainerRef.current;
+    if (!c || !container) return null;
+
     const r = c.getBoundingClientRect();
     const x = clamp01((clientX - r.left) / r.width) * r.width;
     const y = clamp01((clientY - r.top) / r.height) * r.height;
-    return { x, y, w: r.width, h: r.height };
+
+    const rect = container.getBoundingClientRect();
+    const imgRect = getContainedImageRect(
+      rect.width,
+      rect.height,
+      naturalSize.w,
+      naturalSize.h
+    );
+
+    if (!inRect(x, y, imgRect)) return null;
+
+    return { x, y, w: r.width, h: r.height, imgRect };
   };
 
   const stampMaskCircle = (x: number, y: number) => {
@@ -119,13 +132,19 @@ const MarkCanvas = ({ imageContainerRef }: MarkCanvasProps) => {
     const w = rect.width;
     const h = rect.height;
 
+    const imgRect = getContainedImageRect(w, h, naturalSize.w, naturalSize.h);
+
     pctx.clearRect(0, 0, w, h);
 
     pctx.save();
+    pctx.beginPath();
+    pctx.rect(imgRect.x, imgRect.y, imgRect.w, imgRect.h);
+    pctx.clip();
+
     pctx.drawImage(mask, 0, 0, w, h);
     pctx.globalCompositeOperation = "source-in";
     pctx.fillStyle = BRUSH.fill;
-    pctx.fillRect(0, 0, w, h);
+    pctx.fillRect(imgRect.x, imgRect.y, imgRect.w, imgRect.h);
     pctx.restore();
   };
 
@@ -144,7 +163,6 @@ const MarkCanvas = ({ imageContainerRef }: MarkCanvasProps) => {
       const imageUrl = await capturePaintedArea();
       if (!imageUrl) return null;
 
-      // 캔버스/상태 초기화
       clearMask();
       clearPreview();
       resetPaint();
@@ -155,7 +173,6 @@ const MarkCanvas = ({ imageContainerRef }: MarkCanvasProps) => {
     return () => setCommitPaint(null);
   }, [setCommitPaint, capturePaintedArea, clearMask, resetPaint]);
 
-  // ---- pointer events ----
   const onPointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if (!enabled) return;
     if (e.pointerType === "mouse" && e.button !== 0) return;
