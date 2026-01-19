@@ -10,8 +10,9 @@
     "aria-hidden": "true"
   },
   "replaceAttrValues": {
-    "#000": "currentColor",
-    "#000000": "currentColor"
+    "#000000": "currentColor",
+    "#626B7F": "currentColor",
+    "#A9B4C6": "currentColor"
   },
   "svgoConfig": {
     "plugins": [
@@ -19,7 +20,7 @@
         "name": "preset-default",
         "params": {
           "overrides": {
-            "convertColors": false
+            "convertColors": true
           }
         }
       },

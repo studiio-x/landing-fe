@@ -21,9 +21,9 @@ const SvgWatch = ({
     {...props}
   >
     {title ? <title id={titleId}>{title}</title> : null}
-    <path fill="#626B7F" d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
+    <path fill="currentColor" d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
     <path
-      stroke="#626B7F"
+      stroke="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={2}
