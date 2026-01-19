@@ -23,6 +23,7 @@ const MarkCanvas = ({ imageContainerRef, naturalSize }: MarkCanvasProps) => {
 
   const pointerIdRef = useRef<number | null>(null);
   const lastPtRef = useRef<{ x: number; y: number } | null>(null);
+  const hasPaintRef = useRef(false);
 
   const { isEditMode, setHasPaint, resetPaint, setCommitPaint } =
     useStudioMarkStore();
@@ -101,6 +102,8 @@ const MarkCanvas = ({ imageContainerRef, naturalSize }: MarkCanvasProps) => {
     ctx.fill();
     ctx.restore();
 
+    if (hasPaintRef.current) return;
+    hasPaintRef.current = true;
     setHasPaint(true);
   };
 
@@ -166,6 +169,7 @@ const MarkCanvas = ({ imageContainerRef, naturalSize }: MarkCanvasProps) => {
       clearMask();
       clearPreview();
       resetPaint();
+      hasPaintRef.current = false;
 
       return { id: crypto.randomUUID(), imageUrl };
     });

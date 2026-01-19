@@ -49,6 +49,7 @@ const ModelMode = () => {
   };
 
   useEffect(() => {
+    setNaturalSize(null);
     if (!uploadedImage) {
       setPreviewUrl(null);
       return;

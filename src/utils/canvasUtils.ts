@@ -8,6 +8,9 @@ export const getContainedImageRect = (
   imageW: number,
   imageH: number
 ): Rect => {
+  if (imageW <= 0 || imageH <= 0 || containerW <= 0 || containerH <= 0) {
+    return { x: 0, y: 0, w: 0, h: 0 };
+  }
   const scale = Math.min(containerW / imageW, containerH / imageH);
   const w = imageW * scale;
   const h = imageH * scale;

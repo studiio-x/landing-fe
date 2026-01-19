@@ -23,17 +23,18 @@ export const usePaintCapture = (
     const containerRect = container.getBoundingClientRect();
 
     try {
-  const fullCanvas = await html2canvas(container, {
-    useCORS: true,
-    backgroundColor: null,
-    scale,
-    width: containerRect.width,
-    height: containerRect.height,
-    ignoreElements: (el) => {
-      if ((el as HTMLElement).dataset?.captureIgnore === "true") return true;
-      return el === maskCanvas || maskCanvas.contains(el);
-    },
-  });
+      const fullCanvas = await html2canvas(container, {
+        useCORS: true,
+        backgroundColor: null,
+        scale,
+        width: containerRect.width,
+        height: containerRect.height,
+        ignoreElements: (el) => {
+          if ((el as HTMLElement).dataset?.captureIgnore === "true")
+            return true;
+          return el === maskCanvas || maskCanvas.contains(el);
+        },
+      });
       // 마스크 스케일링
       const scaledMask = document.createElement("canvas");
       scaledMask.width = fullCanvas.width;
@@ -72,6 +73,7 @@ export const usePaintCapture = (
 
       if (tightCrop) {
         const bbox = getNonTransparentBBox(out);
+        if (!bbox) return null;
         if (bbox) {
           const x = Math.max(0, bbox.x - padding);
           const y = Math.max(0, bbox.y - padding);
