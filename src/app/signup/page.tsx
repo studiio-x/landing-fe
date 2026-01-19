@@ -1,11 +1,20 @@
 "use client";
 import { Checkbox, LogoRed, SelectedCheckbox } from "@/assets/icons";
+import GlassButton from "@/components/common/GlassButton";
 import Header from "@/components/dashboard/Header";
+import LoginInput from "@/components/dashboard/login/LoginInput";
+import clsx from "clsx";
 
 import { useState } from "react";
 
 const SignUp = () => {
   const [isCheckboxClicked, setIsCheckboxClicked] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.trim();
+    setInputValue(value);
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -31,14 +40,14 @@ const SignUp = () => {
         <section className="flex-[44%] pb-[5.75rem] flex flex-col justify-center px-[8.5rem]">
           <div className="Heading_1_semibold text-Grey-50 mb-10">회원가입</div>
           <form>
-            <input
-              type="text"
+            <LoginInput
               placeholder="이메일을 입력해주세요"
-              className="bg-Grey-800 py-3 px-4 mb-4 placeholder:text-Grey-400 text-Grey-100 Body_2_medium w-full rounded-[4px]"
+              ariaLabel="이메일"
+              onChange={onChange}
             />
             <button
               type="button"
-              className="flex items-center  gap-3 pl-4 cursor-pointer"
+              className="flex items-center  gap-3 pl-4 cursor-pointer mt-4"
               onClick={() => setIsCheckboxClicked((pre) => !pre)}
             >
               {isCheckboxClicked ? (
@@ -51,12 +60,18 @@ const SignUp = () => {
                 약관 및 개인정보 처리방침에 동의합니다.
               </span>
             </button>
-            <button
+            <GlassButton
               type="submit"
-              className="mt-10 w-full bg-[rgba(255,48,48,0.45)] rounded-[4px] Body_2_semibold py-[0.78125rem]"
+              className={clsx(
+                "mt-10 w-full rounded-[4px] Body_2_semibold py-[0.78125rem] hover:bg-[rgba(255,48,48,0.75)] text-white",
+                inputValue != "" && isCheckboxClicked
+                  ? "bg-[rgba(255,48,48,0.45)]"
+                  : "rgba(53,59,69,0.45) text-Grey-500"
+              )}
+              fullWidth={true}
             >
               등록하기
-            </button>
+            </GlassButton>
           </form>
           <div className="mt-3 flex gap-2 justify-center">
             <span className="Body_3_regular text-Grey-400">

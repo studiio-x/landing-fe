@@ -1,6 +1,6 @@
 {
   "typescript": true,
-  "icon": true,
+  "icon": false,
   "titleProp": true,
   "memo": true,
   "svgo": true,

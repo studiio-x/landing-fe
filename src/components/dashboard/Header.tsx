@@ -13,9 +13,6 @@ interface HeaderProps {
   video?: boolean;
 }
 
-
-
-
 const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
   const [isUserOpen, setIsUserOpen] = useState(false);
   const [isUserClicked, setIsUserClicked] = useState(false);
@@ -91,7 +88,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
           onClick={() => router.push("/dashboard")}
           aria-label="대시보드로 이동"
         >
-          <Logo className="w-[5.3125rem]" />
+          <Logo className="w-[5.25681rem] h-[1.13rem] " />
         </button>
       </div>
 

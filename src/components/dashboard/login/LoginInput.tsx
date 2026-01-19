@@ -5,6 +5,7 @@ import { useState } from "react";
 interface LoginInputProps {
   placeholder: string;
   ariaLabel: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClick?: () => void;
   isPasswordOpen?: boolean;
   watchIcon?: boolean;
@@ -13,6 +14,7 @@ interface LoginInputProps {
 const LoginInput = ({
   placeholder,
   ariaLabel,
+  onChange,
   onClick,
   isPasswordOpen,
   watchIcon,
@@ -20,7 +22,6 @@ const LoginInput = ({
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    //회원가입에서도 아래 input으로 바꾸기
     <div className="relative w-full">
       <div className="rounded-[4px] p-[1px] bg-gradient-to-b from-[rgba(255,48,48,0.45)] to-[rgba(255,48,48,0.15)] relative">
         <div
@@ -36,6 +37,7 @@ const LoginInput = ({
           aria-label={ariaLabel}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          onChange={onChange}
         />
       </div>
       {watchIcon && (

@@ -4,17 +4,26 @@ import { Google, Logo } from "@/assets/icons";
 import LoginInput from "./LoginInput";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import GlassButton from "@/components/common/GlassButton";
+import clsx from "clsx";
 
 export default function Login() {
   const [isPasswordOpen, setIsPasswordOpen] = useState(false);
+  const [emailValue, setEmailValue] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
   const router = useRouter();
 
   const onClick = () => {
     setIsPasswordOpen(!isPasswordOpen);
   };
 
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.id === "email") setEmailValue(e.target.value.trim());
+    else setPasswordValue(e.target.value.trim());
+  };
+
   return (
-    <div className="max-w-[28.75rem] pt-10 pb-12 px-[3.25rem] border-[1.5px] rounded-[0.5rem] border-[rgba(255,48,48,0.35)] bg-Grey-900 shadow-[0_0_8px_0_rgba(255,82,82,0.10),0_0_20px_0_rgba(8,8,8,0.12)] relative gap-[2.5rem] flex flex-col">
+    <div className="max-w-[28.75rem] pt-10 pb-12 px-[3.25rem] border-[1.5px] rounded-[0.5rem] border-[rgba(255,48,48,0.35)] bg-Grey-900 shadow-[0_0_8px_0_rgba(255,82,82,0.10),0_0_20px_0_rgba(8,8,8,0.12)] relative gap-[2.5rem] flex flex-col z-100">
       <div className="flex items-center gap-[0.88rem]">
         <Logo className="w-[7.2rem] h-[2.875rem]" />
         <span className="Heading_3_semibold text-Grey-50">로그인하기</span>
@@ -36,15 +45,31 @@ export default function Login() {
         </div>
 
         <form action="" className="flex flex-col gap-[0.75rem]">
-          <LoginInput placeholder="이메일 주소" ariaLabel="이메일" />
+          <LoginInput
+            placeholder="이메일 주소"
+            ariaLabel="이메일"
+            onChange={onChange}
+          />
           <LoginInput
             placeholder="비밀번호"
             ariaLabel="비밀번호"
             watchIcon={true}
             isPasswordOpen={isPasswordOpen}
             onClick={onClick}
+            onChange={onChange}
           />
-          {/* glass button 넣기 */}
+          <GlassButton
+            type="submit"
+            className={clsx(
+              "mt-10 w-full rounded-[4px] Body_2_semibold py-[0.78125rem] hover:bg-[rgba(255,48,48,0.75)] active:bg-[rgba(255,48,48,0.75)] text-white",
+              emailValue != "" && passwordValue != ""
+                ? "bg-[rgba(255,48,48,0.45)]"
+                : "rgba(53,59,69,0.45) text-Grey-500"
+            )}
+            fullWidth={true}
+          >
+            로그인
+          </GlassButton>
           <div className="text-center flex flex-col gap-[0.5rem]">
             <button className="Body_3_medium text-Grey-200 underline">
               비밀번호를 잊으셨나요?
