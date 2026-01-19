@@ -10,6 +10,7 @@ import StudioHistoryPanel, {
 } from "@/components/dashboard/studio/StudioHistoryPanel";
 import MarkCanvas from "@/components/dashboard/studio/MarkCanvas";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
+import ProductImageRequiredModal from "@/components/dashboard/studio/background/ProductImageRequiredModal";
 
 const DUMMY_HISTORY: StudioHistoryItem[] = [
   {
@@ -24,6 +25,8 @@ const ModelMode = () => {
     w: number;
     h: number;
   } | null>(null);
+  const [isProductImageRequiredOpen, setIsProductImageRequiredOpen] =
+    useState(false);
 
   const { isEditMode, hasPaint } = useStudioMarkStore();
 
@@ -33,6 +36,17 @@ const ModelMode = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const [history] = useState<StudioHistoryItem[]>(DUMMY_HISTORY);
+
+  const handleTabChange = (nextIdx: number) => {
+    const isChatbotTab = nextIdx === 2;
+
+    if (isChatbotTab && !uploadedImage) {
+      setIsProductImageRequiredOpen(true);
+      return;
+    }
+
+    setActiveTab(nextIdx);
+  };
 
   useEffect(() => {
     if (!uploadedImage) {
@@ -51,7 +65,7 @@ const ModelMode = () => {
   return (
     <div className="flex justify-center w-full">
       <div className="flex flex-col">
-        <TabPanel activeTab={activeTab} onChange={setActiveTab} />
+        <TabPanel activeTab={activeTab} onChange={handleTabChange} />
         <TabContent
           activeTab={activeTab}
           uploadedImage={uploadedImage}
@@ -137,6 +151,12 @@ const ModelMode = () => {
       </div>
 
       <StudioHistoryPanel history={history} />
+
+      {isProductImageRequiredOpen && (
+        <ProductImageRequiredModal
+          onClose={() => setIsProductImageRequiredOpen(false)}
+        />
+      )}
     </div>
   );
 };
