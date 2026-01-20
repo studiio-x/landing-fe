@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
-import type { Category, ItemsResponse } from "@/types/item";
+import type { Category, ItemsResponse } from "@/types/landing/item";
 
 const BASE = process.env.NEXT_PUBLIC_API_BASE_URL!;
 const FIRST_PAGE = 0;

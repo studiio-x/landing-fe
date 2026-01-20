@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import MediaItem from "@/components/landing/MediaItem";
 import { useItemsInfinite } from "@/hooks/useItemsInfinite";
-import type { Category } from "@/types/item";
+import type { Category } from "@/types/landing/item";
 import { useSearchParams, useRouter } from "next/navigation";
 
 const CATEGORIES: Category[] = ["all", "studio", "model", "image"];
@@ -32,7 +32,7 @@ export default function Portfolio() {
           fetchNextPage();
         }
       },
-      { rootMargin: "0px 0px 400px 0px" }
+      { rootMargin: "0px 0px 400px 0px" },
     );
 
     io.observe(el);
