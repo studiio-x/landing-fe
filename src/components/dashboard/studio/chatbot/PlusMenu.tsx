@@ -55,7 +55,7 @@ const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
         <Plus
           className={clsx(
             "w-6 h-6 transition-colors",
-            showPlusPopup ? "text-Red-500" : "text-Grey-200"
+            showPlusPopup ? "[&_path]:fill-Red-500" : "[&_path]:fill-Grey-200",
           )}
         />
       </button>
@@ -65,7 +65,7 @@ const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
           "absolute bottom-full -right-[3.125rem] z-50 pb-5 transition duration-150",
           showPlusPopup
             ? "opacity-100 translate-y-0 pointer-events-auto"
-            : "opacity-0 translate-y-1 pointer-events-none"
+            : "opacity-0 translate-y-1 pointer-events-none",
         )}
       >
         <div className="relative w-[13.25rem] rounded-md p-[1px] bg-gradient-to-b from-Red-500/25 backdrop-blur-[8px] to-Red-500/10 shadow-[0_0px_20px_rgba(8,8,8,0.12)]">

@@ -67,7 +67,7 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
         "relative rounded-md p-[1px]",
         hasValue
           ? "bg-gradient-to-b from-Red-500/45 to-Red-500/15"
-          : "bg-transparent"
+          : "bg-transparent",
       )}
     >
       <div className="bg-Grey-600 px-4 py-3 rounded-md flex gap-1">
@@ -90,8 +90,8 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
             }}
           />
 
-          <button type="button" aria-label="전송" onClick={sendMessage}>
-            <Send className="w-6 h-6 transition-colors text-Grey-200 hover:text-Red-500" />
+          <button type="button" aria-label="전송" onClick={sendMessage} className="group">
+            <Send className="w-6 h-6 transition-colors [&_path]:fill-Grey-200 group-hover:[&_path]:fill-Red-500" />
           </button>
         </div>
       </div>
