@@ -1,4 +1,4 @@
-import { Down, Pencil, ProfileDefault } from "@/assets/icons";
+import { Pencil, ProfileDefault } from "@/assets/icons";
 import GlassButton from "@/components/common/GlassButton";
 import { useState } from "react";
 import LanguageDropdown from "./LanguageDropdown";
@@ -17,7 +17,10 @@ const SettingsContent = () => {
           <div className="flex items-center gap-5">
             <div className="relative">
               <ProfileDefault className="w-[4.5rem] h-[4.5rem]" />
-              <button className="absolute bottom-0 right-0 w-6 h-6 bg-Grey-500 border-Grey-300 border flex items-center justify-center rounded-full">
+              <button
+                aria-label="프로필 사진 변경"
+                className="absolute bottom-0 right-0 w-6 h-6 bg-Grey-500 border-Grey-300 border flex items-center justify-center rounded-full"
+              >
                 <Pencil className="w-3 h-3" />
               </button>
             </div>

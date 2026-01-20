@@ -6,16 +6,15 @@ import { useState } from "react";
 import MyPageTabs from "@/components/mypage/MyPageTabs";
 import SettingsContent from "@/components/mypage/SettingsContent";
 import UpgradeContent from "@/components/mypage/UpgradeContent";
+import { TabKey } from "@/types/mypage/tab";
 
 const MyPage = () => {
-  const [activeTab, setActiveTab] = useState<"settings" | "upgrade">(
-    "settings",
-  );
+  const [activeTab, setActiveTab] = useState<TabKey>("settings");
 
   return (
     <div className="overflow-hidden w-full h-dvh relative flex flex-col">
       <div className="w-[120.8125rem] h-[109.9375rem] opacity-25 blur-[50px] fixed -left-[85.3438rem] -top-[68.2188rem] bg-[radial-gradient(50%_50%_at_68.13%_58.1%,rgba(255,48,48,0.50)_0%,rgba(153,29,29,0)_100%)] -z-10" />
-      <div className="w-[97.4375rem] h-[97.4375rem] fixed -bottom-[22.8125remrem] -right-[46.625rem] rounded-[97.4375rem] opacity-20 blur-[1.5625rem] bg-[radial-gradient(50%_50%_at_50%_50%,rgba(255,48,48,0.5)_0%,rgba(153,29,29,0)_100%)] -z-10" />
+      <div className="w-[97.4375rem] h-[97.4375rem] fixed -bottom-[22.8125rem] -right-[46.625rem] rounded-[97.4375rem] opacity-20 blur-[1.5625rem] bg-[radial-gradient(50%_50%_at_50%_50%,rgba(255,48,48,0.5)_0%,rgba(153,29,29,0)_100%)] -z-10" />
       <Header />
 
       <div className="flex">

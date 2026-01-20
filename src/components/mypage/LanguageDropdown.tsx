@@ -24,18 +24,27 @@ const LanguageDropdown = ({
   const wrapperRef = useRef<HTMLDivElement | null>(null);
 
   const selected = useMemo(
-    () => options.find((o) => o.value === value) ?? options[0],
+    () =>
+      options.find((o) => o.value === value) ??
+      options[0] ?? { value: value, label: "", subLabel: "" },
     [options, value],
   );
 
-  useEffect(() => {
-    const onPointerDown = (e: PointerEvent) => {
-      if (!wrapperRef.current) return;
-      if (!wrapperRef.current.contains(e.target as Node)) setIsOpen(false);
-    };
-    window.addEventListener("pointerdown", onPointerDown);
-    return () => window.removeEventListener("pointerdown", onPointerDown);
-  }, []);
+useEffect(() => {
+  const onPointerDown = (e: PointerEvent) => {
+    if (!wrapperRef.current) return;
+    if (!wrapperRef.current.contains(e.target as Node)) setIsOpen(false);
+  };
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Escape") setIsOpen(false);
+  };
+  window.addEventListener("pointerdown", onPointerDown);
+  window.addEventListener("keydown", onKeyDown);
+  return () => {
+    window.removeEventListener("pointerdown", onPointerDown);
+    window.removeEventListener("keydown", onKeyDown);
+  };
+}, []);
 
   const handleSelect = (next: LanguageType) => {
     onChange(next);
