@@ -1,7 +1,12 @@
 import { Down, Pencil, ProfileDefault } from "@/assets/icons";
 import GlassButton from "@/components/common/GlassButton";
+import { useState } from "react";
+import LanguageDropdown from "./LanguageDropdown";
+import { LanguageType } from "@/types/mypage/language";
 
 const SettingsContent = () => {
+  const [lang, setLang] = useState<LanguageType>("ko");
+
   return (
     <>
       {/* 프로필 */}
@@ -33,7 +38,7 @@ const SettingsContent = () => {
       </div>
 
       {/* 언어 설정 */}
-      <div className="flex items-center justify-between pl-5 py-4 border-y border-Grey-300/30">
+      <div className="flex items-center justify-between px-5 py-4 border-y border-Grey-300/30">
         <div className="flex flex-col gap-1">
           <h3 className="Subhead_2_semibold text-Grey-50">언어 설정</h3>
           <p className="Caption_medium text-Grey-400">
@@ -41,15 +46,19 @@ const SettingsContent = () => {
           </p>
         </div>
 
-        <button className="w-[100px] h-[2.4375rem] bg-Grey-400 rounded pl-5 pr-3 flex items-center justify-between">
-          <span className="text-white">한국어</span>
-          <Down className="text-Grey-400" />
-        </button>
+        <LanguageDropdown
+          value={lang}
+          onChange={(v) => setLang(v as LanguageType)}
+        />
       </div>
 
       {/* 로그아웃 */}
       <div className="flex justify-end pt-[7.1875rem]">
-        <GlassButton variant="default" size="lg" className="Body_2_semibold !w-[12.375rem]">
+        <GlassButton
+          variant="default"
+          size="lg"
+          className="Body_2_semibold !w-[12.375rem]"
+        >
           로그아웃
         </GlassButton>
       </div>
