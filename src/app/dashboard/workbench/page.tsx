@@ -6,7 +6,7 @@ import { useSearchParams } from "next/navigation";
 import Header from "@/components/dashboard/Header";
 import StudioMode from "@/components/dashboard/studio/StudioMode";
 import ModelMode from "@/components/dashboard/model/ModelMode";
-import { WorkbenchMode } from "@/types/dashboard/mode";
+import { WorkbenchMode } from "@/types/dashboard/mode.type";
 
 const WorkbenchPage = () => {
   const searchParams = useSearchParams();

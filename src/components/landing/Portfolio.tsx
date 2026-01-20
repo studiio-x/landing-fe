@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import MediaItem from "@/components/landing/MediaItem";
 import { useItemsInfinite } from "@/hooks/useItemsInfinite";
-import type { Category } from "@/types/landing/item";
+import type { Category } from "@/types/landing/item.type";
 import { useSearchParams, useRouter } from "next/navigation";
 
 const CATEGORIES: Category[] = ["all", "studio", "model", "image"];

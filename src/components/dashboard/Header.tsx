@@ -4,7 +4,7 @@ import { Back, Logo, Person, Video } from "@/assets/icons";
 import clsx from "clsx";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { WorkbenchMode } from "@/types/dashboard/mode";
+import { WorkbenchMode } from "@/types/dashboard/mode.type";
 import { WORKBENCH_TABS } from "@/constants/dashboard/tab";
 
 interface HeaderProps {
@@ -12,9 +12,6 @@ interface HeaderProps {
   tab?: boolean;
   video?: boolean;
 }
-
-
-
 
 const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
   const [isUserOpen, setIsUserOpen] = useState(false);
@@ -120,7 +117,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
                       "relative z-10 rounded-[100px] px-4 py-[2px] transition-colors duration-200 whitespace-nowrap",
                       isActive
                         ? "text-Grey-50 Body_2_semibold"
-                        : "text-Grey-500 Body_2_medium"
+                        : "text-Grey-500 Body_2_medium",
                     )}
                     style={{ width: t.width }}
                   >

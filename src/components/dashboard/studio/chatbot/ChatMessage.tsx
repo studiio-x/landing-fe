@@ -1,4 +1,4 @@
-import { ChatItem } from "@/types/dashboard/chat";
+import { ChatItem } from "@/types/dashboard/chat.type";
 import clsx from "clsx";
 
 const TypingDots = () => {
@@ -34,7 +34,7 @@ const ChatMessageList = ({ messages }: { messages: ChatItem[] }) => {
                       "grid gap-2",
                       (m.attachments?.length ?? 0) === 1
                         ? "grid-cols-1"
-                        : "grid-cols-2"
+                        : "grid-cols-2",
                     )}
                   >
                     {m.attachments!.map((a) => (
@@ -55,7 +55,7 @@ const ChatMessageList = ({ messages }: { messages: ChatItem[] }) => {
                       "max-w-80 px-3 py-1.5 rounded-lg Body_3_medium whitespace-pre-line",
                       isUser
                         ? "bg-Grey-700 text-Grey-50"
-                        : "text-Grey-100 bg-transparent"
+                        : "text-Grey-100 bg-transparent",
                     )}
                   >
                     {m.text}

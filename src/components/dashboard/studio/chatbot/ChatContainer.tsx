@@ -9,7 +9,7 @@ import {
   ChatAttachment,
   ChatItem,
   ChatSendPayload,
-} from "@/types/dashboard/chat";
+} from "@/types/dashboard/chat.type";
 import clsx from "clsx";
 import GlassButton from "@/components/common/GlassButton";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
@@ -61,8 +61,8 @@ const ChatContainer = () => {
                 status: "done",
                 text: "알겠어. 전달해준 내용을 기준으로 이어서 진행할게.",
               }
-            : m
-        )
+            : m,
+        ),
       );
     }, 1200);
 
@@ -81,12 +81,12 @@ const ChatContainer = () => {
 
   const handleClickRecommendation = useCallback(
     (text: string) => sendUserMessage({ text }),
-    [sendUserMessage]
+    [sendUserMessage],
   );
 
   useEffect(() => {
     const isTyping = messages.some(
-      (m) => m.role === "assistant" && m.status === "typing"
+      (m) => m.role === "assistant" && m.status === "typing",
     );
 
     bottomRef.current?.scrollIntoView({
@@ -156,7 +156,7 @@ const ChatContainer = () => {
               size="sm"
               className={clsx(
                 "Body_2_semibold",
-                !hasMarkRects && "cursor-not-allowed"
+                !hasMarkRects && "cursor-not-allowed",
               )}
               disabled={!hasMarkRects}
               onClick={sendMarkImages}

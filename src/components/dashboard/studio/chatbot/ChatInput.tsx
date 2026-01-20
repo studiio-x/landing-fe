@@ -5,7 +5,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import PlusMenu from "./PlusMenu";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
-import { ChatAttachment, ChatSendPayload } from "@/types/dashboard/chat";
+import { ChatAttachment, ChatSendPayload } from "@/types/dashboard/chat.type";
 
 const MIN_H = 24;
 const MAX_H = 80;
@@ -67,7 +67,7 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
         "relative rounded-md p-[1px]",
         hasValue
           ? "bg-gradient-to-b from-Red-500/45 to-Red-500/15"
-          : "bg-transparent"
+          : "bg-transparent",
       )}
     >
       <div className="bg-Grey-600 px-4 py-3 rounded-md flex gap-1">
