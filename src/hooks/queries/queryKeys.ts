@@ -1,10 +1,9 @@
-import type {
-  GetTemplatesByKeywordParams,
+import {
   GetTemplatesByCategoryParams,
-} from "@/types/dashboard/template/templateApi.type";
+  GetTemplatesByKeywordParams,
+} from "@/types/api/template.type";
 
 export const queryKeys = {
-    
   templates: {
     all: ["templates"] as const,
 
@@ -16,6 +15,4 @@ export const queryKeys = {
     categoryList: (params: GetTemplatesByCategoryParams) =>
       [...queryKeys.templates.category(), params] as const,
   },
-
-
 } as const;

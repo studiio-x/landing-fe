@@ -1,4 +1,4 @@
-import { PageInfo } from "@/types/common/page.type";
+import { PageInfo } from "@/types/api/common.type";
 
 // 템플릿 키워드 타입
 export type TemplateKeyword = "GENERAL_DISPLAY" | "FABRIC_VELVET" | "OUTDOOR";

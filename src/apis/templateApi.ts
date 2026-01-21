@@ -1,10 +1,10 @@
+import { axiosInstance } from "@/apis/axios";
 import {
   GetTemplatesByCategoryParams,
   GetTemplatesByCategoryResponse,
   GetTemplatesByKeywordParams,
   GetTemplatesByKeywordResponse,
-} from "@/types/dashboard/template/templateApi.type";
-import { axiosInstance } from "@/apis/axios";
+} from "@/types/api/template.type";
 
 export const getTemplatesByKeyword = async (
   params: GetTemplatesByKeywordParams,

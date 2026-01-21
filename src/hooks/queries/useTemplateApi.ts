@@ -1,16 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
 
-import type {
-  GetTemplatesByKeywordParams,
-  GetTemplatesByCategoryParams,
-} from "@/types/dashboard/template/templateApi.type";
-
 import {
   getTemplatesByCategory,
   getTemplatesByKeyword,
-} from "@/apis/template/templateApi";
+} from "@/apis/templateApi";
 
 import { queryKeys } from "./queryKeys";
+import {
+  GetTemplatesByCategoryParams,
+  GetTemplatesByKeywordParams,
+} from "@/types/api/template.type";
 
 export const useTemplatesByKeyword = (params: GetTemplatesByKeywordParams) =>
   useQuery({
