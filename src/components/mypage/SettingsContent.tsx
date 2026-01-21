@@ -9,6 +9,7 @@ const SettingsContent = () => {
   const [nickname, setNickname] = useState("임세민");
   const [isEditingNickname, setIsEditingNickname] = useState(false);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
+  const prevNicknameRef = useRef(nickname);
 
   useEffect(() => {
     if (isEditingNickname && nicknameInputRef.current) {
@@ -17,8 +18,14 @@ const SettingsContent = () => {
     }
   }, [isEditingNickname]);
 
+  const startEditingNickname = () => {
+    prevNicknameRef.current = nickname;
+    setIsEditingNickname(true);
+  };
+
   const handleNicknameSubmit = () => {
     if (nickname.trim()) {
+      prevNicknameRef.current = nickname;
       setIsEditingNickname(false);
     }
   };
@@ -27,6 +34,7 @@ const SettingsContent = () => {
     if (e.key === "Enter") {
       handleNicknameSubmit();
     } else if (e.key === "Escape") {
+      setNickname(prevNicknameRef.current);
       setIsEditingNickname(false);
     }
   };
@@ -59,6 +67,7 @@ const SettingsContent = () => {
                     <input
                       ref={nicknameInputRef}
                       type="text"
+                      aria-label="닉네임"
                       autoFocus
                       value={nickname}
                       onChange={(e) => setNickname(e.target.value)}
@@ -73,7 +82,7 @@ const SettingsContent = () => {
                   )}
                 </span>
                 <button
-                  onClick={() => setIsEditingNickname(true)}
+                  onClick={() => startEditingNickname()}
                   className="w-6 h-6 rounded-full bg-Grey-500 flex justify-center items-center"
                 >
                   <Pencil className="w-3 h-3" />
