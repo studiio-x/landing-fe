@@ -10,7 +10,7 @@ const ContinuePage = () => {
   return (
     <div className="flex flex-col h-screen relative">
       <div className="fixed inset-0 bg-[url('/images/dashboard/continue-background.png')]  bg-no-repeat bg-top [background-size:100%_auto] -z-10 pointer-events-none" />
-      <Header/>
+      <Header />
 
       <button
         type="button"

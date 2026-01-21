@@ -66,7 +66,7 @@ const SignUp = () => {
                 "mt-10 w-full rounded-[4px] Body_2_semibold py-[0.78125rem] hover:bg-[rgba(255,48,48,0.75)] text-white",
                 inputValue != "" && isCheckboxClicked
                   ? "bg-[rgba(255,48,48,0.45)]"
-                  : "rgba(53,59,69,0.45) text-Grey-500"
+                  : "rgba(53,59,69,0.45) text-Grey-500",
               )}
               fullWidth={true}
             >

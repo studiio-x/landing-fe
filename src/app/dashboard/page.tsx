@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import DashboardCard from "@/components/dashboard/DashboardCard";
 import { DASHBOARD_CARDS } from "@/constants/dashboard/card";
 import Header from "@/components/dashboard/Header";
-import SideBar from "@/components/dashboard/SideBar";
+import SideBar from "@/components/dashboard/SideBar/SideBar";
 
 const DashboardPage = () => {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
@@ -13,7 +13,7 @@ const DashboardPage = () => {
 
   const activeIndex = useMemo(
     () => (pinnedIndex !== null ? pinnedIndex : hoverIndex),
-    [pinnedIndex, hoverIndex]
+    [pinnedIndex, hoverIndex],
   );
 
   const templates = useMemo<{ id: string }[]>(() => {
@@ -29,7 +29,7 @@ const DashboardPage = () => {
     <main className="relative min-h-screen w-full flex flex-col">
       <div className="fixed inset-0 bg-[url('/images/dashboard/background.png')] bg-cover bg-center -z-10 pointer-events-none" />
       <Header />
-      
+
       <div className="flex">
         <SideBar />
         <div className="mx-auto mt-[3.25rem]">

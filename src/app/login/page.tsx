@@ -1,5 +1,5 @@
 import Header from "@/components/dashboard/Header";
-import SideBar from "@/components/dashboard/SideBar";
+import SideBar from "@/components/dashboard/SideBar/SideBar";
 import LoginModal from "@/components/dashboard/login/LoginModal";
 
 export default function Login() {
