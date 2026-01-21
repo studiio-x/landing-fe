@@ -5,7 +5,7 @@ interface SVGRProps {
   title?: string;
   titleId?: string;
 }
-const SvgPlus = ({
+const SvgPencil = ({
   title,
   titleId,
   ...props
@@ -13,7 +13,7 @@ const SvgPlus = ({
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
-    viewBox="0 0 24 24"
+    viewBox="0 0 12 12"
     width="1em"
     height="1em"
     role="img"
@@ -24,10 +24,10 @@ const SvgPlus = ({
   >
     {title ? <title id={titleId}>{title}</title> : null}
     <path
-      fill="#A9B4C6"
-      d="M3.99 12.996q-.627 0-.877-.501a1.17 1.17 0 0 1 0-1.002q.25-.501.877-.501h16.033q.626 0 .852.5.25.502 0 1.003-.225.5-.852.5zm7.014-9.019q0-.625.501-.852a1.07 1.07 0 0 1 1.002 0q.501.225.501.852V20.01q0 .627-.5.877a1.17 1.17 0 0 1-1.003 0q-.5-.25-.5-.877z"
+      fill="#D8DFE9"
+      d="M.99 11.97a.72.72 0 0 1-.535-.048.82.82 0 0 1-.378-.377.72.72 0 0 1-.047-.535l.598-2.424L8.655.574q.377-.377.866-.503.487-.143.976 0 .488.126.866.503l.063.063q.377.377.503.866.143.487 0 .976a1.87 1.87 0 0 1-.504.866l-8.01 8.027zm.252-.63a.3.3 0 0 0 0-.142q0-.093-.031-.236a2 2 0 0 0-.095-.314l1.637-.41 7.791-7.775q.252-.252.252-.472t-.252-.472l-.063-.063q-.252-.252-.472-.252t-.472.252l-7.775 7.79zM7.68 2.432l.881-.882L10.45 3.44l-.882.881z"
     />
   </svg>
 );
-const Memo = memo(SvgPlus);
+const Memo = memo(SvgPencil);
 export default Memo;

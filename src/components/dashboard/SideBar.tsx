@@ -17,7 +17,7 @@ export default function SideBar() {
   const currentPage = useActivePage(PAGE_CONFIG);
 
   return (
-    <aside className="bg-Grey-800 max-w-[17.625rem] w-full left-0 sticky top-[var(--header-height)] h-[calc(100vh-var(--header-height))] px-7 pt-7 pb-[3.25rem] border-r border-Grey-600">
+    <aside className="bg-Grey-800 max-w-[17.625rem] w-full left-0 sticky top-[var(--header-height)] h-[calc(100dvh-var(--header-height))] px-7 pt-7 pb-[3.25rem] border-r border-Grey-600">
       <div className="flex flex-col">
         {PAGE_NAMES.map((pageName, index) => {
           const isActive = currentPage === pageName;

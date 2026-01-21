@@ -159,7 +159,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
                     <button
                       type="button"
                       className="py-2 pl-5 w-full text-left"
-                      onClick={() => router.push("/dashboard/mypage")}
+                      onClick={() => router.push("/mypage")}
                     >
                       설정
                     </button>
