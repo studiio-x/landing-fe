@@ -26,7 +26,7 @@ const DashboardPage = () => {
   }, [activeIndex]);
 
   return (
-    <main className="relative min-h-screen w-full flex flex-col">
+    <main className="relative min-h-dvh w-full flex flex-col">
       <div className="fixed inset-0 bg-[url('/images/dashboard/background.png')] bg-cover bg-center -z-10 pointer-events-none" />
       <Header />
       

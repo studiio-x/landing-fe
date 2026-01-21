@@ -18,7 +18,7 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [value, setValue] = useState("");
 
-  const { setMarkMode, setRects } = useStudioMarkStore();
+  const { setEditMode, resetPaint } = useStudioMarkStore();
   const sendMessage = () => {
     const text = value.trim();
     if (!text) return;
@@ -85,13 +85,13 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
           <PlusMenu
             onUploadImage={handleUploadReferenceImage}
             onClickMark={() => {
-              setMarkMode(true);
-              setRects([]);
+              resetPaint();
+              setEditMode(true);
             }}
           />
 
-          <button type="button" aria-label="전송" onClick={sendMessage}>
-            <Send className="w-6 h-6 transition-colors text-Grey-200 hover:text-Red-500" />
+          <button type="button" aria-label="전송" onClick={sendMessage} className="group">
+            <Send className="w-6 h-6 transition-colors [&_path]:fill-Grey-200 group-hover:[&_path]:fill-Red-500" />
           </button>
         </div>
       </div>
