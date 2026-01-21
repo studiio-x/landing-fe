@@ -1,5 +1,5 @@
+import { EditRegion } from "@/types/dashboard/edit-region.type";
 import { create } from "zustand";
-import type { EditRegion } from "@/types/dashboard/mark";
 
 type CommitPaintFn = () => Promise<{ id: string; imageUrl: string } | null>;
 
