@@ -18,7 +18,7 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [value, setValue] = useState("");
 
-  const { setMarkMode, setRects } = useStudioMarkStore();
+  const { setEditMode, resetPaint } = useStudioMarkStore();
   const sendMessage = () => {
     const text = value.trim();
     if (!text) return;
@@ -85,8 +85,8 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
           <PlusMenu
             onUploadImage={handleUploadReferenceImage}
             onClickMark={() => {
-              setMarkMode(true);
-              setRects([]);
+              resetPaint();
+              setEditMode(true);
             }}
           />
 
