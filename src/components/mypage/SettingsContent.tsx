@@ -1,11 +1,35 @@
 import { Pencil, ProfileDefault } from "@/assets/icons";
 import GlassButton from "@/components/common/GlassButton";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import LanguageDropdown from "./LanguageDropdown";
 import { LanguageType } from "@/types/mypage/language";
 
 const SettingsContent = () => {
   const [lang, setLang] = useState<LanguageType>("ko");
+  const [nickname, setNickname] = useState("임세민");
+  const [isEditingNickname, setIsEditingNickname] = useState(false);
+  const nicknameInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isEditingNickname && nicknameInputRef.current) {
+      nicknameInputRef.current.focus();
+      nicknameInputRef.current.select();
+    }
+  }, [isEditingNickname]);
+
+  const handleNicknameSubmit = () => {
+    if (nickname.trim()) {
+      setIsEditingNickname(false);
+    }
+  };
+
+  const handleNicknameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handleNicknameSubmit();
+    } else if (e.key === "Escape") {
+      setIsEditingNickname(false);
+    }
+  };
 
   return (
     <>
@@ -27,8 +51,31 @@ const SettingsContent = () => {
 
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-2">
-                <span className="Subhead_2_semibold text-White">임세민</span>
-                <button className="w-6 h-6 rounded-full bg-Grey-500 flex justify-center items-center">
+                <span className="relative">
+                  <span className="Subhead_1_semibold invisible whitespace-pre">
+                    {nickname || " "}
+                  </span>
+                  {isEditingNickname ? (
+                    <input
+                      ref={nicknameInputRef}
+                      type="text"
+                      autoFocus
+                      value={nickname}
+                      onChange={(e) => setNickname(e.target.value)}
+                      onBlur={handleNicknameSubmit}
+                      onKeyDown={handleNicknameKeyDown}
+                      className="Subhead_1_semibold text-White bg-transparent outline-none absolute inset-0 w-full"
+                    />
+                  ) : (
+                    <span className="Subhead_1_semibold text-White absolute inset-0">
+                      {nickname}
+                    </span>
+                  )}
+                </span>
+                <button
+                  onClick={() => setIsEditingNickname(true)}
+                  className="w-6 h-6 rounded-full bg-Grey-500 flex justify-center items-center"
+                >
                   <Pencil className="w-3 h-3" />
                 </button>
               </div>
