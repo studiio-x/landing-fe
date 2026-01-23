@@ -1,4 +1,12 @@
 {
+  "signup": {
+    "title": "Sign Up",
+    "emailPlaceholder": "Enter your email",
+    "termsAgreement": "I agree to the Terms and Conditions and\nPrivacy Policy",
+    "submit": "Register",
+    "hasAccount": "Already have an account?",
+    "login": "Log in"
+  },
   "dashboard": {
     "title": "DASH BOARD",
     "cards": {
