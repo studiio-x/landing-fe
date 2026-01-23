@@ -8,6 +8,18 @@
     "login": "로그인하기"
   },
   "dashboard": {
+    "header": {
+      "backLabel": "뒤로 가기",
+      "goDashboardLabel": "대시보드로 이동",
+      "howToUse": "사용 방법",
+      "settings": "설정",
+      "planManage": "플랜 관리",
+      "logout": "로그아웃",
+      "workbenchTabs": {
+        "studio": "스튜디오",
+        "model": "모델"
+      }
+    },
     "title": "대시보드",
     "cards": {
       "studio": {

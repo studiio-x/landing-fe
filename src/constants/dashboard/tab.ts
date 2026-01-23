@@ -1,4 +1,24 @@
-export const WORKBENCH_TABS = [
-  { label: "스튜디오", mode: "studio" as const, width: "5.5rem" },
-  { label: "모델", mode: "model" as const, width: "3.75rem" },
-] as const;
+import { WorkbenchMode } from "@/types/dashboard/mode.type";
+
+export const WORKBENCH_TABS: {
+  mode: WorkbenchMode;
+  widthByLocale: {
+    ko: string;
+    en: string;
+  };
+}[] = [
+  {
+    mode: "studio",
+    widthByLocale: {
+      ko: "5.5rem",
+      en: "5rem",
+    },
+  },
+  {
+    mode: "model",
+    widthByLocale: {
+      ko: "3.75rem",
+      en: "4.875rem",
+    },
+  },
+];

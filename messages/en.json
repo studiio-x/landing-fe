@@ -8,6 +8,18 @@
     "login": "Log in"
   },
   "dashboard": {
+    "header": {
+      "backLabel": "Go back",
+      "goDashboardLabel": "Go to dashboard",
+      "howToUse": "How to use",
+      "settings": "Settings",
+      "planManage": "Manage plan",
+      "logout": "Log out",
+      "workbenchTabs": {
+        "studio": "Studio",
+        "model": "Model"
+      }
+    },
     "title": "DASH BOARD",
     "cards": {
       "studio": {
