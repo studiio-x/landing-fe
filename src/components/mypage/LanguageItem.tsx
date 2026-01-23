@@ -1,4 +1,4 @@
-import { LanguageOption } from "@/types/mypage/language";
+import { LanguageOption } from "@/types/mypage/language.type";
 import clsx from "clsx";
 
 type LanguageItemProps = {

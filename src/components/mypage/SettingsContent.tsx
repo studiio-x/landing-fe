@@ -2,7 +2,7 @@ import { Pencil, ProfileDefault } from "@/assets/icons";
 import GlassButton from "@/components/common/GlassButton";
 import { useState, useRef, useEffect } from "react";
 import LanguageDropdown from "./LanguageDropdown";
-import { LanguageType } from "@/types/mypage/language";
+import { LanguageType } from "@/types/mypage/language.type";
 
 const SettingsContent = () => {
   const [lang, setLang] = useState<LanguageType>("ko");
