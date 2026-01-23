@@ -48,7 +48,7 @@
         "studio": "Studio",
         "model": "Model"
       },
-      "editModeGuide": "Mark all the areas you want to edit.",
+      "editModeGuide": "Highlight all the parts you want to edit.",
       "uploadedImageAlt": "Uploaded image",
       "emptyState": {
         "title": "Ideas to Explore",
@@ -85,6 +85,31 @@
         "closeLabel": "Close",
         "openSearchLabel": "Open search",
         "recommended": "Recommended"
+      },
+      "productTab": {
+        "uploadGuide": "Click to upload product image"
+      },
+      "chatbot": {
+        "title": "StudioX Chatbot",
+        "subtitle": "Ask the chatbot for your desired edits.",
+        "disclaimer": "AI may produce inaccurate results.",
+        "editModeGuide": "Mark the areas to edit,\nthen describe your changes.",
+        "cancel": "Cancel",
+        "submitInput": "Describe",
+        "inputPlaceholder": "Tell the AI what you want to change.",
+        "sendLabel": "Send",
+        "attachmentAlt": "Attachment",
+        "recommendedLabel": "Recommended",
+        "plusMenu": {
+          "add": "Add",
+          "uploadReferenceImage": "Upload reference",
+          "markEditArea": "Mark Areas\nto Edit"
+        },
+        "recommendations": {
+          "0": "I have a reference image I want to recreate.",
+          "1": "I’ll describe the background, you create it.",
+          "2": "Suggest a concept that matches the product."
+        }
       }
     }
   }

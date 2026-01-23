@@ -3,6 +3,7 @@
 import { Image, Plus, Scissor } from "@/assets/icons";
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
+import { useLocale, useTranslations } from "next-intl";
 
 interface PlusMenuProps {
   onUploadImage: (file: File) => void;
@@ -10,6 +11,8 @@ interface PlusMenuProps {
 }
 
 const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
+  const t = useTranslations("dashboard.studio.chatbot.plusMenu");
+  const locale = useLocale();
   const plusWrapRef = useRef<HTMLDivElement | null>(null);
 
   const [isPlusOpen, setIsPlusOpen] = useState(false);
@@ -46,7 +49,7 @@ const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
     >
       <button
         type="button"
-        aria-label="추가"
+        aria-label={t("add")}
         onClick={() => {
           setIsPlusPinned((prev) => !prev);
           setIsPlusOpen(true);
@@ -70,8 +73,18 @@ const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
       >
         <div className="relative w-[13.25rem] rounded-md p-[1px] bg-gradient-to-b from-Red-500/25 backdrop-blur-[8px] to-Red-500/10 shadow-[0_0px_20px_rgba(8,8,8,0.12)]">
           <div className="absolute inset-px bg-Grey-600/75 pointer-events-none rounded-md" />
-          <div className="relative px-8 pt-5 pb-4 rounded-md bg-Grey-600/75">
-            <div className="grid grid-cols-2 gap-7">
+          <div
+            className={clsx(
+              "relative px-8 pt-5 pb-4 rounded-md bg-Grey-600/75",
+              locale === "en" && "pr-[1.84rem]",
+            )}
+          >
+            <div
+              className={clsx(
+                "grid grid-cols-2 gap-7",
+                locale === "en" && "gap-[1.59rem]",
+              )}
+            >
               <label className="group flex flex-col items-center gap-2 cursor-pointer ">
                 <input
                   type="file"
@@ -93,10 +106,8 @@ const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
                   </div>
                 </div>
 
-                <span className="Caption_medium text-Grey-100 text-center">
-                  참고 이미지
-                  <br />
-                  업로드
+                <span className="Caption_medium text-Grey-100 text-center whitespace-pre-line">
+                  {t("uploadReferenceImage")}
                 </span>
               </label>
 
@@ -115,10 +126,13 @@ const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
                   </div>
                 </div>
 
-                <span className="Caption_medium text-Grey-100 text-center">
-                  수정할 부분
-                  <br />
-                  표시하기
+                <span
+                  className={clsx(
+                    "Caption_medium text-Grey-100 text-center whitespace-pre-line",
+                    locale === "en" && "w-[4.0625rem]",
+                  )}
+                >
+                  {t("markEditArea")}
                 </span>
               </button>
             </div>

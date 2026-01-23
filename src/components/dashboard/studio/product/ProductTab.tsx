@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import { useTranslations } from "next-intl";
 
 import { Download } from "@/assets/icons";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
@@ -8,6 +9,7 @@ interface ProductTabProps {
 }
 
 const ProductTab = ({ setUploadedImage }: ProductTabProps) => {
+  const t = useTranslations("dashboard.studio.productTab");
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { resetPaint } = useStudioMarkStore();
@@ -85,10 +87,8 @@ const ProductTab = ({ setUploadedImage }: ProductTabProps) => {
       >
         <div className="flex flex-col items-center gap-5">
           <Download className="w-7 h-7" />
-          <span className="Body_1_medium text-Grey-200 text-center">
-            클릭하여 상품 이미지를
-            <br />
-            업로드해 주세요.
+          <span className="Body_1_medium text-Grey-200 text-center whitespace-pre-line">
+            {t("uploadGuide")}
           </span>
         </div>
       </button>

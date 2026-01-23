@@ -1,5 +1,6 @@
 import { ChatItem } from "@/types/dashboard/chat.type";
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 
 const TypingDots = () => {
   return (
@@ -12,6 +13,8 @@ const TypingDots = () => {
 };
 
 const ChatMessageList = ({ messages }: { messages: ChatItem[] }) => {
+  const t = useTranslations("dashboard.studio.chatbot");
+
   return (
     <div className="flex flex-col gap-4">
       {messages.map((m) => {
@@ -41,7 +44,7 @@ const ChatMessageList = ({ messages }: { messages: ChatItem[] }) => {
                       <img
                         key={a.id}
                         src={a.imageUrl}
-                        alt="attachment"
+                        alt={t("attachmentAlt")}
                         className="w-[8.25rem] h-[8.25rem] rounded object-cover"
                         loading="lazy"
                       />
@@ -77,9 +80,13 @@ const ChatRecommendations = ({
   items: readonly string[];
   onClickItem: (text: string) => void;
 }) => {
+  const t = useTranslations("dashboard.studio.chatbot");
+
   return (
     <div className="flex flex-col gap-2 h-full justify-end">
-      <span className="Body_3_semibold text-Grey-300 pr-1 self-end">추천</span>
+      <span className="Body_3_semibold text-Grey-300 pr-1 self-end">
+        {t("recommendedLabel")}
+      </span>
 
       <div className="flex flex-col gap-2 items-end">
         {items.map((text) => (

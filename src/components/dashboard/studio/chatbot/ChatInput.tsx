@@ -2,6 +2,7 @@
 
 import { Send } from "@/assets/icons";
 import { useLayoutEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import clsx from "clsx";
 import PlusMenu from "./PlusMenu";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
@@ -15,6 +16,7 @@ interface ChatInputProps {
 }
 
 const ChatInput = ({ onSend }: ChatInputProps) => {
+  const t = useTranslations("dashboard.studio.chatbot");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [value, setValue] = useState("");
 
@@ -76,7 +78,7 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="AI에게 수정하고 싶은 내용을 알려주세요."
+          placeholder={t("inputPlaceholder")}
           rows={1}
           className="w-[16.375rem] pt-[2px] bg-transparent min-h-6 max-h-20 placeholder:text-Grey-400 text-Grey-100 resize-none outline-none Body_3_medium"
         />
@@ -90,7 +92,7 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
             }}
           />
 
-          <button type="button" aria-label="전송" onClick={sendMessage} className="group">
+          <button type="button" aria-label={t("sendLabel")} onClick={sendMessage} className="group">
             <Send className="w-6 h-6 transition-colors [&_path]:fill-Grey-200 group-hover:[&_path]:fill-Red-500" />
           </button>
         </div>
