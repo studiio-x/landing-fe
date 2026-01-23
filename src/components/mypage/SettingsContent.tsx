@@ -3,9 +3,13 @@ import GlassButton from "@/components/common/GlassButton";
 import { useState, useRef, useEffect } from "react";
 import LanguageDropdown from "./LanguageDropdown";
 import { LanguageType } from "@/types/mypage/language.type";
+import { useRouter, usePathname } from "@/i18n/routing";
+import { useLocale } from "next-intl";
 
 const SettingsContent = () => {
-  const [lang, setLang] = useState<LanguageType>("ko");
+  const locale = useLocale() as LanguageType;
+  const router = useRouter();
+  const pathname = usePathname();
   const [nickname, setNickname] = useState("임세민");
   const [isEditingNickname, setIsEditingNickname] = useState(false);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
@@ -109,8 +113,8 @@ const SettingsContent = () => {
         </div>
 
         <LanguageDropdown
-          value={lang}
-          onChange={(v) => setLang(v as LanguageType)}
+          value={locale}
+          onChange={(v) => router.replace(pathname, { locale: v })}
         />
       </div>
 
