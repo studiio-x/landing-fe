@@ -26,8 +26,10 @@ const SettingsContent = () => {
   const handleNicknameSubmit = () => {
     if (nickname.trim()) {
       prevNicknameRef.current = nickname;
-      setIsEditingNickname(false);
+    } else {
+      setNickname(prevNicknameRef.current);
     }
+    setIsEditingNickname(false);
   };
 
   const handleNicknameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -82,6 +84,7 @@ const SettingsContent = () => {
                   )}
                 </span>
                 <button
+                  aria-label="닉네임 수정"
                   onClick={() => startEditingNickname()}
                   className="w-6 h-6 rounded-full bg-Grey-500 flex justify-center items-center"
                 >
