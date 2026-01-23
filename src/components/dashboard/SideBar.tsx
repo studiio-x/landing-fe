@@ -3,10 +3,11 @@
 import { Down } from "@/assets/icons";
 import Link from "next/link";
 import { useActivePage } from "@/hooks/useActivePage";
+import { PATHS } from "@/constants/common/paths";
 
 const PAGE_CONFIG = {
-  대시보드: "/dashboard",
-  프로젝트: "/dashboard/project",
+  대시보드: PATHS.DASHBOARD,
+  프로젝트: PATHS.DASHBOARD_PROJECT,
 } as const;
 
 type PageName = keyof typeof PAGE_CONFIG;

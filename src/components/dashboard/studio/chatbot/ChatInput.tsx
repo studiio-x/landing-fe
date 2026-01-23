@@ -5,7 +5,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import PlusMenu from "./PlusMenu";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
-import { ChatAttachment, ChatSendPayload } from "@/types/dashboard/chat";
+import { ChatAttachment, ChatSendPayload } from "@/types/dashboard/chat.type";
 
 const MIN_H = 24;
 const MAX_H = 80;
