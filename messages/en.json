@@ -1,0 +1,24 @@
+{
+  "dashboard": {
+    "title": "DASH BOARD",
+    "cards": {
+      "studio": {
+        "title": "Studio\nShoot",
+        "content": "Upload one\nproduct photo,\nget a studio\nshot instantly"
+      },
+      "model": {
+        "title": "Model\nShoot",
+        "content": "Upload one\nproduct photo,\nget a model\nconcept shot\ninstantly"
+      },
+      "video": {
+        "title": "AI Video\nGeneration",
+        "content": "Upload one\nimage, get an\nad video in 3\nseconds"
+      }
+    },
+    "template": {
+      "sectionTitle": "Start with a sample template",
+      "imageAlt": "Template {id}",
+      "hoverText": "Generate image\nwith this background"
+    }
+  }
+}
