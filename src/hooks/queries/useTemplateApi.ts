@@ -17,8 +17,12 @@ export const useTemplatesByKeyword = (params: GetTemplatesByKeywordParams) =>
     queryFn: () => getTemplatesByKeyword(params),
   });
 
-export const useTemplatesByCategory = (params: GetTemplatesByCategoryParams) =>
+export const useTemplatesByCategory = (
+  params: GetTemplatesByCategoryParams,
+  enabled = true
+) =>
   useQuery({
     queryKey: queryKeys.templates.categoryList(params),
     queryFn: () => getTemplatesByCategory(params),
+    enabled,
   });
