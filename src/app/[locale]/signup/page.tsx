@@ -61,7 +61,7 @@ const SignUp = () => {
               </span>
             </button>
 
-            <GlassButton variant="red" size="xl" className="Body_2_semibold mt-10 w-full" disabled={isSubmitDisabled}>
+            <GlassButton type="submit" variant="red" size="xl" className="Body_2_semibold mt-10 w-full" disabled={isSubmitDisabled}>
               {t("submit")}
            </GlassButton>
            
