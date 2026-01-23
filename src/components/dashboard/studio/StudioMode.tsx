@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 import TabContent from "@/components/dashboard/studio/common/TabContent";
 import TabPanel from "@/components/dashboard/studio/common/TabPanel";
@@ -20,6 +21,7 @@ const DUMMY_HISTORY: StudioHistoryItem[] = [
 ];
 
 const StudioMode = () => {
+  const t = useTranslations("dashboard.studio");
   const [activeTab, setActiveTab] = useState(0);
   const [naturalSize, setNaturalSize] = useState<{
     w: number;
@@ -78,7 +80,7 @@ const StudioMode = () => {
         {isEditMode && !hasPaint && (
           <div className="absolute left-1/2 bottom-6 -translate-x-1/2 z-40">
             <div className="rounded-md bg-Grey-900 px-6 py-2 Subhead_2_medium text-White whitespace-nowrap">
-              수정하고 싶은 모든 부분을 표시해 주세요.
+              {t("editModeGuide")}
             </div>
           </div>
         )}
@@ -115,7 +117,7 @@ const StudioMode = () => {
                 width={590}
                 height={646}
                 src={previewUrl}
-                alt="업로드 이미지"
+                alt={t("uploadedImageAlt")}
                 className="w-full h-full object-contain"
                 onLoad={(e) => {
                   const img = e.currentTarget as HTMLImageElement;
@@ -136,15 +138,13 @@ const StudioMode = () => {
           ) : (
             <div className="flex flex-col gap-3 items-center">
               <h2 className="Subhead_1_semibold text-Grey-300">
-                추천 아이디어
+                {t("emptyState.title")}
               </h2>
               <div className="h-6 w-px bg-Grey-300" />
               <div className="flex flex-col gap-1 text-Grey-400 Body_2_medium items-center">
-                <span>제품을 강조한 고급 프로모션 이미지</span>
-                <span>
-                  소셜 미디어 캠페인을 위한 라이프스타일 컨텍스트 이미지
-                </span>
-                <span>달에서 촬영한 자동차 광고 이미지</span>
+                <span>{t("emptyState.ideas.promotion")}</span>
+                <span>{t("emptyState.ideas.lifestyle")}</span>
+                <span>{t("emptyState.ideas.creative")}</span>
               </div>
             </div>
           )}

@@ -37,6 +37,55 @@
       "badge": "Continue Project",
       "title": "Choose the task you want.",
       "backButtonLabel": "Go to previous page"
+    },
+    "studio": {
+      "tabs": {
+        "product": "Product",
+        "background": "Background",
+        "aiChatbot": "AI Chatbot"
+      },
+      "workbenchTabs": {
+        "studio": "Studio",
+        "model": "Model"
+      },
+      "editModeGuide": "Mark all the areas you want to edit.",
+      "uploadedImageAlt": "Uploaded image",
+      "emptyState": {
+        "title": "Ideas to Explore",
+        "ideas": {
+          "promotion": "Luxury promotional imagery featuring products",
+          "lifestyle": "Lifestyle context shots for social media campaign",
+          "creative": "A car commercial shot on the moon"
+        }
+      },
+      "productImageRequiredModal": {
+        "closeLabel": "Close",
+        "title": "Please upload\na product image first",
+        "description": "A product image is required\nto apply a background image.",
+        "uploadGuide": "Click to upload product image"
+      },
+      "historyPanel": {
+        "emptyTitle": "Make your\nfirst generation",
+        "emptyDescription": "Create beautiful images\nwith nothing but a text.",
+        "title": "History",
+        "imageAlt": "Generated image {index}"
+      },
+      "backgroundTab": {
+        "categories": {
+          "display": "General Display",
+          "fabric": "Fabric & Velvet",
+          "outdoor": "Outdoor"
+        },
+        "uploadBackground": "Upload Background",
+        "generate": "Generate"
+      },
+      "searchBar": {
+        "placeholder": "Search categories",
+        "searchLabel": "Search",
+        "closeLabel": "Close",
+        "openSearchLabel": "Open search",
+        "recommended": "Recommended"
+      }
     }
   }
 }

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 import { Plus } from "@/assets/icons";
 
 import BackgroundSwiper from "./BackgroundSwiper";
@@ -14,6 +15,7 @@ interface BackgroundTabProps {
 }
 
 const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
+  const t = useTranslations("dashboard.studio.backgroundTab");
   const [isSearching, setIsSearching] = useState(false);
   const [selectedBackgroundId, setSelectedBackgroundId] = useState<
     string | null
@@ -63,21 +65,21 @@ const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
       >
         <BackgroundSwiper
           id="display"
-          title="일반 디스플레이"
+          title={t("categories.display")}
           items={displayBackgrounds}
           selectedId={selectedBackgroundId}
           onSelect={setSelectedBackgroundId}
         />
         <BackgroundSwiper
           id="fabric"
-          title="패브릭 & 벨벳"
+          title={t("categories.fabric")}
           items={fabricBackgrounds}
           selectedId={selectedBackgroundId}
           onSelect={setSelectedBackgroundId}
         />
         <BackgroundSwiper
           id="outdoor"
-          title="아웃도어"
+          title={t("categories.outdoor")}
           items={outdoorBackgrounds}
           selectedId={selectedBackgroundId}
           onSelect={setSelectedBackgroundId}
@@ -91,7 +93,7 @@ const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
           className="Body_3_semibold"
           leftIcon={<Plus className="w-[1.375rem] h-[1.375rem]" />}
         >
-          배경 업로드
+          {t("uploadBackground")}
         </GlassButton>
 
         <GlassButton
@@ -101,7 +103,7 @@ const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
           className="Body_2_semibold"
           onClick={handleClickGenerate}
         >
-          생성하기
+          {t("generate")}
         </GlassButton>
       </div>
 

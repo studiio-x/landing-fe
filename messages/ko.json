@@ -37,6 +37,55 @@
       "badge": "프로젝트 이어하기",
       "title": "원하는 작업을 선택해 주세요",
       "backButtonLabel": "이전 페이지로 이동"
+    },
+    "studio": {
+      "tabs": {
+        "product": "제품",
+        "background": "배경",
+        "aiChatbot": "AI 챗봇"
+      },
+      "workbenchTabs": {
+        "studio": "스튜디오",
+        "model": "모델"
+      },
+      "editModeGuide": "수정하고 싶은 모든 부분을 표시해 주세요.",
+      "uploadedImageAlt": "업로드 이미지",
+      "emptyState": {
+        "title": "추천 아이디어",
+        "ideas": {
+          "promotion": "제품을 강조한 고급 프로모션 이미지",
+          "lifestyle": "소셜 미디어 캠페인을 위한 라이프스타일 컨텍스트 이미지",
+          "creative": "달에서 촬영한 자동차 광고 이미지"
+        }
+      },
+      "productImageRequiredModal": {
+        "closeLabel": "닫기",
+        "title": "제품 이미지를\n먼저 업로드해 주세요",
+        "description": "배경 이미지를 적용하려면 제품 이미지가 필요해요.",
+        "uploadGuide": "클릭하여 상품 이미지를\n업로드해 주세요."
+      },
+      "historyPanel": {
+        "emptyTitle": "첫 번째 이미지를\n생성해 보세요",
+        "emptyDescription": "텍스트 하나로\n이미지를 만들어 보세요.",
+        "title": "기록",
+        "imageAlt": "생성 이미지 {index}"
+      },
+      "backgroundTab": {
+        "categories": {
+          "display": "일반 디스플레이",
+          "fabric": "패브릭 & 벨벳",
+          "outdoor": "아웃도어"
+        },
+        "uploadBackground": "배경 업로드",
+        "generate": "생성하기"
+      },
+      "searchBar": {
+        "placeholder": "카테고리 검색",
+        "searchLabel": "검색",
+        "closeLabel": "닫기",
+        "openSearchLabel": "검색 열기",
+        "recommended": "추천"
+      }
     }
   }
 }
