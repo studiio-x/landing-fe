@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 
 import DashboardCard from "@/components/dashboard/DashboardCard";
 import { DASHBOARD_CARDS } from "@/constants/dashboard/card";
@@ -13,6 +14,7 @@ import { TemplateCategory } from "@/types/api/template.type";
 const CATEGORY_MAP: TemplateCategory[] = ["STUDIO", "MODEL", "VIDEO"];
 
 const DashboardPage = () => {
+  const t = useTranslations("dashboard");
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [pinnedIndex, setPinnedIndex] = useState<number | null>(null);
 
@@ -45,22 +47,22 @@ const DashboardPage = () => {
         <div className="mx-auto mt-[3.25rem]">
           <div className="w-full flex flex-col pr-[2.125rem] gap-[1.94rem]">
             <h1 className="Heading_1_bold bg-gradient-to-b from-Red-300 to-Red-500 bg-clip-text text-transparent">
-              대시보드
+              {t("title")}
             </h1>
 
             <div onMouseLeave={() => setHoverIndex(null)}>
               <div className="flex items-center gap-9">
                 {DASHBOARD_CARDS.map((card, idx) => (
                   <div
-                    key={idx}
+                    key={card.key}
                     onMouseEnter={() => setHoverIndex(idx)}
                     onClick={() =>
                       setPinnedIndex((prev) => (prev === idx ? null : idx))
                     }
                   >
                     <DashboardCard
-                      title={card.title}
-                      content={card.content}
+                      title={t(`cards.${card.key}.title`)}
+                      content={t(`cards.${card.key}.content`)}
                       mediaSrc={card.mediaSrc}
                       isActive={activeIndex === idx}
                     />
@@ -71,7 +73,7 @@ const DashboardPage = () => {
               {activeIndex !== null && (
                 <section className="mt-[3.44rem] mb-[3.75rem]">
                   <h2 className="text-Grey-100 Subhead_1_semibold mb-4 ml-4">
-                    예시 템플릿으로 시작하기
+                    {t("template.sectionTitle")}
                   </h2>
 
                   <div className="rounded-lg bg-Grey-800 py-6 px-[1.63rem]">
@@ -94,15 +96,13 @@ const DashboardPage = () => {
                             >
                               <Image
                                 src={template.imageUrl}
-                                alt={`템플릿 ${template.templateId}`}
+                                alt={t("template.imageAlt", { id: template.templateId })}
                                 fill
                                 className="object-cover"
                               />
                               <div className="absolute inset-0 flex items-center justify-center bg-Grey-900 opacity-0 transition-opacity duration-150 group-hover:opacity-90">
-                                <span className="Body_3_semibold text-Grey-50 text-center">
-                                  이 배경으로
-                                  <br />
-                                  이미지 생성하기
+                                <span className="Body_3_semibold text-Grey-50 text-center whitespace-pre-line">
+                                  {t("template.hoverText")}
                                 </span>
                               </div>
                             </div>

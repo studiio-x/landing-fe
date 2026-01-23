@@ -19,6 +19,16 @@
       "sectionTitle": "Start with a sample template",
       "imageAlt": "Template {id}",
       "hoverText": "Generate image\nwith this background"
+    },
+    "create": {
+      "badge": "Start New Project",
+      "title": "Choose the task you want.",
+      "backButtonLabel": "Go to previous page"
+    },
+    "continue": {
+      "badge": "Continue Project",
+      "title": "Choose the task you want.",
+      "backButtonLabel": "Go to previous page"
     }
   }
 }

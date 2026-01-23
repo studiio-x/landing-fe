@@ -6,7 +6,7 @@ import { useState } from "react";
 import MyPageTabs from "@/components/mypage/MyPageTabs";
 import SettingsContent from "@/components/mypage/SettingsContent";
 import UpgradeContent from "@/components/mypage/UpgradeContent";
-import { TabKey } from "@/types/mypage/tab";
+import { TabKey } from "@/types/mypage/tab.type";
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState<TabKey>("settings");
