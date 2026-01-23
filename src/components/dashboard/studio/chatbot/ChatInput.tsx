@@ -5,7 +5,7 @@ import { useLayoutEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import PlusMenu from "./PlusMenu";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
-import { ChatAttachment, ChatSendPayload } from "@/types/dashboard/chat";
+import { ChatAttachment, ChatSendPayload } from "@/types/dashboard/chat.type";
 
 const MIN_H = 24;
 const MAX_H = 80;
@@ -18,7 +18,7 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [value, setValue] = useState("");
 
-  const { setMarkMode, setRects } = useStudioMarkStore();
+  const { setEditMode, resetPaint } = useStudioMarkStore();
   const sendMessage = () => {
     const text = value.trim();
     if (!text) return;
@@ -67,7 +67,7 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
         "relative rounded-md p-[1px]",
         hasValue
           ? "bg-gradient-to-b from-Red-500/45 to-Red-500/15"
-          : "bg-transparent"
+          : "bg-transparent",
       )}
     >
       <div className="bg-Grey-600 px-4 py-3 rounded-md flex gap-1">
@@ -85,13 +85,13 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
           <PlusMenu
             onUploadImage={handleUploadReferenceImage}
             onClickMark={() => {
-              setMarkMode(true);
-              setRects([]);
+              resetPaint();
+              setEditMode(true);
             }}
           />
 
-          <button type="button" aria-label="전송" onClick={sendMessage}>
-            <Send className="w-6 h-6 transition-colors text-Grey-200 hover:text-Red-500" />
+          <button type="button" aria-label="전송" onClick={sendMessage} className="group">
+            <Send className="w-6 h-6 transition-colors [&_path]:fill-Grey-200 group-hover:[&_path]:fill-Red-500" />
           </button>
         </div>
       </div>

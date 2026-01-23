@@ -2,13 +2,14 @@ import Link from "next/link";
 import { Close, Logo, Menu } from "@/assets/icons";
 import OpenBtn from "./OpenBtn";
 import { useEffect, useState } from "react";
+import { PATHS, LANDING_SECTION_HASH } from "@/constants/common/paths";
 
 const NAV_LINKS = [
-  { href: "/guide", label: "User Guide" },
-  { href: "/guide#reviews", label: "User Review" },
-  { href: "/guide#contact", label: "Contact Us" },
-  { href: "/price", label: "Price" },
-  { href: "/#gallery", label: "Gallery" },
+  { href: PATHS.GUIDE, label: "User Guide" },
+  { href: `${PATHS.GUIDE}${LANDING_SECTION_HASH.REVIEWS}`, label: "User Review" },
+  { href: `${PATHS.GUIDE}${LANDING_SECTION_HASH.CONTACT}`, label: "Contact Us" },
+  { href: PATHS.PRICE, label: "Price" },
+  { href: `${PATHS.HOME}${LANDING_SECTION_HASH.GALLERY}`, label: "Gallery" },
 ] as const;
 
 const Header = () => {
@@ -36,7 +37,7 @@ const Header = () => {
       <header className="flex w-full justify-between px-3 pt-4 pb-3 lg:px-8 lg:pt-5 lg:pb-3 2xl:px-[6.12rem]">
         {/* Logo & Desktop Navigation */}
         <div className="flex w-fit items-center">
-          <Link href="/">
+          <Link href={PATHS.HOME}>
             <Logo className="mr-12 w-[5.3125rem]" />
           </Link>
           <nav className="Body_2_semibold hidden gap-10 lg:flex">

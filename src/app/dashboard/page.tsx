@@ -1,11 +1,16 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 
 import DashboardCard from "@/components/dashboard/DashboardCard";
 import { DASHBOARD_CARDS } from "@/constants/dashboard/card";
 import Header from "@/components/dashboard/Header";
 import SideBar from "@/components/dashboard/SideBar";
+import { useTemplatesByCategory } from "@/hooks/queries/useTemplateApi";
+import { TemplateCategory } from "@/types/api/template.type";
+
+const CATEGORY_MAP: TemplateCategory[] = ["STUDIO", "MODEL", "VIDEO"];
 
 const DashboardPage = () => {
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
@@ -16,17 +21,22 @@ const DashboardPage = () => {
     [pinnedIndex, hoverIndex]
   );
 
-  const templates = useMemo<{ id: string }[]>(() => {
-    if (activeIndex === null) return [];
-    const counts = [20, 10, 15]; // TODO: api 연동
+  const category = activeIndex !== null ? CATEGORY_MAP[activeIndex] : null;
 
-    return Array.from({ length: counts[activeIndex] }, (_, i) => ({
-      id: `card-${activeIndex}-template-${i}`,
-    }));
-  }, [activeIndex]);
+  const { data, isLoading } = useTemplatesByCategory(
+    {
+      category: category ?? "STUDIO",
+      pageNum: 1,
+      limit: 20,
+    },
+    category !== null
+  );
+
+  const templates = data?.templates ?? [];
+  const showSkeleton = isLoading || templates.length === 0;
 
   return (
-    <main className="relative min-h-screen w-full flex flex-col">
+    <main className="relative min-h-dvh w-full flex flex-col">
       <div className="fixed inset-0 bg-[url('/images/dashboard/background.png')] bg-cover bg-center -z-10 pointer-events-none" />
       <Header />
       
@@ -66,22 +76,37 @@ const DashboardPage = () => {
 
                   <div className="rounded-lg bg-Grey-800 py-6 px-[1.63rem]">
                     <div className="grid grid-cols-5 gap-x-4 gap-y-6">
-                      {templates.map((template) => (
-                        <div
-                          key={template.id}
-                          tabIndex={0}
-                          role="button"
-                          className="w-[11rem] h-[11rem] relative aspect-square rounded overflow-hidden bg-Grey-200 group box-border border border-transparent hover:border-Red-400"
-                        >
-                          <div className="absolute inset-0 flex items-center justify-center bg-Grey-900 opacity-0 transition-opacity duration-150 group-hover:opacity-90">
-                            <span className="Body_3_semibold text-Grey-50 text-center">
-                              이 배경으로
-                              <br />
-                              이미지 생성하기
-                            </span>
-                          </div>
-                        </div>
-                      ))}
+                      {showSkeleton
+                        ? Array.from({ length: 15 }, (_, i) => (
+                            <div
+                              key={`skeleton-${i}`}
+                              className="w-[11rem] h-[11rem] rounded overflow-hidden"
+                            >
+                              <div className="w-full h-full bg-Grey-600 animate-pulse" />
+                            </div>
+                          ))
+                        : templates.map((template) => (
+                            <div
+                              key={template.templateId}
+                              tabIndex={0}
+                              role="button"
+                              className="w-[11rem] h-[11rem] relative aspect-square rounded overflow-hidden bg-Grey-200 group box-border border border-transparent hover:border-Red-400"
+                            >
+                              <Image
+                                src={template.imageUrl}
+                                alt={`템플릿 ${template.templateId}`}
+                                fill
+                                className="object-cover"
+                              />
+                              <div className="absolute inset-0 flex items-center justify-center bg-Grey-900 opacity-0 transition-opacity duration-150 group-hover:opacity-90">
+                                <span className="Body_3_semibold text-Grey-50 text-center">
+                                  이 배경으로
+                                  <br />
+                                  이미지 생성하기
+                                </span>
+                              </div>
+                            </div>
+                          ))}
                     </div>
                   </div>
                 </section>
