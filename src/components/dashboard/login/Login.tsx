@@ -4,6 +4,7 @@ import { Google, Logo } from "@/assets/icons";
 import LoginInput from "./LoginInput";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { PATHS } from "@/constants/common/paths";
 
 export default function Login() {
   const [isPasswordOpen, setIsPasswordOpen] = useState(false);
@@ -51,7 +52,7 @@ export default function Login() {
             </button>
             <button
               className="flex gap-2 justify-center"
-              onClick={() => router.push("/signup")}
+              onClick={() => router.push(PATHS.SIGNUP)}
             >
               <span className="Body_3_regular text-Grey-400">
                 계정이 없으신가요?

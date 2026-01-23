@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { WorkbenchMode } from "@/types/dashboard/mode.type";
 import { WORKBENCH_TABS } from "@/constants/dashboard/tab";
+import { PATHS, QUERY_KEYS } from "@/constants/common/paths";
 
 interface HeaderProps {
   back?: boolean;
@@ -22,12 +23,12 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
   const searchParams = useSearchParams();
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  const mode = (searchParams.get("mode") as WorkbenchMode | null) ?? "studio";
+  const mode = (searchParams.get(QUERY_KEYS.WORKBENCH_MODE) as WorkbenchMode | null) ?? "studio";
   const activeIndex = mode === "model" ? 1 : 0;
 
   const setModeQuery = (nextMode: WorkbenchMode) => {
     const next = new URLSearchParams(searchParams.toString());
-    next.set("mode", nextMode);
+    next.set(QUERY_KEYS.WORKBENCH_MODE, nextMode);
     router.replace(`${pathname}?${next.toString()}`, { scroll: false });
   };
 
@@ -85,7 +86,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
 
         <button
           type="button"
-          onClick={() => router.push("/dashboard")}
+          onClick={() => router.push(PATHS.DASHBOARD)}
           aria-label="대시보드로 이동"
         >
           <Logo className="w-[5.3125rem]" />
@@ -156,7 +157,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
                     <button
                       type="button"
                       className="py-2 pl-5 w-full text-left"
-                      onClick={() => router.push("/mypage")}
+                      onClick={() => router.push(PATHS.MYPAGE)}
                     >
                       설정
                     </button>

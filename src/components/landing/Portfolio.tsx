@@ -5,13 +5,19 @@ import MediaItem from "@/components/landing/MediaItem";
 import { useItemsInfinite } from "@/hooks/useItemsInfinite";
 import type { Category } from "@/types/landing/item.type";
 import { useSearchParams, useRouter } from "next/navigation";
+import { QUERY_KEYS, PORTFOLIO_CATEGORY } from "@/constants/common/paths";
 
-const CATEGORIES: Category[] = ["all", "studio", "model", "image"];
+const CATEGORIES: Category[] = [
+  PORTFOLIO_CATEGORY.ALL,
+  PORTFOLIO_CATEGORY.STUDIO,
+  PORTFOLIO_CATEGORY.MODEL,
+  PORTFOLIO_CATEGORY.IMAGE,
+];
 
 export default function Portfolio() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const category = (searchParams.get("category") as Category) || "all";
+  const category = (searchParams.get(QUERY_KEYS.PORTFOLIO_CATEGORY) as Category) || PORTFOLIO_CATEGORY.ALL;
 
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useItemsInfinite(category, 20);
@@ -42,10 +48,10 @@ export default function Portfolio() {
 
   const handleCategoryChange = (c: Category) => {
     const newParams = new URLSearchParams(searchParams.toString());
-    if (c === "all") {
-      newParams.delete("category");
+    if (c === PORTFOLIO_CATEGORY.ALL) {
+      newParams.delete(QUERY_KEYS.PORTFOLIO_CATEGORY);
     } else {
-      newParams.set("category", c);
+      newParams.set(QUERY_KEYS.PORTFOLIO_CATEGORY, c);
     }
     router.push(`?${newParams.toString()}`, { scroll: false });
   };
