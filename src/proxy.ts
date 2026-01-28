@@ -34,8 +34,9 @@ export default function proxy(request: NextRequest) {
     return handleI18nRouting(request);
   }
 
-  // 유효하지 않은 경로 → 404
-  return NextResponse.rewrite(new URL("/not-found", request.url));
+  // 유효하지 않은 경로 → URL 유지하면서 404
+  const locale = request.cookies.get("NEXT_LOCALE")?.value || routing.defaultLocale;
+  return NextResponse.rewrite(new URL(`/${locale}${pathname}`, request.url));
 }
 
 export const config = {
