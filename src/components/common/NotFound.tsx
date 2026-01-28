@@ -14,7 +14,7 @@ const NotFound = () => {
       <div className="fixed inset-0 bg-[url('/images/dashboard/create-background.png')] bg-no-repeat bg-top [background-size:100%_auto] -z-10 pointer-events-none opacity-50" />
 
       <div className="flex flex-col items-center justify-center flex-1 pb-[7.8125rem]">
-        <div className="py-2 px-5 bg-White/3 border border-Grey-700 rounded-[80px] text-Grey-100 mb-7">
+        <div className="py-2 px-5 bg-White/[0.03] border border-Grey-700 rounded-[80px] text-Grey-100 mb-7 Subhead_2_medium">
           404 error
         </div>
 
