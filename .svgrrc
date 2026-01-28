@@ -12,7 +12,8 @@
   "replaceAttrValues": {
     "#000000": "currentColor",
     "#626B7F": "currentColor",
-    "#A9B4C6": "currentColor"
+    "#A9B4C6": "currentColor",
+    "#808A9D": "currentColor"
   },
   "svgoConfig": {
     "plugins": [

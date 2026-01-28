@@ -65,7 +65,7 @@ const SvgBack = ({
         gradientUnits="userSpaceOnUse"
       >
         <stop stopColor="#1D2025" />
-        <stop offset={1} stopColor="#808A9D" />
+        <stop offset={1} stopColor="currentColor" />
       </linearGradient>
       <clipPath id="back_svg__a" transform="translate(5.09 5.09)">
         <rect

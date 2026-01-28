@@ -1,23 +1,43 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Down, FolderBack, FolderFront } from "@/assets/icons";
+import { Down } from "@/assets/icons";
 import Header from "@/components/dashboard/Header";
 import SideBar from "@/components/dashboard/SideBar/SideBar";
-import Image from "next/image";
 import { useEffect } from "react";
+import FolderItem from "@/components/dashboard/project/FolderItem";
 
 const mockData = [
   {
     name: "Handbag",
-    imageUrl: [1, 2, 3, 4].map((_) => "/images/project/mockData.png"),
+    isFolder: true,
+    imageUrl: [1, 2, 3, 4, 5, 6].map((_) => "/images/project/mockData.png"),
   },
   {
     name: "Cosmetics Visuals",
-    imageUrl: [1, 2, 3, 4].map((_) => "/images/project/mockData.png"),
+    isFolder: true,
+    imageUrl: [
+      "/images/project/mockData.png",
+      "/images/landing/product1.png",
+      "/images/landing/product2.png",
+      "/images/landing/product3.png",
+      "/images/landing/product4.png",
+      "/images/landing/product5.png",
+    ],
   },
   {
     name: "Cosmetics Visuals",
-    imageUrl: [1, 2, 3, 4].map((_) => "/images/project/mockData.png"),
+    isFolder: true,
+    imageUrl: [1, 2, 3, 4, 5, 6].map((_) => "/images/project/mockData.png"),
+  },
+  {
+    name: "제목을 입력해주세요",
+    isFolder: false,
+    imageUrl: "/images/project/mockData.png",
+  },
+  {
+    name: "제목을 입력해주세요",
+    isFolder: false,
+    imageUrl: "/images/project/mockData.png",
   },
 ];
 const ProjectPage = () => {
@@ -59,26 +79,8 @@ const ProjectPage = () => {
             </div>
           </div>
           <section className="grid grid-cols-3 w-full gap-[2.25rem] mt-8">
-            {mockData.map((folder, index) => (
-              <div key={index} className="relative">
-                <FolderBack className="w-[17.4375rem]" />
-                <span className="absolute bottom-5 Body_1_semibold z-10 left-1/2 -translate-x-1/2">
-                  {folder.name}
-                </span>
-                <div className="top-8 absolute flex ml-[3.13rem]">
-                  {folder.imageUrl.map((image, index) => (
-                    <Image
-                      src={image}
-                      key={index}
-                      alt="폴더이미지"
-                      width={92}
-                      height={92}
-                      className={`${index % 2 === 0 ? "mt-[1.06rem]" : ""} -ml-[2.19rem] w-[5.75rem] h-[5.75rem]`}
-                    />
-                  ))}
-                </div>
-                <FolderFront className="max-w-[19.375rem] absolute bottom-0 x-5 backdrop-blur-sm overflow-clip" />
-              </div>
+            {mockData.map((lists, index) => (
+              <FolderItem lists={lists} index={index} key={index} />
             ))}
           </section>
         </div>
