@@ -5,41 +5,37 @@ import { routing } from "./i18n/routing";
 
 const handleI18nRouting = createIntlMiddleware(routing);
 
+// [locale] 폴더 안에 실제로 존재하는 페이지들
+const localePages = ["signup", "dashboard", "mypage", "login"];
+
 export default function proxy(request: NextRequest) {
- const { pathname } = request.nextUrl;
+  const { pathname } = request.nextUrl;
 
+  // 다국어 처리가 필요 없는 경로
+  if (pathname.startsWith("/price") || pathname.startsWith("/guide") || pathname === "/") {
+    return NextResponse.next();
+  }
 
- // 다국어 처리가 필요 없는 경로로, next-intl 미들웨어를 건너뜁니다.
- if (pathname.startsWith("/price") || pathname.startsWith("/guide")|| pathname === "/") {
-    // 추후 쿠키연동하면서 미들웨어 추가 예정
-    //    if (pathname === "/login") {
-    //      return NextResponse.next();
-    //    }
+  // 유효한 locale로 시작하는 경로 → next-intl 처리
+  const pathnameHasLocale = routing.locales.some(
+    (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+  );
 
-    //    // /dashboard로 시작하는 모든 경로를 체크합니다.
-    //    if (pathname.startsWith("/dashboard")) {
-    //      const token = request.cookies.get("access_token")?.value;
+  if (pathnameHasLocale) {
+    return handleI18nRouting(request);
+  }
 
-    //      // 토큰이 없으면 로그인 페이지로 리다이렉트합니다.
-    //      if (!token) {
-    //        const loginUrl = new URL("/login", request.url);
-    //        return NextResponse.redirect(loginUrl);
-    //      }
+  // locale 없이 실제 존재하는 페이지로 접근 → locale 붙여서 리다이렉트
+  const isValidPage = localePages.some(
+    (page) => pathname === `/${page}` || pathname.startsWith(`/${page}/`)
+  );
 
-    //      // 토큰이 있으면 API 요청을 위해 헤더에 토큰을 추가합니다.
-    //      const requestHeaders = new Headers(request.headers);
-    //      requestHeaders.set("Authorization", token);
+  if (isValidPage) {
+    return handleI18nRouting(request);
+  }
 
-    //      return NextResponse.next({
-    //        request: {
-    //          headers: requestHeaders,
-    //        },
-    //      });
-    //    }
-
-   return NextResponse.next();
- }
- return handleI18nRouting(request);
+  // 유효하지 않은 경로 → 404
+  return NextResponse.rewrite(new URL("/not-found", request.url));
 }
 
 export const config = {
