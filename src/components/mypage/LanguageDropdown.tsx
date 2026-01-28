@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import clsx from "clsx";
 import { Down } from "@/assets/icons";
 import { LANGUAGE_OPTIONS } from "@/constants/mypage/tab";
-import { LanguageOption, LanguageType } from "@/types/mypage/language";
+import { LanguageOption, LanguageType} from "@/types/mypage/language.type";
 import LanguageItem from "./LanguageItem";
 
 type LanguageDropdownProps = {

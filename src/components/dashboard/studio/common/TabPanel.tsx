@@ -1,5 +1,5 @@
-import { STUDIO_TABS } from "@/constants/dashboard/tab";
 import clsx from "clsx";
+import { useTranslations } from "next-intl";
 
 
 interface TabPanelProps {
@@ -7,13 +7,17 @@ interface TabPanelProps {
   onChange: (idx: number) => void;
 }
 
+const STUDIO_TAB_KEYS = ["product", "background", "aiChatbot"] as const;
+
 const TabPanel = ({ activeTab, onChange }: TabPanelProps) => {
+  const t = useTranslations("dashboard.studio.tabs");
+
   return (
     <div className="relative pt-4">
       <div className="absolute left-0 right-0 bottom-[-1px] h-px bg-Grey-400" />
 
       <div className="flex">
-        {STUDIO_TABS.map((label, idx) => {
+        {STUDIO_TAB_KEYS.map((key, idx) => {
           const isActive = activeTab === idx;
 
           const widthClass = idx === 1 ? "w-[9.94rem]" : "w-[7.41rem]";
@@ -24,7 +28,7 @@ const TabPanel = ({ activeTab, onChange }: TabPanelProps) => {
 
           return (
             <button
-              key={label}
+              key={key}
               onClick={() => onChange(idx)}
               className={clsx(
                 "Subhead_2_medium text-center relative pb-2 transition-colors",
@@ -33,7 +37,7 @@ const TabPanel = ({ activeTab, onChange }: TabPanelProps) => {
                 isActive ? "text-Red-400" : "text-Grey-400"
               )}
             >
-              {label}
+              {t(key)}
               <span
                 className={clsx(
                   "absolute left-0 bottom-[-1px] h-px w-full transition-colors",

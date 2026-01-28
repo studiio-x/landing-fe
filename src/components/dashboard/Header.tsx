@@ -7,6 +7,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { WorkbenchMode } from "@/types/dashboard/mode.type";
 import { WORKBENCH_TABS } from "@/constants/dashboard/tab";
 import { PATHS, QUERY_KEYS } from "@/constants/common/paths";
+import { useLocale, useTranslations } from "next-intl";
 
 interface HeaderProps {
   back?: boolean;
@@ -15,6 +16,9 @@ interface HeaderProps {
 }
 
 const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
+  const t = useTranslations("dashboard.header");
+  const locale = useLocale();
+
   const [isUserOpen, setIsUserOpen] = useState(false);
   const [isUserClicked, setIsUserClicked] = useState(false);
 
@@ -23,7 +27,9 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
   const searchParams = useSearchParams();
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  const mode = (searchParams.get(QUERY_KEYS.WORKBENCH_MODE) as WorkbenchMode | null) ?? "studio";
+  const mode =
+    (searchParams.get(QUERY_KEYS.WORKBENCH_MODE) as WorkbenchMode | null) ??
+    "studio";
   const activeIndex = mode === "model" ? 1 : 0;
 
   const setModeQuery = (nextMode: WorkbenchMode) => {
@@ -32,17 +38,22 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
     router.replace(`${pathname}?${next.toString()}`, { scroll: false });
   };
 
+  const getTabWidth = (m: WorkbenchMode) => {
+    const tab = WORKBENCH_TABS.find((x) => x.mode === m);
+    if (!tab) return "0px";
+    return tab.widthByLocale[locale as "ko" | "en"] ?? tab.widthByLocale.ko;
+  };
+
+  const activeWidth = useMemo(() => getTabWidth(mode), [mode, locale]);
+
   const pillTranslateX = useMemo(() => {
     if (activeIndex === 0) return "0px";
-    return `calc(${WORKBENCH_TABS[0].width})`;
-  }, [activeIndex]);
+    return `calc(${getTabWidth("studio")})`;
+  }, [activeIndex, locale]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (
-        userMenuRef.current &&
-        !userMenuRef.current.contains(event.target as Node)
-      ) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
         setIsUserOpen(false);
         setIsUserClicked(false);
       }
@@ -52,7 +63,6 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isUserOpen]);
 
-  // 유저클릭 이벤트 핸들러
   const onUserClick = () => {
     if (!isUserClicked) {
       setIsUserClicked(true);
@@ -64,7 +74,6 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
     if (isUserOpen) setIsUserClicked(false);
   };
 
-  //유저 호버 이벤트 핸들러
   const userHover = (e: React.MouseEvent<HTMLDivElement>) => {
     if (isUserClicked) return;
     if (e.type === "mouseenter") setIsUserOpen(true);
@@ -75,11 +84,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
     <header className="px-[6.125rem] pt-5 py-3 flex border-b-Grey-800 bg-Black z-[999] border-b-[1.5px] sticky top-0 left-0 h-[var(--header-height)] items-center">
       <div className="flex gap-4 items-center">
         {back && (
-          <button
-            type="button"
-            onClick={() => router.back()}
-            aria-label="뒤로 가기"
-          >
+          <button type="button" onClick={() => router.back()} aria-label={t("backLabel")}>
             <Back className="w-7 h-7" />
           </button>
         )}
@@ -87,7 +92,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
         <button
           type="button"
           onClick={() => router.push(PATHS.DASHBOARD)}
-          aria-label="대시보드로 이동"
+          aria-label={t("goDashboardLabel")}
         >
           <Logo className="w-[5.3125rem]" />
         </button>
@@ -100,29 +105,27 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
             <div
               className="absolute top-1 bottom-1 left-1 rounded-[100px] bg-Grey-600 will-change-[transform,width] transition-[transform,width] duration-300 ease-out"
               style={{
-                width: WORKBENCH_TABS[activeIndex].width,
+                width: activeWidth,
                 transform: `translateX(${pillTranslateX})`,
               }}
             />
 
             <div className="relative flex">
-              {WORKBENCH_TABS.map((t, idx) => {
+              {WORKBENCH_TABS.map((tabItem, idx) => {
                 const isActive = idx === activeIndex;
 
                 return (
                   <button
-                    key={t.mode}
+                    key={tabItem.mode}
                     type="button"
-                    onClick={() => setModeQuery(t.mode)}
+                    onClick={() => setModeQuery(tabItem.mode)}
                     className={clsx(
                       "relative z-10 rounded-[100px] px-4 py-[2px] transition-colors duration-200 whitespace-nowrap",
-                      isActive
-                        ? "text-Grey-50 Body_2_semibold"
-                        : "text-Grey-500 Body_2_medium",
+                      isActive ? "text-Grey-50 Body_2_semibold" : "text-Grey-500 Body_2_medium",
                     )}
-                    style={{ width: t.width }}
+                    style={{ width: getTabWidth(tabItem.mode) }}
                   >
-                    {t.label}
+                    {t(`workbenchTabs.${tabItem.mode}`)}
                   </button>
                 );
               })}
@@ -132,20 +135,14 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
       </div>
 
       <div className="flex gap-10 items-center">
-        {/* 사용방법 */}
         {video && (
           <button type="button" className="flex gap-1 items-center">
             <Video className="w-7 h-7" />
-            <span className="Body_1_medium text-Grey-400">사용 방법</span>
+            <span className="Body_1_medium text-Grey-400">{t("howToUse")}</span>
           </button>
         )}
 
-        <div
-          ref={userMenuRef}
-          className="relative"
-          onMouseEnter={userHover}
-          onMouseLeave={userHover}
-        >
+        <div ref={userMenuRef} className="relative" onMouseEnter={userHover} onMouseLeave={userHover}>
           <Person className="w-7 h-7 cursor-pointer" onClick={onUserClick} />
 
           {isUserOpen && (
@@ -159,20 +156,17 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
                       className="py-2 pl-5 w-full text-left"
                       onClick={() => router.push(PATHS.MYPAGE)}
                     >
-                      설정
+                      {t("settings")}
                     </button>
-                    <button
-                      type="button"
-                      className="py-2 pl-5 w-full text-left"
-                    >
-                      플랜 관리
+                    <button type="button" className="py-2 pl-5 w-full text-left">
+                      {t("planManage")}
                     </button>
                   </div>
                   <button
                     type="button"
                     className="pt-4 pb-2 pl-5 border-t-Grey-500 border-t w-full text-left"
                   >
-                    로그아웃
+                    {t("logout")}
                   </button>
                 </div>
               </div>

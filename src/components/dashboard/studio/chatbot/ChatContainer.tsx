@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { LogoRed } from "@/assets/icons";
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
@@ -15,6 +16,7 @@ import GlassButton from "@/components/common/GlassButton";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 
 const ChatContainer = () => {
+  const t = useTranslations("dashboard.studio.chatbot");
   const { isEditMode, hasPaint, commitPaint, setEditMode } =
     useStudioMarkStore();
   const canSubmit = hasPaint && !!commitPaint;
@@ -22,6 +24,12 @@ const ChatContainer = () => {
   const [messages, setMessages] = useState<ChatItem[]>([]);
   const timersRef = useRef<number[]>([]);
   const bottomRef = useRef<HTMLDivElement | null>(null);
+
+  const recommendations = [
+    t("recommendations.0"),
+    t("recommendations.1"),
+    t("recommendations.2"),
+  ] as const;
 
   const isEmpty = messages.length === 0;
 
@@ -98,17 +106,17 @@ const ChatContainer = () => {
               <LogoRed className="w-[2.0625rem] h-[0.4368rem]" />
             </div>
           </div>
-          <span className="Subhead_2_semibold text-Grey-100">StudioX 챗봇</span>
+          <span className="Subhead_2_semibold text-Grey-100">{t("title")}</span>
         </div>
         <span className="py-1 px-2 Body_3_medium text-Grey-300">
-          원하는 수정 사항을 챗봇에게 요청하세요.
+          {t("subtitle")}
         </span>
       </div>
 
       <div className="flex-1 overflow-y-auto pt-5 pb-2 -mr-2">
         {isEmpty ? (
           <ChatMessage.Recommendations
-            items={CHAT_RECOMMENDATIONS}
+            items={recommendations}
             onClickItem={handleClickRecommendation}
           />
         ) : (
@@ -121,17 +129,13 @@ const ChatContainer = () => {
 
       <div className="flex flex-col gap-[0.65rem] items-center mt-5">
         <ChatInput onSend={(payload) => sendUserMessage(payload)} />
-        <span className="Caption_medium text-Grey-500">
-          AI가 부정확한 결과를 생성할 수 있어요.
-        </span>
+        <span className="Caption_medium text-Grey-500">{t("disclaimer")}</span>
       </div>
 
       {isEditMode && (
         <div className="absolute inset-0 z-40 flex flex-col items-center justify-center rounded-lg bg-Grey-900/90">
-          <p className="text-center Body_1_medium text-Grey-50">
-            수정할 부분을 표시한 뒤,
-            <br />
-            변경 내용을 입력하세요.
+          <p className="text-center Body_1_medium text-Grey-50 whitespace-pre-line">
+            {t("editModeGuide")}
           </p>
 
           <div className="mt-9 flex items-center justify-center gap-3">
@@ -141,7 +145,7 @@ const ChatContainer = () => {
               className="Body_2_semibold"
               onClick={() => setEditMode(false)}
             >
-              취소
+              {t("cancel")}
             </GlassButton>
 
             <GlassButton
@@ -154,7 +158,7 @@ const ChatContainer = () => {
               disabled={!canSubmit}
               onClick={sendMarkImages}
             >
-              내용 입력
+              {t("submitInput")}
             </GlassButton>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { MYPAGE_TABS } from "@/constants/mypage/tab";
-import { TabKey } from "@/types/mypage/tab";
+import { TabKey } from "@/types/mypage/tab.type";
 
 type MyPageTabsProps = {
   activeTab: TabKey;

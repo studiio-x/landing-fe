@@ -1,11 +1,18 @@
 "use client";
 import { Checkbox, LogoRed, SelectedCheckbox } from "@/assets/icons";
+import GlassButton from "@/components/common/GlassButton";
 import Header from "@/components/dashboard/Header";
+import { useTranslations, useLocale } from "next-intl";
 
 import { useState } from "react";
 
 const SignUp = () => {
+  const t = useTranslations("signup");
+  const locale = useLocale();
   const [isCheckboxClicked, setIsCheckboxClicked] = useState(false);
+  const [email, setEmail] = useState("");
+
+  const isSubmitDisabled = !isCheckboxClicked || !email.trim();
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -29,16 +36,18 @@ const SignUp = () => {
 
         {/* 우측 로그인 */}
         <section className="flex-[44%] pb-[5.75rem] flex flex-col justify-center px-[8.5rem]">
-          <div className="Heading_1_semibold text-Grey-50 mb-10">회원가입</div>
+          <div className="Heading_1_semibold text-Grey-50 mb-10">{t("title")}</div>
           <form>
             <input
               type="text"
-              placeholder="이메일을 입력해주세요"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={t("emailPlaceholder")}
               className="bg-Grey-800 py-3 px-4 mb-4 placeholder:text-Grey-400 text-Grey-100 Body_2_medium w-full rounded-[4px]"
             />
             <button
               type="button"
-              className="flex items-center  gap-3 pl-4 cursor-pointer"
+              className={`flex gap-3 pl-4 cursor-pointer ${locale === "ko" ? "items-center" : ""}`}
               onClick={() => setIsCheckboxClicked((pre) => !pre)}
             >
               {isCheckboxClicked ? (
@@ -47,23 +56,22 @@ const SignUp = () => {
                 <Checkbox className="w-6 h-6" />
               )}
 
-              <span className="Body_3_regular text-Grey-300">
-                약관 및 개인정보 처리방침에 동의합니다.
+              <span className="Body_3_regular text-Grey-300 text-left whitespace-pre-line">
+                {t("termsAgreement")}
               </span>
             </button>
-            <button
-              type="submit"
-              className="mt-10 w-full bg-[rgba(255,48,48,0.45)] rounded-[4px] Body_2_semibold py-[0.78125rem]"
-            >
-              등록하기
-            </button>
+
+            <GlassButton type="submit" variant="red" size="xl" className="Body_2_semibold mt-10 w-full" disabled={isSubmitDisabled}>
+              {t("submit")}
+           </GlassButton>
+           
           </form>
           <div className="mt-3 flex gap-2 justify-center">
             <span className="Body_3_regular text-Grey-400">
-              이미 계정이 있나요?
+              {t("hasAccount")}
             </span>
             <button className="Body_3_semibold text-Grey-200">
-              로그인하기
+              {t("login")}
             </button>
           </div>
         </section>

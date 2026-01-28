@@ -1,0 +1,128 @@
+{
+  "signup": {
+    "title": "회원가입",
+    "emailPlaceholder": "이메일을 입력해주세요",
+    "termsAgreement": "약관 및 개인정보 처리방침에 동의합니다.",
+    "submit": "등록하기",
+    "hasAccount": "이미 계정이 있나요?",
+    "login": "로그인하기"
+  },
+  "dashboard": {
+    "header": {
+      "backLabel": "뒤로 가기",
+      "goDashboardLabel": "대시보드로 이동",
+      "howToUse": "사용 방법",
+      "settings": "설정",
+      "planManage": "플랜 관리",
+      "logout": "로그아웃",
+      "workbenchTabs": {
+        "studio": "스튜디오",
+        "model": "모델"
+      }
+    },
+    "title": "대시보드",
+    "cards": {
+      "studio": {
+        "title": "스튜디오\n사진",
+        "content": "제품 사진\n한 장만 올리면\n스튜디오 사진이\n바로 생성됩니다"
+      },
+      "model": {
+        "title": "모델 사진",
+        "content": "제품 사진\n한 장만 올리면\n모델 컨셉 사진이\n바로 생성됩니다"
+      },
+      "video": {
+        "title": "AI 비디오\n생성",
+        "content": "이미지 한 장을\n올리면 3초 만에\n광고 영상이\n만들어집니다"
+      }
+    },
+    "template": {
+      "sectionTitle": "예시 템플릿으로 시작하기",
+      "imageAlt": "템플릿 {id}",
+      "hoverText": "이 배경으로\n이미지 생성하기"
+    },
+    "create": {
+      "badge": "새 프로젝트 시작하기",
+      "title": "원하는 작업을 선택해 주세요",
+      "backButtonLabel": "이전 페이지로 이동"
+    },
+    "continue": {
+      "badge": "프로젝트 이어하기",
+      "title": "원하는 작업을 선택해 주세요",
+      "backButtonLabel": "이전 페이지로 이동"
+    },
+    "studio": {
+      "tabs": {
+        "product": "제품",
+        "background": "배경",
+        "aiChatbot": "AI 챗봇"
+      },
+      "workbenchTabs": {
+        "studio": "스튜디오",
+        "model": "모델"
+      },
+      "editModeGuide": "수정하고 싶은 모든 부분을 표시해 주세요.",
+      "uploadedImageAlt": "업로드 이미지",
+      "emptyState": {
+        "title": "추천 아이디어",
+        "ideas": {
+          "promotion": "제품을 강조한 고급 프로모션 이미지",
+          "lifestyle": "소셜 미디어 캠페인을 위한 라이프스타일 컨텍스트 이미지",
+          "creative": "달에서 촬영한 자동차 광고 이미지"
+        }
+      },
+      "productImageRequiredModal": {
+        "closeLabel": "닫기",
+        "title": "제품 이미지를\n먼저 업로드해 주세요",
+        "description": "배경 이미지를 적용하려면 제품 이미지가 필요해요.",
+        "uploadGuide": "클릭하여 상품 이미지를\n업로드해 주세요."
+      },
+      "historyPanel": {
+        "emptyTitle": "첫 번째 이미지를\n생성해 보세요",
+        "emptyDescription": "텍스트 하나로\n이미지를 만들어 보세요.",
+        "title": "기록",
+        "imageAlt": "생성 이미지 {index}"
+      },
+      "backgroundTab": {
+        "categories": {
+          "display": "일반 디스플레이",
+          "fabric": "패브릭 & 벨벳",
+          "outdoor": "아웃도어"
+        },
+        "uploadBackground": "배경 업로드",
+        "generate": "생성하기"
+      },
+      "searchBar": {
+        "placeholder": "카테고리 검색",
+        "searchLabel": "검색",
+        "closeLabel": "닫기",
+        "openSearchLabel": "검색 열기",
+        "recommended": "추천"
+      },
+      "productTab": {
+        "uploadGuide": "클릭하여 상품 이미지를\n업로드해 주세요."
+      },
+      "chatbot": {
+        "title": "StudioX 챗봇",
+        "subtitle": "원하는 수정 사항을 챗봇에게 요청하세요.",
+        "disclaimer": "AI가 부정확한 결과를 생성할 수 있어요.",
+        "editModeGuide": "수정할 부분을 표시한 뒤,\n변경 내용을 입력하세요.",
+        "cancel": "취소",
+        "submitInput": "내용 입력",
+        "inputPlaceholder": "AI에게 수정하고 싶은 내용을 알려주세요.",
+        "sendLabel": "전송",
+        "attachmentAlt": "첨부 이미지",
+        "recommendedLabel": "추천",
+        "plusMenu": {
+          "add": "추가",
+          "uploadReferenceImage": "참고 이미지 업로드",
+          "markEditArea": "수정할 영역 표시하기"
+        },
+        "recommendations": {
+          "0": "재현하고 싶은 참고 이미지가 있어.",
+          "1": "내가 배경을 설명하면 그대로 만들어줘.",
+          "2": "제품에 어울리는 컨셉을 추천해줘."
+        }
+      }
+    }
+  }
+}

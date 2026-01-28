@@ -1,46 +1,49 @@
 import clsx from "clsx";
+import { useLocale, useTranslations } from "next-intl";
 import { Close, Download } from "@/assets/icons";
-import { STUDIO_TABS } from "@/constants/dashboard/tab";
 import ModalOverlay from "@/components/common/ModalOverlay";
 
+const STUDIO_TAB_KEYS = ["product", "background", "aiChatbot"] as const;
+
 const ProductImageRequiredModal = ({ onClose }: { onClose: () => void }) => {
+  const locale = useLocale();
+  const t = useTranslations("dashboard.studio");
+
   return (
     <ModalOverlay onClose={onClose}>
       <div className="relative w-[30rem] h-[31.0625rem] rounded-lg bg-Grey-700/90 p-5 flex flex-col items-center justify-center">
         <button
           onClick={onClose}
           className="absolute top-5 right-5"
-          aria-label="닫기"
+          aria-label={t("productImageRequiredModal.closeLabel")}
         >
           <Close className="w-6 h-6" />
         </button>
 
-        <p className="Subhead_1_semibold text-White text-center">
-          제품 이미지를
-          <br />
-          먼저 업로드해 주세요
+        <p className="Subhead_1_semibold text-White text-center whitespace-pre-line">
+          {t("productImageRequiredModal.title")}
         </p>
 
-        <p className="Body_2_medium text-Grey-300 mt-4">
-          배경 이미지를 적용하려면 제품 이미지가 필요해요.
+        <p className="Body_2_medium text-Grey-300 mt-4 whitespace-pre-line">
+          {t("productImageRequiredModal.description")}
         </p>
 
         <div className="relative mt-8 w-[20.15rem]">
           <div className="absolute left-0 right-0 bottom-[-1px] h-px bg-Grey-400" />
 
           <div className="flex">
-            {STUDIO_TABS.map((label, idx) => {
+            {STUDIO_TAB_KEYS.map((key, idx) => {
               const isActive = idx === 0;
 
               return (
                 <div
-                  key={label}
+                  key={key}
                   className={clsx(
                     "Body_2_medium !text-[1.0176rem] text-center relative pb-[5.51px] flex-1",
                     isActive ? "text-Red-400" : "text-Grey-400"
                   )}
                 >
-                  {label}
+                  {t(`tabs.${key}`)}
                   <span
                     className={clsx(
                       "absolute left-0 bottom-[-1px] h-px w-full",
@@ -75,13 +78,11 @@ const ProductImageRequiredModal = ({ onClose }: { onClose: () => void }) => {
               />
             </svg>
 
-            <div className="w-full h-full rounded-lg flex justify-center pt-[2.37rem] bg-Grey-900">
+            <div className={clsx("w-full h-full rounded-lg flex justify-center bg-Grey-900", locale === "ko" ? "pt-[2.38rem]" : "pt-[3.03rem]")}>
               <div className="flex flex-col items-center gap-[1.02rem]">
                 <Download className="w-[1.3815rem] h-[1.3834rem]" />
-                <span className="Body_1_medium !text-[0.9159rem] text-Grey-200 text-center">
-                  클릭하여 상품 이미지를
-                  <br />
-                  업로드해 주세요.
+                <span className="Body_1_medium !text-[0.9159rem] text-Grey-200 text-center whitespace-pre-line">
+                  {t("productImageRequiredModal.uploadGuide")}
                 </span>
               </div>
               <div className="absolute w-full h-[3.875rem] bottom-0 bg-gradient-to-b from-Grey-700/0 to-Grey-700" />
