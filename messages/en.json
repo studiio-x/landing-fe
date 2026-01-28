@@ -1,4 +1,10 @@
 {
+  "notFound": {
+    "badge": "404 error",
+    "title": "Page not found",
+    "description": "The page you’re looking for may have been moved,\ndeleted, or the URL may be incorrect.",
+    "homeButton": "Go Home"
+  },
   "signup": {
     "title": "Sign Up",
     "emailPlaceholder": "Enter your email",
