@@ -6,10 +6,12 @@ import ModalOverlay from "./ModalOverlay";
 import { Close } from "@/assets/icons";
 import mobilePreview from "@/assets/svg/mobile-preview.svg";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useTranslations } from "next-intl";
 
 const DESKTOP_CONTAINER_WIDTH = 1244;
 
 const MobileModal = () => {
+  const t = useTranslations("mobileModal");
   const [isClosed, setIsClosed] = useState(false);
   const isSmallScreen = useMediaQuery(DESKTOP_CONTAINER_WIDTH);
 
@@ -29,21 +31,19 @@ const MobileModal = () => {
         <button
           onClick={handleClose}
           className="absolute top-4 right-4"
-          aria-label={"close modal"}
+          aria-label={t("closeLabel")}
         >
           <Close className="w-6 h-6" />
         </button>
 
-        <h1 className="Subhead_2_semibold text-Grey-100 mt-[3.25rem] text-center">
-          원활한 이용을 위해
-          <br />
-          PC 환경에서 접속해 주세요.
+        <h1 className="Subhead_2_semibold text-Grey-100 mt-[3.25rem] text-center whitespace-pre-line">
+          {t("title")}
         </h1>
 
         <div className="w-full h-[166px] overflow-hidden rounded-b-lg mb-11">
           <Image
             src={mobilePreview}
-            alt="mobile only"
+            alt={t("imageAlt")}
             width={320}
             height={166}
             className="w-full h-auto"

@@ -1,4 +1,9 @@
 {
+  "mobileModal": {
+    "closeLabel": "Close modal",
+    "title": "For the best experience,\nplease use a desktop.",
+    "imageAlt": "Desktop usage guide"
+  },
   "signup": {
     "title": "Sign Up",
     "emailPlaceholder": "Enter your email",
