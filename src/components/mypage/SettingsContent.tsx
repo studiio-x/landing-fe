@@ -114,7 +114,10 @@ const SettingsContent = () => {
 
         <LanguageDropdown
           value={locale}
-          onChange={(v) => router.replace(pathname, { locale: v })}
+          onChange={(v) => {
+            document.cookie = `NEXT_LOCALE=${v};path=/;max-age=31536000`;
+            router.replace(pathname, { locale: v });
+          }}
         />
       </div>
 
