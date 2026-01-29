@@ -1,4 +1,9 @@
 {
+  "mobileModal": {
+    "closeLabel": "모달 닫기",
+    "title": "원활한 이용을 위해\nPC 환경에서 접속해 주세요.",
+    "imageAlt": "PC 이용 안내"
+  },
   "signup": {
     "title": "회원가입",
     "emailPlaceholder": "이메일을 입력해주세요",

@@ -5,9 +5,14 @@ import { useEffect } from "react";
 interface ModalOverlayProps {
   onClose: () => void;
   children: React.ReactNode;
+  className?: string;
 }
 
-const ModalOverlay = ({ onClose, children }: ModalOverlayProps) => {
+const ModalOverlay = ({
+  onClose,
+  children,
+  className = "bg-Black/50",
+}: ModalOverlayProps) => {
   useEffect(() => {
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -27,7 +32,7 @@ const ModalOverlay = ({ onClose, children }: ModalOverlayProps) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div
-        className="absolute inset-0 bg-Black/50"
+        className={`absolute inset-0 ${className}`}
         onClick={onClose}
         aria-label="close overlay"
       />
