@@ -1,8 +1,8 @@
 import type { WorkbenchMode } from "@/types/dashboard/mode.type";
-import BackgroundTab from "../background/BackgroundTab";
-import OptionsTab from "../video/OptionsTab";
-import ChatbotTab from "../chatbot/ChatbotTab";
-import ProductTab from "../product/ProductTab";
+import BackgroundTab from "@/components/dashboard/workbench/background/BackgroundTab";
+import OptionsTab from "@/components/dashboard/workbench/video/OptionsTab";
+import ChatbotTab from "@/components/dashboard/workbench/chatbot/ChatbotTab";
+import ProductTab from "@/components/dashboard/workbench/product/ProductTab";
 
 interface TabContentProps {
   activeTab: number;
