@@ -31,7 +31,7 @@ const SignUp = () => {
             <source src="/videos/guide-optimized.mp4" type="video/mp4" />
           </video>
           <div className="absolute inset-0 bg-gradient-to-b from-[rgba(8,8,8,0.80)] to-[rgba(8,8,8,0.45)]" />
-          <LogoRed className=" z-50 w-[21rem] h-auto" />
+          <LogoRed className=" z-20 w-[21rem] h-auto" />
         </section>
 
         {/* 우측 로그인 */}
