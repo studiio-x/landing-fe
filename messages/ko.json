@@ -105,6 +105,15 @@
         "uploadBackground": "배경 업로드",
         "generate": "생성하기"
       },
+      "optionsTab": {
+        "selectQuality": "비디오 화질을 선택하세요",
+        "qualityAriaLabel": "비디오 화질 선택",
+        "basicQuality": "기본 품질",
+        "premiumQuality": "고급 품질",
+        "creditsConsumed": "영상 크레딧 {credits}개가 소모됩니다.",
+        "uploadBackground": "배경 업로드",
+        "generate": "생성하기"
+      },
       "searchBar": {
         "placeholder": "카테고리 검색",
         "searchLabel": "검색",

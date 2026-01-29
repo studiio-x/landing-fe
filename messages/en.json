@@ -105,6 +105,15 @@
         "uploadBackground": "Upload Background",
         "generate": "Generate"
       },
+      "optionsTab": {
+        "selectQuality": "Select video quality",
+        "qualityAriaLabel": "Video quality selection",
+        "basicQuality": "Basic Quality",
+        "premiumQuality": "Premium Quality",
+        "creditsConsumed": "{credits} video credits\nwill be consumed.",
+        "uploadBackground": "Upload Background",
+        "generate": "Generate"
+      },
       "searchBar": {
         "placeholder": "Search categories",
         "searchLabel": "Search",
