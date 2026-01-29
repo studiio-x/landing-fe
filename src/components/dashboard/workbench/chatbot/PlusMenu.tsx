@@ -11,7 +11,7 @@ interface PlusMenuProps {
 }
 
 const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
-  const t = useTranslations("dashboard.studio.chatbot.plusMenu");
+  const t = useTranslations("dashboard.workbench.chatbot.plusMenu");
   const locale = useLocale();
   const plusWrapRef = useRef<HTMLDivElement | null>(null);
 

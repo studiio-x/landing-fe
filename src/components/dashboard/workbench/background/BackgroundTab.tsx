@@ -15,7 +15,7 @@ interface BackgroundTabProps {
 }
 
 const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
-  const t = useTranslations("dashboard.studio.backgroundTab");
+  const t = useTranslations("dashboard.workbench.backgroundTab");
   const [isSearching, setIsSearching] = useState(false);
   const [selectedBackgroundId, setSelectedBackgroundId] = useState<
     string | null

@@ -61,10 +61,11 @@
       "title": "Choose the task you want.",
       "backButtonLabel": "Go to previous page"
     },
-    "studio": {
+    "workbench": {
       "tabs": {
         "product": "Product",
         "background": "Background",
+        "options": "Options",
         "aiChatbot": "AI Chatbot"
       },
       "workbenchTabs": {
@@ -90,6 +91,8 @@
       "historyPanel": {
         "emptyTitle": "Make your\nfirst generation",
         "emptyDescription": "Create beautiful images\nwith nothing but a text.",
+        "videoEmptyTitle": "Create your\nfirst video",
+        "videoEmptyDescription": "Make an ad video\nfrom a single image.",
         "title": "History",
         "imageAlt": "Generated image {index}"
       },

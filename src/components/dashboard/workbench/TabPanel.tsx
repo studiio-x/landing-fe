@@ -1,23 +1,29 @@
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
-
+import type { WorkbenchMode } from "@/types/dashboard/mode.type";
 
 interface TabPanelProps {
   activeTab: number;
   onChange: (idx: number) => void;
+  mode: WorkbenchMode;
 }
 
-const STUDIO_TAB_KEYS = ["product", "background", "aiChatbot"] as const;
+const TAB_KEYS: Record<WorkbenchMode, readonly string[]> = {
+  studio: ["product", "background", "aiChatbot"],
+  model: ["product", "background", "aiChatbot"],
+  video: ["product", "options", "aiChatbot"],
+};
 
-const TabPanel = ({ activeTab, onChange }: TabPanelProps) => {
-  const t = useTranslations("dashboard.studio.tabs");
+const TabPanel = ({ activeTab, onChange, mode }: TabPanelProps) => {
+  const t = useTranslations("dashboard.workbench.tabs");
+  const tabKeys = TAB_KEYS[mode];
 
   return (
     <div className="relative pt-4">
       <div className="absolute left-0 right-0 bottom-[-1px] h-px bg-Grey-400" />
 
       <div className="flex">
-        {STUDIO_TAB_KEYS.map((key, idx) => {
+        {tabKeys.map((key, idx) => {
           const isActive = activeTab === idx;
 
           const widthClass = idx === 1 ? "w-[9.94rem]" : "w-[7.41rem]";

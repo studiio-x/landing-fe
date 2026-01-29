@@ -61,10 +61,11 @@
       "title": "원하는 작업을 선택해 주세요",
       "backButtonLabel": "이전 페이지로 이동"
     },
-    "studio": {
+    "workbench": {
       "tabs": {
         "product": "제품",
         "background": "배경",
+        "options": "옵션",
         "aiChatbot": "AI 챗봇"
       },
       "workbenchTabs": {
@@ -90,6 +91,8 @@
       "historyPanel": {
         "emptyTitle": "첫 번째 이미지를\n생성해 보세요",
         "emptyDescription": "텍스트 하나로\n이미지를 만들어 보세요.",
+        "videoEmptyTitle": "첫 번째 영상을\n생성해 보세요",
+        "videoEmptyDescription": "이미지 한 장으로\n광고 영상을 만들어 보세요.",
         "title": "기록",
         "imageAlt": "생성 이미지 {index}"
       },

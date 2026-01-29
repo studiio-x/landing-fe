@@ -16,7 +16,7 @@ interface ChatInputProps {
 }
 
 const ChatInput = ({ onSend }: ChatInputProps) => {
-  const t = useTranslations("dashboard.studio.chatbot");
+  const t = useTranslations("dashboard.workbench.chatbot");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [value, setValue] = useState("");
 
