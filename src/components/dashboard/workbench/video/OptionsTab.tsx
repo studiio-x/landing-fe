@@ -41,6 +41,7 @@ const OptionsTab = ({ uploadedImage }: OptionsTabProps) => {
               type="button"
               role="radio"
               aria-checked={isSelected}
+              tabIndex={isSelected ? 0 : -1}
               onClick={() => setSelected(key)}
               onMouseEnter={() => setHovered(key)}
               onMouseLeave={() => setHovered(null)}
@@ -104,6 +105,7 @@ const OptionsTab = ({ uploadedImage }: OptionsTabProps) => {
         <GlassButton
           size="md"
           gap="sm"
+          type="button"
           className="Body_3_semibold"
           leftIcon={<Plus className="w-[1.375rem] h-[1.375rem]" />}
         >
