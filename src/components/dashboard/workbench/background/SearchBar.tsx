@@ -18,7 +18,7 @@ const SearchBar = ({
   setIsSearching,
   onSearch,
 }: SearchBarProps) => {
-  const t = useTranslations("dashboard.studio.searchBar");
+  const t = useTranslations("dashboard.workbench.searchBar");
   const [keyword, setKeyword] = useState("");
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 

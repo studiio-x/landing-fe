@@ -7,7 +7,7 @@ const STUDIO_TAB_KEYS = ["product", "background", "aiChatbot"] as const;
 
 const ProductImageRequiredModal = ({ onClose }: { onClose: () => void }) => {
   const locale = useLocale();
-  const t = useTranslations("dashboard.studio");
+  const t = useTranslations("dashboard.workbench");
 
   return (
     <ModalOverlay onClose={onClose}>

@@ -1,1 +1,1 @@
-export type WorkbenchMode = "studio" | "model";
+export type WorkbenchMode = "studio" | "model" | "video";

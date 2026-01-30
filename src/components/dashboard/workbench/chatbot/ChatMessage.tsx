@@ -13,7 +13,7 @@ const TypingDots = () => {
 };
 
 const ChatMessageList = ({ messages }: { messages: ChatItem[] }) => {
-  const t = useTranslations("dashboard.studio.chatbot");
+  const t = useTranslations("dashboard.workbench.chatbot");
 
   return (
     <div className="flex flex-col gap-4">
@@ -80,7 +80,7 @@ const ChatRecommendations = ({
   items: readonly string[];
   onClickItem: (text: string) => void;
 }) => {
-  const t = useTranslations("dashboard.studio.chatbot");
+  const t = useTranslations("dashboard.workbench.chatbot");
 
   return (
     <div className="flex flex-col gap-2 h-full justify-end">

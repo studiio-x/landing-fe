@@ -1,24 +1,31 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
+import type { WorkbenchMode } from "@/types/dashboard/mode.type";
 
-export type StudioHistoryItem = {
+export type HistoryItem = {
   id: string;
   imageUrls: [string, string];
 };
 
-const StudioHistoryPanel = ({ history }: { history: StudioHistoryItem[] }) => {
-  const t = useTranslations("dashboard.studio.historyPanel");
+interface HistoryPanelProps {
+  history: HistoryItem[];
+  mode: WorkbenchMode;
+}
+
+const HistoryPanel = ({ history, mode }: HistoryPanelProps) => {
+  const t = useTranslations("dashboard.workbench.historyPanel");
   const isEmpty = history.length === 0;
   const latest = history[0];
+  const isVideo = mode === "video";
 
   if (isEmpty) {
     return (
       <section className="w-[12.375rem] h-[28.125rem] flex flex-col gap-3 text-center items-center justify-center ml-8 rounded-lg bg-Grey-900">
         <h2 className="Body_2_semibold text-Grey-400 whitespace-pre-line">
-          {t("emptyTitle")}
+          {t(isVideo ? "videoEmptyTitle" : "emptyTitle")}
         </h2>
         <span className="Body_3_medium text-Grey-500 whitespace-pre-line">
-          {t("emptyDescription")}
+          {t(isVideo ? "videoEmptyDescription" : "emptyDescription")}
         </span>
       </section>
     );
@@ -46,4 +53,4 @@ const StudioHistoryPanel = ({ history }: { history: StudioHistoryItem[] }) => {
   );
 };
 
-export default StudioHistoryPanel;
+export default HistoryPanel;

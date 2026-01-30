@@ -1,6 +1,6 @@
 "use client";
 
-import { Back, Logo, Person, Video } from "@/assets/icons";
+import { Back, Logo, Person, PlayButton } from "@/assets/icons";
 import clsx from "clsx";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -84,7 +84,11 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
     <header className="px-[6.125rem] pt-5 py-3 flex border-b-Grey-800 bg-Black z-[999] border-b-[1.5px] sticky top-0 left-0 h-[var(--header-height)] items-center">
       <div className="flex gap-4 items-center">
         {back && (
-          <button type="button" onClick={() => router.back()} aria-label={t("backLabel")}>
+          <button
+            type="button"
+            onClick={() => router.back()}
+            aria-label={t("backLabel")}
+          >
             <Back className="w-7 h-7" />
           </button>
         )}
@@ -121,7 +125,9 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
                     onClick={() => setModeQuery(tabItem.mode)}
                     className={clsx(
                       "relative z-10 rounded-[100px] px-4 py-[2px] transition-colors duration-200 whitespace-nowrap",
-                      isActive ? "text-Grey-50 Body_2_semibold" : "text-Grey-500 Body_2_medium",
+                      isActive
+                        ? "text-Grey-50 Body_2_semibold"
+                        : "text-Grey-500 Body_2_medium",
                     )}
                     style={{ width: getTabWidth(tabItem.mode) }}
                   >
@@ -137,12 +143,17 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
       <div className="flex gap-10 items-center">
         {video && (
           <button type="button" className="flex gap-1 items-center">
-            <Video className="w-7 h-7" />
+            <PlayButton className="w-7 h-7" />
             <span className="Body_1_medium text-Grey-400">{t("howToUse")}</span>
           </button>
         )}
 
-        <div ref={userMenuRef} className="relative" onMouseEnter={userHover} onMouseLeave={userHover}>
+        <div
+          ref={userMenuRef}
+          className="relative"
+          onMouseEnter={userHover}
+          onMouseLeave={userHover}
+        >
           <Person className="w-7 h-7 cursor-pointer" onClick={onUserClick} />
 
           {isUserOpen && (
@@ -158,7 +169,10 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
                     >
                       {t("settings")}
                     </button>
-                    <button type="button" className="py-2 pl-5 w-full text-left">
+                    <button
+                      type="button"
+                      className="py-2 pl-5 w-full text-left"
+                    >
                       {t("planManage")}
                     </button>
                   </div>

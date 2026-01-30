@@ -9,7 +9,7 @@ interface ProductTabProps {
 }
 
 const ProductTab = ({ setUploadedImage }: ProductTabProps) => {
-  const t = useTranslations("dashboard.studio.productTab");
+  const t = useTranslations("dashboard.workbench.productTab");
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { resetPaint } = useStudioMarkStore();

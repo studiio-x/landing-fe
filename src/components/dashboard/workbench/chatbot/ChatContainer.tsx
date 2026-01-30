@@ -16,7 +16,7 @@ import GlassButton from "@/components/common/GlassButton";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 
 const ChatContainer = () => {
-  const t = useTranslations("dashboard.studio.chatbot");
+  const t = useTranslations("dashboard.workbench.chatbot");
   const { isEditMode, hasPaint, commitPaint, setEditMode } =
     useStudioMarkStore();
   const canSubmit = hasPaint && !!commitPaint;

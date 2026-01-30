@@ -4,24 +4,28 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 
-import TabContent from "@/components/dashboard/studio/common/TabContent";
-import TabPanel from "@/components/dashboard/studio/common/TabPanel";
-import StudioHistoryPanel, {
-  StudioHistoryItem,
-} from "@/components/dashboard/studio/StudioHistoryPanel";
-import MarkCanvas from "@/components/dashboard/studio/MarkCanvas";
+import TabContent from "./TabContent";
+import TabPanel from "./TabPanel";
+import HistoryPanel, {
+  HistoryItem} from "./HistoryPanel";
+import MarkCanvas from "@/components/dashboard/workbench/chatbot/MarkCanvas";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
-import ProductImageRequiredModal from "./background/ProductImageRequiredModal";
+import ProductImageRequiredModal from "@/components/dashboard/workbench/background/ProductImageRequiredModal";
+import type { WorkbenchMode } from "@/types/dashboard/mode.type";
 
-const DUMMY_HISTORY: StudioHistoryItem[] = [
+const DUMMY_HISTORY: HistoryItem[] = [
   {
     id: "dummy-1",
     imageUrls: ["/images/dashboard/model.png", "/images/dashboard/studio.png"],
   },
 ];
 
-const StudioMode = () => {
-  const t = useTranslations("dashboard.studio");
+interface WorkbenchProps {
+  mode: WorkbenchMode;
+}
+
+const Workbench = ({ mode }: WorkbenchProps) => {
+  const t = useTranslations("dashboard.workbench");
   const [activeTab, setActiveTab] = useState(0);
   const [naturalSize, setNaturalSize] = useState<{
     w: number;
@@ -37,7 +41,7 @@ const StudioMode = () => {
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  const [history] = useState<StudioHistoryItem[]>(DUMMY_HISTORY);
+  const [history] = useState<HistoryItem[]>(DUMMY_HISTORY);
 
   const handleTabChange = (nextIdx: number) => {
     const isChatbotTab = nextIdx === 2;
@@ -68,11 +72,12 @@ const StudioMode = () => {
   return (
     <div className="flex justify-center w-full">
       <div className="flex flex-col">
-        <TabPanel activeTab={activeTab} onChange={handleTabChange} />
+        <TabPanel activeTab={activeTab} onChange={handleTabChange} mode={mode} />
         <TabContent
           activeTab={activeTab}
           uploadedImage={uploadedImage}
           setUploadedImage={setUploadedImage}
+          mode={mode}
         />
       </div>
 
@@ -151,7 +156,7 @@ const StudioMode = () => {
         </section>
       </div>
 
-      <StudioHistoryPanel history={history} />
+      <HistoryPanel history={history} mode={mode} />
 
       {isProductImageRequiredOpen && (
         <ProductImageRequiredModal
@@ -162,4 +167,4 @@ const StudioMode = () => {
   );
 };
 
-export default StudioMode;
+export default Workbench;
