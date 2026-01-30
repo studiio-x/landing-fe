@@ -16,7 +16,7 @@ const TAB_KEYS: Record<WorkbenchMode, readonly string[]> = {
 
 const TabPanel = ({ activeTab, onChange, mode }: TabPanelProps) => {
   const t = useTranslations("dashboard.workbench.tabs");
-  const tabKeys = TAB_KEYS[mode];
+  const tabKeys = TAB_KEYS[mode] ?? TAB_KEYS.studio;
 
   return (
     <div className="relative pt-4">

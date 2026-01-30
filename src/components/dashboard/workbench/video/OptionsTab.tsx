@@ -95,7 +95,6 @@ const OptionsTab = ({ uploadedImage }: OptionsTabProps) => {
             isSelected={selectedAction === key}
             onClick={() => {
               setSelectedAction(key);
-              console.log("action:", key);
             }}
           />
         ))}
