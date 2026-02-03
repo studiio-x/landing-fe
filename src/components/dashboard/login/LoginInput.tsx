@@ -8,6 +8,8 @@ interface LoginInputProps {
   onClick?: () => void;
   isPasswordOpen?: boolean;
   watchIcon?: boolean;
+  value?: string;
+  onChange?: (value: string) => void;
 }
 
 const LoginInput = ({
@@ -16,6 +18,8 @@ const LoginInput = ({
   onClick,
   isPasswordOpen,
   watchIcon,
+  value,
+  onChange,
 }: LoginInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -32,6 +36,8 @@ const LoginInput = ({
         <input
           type={watchIcon ? (isPasswordOpen ? "text" : "password") : "text"}
           placeholder={placeholder}
+          value={value}
+          onChange={onChange ? (e) => onChange(e.target.value) : undefined}
           className="bg-Grey-800 py-3 px-4 placeholder:text-Grey-400 text-Grey-100 Body_2_medium w-full rounded-[4px] relative z-10"
           aria-label={ariaLabel}
           onFocus={() => setIsFocused(true)}
