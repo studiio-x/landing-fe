@@ -7,6 +7,8 @@ import GlassButton from "@/components/common/GlassButton";
 import { EMAIL_REGEX } from "@/constants/signup/funnel";
 import type { EmailInputStepProps } from "@/types/signup/funnel.type";
 import LoginInput from "@/components/dashboard/login/LoginInput";
+import { useRouter } from "next/navigation";
+import { PATHS } from "@/constants/common/paths";
 
 const EmailInputStep = ({
   email: initialEmail,
@@ -16,6 +18,7 @@ const EmailInputStep = ({
   const t = useTranslations("signup");
   const locale = useLocale();
   const [isCheckboxClicked, setIsCheckboxClicked] = useState(initialAgreed);
+  const router = useRouter();
   const [email, setEmail] = useState(initialEmail);
 
   const isValidEmail = EMAIL_REGEX.test(email);
@@ -64,9 +67,15 @@ const EmailInputStep = ({
           {t("submit")}
         </GlassButton>
       </form>
+
       <div className="mt-3 flex gap-2 justify-center">
         <span className="Body_3_regular text-Grey-400">{t("hasAccount")}</span>
-        <button className="Body_3_semibold text-Grey-200">{t("login")}</button>
+        <button
+          onClick={() => router.push(PATHS.LOGIN)}
+          className="Body_3_semibold text-Grey-200"
+        >
+          {t("login")}
+        </button>
       </div>
     </>
   );

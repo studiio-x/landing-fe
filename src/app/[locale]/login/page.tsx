@@ -38,7 +38,9 @@ export default function Login() {
             <span className="Heading_3_semibold text-Grey-50">
               {t.rich("title", {
                 brand: (chunks) => (
-                  <span className="font-calSans text-[1.75rem] font-normal mr-[0.875rem]">{chunks}</span>
+                  <span className="font-calSans text-[1.75rem] font-normal mr-[0.875rem]">
+                    {chunks}
+                  </span>
                 ),
               })}
             </span>
@@ -88,20 +90,23 @@ export default function Login() {
               </GlassButton>
 
               <div className="text-center flex flex-col gap-2 mt-3">
-                <button className="Body_3_medium text-Grey-200 underline">
+                <button type="button" className="Body_3_medium text-Grey-200 underline">
                   {t("forgotPassword")}
                 </button>
-                <button
+                <div
                   className="flex gap-2 justify-center"
-                  onClick={() => router.push(PATHS.SIGNUP)}
                 >
                   <span className="Body_3_regular text-Grey-400">
                     {t("noAccount")}
                   </span>
-                  <div className="Body_3_semibold text-Grey-200">
+                  <button
+                    type="button"
+                    onClick={() => router.push(PATHS.SIGNUP)}
+                    className="Body_3_semibold text-Grey-200"
+                  >
                     {t("signup")}
-                  </div>
-                </button>
+                  </button>
+                </div>
               </div>
             </form>
           </div>
