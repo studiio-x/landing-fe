@@ -54,12 +54,32 @@ const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
               : "rgba(255, 48, 48, 0.45)",
           }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className={`flex items-center justify-center h-[3.0625rem] ${
+          className={`relative flex items-center justify-center h-[3.0625rem] ${
             isCreateOpen
               ? "shadow-[0_1px_8px_0_rgba(18,18,18,0.12)]"
               : "hover:bg-[rgba(255,48,48,0.75)] Body_1_semibold"
           }`}
         >
+          {!isCreateOpen && (
+            <div
+              className="absolute inset-0 rounded-[inherit] pointer-events-none"
+              style={{
+                border: "0.9px solid transparent",
+                backgroundImage: `
+                  radial-gradient(120% 120% at 0% 0%, rgba(255,255,255,0.36), rgba(255,255,255,0.00) 55%),
+                  radial-gradient(120% 120% at 100% 0%, rgba(255,255,255,0.36), rgba(255,255,255,0.00) 55%),
+                  radial-gradient(120% 120% at 100% 100%, rgba(255,255,255,0.36), rgba(255,255,255,0.00) 55%),
+                  radial-gradient(120% 120% at 0% 100%, rgba(255,255,255,0.36), rgba(255,255,255,0.00) 55%)
+                `,
+                backgroundOrigin: "border-box",
+                backgroundClip: "border-box",
+                WebkitMask:
+                  "linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)",
+                WebkitMaskComposite: "xor",
+                maskComposite: "exclude",
+              }}
+            />
+          )}
           <AnimatePresence mode="wait">
             {isCreateOpen ? (
               <motion.div
@@ -82,7 +102,7 @@ const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
                 className="flex gap-[0.62rem] items-center"
               >
                 <Plus className="w-[1.125rem] h-[1.125rem]" color="white" />
-                <span>생성하기</span>
+                <span className="Body_1_semibold">생성하기</span>
               </motion.div>
             )}
           </AnimatePresence>

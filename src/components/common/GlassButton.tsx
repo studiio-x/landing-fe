@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, ReactNode } from "react";
 import clsx from "clsx";
 
 type GlassButtonVariant = "default" | "red";
-type GlassButtonSize = "xl" | "lg" | "md" | "sm";
+type GlassButtonSize = "xl" | "lg" | "md" | "sm" | "xs";
 type GlassButtonGap = "sm" | "md" | "lg";
 
 interface GlassButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -20,6 +20,7 @@ const SIZE_CLASS: Record<GlassButtonSize, string> = {
   lg: "w-[14.125rem] h-[3.0625rem]", // 226px × 49px
   md: "w-[11.875rem] h-[3.25rem]", // 190px × 52px
   sm: "w-[10rem] h-[2.75rem]", // 160px × 44px
+  xs: "w-[2.75rem] h-[2.75rem]", // 44px × 44px
 };
 
 const GAP_CLASS: Record<GlassButtonGap, string> = {
@@ -62,7 +63,7 @@ const GlassButton = ({
 
         fullWidth && "w-full",
 
-        className
+        className,
       )}
     >
       <div

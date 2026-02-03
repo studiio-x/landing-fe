@@ -2,6 +2,7 @@ import { Folder, Meatball, NotFolder } from "@/assets/icons";
 import Image from "next/image";
 import clsx from "clsx";
 import { useState } from "react";
+import MeatballModal from "./MeatballModal";
 
 interface FolderItemProps {
   lists: {
@@ -79,15 +80,18 @@ const FolderItem = ({ lists, index }: FolderItemProps) => {
             <span className="bottom-5 Body_1_medium z-10 flex-1 opacity-100">
               {lists.name}
             </span>
-            <button
-              className="self-end"
-              onClick={() => setIsOpenMeatball(!isOpenMeatball)}
-              aria-label="더보기"
-            >
-              <Meatball
-                className={`${isOpenMeatball ? "text-Grey-50" : "text-Grey-300"} w-6 h-6 transition-colors`}
-              />
-            </button>
+
+            <div className="relative self-end mr-[0.5rem]">
+              <button
+                onClick={() => setIsOpenMeatball(!isOpenMeatball)}
+                aria-label="더보기"
+              >
+                <Meatball
+                  className={`${isOpenMeatball ? "text-Grey-50" : "text-Grey-300"} w-6 h-6 transition-colors`}
+                />
+              </button>
+              {isOpenMeatball && <MeatballModal isFolder={lists.isFolder} />}
+            </div>
           </div>
         </div>
       </div>

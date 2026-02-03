@@ -11,6 +11,7 @@ export { default as Up } from "./Up";
 export { default as Back } from "./Back";
 export { default as Circle } from "./Circle";
 export { default as Close } from "./Close";
+export { default as CreateFolder } from "./CreateFolder";
 export { default as Download } from "./Download";
 export { default as Folder } from "./Folder";
 export { default as Image } from "./Image";

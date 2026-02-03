@@ -1,10 +1,11 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
-import { Down } from "@/assets/icons";
+import { CreateFolder, Down, Plus } from "@/assets/icons";
 import Header from "@/components/dashboard/Header";
 import SideBar from "@/components/dashboard/SideBar/SideBar";
 import { useEffect } from "react";
 import FolderItem from "@/components/dashboard/project/FolderItem";
+import GlassButton from "@/components/common/GlassButton";
 
 const mockData = [
   {
@@ -76,6 +77,12 @@ const ProjectPage = () => {
                 {sharedProjectFromQuery}의 프로젝트
               </span>
               <Down className="w-[1.5rem] h-[1.5rem]" color="#A9B4C6" />
+            </div>
+            <div>
+              <GlassButton className="rounded-full" size="xs">
+                <CreateFolder className="w-6 h-6" />
+              </GlassButton>
+              <div></div>
             </div>
           </div>
           <section className="grid grid-cols-3 w-full gap-[2.25rem] mt-8">
