@@ -51,7 +51,7 @@ export default function proxy(request: NextRequest) {
 export const config = {
   // 미들웨어를 실행할 경로를 지정합니다.
   matcher: [
-    "/((?!api|_next/static|_next/image|favicon.ico|public|assets|images|videos).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico|public|assets|images|videos|icon.svg).*)",
     "/guide/:path*, /price/:path*, /",
   ],
 };

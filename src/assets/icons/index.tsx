@@ -12,6 +12,7 @@ export { default as Back } from "./Back";
 export { default as Circle } from "./Circle";
 export { default as Close } from "./Close";
 export { default as Download } from "./Download";
+export { default as EmailCheck } from "./EmailCheck";
 export { default as Image } from "./Image";
 export { default as Menu } from "./Menu";
 export { default as Pencil } from "./Pencil";

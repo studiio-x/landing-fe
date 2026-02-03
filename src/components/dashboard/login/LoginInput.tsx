@@ -3,35 +3,48 @@ import { Watch, WatchOff } from "@/assets/icons";
 import { useState } from "react";
 
 interface LoginInputProps {
+  type?: string;
   placeholder: string;
   ariaLabel: string;
   onClick?: () => void;
   isPasswordOpen?: boolean;
   watchIcon?: boolean;
+  value?: string;
+  onChange?: (value: string) => void;
 }
 
 const LoginInput = ({
+  type,
   placeholder,
   ariaLabel,
   onClick,
   isPasswordOpen,
   watchIcon,
+  value,
+  onChange,
 }: LoginInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
-    //회원가입에서도 아래 input으로 바꾸기
     <div className="relative w-full">
       <div className="rounded-[4px] p-[1px] bg-gradient-to-b from-[rgba(255,48,48,0.45)] to-[rgba(255,48,48,0.15)] relative">
         <div
           className={clsx(
             "absolute inset-0 bg-Grey-900 rounded-[4px] transition-opacity duration-200 ease-in-out",
-            isFocused ? "opacity-0" : "opacity-100"
+            isFocused ? "opacity-0" : "opacity-100",
           )}
         />
         <input
-          type={watchIcon ? (isPasswordOpen ? "text" : "password") : "text"}
+          type={
+            watchIcon
+              ? isPasswordOpen
+                ? "text"
+                : "password"
+              : (type ?? "text")
+          }
           placeholder={placeholder}
+          value={value}
+          onChange={onChange ? (e) => onChange(e.target.value) : undefined}
           className="bg-Grey-800 py-3 px-4 placeholder:text-Grey-400 text-Grey-100 Body_2_medium w-full rounded-[4px] relative z-10"
           aria-label={ariaLabel}
           onFocus={() => setIsFocused(true)}
