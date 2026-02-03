@@ -39,14 +39,18 @@ const EmailInputStep = ({
           value={email}
           onChange={setEmail}
           placeholder={t("emailPlaceholder")}
-          ariaLabel="이메일"
+          ariaLabel={t("emailAriaLabel")}
         />
 
-        <button
-          type="button"
+        <label
           className={`flex gap-3 pl-4 pt-4 cursor-pointer ${locale === "ko" ? "items-center" : ""}`}
-          onClick={() => setIsCheckboxClicked((prev) => !prev)}
         >
+          <input
+            type="checkbox"
+            className="sr-only"
+            checked={isCheckboxClicked}
+            onChange={(e) => setIsCheckboxClicked(e.target.checked)}
+          />
           {isCheckboxClicked ? (
             <SelectedCheckbox className="w-6 h-6" />
           ) : (
@@ -55,7 +59,7 @@ const EmailInputStep = ({
           <span className="Body_3_regular text-Grey-300 text-left whitespace-pre-line">
             {t("termsAgreement")}
           </span>
-        </button>
+        </label>
 
         <GlassButton
           type="submit"
