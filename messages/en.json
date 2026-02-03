@@ -10,6 +10,20 @@
     "title": "For the best experience,\nplease use a desktop.",
     "imageAlt": "Desktop usage guide"
   },
+  "login": {
+    "title": "Log in to <brand>StudioX</brand>",
+    "closeLabel": "Close",
+    "googleContinue": "Continue with Google",
+    "or": "OR",
+    "emailPlaceholder": "Email address",
+    "emailAriaLabel": "Email",
+    "passwordPlaceholder": "Password",
+    "passwordAriaLabel": "Password",
+    "submit": "Log in",
+    "forgotPassword": "Forgot your password?",
+    "noAccount": "Don’t have an account?",
+    "signup": "Sign up"
+  },
   "signup": {
     "title": "Sign Up",
     "emailPlaceholder": "Enter your email",
