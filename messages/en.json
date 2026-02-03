@@ -16,7 +16,29 @@
     "termsAgreement": "I agree to the Terms and Conditions and\nPrivacy Policy",
     "submit": "Register",
     "hasAccount": "Already have an account?",
-    "login": "Log in"
+    "login": "Log in",
+
+    "emailSent": {
+      "title": "Check Your Email",
+      "description": "A verification link was just sent to your email.\nPlease follow the link to verify your StudioX\naccount and proceed to the platform.",
+      "confirm": "Next"
+    },
+
+    "verificationComplete": {
+      "title": "The email has been successfully verified.",
+      "continue": "Continue"
+    },
+
+    "passwordSetup": {
+      "title": "Set your password",
+      "confirmEmail": "Email: {email}",
+      "passwordRequirement": "<bold>8-35 characters</bold> including <bold>upper, lower case</bold> and <bold>number</bold>.",
+      "passwordPlaceholder": "Your Password",
+      "passwordAriaLabel": "Password",
+      "confirmPasswordPlaceholder": "Confirm Password",
+      "confirmPasswordAriaLabel": "Confirm password",
+      "submit": "Get Started"
+    }
   },
   "dashboard": {
     "header": {
