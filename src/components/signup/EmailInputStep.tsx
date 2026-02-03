@@ -6,6 +6,7 @@ import { Checkbox, SelectedCheckbox } from "@/assets/icons";
 import GlassButton from "@/components/common/GlassButton";
 import { EMAIL_REGEX } from "@/constants/signup/funnel";
 import type { EmailInputStepProps } from "@/types/signup/funnel.type";
+import LoginInput from "@/components/dashboard/login/LoginInput";
 
 const EmailInputStep = ({
   email: initialEmail,
@@ -30,16 +31,17 @@ const EmailInputStep = ({
     <>
       <div className="Heading_1_semibold text-Grey-50 mb-10">{t("title")}</div>
       <form onSubmit={handleSubmit}>
-        <input
+        <LoginInput
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={setEmail}
           placeholder={t("emailPlaceholder")}
-          className="bg-Grey-800 py-3 px-4 mb-4 placeholder:text-Grey-400 text-Grey-100 Body_2_medium w-full rounded-[4px]"
+          ariaLabel="이메일"
         />
+
         <button
           type="button"
-          className={`flex gap-3 pl-4 cursor-pointer ${locale === "ko" ? "items-center" : ""}`}
+          className={`flex gap-3 pl-4 pt-4 cursor-pointer ${locale === "ko" ? "items-center" : ""}`}
           onClick={() => setIsCheckboxClicked((prev) => !prev)}
         >
           {isCheckboxClicked ? (
