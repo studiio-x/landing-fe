@@ -1,17 +1,19 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import GlassButton from "@/components/common/GlassButton";
 import type { EmailSentStepProps } from "@/types/signup/funnel.type";
 
 const EmailSentStep = ({ email, onNext }: EmailSentStepProps) => {
   const t = useTranslations("signup.emailSent");
+  const [isVerified, setIsVerified] = useState(false);
 
   useEffect(() => {
     const channel = new BroadcastChannel("signup-verification");
     channel.onmessage = (event) => {
       if (event.data.type === "email-verified") {
+        setIsVerified(true);
         onNext();
       }
     };
@@ -29,6 +31,7 @@ const EmailSentStep = ({ email, onNext }: EmailSentStepProps) => {
         variant="red"
         size="xl"
         className="Body_2_semibold w-full"
+        disabled={!isVerified}
         onClick={onNext}
       >
         {t("confirm")}
