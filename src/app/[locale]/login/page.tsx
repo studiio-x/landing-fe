@@ -8,6 +8,7 @@ import { PATHS } from "@/constants/common/paths";
 import Header from "@/components/dashboard/Header";
 import GlassButton from "@/components/common/GlassButton";
 import { useTranslations } from "next-intl";
+import { useLogin } from "@/hooks/queries/useAuthApi";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -15,9 +16,24 @@ export default function Login() {
   const [isPasswordOpen, setIsPasswordOpen] = useState(false);
   const router = useRouter();
   const t = useTranslations("login");
+  const { mutate: login, isPending } = useLogin();
 
   const onClick = () => {
     setIsPasswordOpen(!isPasswordOpen);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password || isPending) return;
+
+    login(
+      { email, password },
+      {
+        onSuccess: () => {
+          router.push(PATHS.DASHBOARD);
+        },
+      },
+    );
   };
 
   return (
@@ -61,7 +77,7 @@ export default function Login() {
               <div className="flex-1 bg-Grey-600 w-full h-[0.0625rem]"></div>
             </div>
 
-            <form action="">
+            <form onSubmit={handleSubmit}>
               <div className="flex flex-col gap-3 mb-7">
                 <LoginInput
                   placeholder={t("emailPlaceholder")}
@@ -81,10 +97,11 @@ export default function Login() {
               </div>
 
               <GlassButton
+                type="submit"
                 size="xl"
                 variant="red"
                 className="Body_2_semibold"
-                disabled={!email || !password}
+                disabled={!email || !password || isPending}
               >
                 {t("submit")}
               </GlassButton>

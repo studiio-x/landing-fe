@@ -26,7 +26,6 @@ export const signup = async (body: SignupRequest): Promise<SignupResponse> => {
 // 로그인
 export const login = async (body: LoginRequest): Promise<LoginResponse> => {
   const response = await axiosInstance.post<LoginResponse>("/auth/login", body);
-
   return response.data;
 };
 
