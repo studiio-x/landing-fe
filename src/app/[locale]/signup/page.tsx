@@ -29,6 +29,10 @@ const SignUp = () => {
     const email = searchParams.get("email");
 
     if (email) {
+      const channel = new BroadcastChannel("signup-verification");
+      channel.postMessage({ type: "email-verified" });
+      channel.close();
+
       funnel.history.replace("VerificationComplete", {
         email,
         agreedToTerms: true,
