@@ -64,6 +64,11 @@ const PasswordSetupStep = ({
             value={confirmPassword}
             onChange={setConfirmPassword}
           />
+          {confirmPassword.length > 0 && !isPasswordMatch && (
+            <span className="Body_3_regular text-Red-350">
+              {t("passwordMismatch")}
+            </span>
+          )}
         </div>
 
         <GlassButton

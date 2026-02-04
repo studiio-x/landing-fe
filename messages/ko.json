@@ -52,6 +52,7 @@
       "passwordAriaLabel": "비밀번호",
       "confirmPasswordPlaceholder": "비밀번호 확인",
       "confirmPasswordAriaLabel": "비밀번호 확인",
+      "passwordMismatch": "*비밀번호가 일치하지 않습니다.",
       "submit": "시작하기"
     }
   },

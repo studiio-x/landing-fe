@@ -52,6 +52,7 @@
       "passwordAriaLabel": "Password",
       "confirmPasswordPlaceholder": "Confirm Password",
       "confirmPasswordAriaLabel": "Confirm password",
+      "passwordMismatch": "*Passwords do not match.",
       "submit": "Get Started"
     }
   },
