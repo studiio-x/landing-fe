@@ -14,9 +14,7 @@ export const refreshToken = async (): Promise<void> => {
 };
 
 // 회원가입
-export const signup = async (
-  body: SignupRequest,
-): Promise<SignupResponse> => {
+export const signup = async (body: SignupRequest): Promise<SignupResponse> => {
   const response = await axiosInstance.post<SignupResponse>(
     "/auth/signup",
     body,
@@ -26,24 +24,10 @@ export const signup = async (
 };
 
 // 로그인
-export const login = async (
-  body: LoginRequest,
-): Promise<LoginResponse> => {
-  const response = await axiosInstance.post<LoginResponse>(
-    "/auth/login",
-    body,
-  );
+export const login = async (body: LoginRequest): Promise<LoginResponse> => {
+  const response = await axiosInstance.post<LoginResponse>("/auth/login", body);
 
   return response.data;
-};
-
-// 이메일 인증 확인
-export const verifyEmail = async (
-  params: VerifyEmailParams,
-): Promise<void> => {
-  await axiosInstance.get("/auth/email/verification", {
-    params,
-  });
 };
 
 // 이메일 인증 요청
