@@ -1,7 +1,8 @@
 "use client";
 
+import { useEffect } from "react";
 import { useFunnel } from "@use-funnel/browser";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { PATHS } from "@/constants/common/paths";
 import { SIGNUP_FUNNEL_ID } from "@/constants/signup/funnel";
 
@@ -14,6 +15,7 @@ import type { SignupFunnelSteps } from "@/types/signup/funnel.type";
 
 const SignUp = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const funnel = useFunnel<SignupFunnelSteps>({
     id: SIGNUP_FUNNEL_ID,
@@ -22,6 +24,18 @@ const SignUp = () => {
       context: { email: "", agreedToTerms: false },
     },
   });
+
+  useEffect(() => {
+    const email = searchParams.get("email");
+
+    if (email) {
+      funnel.history.replace("VerificationComplete", {
+        email,
+        agreedToTerms: true,
+        emailVerified: true,
+      });
+    }
+  }, [searchParams]);
 
   return (
     <funnel.Render
