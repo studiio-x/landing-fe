@@ -5,6 +5,7 @@ import { useFunnel } from "@use-funnel/browser";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PATHS } from "@/constants/common/paths";
 import { SIGNUP_FUNNEL_ID } from "@/constants/signup/funnel";
+import { useSignup } from "@/hooks/queries/useAuthApi";
 
 import EmailInputStep from "@/components/signup/EmailInputStep";
 import EmailSentStep from "@/components/signup/EmailSentStep";
@@ -16,6 +17,7 @@ import type { SignupFunnelSteps } from "@/types/signup/funnel.type";
 const SignUp = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { mutate: signup, isPending: isSignupPending } = useSignup();
 
   const funnel = useFunnel<SignupFunnelSteps>({
     id: SIGNUP_FUNNEL_ID,
@@ -74,10 +76,16 @@ const SignUp = () => {
       PasswordSetup={({ context }) => (
         <PasswordSetupStep
           email={context.email}
-          isLoading={false}
+          isLoading={isSignupPending}
           onSubmit={({ password }) => {
-            // TODO: 회원가입 API 연결
-            router.push(PATHS.LOGIN);
+            signup(
+              { email: context.email, password },
+              {
+                onSuccess: () => {
+                  router.push(PATHS.LOGIN);
+                },
+              },
+            );
           }}
         />
       )}
