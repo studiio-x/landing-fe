@@ -1,6 +1,6 @@
 "use client";
 
-import { Close, Google, Logo } from "@/assets/icons";
+import { Close } from "@/assets/icons";
 import LoginInput from "@/components/dashboard/login/LoginInput";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -9,6 +9,7 @@ import Header from "@/components/dashboard/Header";
 import GlassButton from "@/components/common/GlassButton";
 import { useTranslations } from "next-intl";
 import { useLogin } from "@/hooks/queries/useAuthApi";
+import GoogleLoginButton from "@/components/dashboard/login/GoogleLoginButton";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -63,13 +64,7 @@ export default function Login() {
           </div>
 
           <div className="flex flex-col gap-[1.75rem]">
-            <button
-              type="button"
-              className="bg-Grey-700 rounded-[0.25rem] flex py-[0.75rem] w-full justify-center items-center gap-[0.75rem]"
-            >
-              <Google className="w-[1.75rem] h-[1.75rem]" />
-              <span className="text-Grey-100">{t("googleContinue")}</span>
-            </button>
+            <GoogleLoginButton />
 
             <div className="w-full flex gap-[0.75rem] items-center">
               <div className="flex-1 bg-Grey-600 w-full h-[0.0625rem]"></div>
@@ -107,12 +102,13 @@ export default function Login() {
               </GlassButton>
 
               <div className="text-center flex flex-col gap-2 mt-3">
-                <button type="button" className="Body_3_medium text-Grey-200 underline">
+                <button
+                  type="button"
+                  className="Body_3_medium text-Grey-200 underline"
+                >
                   {t("forgotPassword")}
                 </button>
-                <div
-                  className="flex gap-2 justify-center"
-                >
+                <div className="flex gap-2 justify-center">
                   <span className="Body_3_regular text-Grey-400">
                     {t("noAccount")}
                   </span>
