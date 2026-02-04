@@ -9,6 +9,7 @@ import type { EmailInputStepProps } from "@/types/signup/funnel.type";
 import LoginInput from "@/components/dashboard/login/LoginInput";
 import { useRouter } from "next/navigation";
 import { PATHS } from "@/constants/common/paths";
+import { useSendVerificationEmail } from "@/hooks/queries/useAuthApi";
 
 const EmailInputStep = ({
   email: initialEmail,
@@ -20,14 +21,27 @@ const EmailInputStep = ({
   const [isCheckboxClicked, setIsCheckboxClicked] = useState(initialAgreed);
   const router = useRouter();
   const [email, setEmail] = useState(initialEmail);
+  const { mutate: sendVerificationEmail, isPending } =
+    useSendVerificationEmail();
 
   const isValidEmail = EMAIL_REGEX.test(email);
-  const isSubmitDisabled = !isCheckboxClicked || !isValidEmail;
+  const isSubmitDisabled = !isCheckboxClicked || !isValidEmail || isPending;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmitDisabled) return;
-    onNext({ email: email.trim(), agreedToTerms: true });
+
+    const trimmedEmail = email.trim();
+    const callbackUrl = `${window.location.origin}/${locale}/signup?email=${encodeURIComponent(trimmedEmail)}`;
+
+    sendVerificationEmail(
+      { email: trimmedEmail, callbackUrl },
+      {
+        onSuccess: () => {
+          onNext({ email: trimmedEmail, agreedToTerms: true });
+        },
+      },
+    );
   };
 
   return (
@@ -68,7 +82,7 @@ const EmailInputStep = ({
           className="Body_2_semibold mt-10 w-full"
           disabled={isSubmitDisabled}
         >
-          {t("submit")}
+          {isPending ? t("submitting") : t("submit")}
         </GlassButton>
       </form>
 

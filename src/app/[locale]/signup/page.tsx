@@ -1,9 +1,17 @@
 "use client";
 
+import { useEffect, useMemo } from "react";
 import { useFunnel } from "@use-funnel/browser";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+
 import { PATHS } from "@/constants/common/paths";
-import { SIGNUP_FUNNEL_ID } from "@/constants/signup/funnel";
+import {
+  CHANNEL_NAME,
+  MESSAGE_TYPE,
+  SIGNUP_FUNNEL_ID,
+  SIGNUP_STEPS,
+} from "@/constants/signup/funnel";
+import { useSignup } from "@/hooks/queries/useAuthApi";
 
 import EmailInputStep from "@/components/signup/EmailInputStep";
 import EmailSentStep from "@/components/signup/EmailSentStep";
@@ -14,14 +22,42 @@ import type { SignupFunnelSteps } from "@/types/signup/funnel.type";
 
 const SignUp = () => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { mutate: signup, isPending: isSignupPending } = useSignup();
+
+  const emailFromQuery = searchParams.get("email");
+  const hasEmailQuery = !!emailFromQuery;
+
+  const initial = useMemo(() => {
+    if (!hasEmailQuery) {
+      return {
+        step: SIGNUP_STEPS.EMAIL_INPUT,
+        context: { email: "", agreedToTerms: false },
+      };
+    }
+
+    return {
+      step: SIGNUP_STEPS.VERIFICATION_COMPLETE,
+      context: {
+        email: emailFromQuery ?? "",
+        agreedToTerms: true as const,
+        emailVerified: true as const,
+      },
+    };
+  }, [hasEmailQuery, emailFromQuery]);
 
   const funnel = useFunnel<SignupFunnelSteps>({
     id: SIGNUP_FUNNEL_ID,
-    initial: {
-      step: "EmailInput",
-      context: { email: "", agreedToTerms: false },
-    },
+    initial,
   });
+
+  useEffect(() => {
+    if (!emailFromQuery) return;
+
+    const channel = new BroadcastChannel(CHANNEL_NAME);
+    channel.postMessage({ type: MESSAGE_TYPE, email: emailFromQuery });
+    channel.close();
+  }, [emailFromQuery]);
 
   return (
     <funnel.Render
@@ -30,7 +66,7 @@ const SignUp = () => {
           email={context.email ?? ""}
           agreedToTerms={context.agreedToTerms ?? false}
           onNext={({ email, agreedToTerms }) => {
-            history.push("EmailSent", { email, agreedToTerms });
+            history.push(SIGNUP_STEPS.EMAIL_SENT, { email, agreedToTerms });
           }}
         />
       )}
@@ -38,7 +74,7 @@ const SignUp = () => {
         <EmailSentStep
           email={context.email}
           onNext={() => {
-            history.push("VerificationComplete", {
+            history.push(SIGNUP_STEPS.VERIFICATION_COMPLETE, {
               ...context,
               emailVerified: true,
             });
@@ -49,17 +85,23 @@ const SignUp = () => {
         <VerificationCompleteStep
           email={context.email}
           onNext={() => {
-            history.push("PasswordSetup", context);
+            history.push(SIGNUP_STEPS.PASSWORD_SETUP, context);
           }}
         />
       )}
       PasswordSetup={({ context }) => (
         <PasswordSetupStep
           email={context.email}
-          isLoading={false}
+          isLoading={isSignupPending}
           onSubmit={({ password }) => {
-            // TODO: 회원가입 API 연결
-            router.push(PATHS.LOGIN);
+            signup(
+              { email: context.email, password },
+              {
+                onSuccess: () => {
+                  router.push(PATHS.LOGIN);
+                },
+              },
+            );
           }}
         />
       )}

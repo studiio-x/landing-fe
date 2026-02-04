@@ -1,3 +1,6 @@
+export const CHANNEL_NAME = "signup-verification";
+export const MESSAGE_TYPE = "email-verified";
+
 export const SIGNUP_FUNNEL_ID = "s" as const;
 
 export const SIGNUP_STEPS = {
