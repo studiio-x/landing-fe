@@ -1,10 +1,10 @@
 import { Down, Up } from "@/assets/icons";
 import clsx from "clsx";
-import { ReactNode } from "react";
-import { text } from "stream/consumers";
+import { pre } from "framer-motion/client";
+import { Dispatch } from "react";
 
-const arrayOptions = ["최신순", "오래된순"];
-const authOptions = [
+const ARRAY_OPTIONS = ["최신순", "오래된순"];
+const AUTH_OPTIONS = [
   {
     name: "전체허용",
     description: "편집 및 다른 사람과 공유 허용",
@@ -18,7 +18,7 @@ const authOptions = [
     description: "편집 및 다른 사람과 공유 불가",
   },
 ];
-const langOptions = [
+const LANG_OPTIONS = [
   {
     name: "한국어",
     description: "Korean",
@@ -30,26 +30,30 @@ const langOptions = [
 ];
 
 interface DropDownProps extends React.HTMLAttributes<HTMLDivElement> {
+  ref: React.Ref<HTMLDivElement>;
   type: "array" | "auth" | "lang";
-  currentState: ReactNode;
-  setIscurrentState?: (state: ReactNode) => void;
-  isOpen?: boolean;
-  setIsOpen?: (isOpen: boolean) => void;
+  currentState: string;
+  setCurrentState: Dispatch<React.SetStateAction<string>>;
+  isOpen: boolean;
+  setIsOpen: Dispatch<React.SetStateAction<boolean>>;
 }
 
 const DropDown = ({
+  ref,
   type = "array",
   currentState,
-  setIscurrentState,
+  setCurrentState,
   isOpen,
   setIsOpen,
   ...props
 }: DropDownProps) => {
   return (
-    <div {...props} className="relative">
-      <div
+    <div {...props} ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setIsOpen((prev) => !prev)}
         className={clsx(
-          "flex items-center",
+          "flex items-center w-28 justify-center transition-colors duration-300",
           (type === "array" || type === "auth") &&
             "Body_2_medium  p-[0.5rem_0.65rem_0.5rem_1.25rem]",
           type === "lang" && "Caption_medium",
@@ -61,42 +65,60 @@ const DropDown = ({
         )}
       >
         <span>{currentState}</span>
-        <div>{isOpen ? <Up /> : <Down />}</div>
-      </div>
+        <div>
+          {isOpen ? <Up className="w-5 h-5" /> : <Down className="w-5 h-5" />}
+        </div>
+      </button>
       {isOpen && (
         <div
           className={clsx(
-            "absolute z-10 mt-1 w-full  bg-[rgba(255,255,255,0.15)] p-[0.5rem_0.75rem]",
-            type === "array" && "rounded-[0.5rem]",
+            "absolute z-10 mt-2 w-full bg-[rgba(255,255,255,0.15)] p-[0.5rem_0.75rem]",
+            type === "array" && "rounded-[0.5rem] ",
             type === "auth" && "rounded-[0.25rem]",
             type === "lang" && "rounded-[0.25rem]",
           )}
         >
-          <ul>
+          <ul
+            className={clsx(type === "array" && "gap-[0.5rem] flex flex-col")}
+          >
             {(type === "array"
-              ? arrayOptions
+              ? ARRAY_OPTIONS
               : type === "auth"
-                ? authOptions
-                : langOptions
+                ? AUTH_OPTIONS
+                : LANG_OPTIONS
             ).map((option) => (
-              <li key={typeof option === "string" ? option : option.name}>
-                <span>{typeof option === "string" ? option : option.name}</span>
+              <li
+                key={typeof option === "string" ? option : option.name}
+                className={clsx(
+                  "text-center",
+                  (type === "auth" || type === "lang") &&
+                    "border-b border-Grey-500 last:border-b-0 p-3",
+                )}
+              >
+                <div
+                  onClick={() =>
+                    setCurrentState(
+                      typeof option === "string" ? option : option.name,
+                    )
+                  }
+                  className={clsx(
+                    " text-Grey-300",
+                    currentState ===
+                      (typeof option === "string" ? option : option.name)
+                      ? "text-Grey-100"
+                      : type === "array"
+                        ? "text-Grey-400"
+                        : "text-Grey-300",
+                    (type === "array" || type === "lang") && "Body_3_medium ",
+                    type === "auth" && "Caption_semibold",
+                  )}
+                >
+                  {typeof option === "string" ? option : option.name}
+                </div>
                 {typeof option !== "string" && (
-                  <span
-                    className={clsx(
-                      " text-Grey-300",
-                      currentState ===
-                        (typeof option === "string" ? option : option.name)
-                        ? "text-Grey-100"
-                        : type === "array"
-                          ? "text-Grey-400"
-                          : "text-Grey-300",
-                      (type === "array" || type === "lang") && "Body_3_medium ",
-                      type === "auth" && "Caption_semibold",
-                    )}
-                  >
+                  <div className="text-Grey-300 Caption_medium">
                     {option.description}
-                  </span>
+                  </div>
                 )}
               </li>
             ))}

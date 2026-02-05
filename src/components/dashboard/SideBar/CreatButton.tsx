@@ -53,11 +53,16 @@ const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
               ? "#282C34"
               : "rgba(255, 48, 48, 0.45)",
           }}
+          whileHover={
+            !isCreateOpen
+              ? { backgroundColor: "rgba(255, 48, 48, 0.75)" }
+              : undefined
+          }
           transition={{ duration: 0.3, ease: "easeInOut" }}
           className={`relative flex items-center justify-center h-[3.0625rem] ${
             isCreateOpen
               ? "shadow-[0_1px_8px_0_rgba(18,18,18,0.12)]"
-              : "hover:bg-[rgba(255,48,48,0.75)] Body_1_semibold"
+              : "Body_1_semibold"
           }`}
         >
           {!isCreateOpen && (

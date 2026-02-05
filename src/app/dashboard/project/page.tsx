@@ -1,11 +1,13 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
-import { CreateFolder, Down, Plus } from "@/assets/icons";
+import { CreateFolder, Down } from "@/assets/icons";
 import Header from "@/components/dashboard/Header";
 import SideBar from "@/components/dashboard/SideBar/SideBar";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import FolderItem from "@/components/dashboard/project/FolderItem";
 import GlassButton from "@/components/common/GlassButton";
+import DropDown from "@/components/common/DropDown";
+import useClickOutside from "@/hooks/useClickOutside";
 
 const mockData = [
   {
@@ -41,16 +43,31 @@ const mockData = [
     imageUrl: "/images/project/mockData.png",
   },
 ];
+
 const ProjectPage = () => {
   const searchParams = useSearchParams();
   const sharedProjectFromQuery = searchParams.get("shared");
   const router = useRouter();
+  const [array, setArray] = useState("최신순");
+  const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  const dropDownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!sharedProjectFromQuery) {
       router.replace("/dashboard/project?shared=my");
     }
   }, []);
+
+  // useClickOutside 훅 사용
+  useClickOutside(dropDownRef, () => setIsDropDownOpen(false), isDropDownOpen);
+
+  useEffect(() => {
+    if (array) {
+      setTimeout(() => {
+        setIsDropDownOpen(false);
+      }, 100);
+    }
+  }, [array]);
 
   return (
     <main className="relative min-h-screen w-full flex flex-col">
@@ -68,7 +85,7 @@ const ProjectPage = () => {
       <div className="flex">
         <SideBar />
         <div className="mt-[3.25rem] px-16 w-full">
-          <div className="w-full flex pr-[2.125rem] items-center gap-4">
+          <div className="w-full flex items-center gap-4">
             <h1 className="Heading_1_bold bg-gradient-to-b from-Red-300 to-Red-500 bg-clip-text text-transparent  ">
               프로젝트
             </h1>
@@ -78,11 +95,20 @@ const ProjectPage = () => {
               </span>
               <Down className="w-[1.5rem] h-[1.5rem]" color="#A9B4C6" />
             </div>
-            <div>
+            <div className="flex ml-auto gap-3">
+              {/* {변경 필요 : 버튼 컴포넌트로} */}
               <GlassButton className="rounded-full" size="xs">
                 <CreateFolder className="w-6 h-6" />
               </GlassButton>
-              <div></div>
+
+              <DropDown
+                ref={dropDownRef}
+                type="array"
+                currentState={array}
+                setCurrentState={setArray}
+                isOpen={isDropDownOpen}
+                setIsOpen={setIsDropDownOpen}
+              />
             </div>
           </div>
           <section className="grid grid-cols-3 w-full gap-[2.25rem] mt-8">
