@@ -1,8 +1,9 @@
 import { Folder, Meatball, NotFolder } from "@/assets/icons";
 import Image from "next/image";
 import clsx from "clsx";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import MeatballModal from "./MeatballModal";
+import useClickOutside from "@/hooks/useClickOutside";
 
 interface FolderItemProps {
   lists: {
@@ -11,10 +12,19 @@ interface FolderItemProps {
     imageUrl: string | string[];
   };
   index: number;
+  setRenameModalOpen: (open: boolean) => void;
+  setDeleteModalOpen: (open: boolean) => void;
 }
 
-const FolderItem = ({ lists, index }: FolderItemProps) => {
+const FolderItem = ({
+  lists,
+  index,
+  setRenameModalOpen,
+  setDeleteModalOpen,
+}: FolderItemProps) => {
   const [isOpenMeatball, setIsOpenMeatball] = useState(false);
+  const meatballRef = useRef<HTMLDivElement>(null);
+  useClickOutside(meatballRef, () => setIsOpenMeatball(false), isOpenMeatball);
 
   return (
     <div key={index} className="relative">
@@ -90,7 +100,14 @@ const FolderItem = ({ lists, index }: FolderItemProps) => {
                   className={`${isOpenMeatball ? "text-Grey-50" : "text-Grey-300"} w-6 h-6 transition-colors`}
                 />
               </button>
-              {isOpenMeatball && <MeatballModal isFolder={lists.isFolder} />}
+              {isOpenMeatball && (
+                <MeatballModal
+                  meatballRef={meatballRef}
+                  setRenameModalOpen={setRenameModalOpen}
+                  setDeleteModalOpen={setDeleteModalOpen}
+                  isFolder={lists.isFolder}
+                />
+              )}
             </div>
           </div>
         </div>

@@ -8,6 +8,9 @@ import FolderItem from "@/components/dashboard/project/FolderItem";
 import GlassButton from "@/components/common/GlassButton";
 import DropDown from "@/components/common/DropDown";
 import useClickOutside from "@/hooks/useClickOutside";
+import CreatFolderModal from "@/components/dashboard/project/CreatFolderModal";
+import DeleteModal from "@/components/dashboard/project/DeleteModal";
+import ModalOverlay from "@/components/common/ModalOverlay";
 
 const mockData = [
   {
@@ -49,6 +52,10 @@ const ProjectPage = () => {
   const sharedProjectFromQuery = searchParams.get("shared");
   const router = useRouter();
   const [array, setArray] = useState("최신순");
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [renameModalOpen, setRenameModalOpen] = useState(false);
+
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const dropDownRef = useRef<HTMLDivElement>(null);
 
@@ -69,6 +76,10 @@ const ProjectPage = () => {
     }
   }, [array]);
 
+  const onCreatButtonClick = () => {
+    setCreateModalOpen(true);
+  };
+
   return (
     <main className="relative min-h-screen w-full flex flex-col">
       <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
@@ -80,6 +91,22 @@ const ProjectPage = () => {
           }}
         />
       </div>
+      {/* 폴더 생성 모달 */}
+      {createModalOpen && (
+        <ModalOverlay onClose={() => setCreateModalOpen(false)}>
+          <CreatFolderModal />
+        </ModalOverlay>
+      )}
+      {/* 제거 모달 */}
+      {deleteModalOpen && (
+        <ModalOverlay onClose={() => setDeleteModalOpen(false)}>
+          <DeleteModal
+            setIsOpen={setDeleteModalOpen}
+            handleClose={() => setDeleteModalOpen(false)}
+          />
+        </ModalOverlay>
+      )}
+
       <Header />
 
       <div className="flex">
@@ -96,8 +123,12 @@ const ProjectPage = () => {
               <Down className="w-[1.5rem] h-[1.5rem]" color="#A9B4C6" />
             </div>
             <div className="flex ml-auto gap-3">
-              {/* {변경 필요 : 버튼 컴포넌트로} */}
-              <GlassButton className="rounded-full" size="xs">
+              <GlassButton
+                onClick={onCreatButtonClick}
+                type="button"
+                className="rounded-full hover:bg-[rgba(255,48,48,0.35)] active:bg-[rgba(255,48,48,0.75)] backdrop-blur-sm"
+                size="xs"
+              >
                 <CreateFolder className="w-6 h-6" />
               </GlassButton>
 
@@ -113,7 +144,13 @@ const ProjectPage = () => {
           </div>
           <section className="grid grid-cols-3 w-full gap-[2.25rem] mt-8">
             {mockData.map((lists, index) => (
-              <FolderItem lists={lists} index={index} key={index} />
+              <FolderItem
+                lists={lists}
+                index={index}
+                key={index}
+                setRenameModalOpen={setRenameModalOpen}
+                setDeleteModalOpen={setDeleteModalOpen}
+              />
             ))}
           </section>
         </div>
