@@ -94,7 +94,7 @@ const ProjectPage = () => {
       {/* 폴더 생성 모달 */}
       {createModalOpen && (
         <ModalOverlay onClose={() => setCreateModalOpen(false)}>
-          <CreatFolderModal />
+          <CreatFolderModal onClose={() => setCreateModalOpen(false)} />
         </ModalOverlay>
       )}
       {/* 제거 모달 */}
@@ -102,7 +102,7 @@ const ProjectPage = () => {
         <ModalOverlay onClose={() => setDeleteModalOpen(false)}>
           <DeleteModal
             setIsOpen={setDeleteModalOpen}
-            handleClose={() => setDeleteModalOpen(false)}
+            onClose={() => setDeleteModalOpen(false)}
           />
         </ModalOverlay>
       )}

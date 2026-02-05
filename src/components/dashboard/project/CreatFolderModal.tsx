@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { Close, Down } from "@/assets/icons";
+import { Close } from "@/assets/icons";
+import GlassButton from "@/components/common/GlassButton";
+import clsx from "clsx";
+import InvitedUserItem from "./InvitedUserItem";
 
 interface User {
   id: number;
@@ -40,7 +43,10 @@ const users: User[] = [
   },
 ];
 
-export const CreatFolderModal = () => {
+interface CreatFolderModalProps {
+  onClose: () => void;
+}
+export const CreatFolderModal = ({ onClose }: CreatFolderModalProps) => {
   const [folderName, setFolderName] = useState("");
   const [inviteEmail, setInviteEmail] = useState("");
 
@@ -57,13 +63,16 @@ export const CreatFolderModal = () => {
       <div className="flex flex-col items-center gap-3 relative self-stretch w-full flex-[0_0_auto]">
         <header className="flex items-start justify-between pl-7 pr-5 pt-6 pb-0 relative self-stretch w-full flex-[0_0_auto]">
           <div className="inline-flex items-center justify-center gap-2.5 pl-4 pr-0 pt-1 pb-0 relative flex-[0_0_auto]">
-            <h1 className="relative w-fit mt-[-1.00px] font-heading-subhead-subhead-1-semibold font-[number:var(--heading-subhead-subhead-1-semibold-font-weight)] text-color-greyscale-white text-[length:var(--heading-subhead-subhead-1-semibold-font-size)] text-center tracking-[var(--heading-subhead-subhead-1-semibold-letter-spacing)] leading-[var(--heading-subhead-subhead-1-semibold-line-height)] whitespace-nowrap [font-style:var(--heading-subhead-subhead-1-semibold-font-style)]">
+            <h1 className="relative w-fit mt-[-1.00px]  text-center whitespace-nowrap Subhead_1_semibold">
               폴더 생성하기
             </h1>
           </div>
 
           <button type="button" aria-label="닫기" className="cursor-pointer">
-            <Close className="!relative !w-6 !h-6 !aspect-[1]" />
+            <Close
+              className="!relative !w-6 !h-6 !aspect-[1] text-Grey-300"
+              onClick={onClose}
+            />
           </button>
         </header>
 
@@ -75,19 +84,19 @@ export const CreatFolderModal = () => {
               <div className="flex flex-col items-start gap-2 relative self-stretch w-full flex-[0_0_auto]">
                 <label
                   htmlFor="folder-name"
-                  className="mt-[-1.00px] font-heading-body-body-2-semibold font-[number:var(--heading-body-body-2-semibold-font-weight)] text-color-greyscale-grey-200 text-[length:var(--heading-body-body-2-semibold-font-size)] tracking-[var(--heading-body-body-2-semibold-letter-spacing)] leading-[var(--heading-body-body-2-semibold-line-height)] relative w-fit whitespace-nowrap [font-style:var(--heading-body-body-2-semibold-font-style)]"
+                  className="mt-[-1.00px] Body_2_semibold text-Grey-200 "
                 >
                   폴더 이름
                 </label>
 
-                <div className="self-stretch w-full flex-[0_0_auto] flex flex-col items-start gap-2.5 px-4 py-3 relative bg-color-greyscale-grey-900 rounded">
+                <div className="self-stretch w-full flex-[0_0_auto] flex flex-col items-start gap-2.5 px-4 py-3 relative bg-Grey-900 rounded">
                   <input
                     type="text"
                     id="folder-name"
                     value={folderName}
                     onChange={(e) => setFolderName(e.target.value)}
                     placeholder="제목없는 폴더"
-                    className="w-full relative flex items-center justify-center mt-[-1.00px] font-heading-body-body-2-medium font-[number:var(--heading-body-body-2-medium-font-weight)] text-color-greyscale-grey-400 text-[length:var(--heading-body-body-2-medium-font-size)] tracking-[var(--heading-body-body-2-medium-letter-spacing)] leading-[var(--heading-body-body-2-medium-line-height)] [font-style:var(--heading-body-body-2-medium-font-style)] placeholder:text-color-greyscale-grey-400"
+                    className="w-full relative flex items-center justify-center mt-[-1.00px] Body_2_medium  placeholder:text-Grey-400 bg-transparent"
                   />
                 </div>
               </div>
@@ -97,34 +106,39 @@ export const CreatFolderModal = () => {
                   <div className="inline-flex items-center gap-1 relative flex-[0_0_auto]">
                     <label
                       htmlFor="invite-email"
-                      className="mt-[-1.00px] font-heading-body-body-2-semibold font-[number:var(--heading-body-body-2-semibold-font-weight)] text-color-greyscale-grey-200 text-[length:var(--heading-body-body-2-semibold-font-size)] tracking-[var(--heading-body-body-2-semibold-letter-spacing)] leading-[var(--heading-body-body-2-semibold-line-height)] relative w-fit whitespace-nowrap [font-style:var(--heading-body-body-2-semibold-font-style)]"
+                      className="mt-[-1.00px] Body_2_semibold text-Grey-200 "
                     >
                       이메일로 초대하기
                     </label>
 
-                    <span className="font-heading-body-body-3-regular font-[number:var(--heading-body-body-3-regular-font-weight)] text-color-greyscale-grey-300 text-[length:var(--heading-body-body-3-regular-font-size)] tracking-[var(--heading-body-body-3-regular-letter-spacing)] leading-[var(--heading-body-body-3-regular-line-height)] relative w-fit whitespace-nowrap [font-style:var(--heading-body-body-3-regular-font-style)]">
-                      (선택)
-                    </span>
+                    <span className="Body_3_regular text-Grey-300">(선택)</span>
                   </div>
 
                   <div className="inline-flex items-center gap-2 relative flex-[0_0_auto]">
-                    <div className="w-[386px] flex flex-col items-start gap-2.5 px-4 py-3 relative bg-color-greyscale-grey-900 rounded">
+                    <div className="w-[386px] flex flex-col items-start gap-2.5 px-4 py-3 relative bg-Grey-900 rounded">
                       <input
                         type="email"
                         id="invite-email"
                         value={inviteEmail}
                         onChange={(e) => setInviteEmail(e.target.value)}
                         placeholder="이메일을 입력해 주세요"
-                        className="w-full relative flex items-center justify-center mt-[-1.00px] font-heading-body-body-2-medium font-[number:var(--heading-body-body-2-medium-font-weight)] text-color-greyscale-grey-400 text-[length:var(--heading-body-body-2-medium-font-size)] tracking-[var(--heading-body-body-2-medium-letter-spacing)] leading-[var(--heading-body-body-2-medium-line-height)] [font-style:var(--heading-body-body-2-medium-font-style)] placeholder:text-color-greyscale-grey-400"
+                        className="w-full relative flex items-center justify-center mt-[-1.00px] placeholder:text-Grey-400 bg-transparent "
                       />
                     </div>
 
                     <button
                       type="button"
                       onClick={handleInvite}
-                      className="inline-flex items-center justify-center gap-2.5 pt-[var(--spacing-spacing-12)] pr-[var(--spacing-spacing-24)] pb-[var(--spacing-spacing-12)] pl-[var(--spacing-spacing-24)] relative flex-[0_0_auto] bg-opacitywhite-3 rounded-md border-[none] border-color-greyscale-grey-800 before:content-[''] before:absolute before:inset-0 before:p-px before:rounded-md before:[background:linear-gradient(180deg,rgba(241,244,248,0.25)_0%,rgba(29,32,37,0.25)_100%)] before:[-webkit-mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[-webkit-mask-composite:xor] before:[mask-composite:exclude] before:z-[1] before:pointer-events-none cursor-pointer"
+                      className="inline-flex items-center justify-center gap-2.5 py-3 px-6 relative flex-[0_0_auto] bg-opacitywhite-3 rounded-md border-[none] border-color-greyscale-grey-800 before:content-[''] before:absolute before:inset-0 before:p-px before:rounded-md before:[background:linear-gradient(180deg,rgba(241,244,248,0.25)_0%,rgba(29,32,37,0.25)_100%)] before:[-webkit-mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[-webkit-mask-composite:xor] before:[mask-composite:exclude] before:z-[1] before:pointer-events-none"
                     >
-                      <span className="relative flex items-end justify-center w-fit mt-[-1.00px] font-heading-caption-caption-semibold font-[number:var(--heading-caption-caption-semibold-font-weight)] text-color-greyscale-grey-500 text-[length:var(--heading-caption-caption-semibold-font-size)] tracking-[var(--heading-caption-caption-semibold-letter-spacing)] leading-[var(--heading-caption-caption-semibold-line-height)] whitespace-nowrap [font-style:var(--heading-caption-caption-semibold-font-style)]">
+                      <span
+                        className={clsx(
+                          "relative flex items-end justify-center w-fit mt-[-1.00px] Caption_semibold  hover:",
+                          inviteEmail.trim() === ""
+                            ? "text-Grey-500"
+                            : "text-Grey-50",
+                        )}
+                      >
                         초대하기
                       </span>
                     </button>
@@ -134,59 +148,26 @@ export const CreatFolderModal = () => {
                 <div className="flex flex-col items-start gap-14 relative self-stretch w-full flex-[0_0_auto]">
                   <div className="flex flex-col items-start pt-2 pb-0 px-0 relative self-stretch w-full flex-[0_0_auto] mt-[-0.50px] mb-[-0.50px] ml-[-0.50px] mr-[-0.50px] border-t [border-top-style:solid] border-color-greyscale-grey-500">
                     {users.map((user, index) => (
-                      <div
-                        key={user.id}
-                        className="flex items-center justify-between relative self-stretch w-full flex-[0_0_auto]"
-                      >
-                        <div className="flex w-[352px] items-start gap-2 pl-2 pr-0 py-1.5 relative">
-                          <img
-                            className="relative w-6 h-6 object-cover rounded-full"
-                            alt={`${user.name} 프로필`}
-                            src={user.avatar}
-                          />
-
-                          <div className="inline-flex flex-col items-start justify-center relative flex-[0_0_auto]">
-                            <div className="mt-[-1.00px] font-heading-body-body-3-medium font-[number:var(--heading-body-body-3-medium-font-weight)] text-color-greyscale-grey-100 text-[length:var(--heading-body-body-3-medium-font-size)] tracking-[var(--heading-body-body-3-medium-letter-spacing)] leading-[var(--heading-body-body-3-medium-line-height)] relative w-fit whitespace-nowrap [font-style:var(--heading-body-body-3-medium-font-style)]">
-                              {user.name}
-                            </div>
-
-                            <div className="relative w-fit font-heading-caption-caption-medium font-[number:var(--heading-caption-caption-medium-font-weight)] text-color-greyscale-grey-300 text-[length:var(--heading-caption-caption-medium-font-size)] tracking-[var(--heading-caption-caption-medium-letter-spacing)] leading-[var(--heading-caption-caption-medium-line-height)] whitespace-nowrap [font-style:var(--heading-caption-caption-medium-font-style)]">
-                              {user.email}
-                            </div>
-                          </div>
-                        </div>
-
-                        <button
-                          type="button"
-                          aria-label={`${user.name} 권한 변경`}
-                          className="inline-flex items-center gap-3 pt-[var(--border-radius-radius-8)] pb-[var(--border-radius-radius-8)] pl-[var(--border-radius-radius-20)] pr-3 relative flex-[0_0_auto] rounded-[var(--border-radius-radius-4)] cursor-pointer"
-                        >
-                          <span className="flex items-end justify-center font-heading-caption-caption-medium font-[number:var(--heading-caption-caption-medium-font-weight)] text-color-greyscale-grey-200 text-[length:var(--heading-caption-caption-medium-font-size)] tracking-[var(--heading-caption-caption-medium-letter-spacing)] leading-[var(--heading-caption-caption-medium-line-height)] relative w-fit whitespace-nowrap [font-style:var(--heading-caption-caption-medium-font-style)]">
-                            {user.permission}
-                          </span>
-
-                          <div className="flex w-5 h-5 items-center justify-center gap-[8.33px] relative rotate-90">
-                            <div className="inline-flex flex-col items-center justify-center relative flex-[0_0_auto]">
-                              <Down />
-                            </div>
-                          </div>
-                        </button>
-                      </div>
+                      <InvitedUserItem key={index} user={user} />
                     ))}
                   </div>
                 </div>
               </div>
             </div>
 
-            <button
-              type="button"
+            <GlassButton
               onClick={handleCreate}
-              className="flex h-12 items-center justify-center gap-2.5 px-0 py-2 relative self-stretch w-full bg-[#ff2f2f73] rounded backdrop-blur-[11.5px] backdrop-brightness-[100.0%] backdrop-saturate-[88.0%] [-webkit-backdrop-filter:blur(11.5px)_brightness(100.0%)_saturate(88.0%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.40),inset_1px_0_0_rgba(255,255,255,0.32),inset_0_-1px_7px_rgba(0,0,0,0.05),inset_-1px_0_7px_rgba(0,0,0,0.04)] cursor-pointer"
+              className={clsx(
+                "w-full flex items-center justify-center gap-2.5 px-0 py-3 relative  hover:bg-[rgba(255,48,48,0.75)] flex-1 grow h-[2.9375rem]rounded Body_2_semibold ",
+                folderName.trim() === "" || inviteEmail.trim() === ""
+                  ? "pointer-events-none text-Grey-500 bg-[rgba(53,59,69,0.45)]"
+                  : "text-Grey-50 bg-[rgba(255,48,48,0.45)]",
+              )}
+              type="button"
+              aria-label="생성하기"
             >
-              <span className="flex items-end justify-center font-heading-body-body-2-semibold font-[number:var(--heading-body-body-2-semibold-font-weight)] text-color-greyscale-white text-[length:var(--heading-body-body-2-semibold-font-size)] tracking-[var(--heading-body-body-2-semibold-letter-spacing)] leading-[var(--heading-body-body-2-semibold-line-height)] relative w-fit whitespace-nowrap [font-style:var(--heading-body-body-2-semibold-font-style)]">
-                생성하기
-              </span>
-            </button>
+              생성하기
+            </GlassButton>
           </div>
         </div>
       </div>

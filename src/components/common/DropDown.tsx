@@ -6,15 +6,15 @@ import { Dispatch } from "react";
 const ARRAY_OPTIONS = ["최신순", "오래된순"];
 const AUTH_OPTIONS = [
   {
-    name: "전체허용",
+    name: "전체 허용",
     description: "편집 및 다른 사람과 공유 허용",
   },
   {
-    name: "편집허용",
+    name: "편집 허용",
     description: "편집 허용, 다른 사람과 공유 불가",
   },
   {
-    name: "읽기전용",
+    name: "읽기 전용",
     description: "편집 및 다른 사람과 공유 불가",
   },
 ];
@@ -59,7 +59,7 @@ const DropDown = ({
           type === "lang" && "Caption_medium",
           type === "array" &&
             "bg-[rgba(255,255,255,0.05)] rounded-[5rem] gap-[0.25rem]",
-          type === "auth" && "",
+          type === "auth" && "Caption_medium ",
           type === "lang" && "bg-[rgba(255,255,255,0.1)] rounded-[0.25rem]",
           isOpen ? "text-Grey-400" : "text-Grey-200",
         )}
@@ -72,10 +72,10 @@ const DropDown = ({
       {isOpen && (
         <div
           className={clsx(
-            "absolute z-10 mt-2 w-full bg-[rgba(255,255,255,0.15)] p-[0.5rem_0.75rem]",
-            type === "array" && "rounded-[0.5rem] ",
-            type === "auth" && "rounded-[0.25rem]",
-            type === "lang" && "rounded-[0.25rem]",
+            "absolute z-10 mt-2  bg-[rgba(255,255,255,0.15)] p-[0.5rem_0.75rem]",
+            type === "array" && "rounded-[0.5rem] w-full",
+            type === "auth" && "rounded-[0.25rem] right-0",
+            type === "lang" && "rounded-[0.25rem] w-full",
           )}
         >
           <ul
@@ -94,15 +94,14 @@ const DropDown = ({
                   (type === "auth" || type === "lang") &&
                     "border-b border-Grey-500 last:border-b-0 p-3",
                 )}
+                onClick={() =>
+                  setCurrentState(
+                    typeof option === "string" ? option : option.name,
+                  )
+                }
               >
                 <div
-                  onClick={() =>
-                    setCurrentState(
-                      typeof option === "string" ? option : option.name,
-                    )
-                  }
                   className={clsx(
-                    " text-Grey-300",
                     currentState ===
                       (typeof option === "string" ? option : option.name)
                       ? "text-Grey-100"
@@ -116,7 +115,7 @@ const DropDown = ({
                   {typeof option === "string" ? option : option.name}
                 </div>
                 {typeof option !== "string" && (
-                  <div className="text-Grey-300 Caption_medium">
+                  <div className="text-Grey-300 Caption_medium whitespace-nowrap">
                     {option.description}
                   </div>
                 )}
