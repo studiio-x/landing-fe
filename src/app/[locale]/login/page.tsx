@@ -1,7 +1,7 @@
 "use client";
 
 import { Close } from "@/assets/icons";
-import LoginInput from "@/components/dashboard/login/LoginInput";
+import LoginInput from "@/components/login/LoginInput";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { PATHS } from "@/constants/common/paths";
@@ -9,7 +9,7 @@ import Header from "@/components/dashboard/Header";
 import GlassButton from "@/components/common/GlassButton";
 import { useTranslations } from "next-intl";
 import { useLogin } from "@/hooks/queries/useAuthApi";
-import GoogleLoginButton from "@/components/dashboard/login/GoogleLoginButton";
+import GoogleLoginButton from "@/components/login/GoogleLoginButton";
 
 export default function Login() {
   const [email, setEmail] = useState("");
