@@ -4,7 +4,7 @@ import { Check } from "@/assets/icons";
 import Link from "next/link";
 import { useActivePage } from "@/hooks/useActivePage";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { PAGE_CONFIG } from "@/constants/dashboard/sideBar";
 import ProjectListItem from "./projectListItem";
 import CreateButton from "./CreatButton";

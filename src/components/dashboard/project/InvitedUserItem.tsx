@@ -1,7 +1,5 @@
-import { Down } from "@/assets/icons";
 import DropDown from "@/components/common/DropDown";
 import useClickOutside from "@/hooks/useClickOutside";
-import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 
 interface InvitedUserItemProps {
@@ -31,8 +29,6 @@ const InvitedUserItem = ({ user }: InvitedUserItemProps) => {
     }
   }, [currentPermission]);
   useClickOutside(dropdownRef, () => setIsDropDownOpen(false), isDropDownOpen);
-
-  console.log(currentPermission);
 
   return (
     <div

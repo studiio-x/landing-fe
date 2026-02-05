@@ -1,6 +1,6 @@
 "use client";
 import { useSearchParams, useRouter } from "next/navigation";
-import { CreateFolder, Down } from "@/assets/icons";
+import { CreateFolder, Down, Up } from "@/assets/icons";
 import Header from "@/components/dashboard/Header";
 import SideBar from "@/components/dashboard/SideBar/SideBar";
 import { useEffect, useRef, useState } from "react";
@@ -11,6 +11,7 @@ import useClickOutside from "@/hooks/useClickOutside";
 import CreatFolderModal from "@/components/dashboard/project/CreatFolderModal";
 import DeleteModal from "@/components/dashboard/project/DeleteModal";
 import ModalOverlay from "@/components/common/ModalOverlay";
+import InviteModal from "@/components/dashboard/project/InviteModal";
 
 const mockData = [
   {
@@ -55,6 +56,7 @@ const ProjectPage = () => {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [renameModalOpen, setRenameModalOpen] = useState(false);
+  const [inviteModalOpen, setInviteModalOpen] = useState(false);
 
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const dropDownRef = useRef<HTMLDivElement>(null);
@@ -65,7 +67,6 @@ const ProjectPage = () => {
     }
   }, []);
 
-  // useClickOutside 훅 사용
   useClickOutside(dropDownRef, () => setIsDropDownOpen(false), isDropDownOpen);
 
   useEffect(() => {
@@ -107,6 +108,13 @@ const ProjectPage = () => {
         </ModalOverlay>
       )}
 
+      {/* 초대 모달 */}
+      {inviteModalOpen && (
+        <ModalOverlay onClose={() => setInviteModalOpen(false)}>
+          <InviteModal />
+        </ModalOverlay>
+      )}
+
       <Header />
 
       <div className="flex">
@@ -120,7 +128,16 @@ const ProjectPage = () => {
               <span className="whitespace-nowrap Body_2_medium text-Grey-200">
                 {sharedProjectFromQuery}의 프로젝트
               </span>
-              <Down className="w-[1.5rem] h-[1.5rem]" color="#A9B4C6" />
+              <button onClick={() => setInviteModalOpen(true)}>
+                {inviteModalOpen ? (
+                  <Up
+                    className="w-[1.5rem] h-[1.5rem] cursor-"
+                    color="#A9B4C6"
+                  />
+                ) : (
+                  <Down className="w-[1.5rem] h-[1.5rem]" color="#A9B4C6" />
+                )}
+              </button>
             </div>
             <div className="flex ml-auto gap-3">
               <GlassButton
