@@ -8,6 +8,7 @@ import { WorkbenchMode } from "@/types/dashboard/mode.type";
 import { WORKBENCH_TABS } from "@/constants/dashboard/tab";
 import { PATHS, QUERY_KEYS } from "@/constants/common/paths";
 import { useLocale, useTranslations } from "next-intl";
+import { useMypage } from "@/hooks/queries/useMypageApi";
 
 interface HeaderProps {
   back?: boolean;
@@ -26,6 +27,8 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const userMenuRef = useRef<HTMLDivElement>(null);
+
+  const { data: mypageData } = useMypage();
 
   const mode =
     (searchParams.get(QUERY_KEYS.WORKBENCH_MODE) as WorkbenchMode | null) ??
@@ -159,7 +162,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
           {isUserOpen && (
             <div className="absolute top-full right-0 pt-5">
               <div className="px-3 py-4 bg-[rgba(40,44,52,0.90)] backdrop-blur-[5px] rounded-[8px] flex flex-col gap-3 Caption_medium text-Grey-100 min-w-[252px] transition-opacity">
-                <div className="px-5 py-2">cnskdjnksc@gmail.com</div>
+                <div className="px-5 py-2">{mypageData?.email}</div>
                 <div className="Body_2_medium text-Grey-300 flex flex-col gap-14">
                   <div className="border-t-Grey-500 border-t pt-2">
                     <button
