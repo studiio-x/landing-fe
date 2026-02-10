@@ -56,7 +56,10 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node)
+      ) {
         setIsUserOpen(false);
         setIsUserClicked(false);
       }
@@ -67,6 +70,11 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
   }, [isUserOpen]);
 
   const onUserClick = () => {
+    if (!mypageData) {
+      router.push(PATHS.LOGIN);
+      return;
+    }
+
     if (!isUserClicked) {
       setIsUserClicked(true);
       setIsUserOpen(true);
@@ -78,6 +86,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
   };
 
   const userHover = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!mypageData) return;
     if (isUserClicked) return;
     if (e.type === "mouseenter") setIsUserOpen(true);
     if (e.type === "mouseleave") setIsUserOpen(false);
@@ -159,10 +168,10 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
         >
           <Person className="w-7 h-7 cursor-pointer" onClick={onUserClick} />
 
-          {isUserOpen && (
+          {isUserOpen && mypageData && (
             <div className="absolute top-full right-0 pt-5">
               <div className="px-3 py-4 bg-[rgba(40,44,52,0.90)] backdrop-blur-[5px] rounded-[8px] flex flex-col gap-3 Caption_medium text-Grey-100 min-w-[252px] transition-opacity">
-                <div className="px-5 py-2">{mypageData?.email}</div>
+                <div className="px-5 py-2">{mypageData.email}</div>
                 <div className="Body_2_medium text-Grey-300 flex flex-col gap-14">
                   <div className="border-t-Grey-500 border-t pt-2">
                     <button
