@@ -24,8 +24,6 @@ export interface LoginResponse {
   userId: number;
   email: string;
   profileImageUrl: string;
-  accessToken: string;
-  refreshToken: string;
 }
 
 // 이메일 인증 확인 (GET)
