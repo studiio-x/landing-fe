@@ -8,14 +8,7 @@ interface DeleteModalProps {
 
 export const DeleteModal = ({ setIsOpen, onClose }: DeleteModalProps) => {
   const handleDelete = () => {
-    console.log("Delete action triggered");
     setIsOpen(false);
-  };
-
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
   };
 
   return (

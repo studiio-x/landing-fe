@@ -1,7 +1,7 @@
 import { Folder, Meatball, NotFolder } from "@/assets/icons";
 import Image from "next/image";
 import clsx from "clsx";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MeatballModal from "./MeatballModal";
 import useClickOutside from "@/hooks/useClickOutside";
 
@@ -12,19 +12,43 @@ interface FolderItemProps {
     imageUrl: string | string[];
   };
   index: number;
-  setRenameModalOpen: (open: boolean) => void;
+
+  setRename: (open: boolean) => void;
   setDeleteModalOpen: (open: boolean) => void;
 }
 
-const FolderItem = ({
-  lists,
-  index,
-  setRenameModalOpen,
-  setDeleteModalOpen,
-}: FolderItemProps) => {
+const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
   const [isOpenMeatball, setIsOpenMeatball] = useState(false);
+  const [renameModalOpen, setRenameModalOpen] = useState(false);
+  const [name, setname] = useState<string>(lists.name);
+  const [rename, setrename] = useState<string>(name);
+  const renameModalRef = useRef<HTMLInputElement>(null);
   const meatballRef = useRef<HTMLDivElement>(null);
   useClickOutside(meatballRef, () => setIsOpenMeatball(false), isOpenMeatball);
+  useClickOutside(
+    renameModalRef,
+    () => setRenameModalOpen(false),
+    renameModalOpen,
+  );
+
+  const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    if (renameModalOpen) setrename(e.target.value);
+  };
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      setname(rename);
+      setRenameModalOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    if (renameModalOpen) {
+      renameModalRef.current?.focus();
+      setIsOpenMeatball(false);
+    }
+  }, [renameModalOpen]);
 
   return (
     <div key={index} className="relative w-[19.25rem]">
@@ -92,10 +116,20 @@ const FolderItem = ({
               Project 0{index + 1}
             </span>
           )}
-          <div className={`flex-1 flex ${lists.isFolder ? "flex-col" : ""}`}>
-            <span className="bottom-8 Body_1_medium z-10 flex-1 opacity-100">
-              {lists.name}
-            </span>
+          <div
+            className={`${lists.isFolder ? "flex-1 flex flex-col" : "flex-1 flex "}`}
+          >
+            <input
+              aria-label="name"
+              className="bottom-5 Body_1_medium z-10 flex-1 opacity-100 bg-transparent block "
+              onChange={onNameChange}
+              ref={renameModalRef}
+              type="text"
+              value={renameModalOpen ? rename : name}
+              readOnly={!renameModalOpen}
+              onBlur={() => setRenameModalOpen(false)}
+              onKeyDown={onKeyDown}
+            />
 
             <div className="relative self-end">
               <button
