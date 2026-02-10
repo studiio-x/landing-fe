@@ -92,12 +92,14 @@ const ProjectPage = () => {
           }}
         />
       </div>
+
       {/* 폴더 생성 모달 */}
       {createModalOpen && (
         <ModalOverlay onClose={() => setCreateModalOpen(false)}>
           <CreatFolderModal onClose={() => setCreateModalOpen(false)} />
         </ModalOverlay>
       )}
+
       {/* 제거 모달 */}
       {deleteModalOpen && (
         <ModalOverlay onClose={() => setDeleteModalOpen(false)}>
@@ -119,8 +121,8 @@ const ProjectPage = () => {
 
       <div className="flex">
         <SideBar />
-        <div className="mt-[3.25rem] px-16 w-full">
-          <div className="w-full flex items-center gap-4">
+        <div className="mt-[3.25rem] flex items-center flex-col flex-1 w-[62.25rem] mr-[1.125rem]">
+          <div className="w-[62.25rem] flex items-center gap-4">
             <h1 className="Heading_1_bold bg-gradient-to-b from-Red-300 to-Red-500 bg-clip-text text-transparent  ">
               프로젝트
             </h1>
@@ -139,6 +141,7 @@ const ProjectPage = () => {
                 )}
               </button>
             </div>
+
             <div className="flex ml-auto gap-3">
               <GlassButton
                 onClick={onCreatButtonClick}
@@ -159,7 +162,8 @@ const ProjectPage = () => {
               />
             </div>
           </div>
-          <section className="grid grid-cols-3 w-full gap-[2.25rem] mt-8">
+
+          <section className="grid grid-cols-3  gap-x-9 gap-y-11 mt-8">
             {mockData.map((lists, index) => (
               <FolderItem
                 lists={lists}

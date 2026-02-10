@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import DashboardCard from "@/components/dashboard/DashboardCard";
 import { DASHBOARD_CARDS } from "@/constants/dashboard/card";
 import Header from "@/components/dashboard/Header";
-import SideBar from "@/components/dashboard/SideBar";
+import SideBar from "@/components/dashboard/SideBar/SideBar";
 import { useTemplatesByCategory } from "@/hooks/queries/useTemplateApi";
 import { TemplateCategory } from "@/types/api/template.type";
 

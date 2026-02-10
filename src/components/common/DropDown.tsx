@@ -90,7 +90,7 @@ const DropDown = ({
               <li
                 key={typeof option === "string" ? option : option.name}
                 className={clsx(
-                  "text-center",
+                  "text-center cursor-pointer",
                   (type === "auth" || type === "lang") &&
                     "border-b border-Grey-500 last:border-b-0 p-3",
                 )}
