@@ -19,11 +19,11 @@ export const DeleteModal = ({ setIsOpen, onClose }: DeleteModalProps) => {
   };
 
   return (
-    <div className="flex flex-col items-start gap-2.5 pb-9  px-11  relative bg-[#272b33e6] rounded-[0.5rem] backdrop-blur-sm shadow-[0_0_12px_0_rgba(8,8,8,0.25)]">
-      <header className="flex items-start justify-between pt-7 self-stretch w-full relative">
+    <div className="flex flex-col items-start gap-2.5 pb-9 px-11 relative bg-[#272b33e6] rounded-[0.5rem] backdrop-blur-sm shadow-[0_0_12px_0_rgba(8,8,8,0.25)]">
+      <header className="flex items-start justify-between pt-7 self-stretch w-full">
         <h2
           id="modal-title"
-          className="w-fit Subhead_1_semibold text-left whitespace-nowrap relative "
+          className="w-fit Subhead_1_semibold text-left whitespace-nowrap"
         >
           정말 삭제하시겠습니까?
         </h2>
@@ -32,11 +32,11 @@ export const DeleteModal = ({ setIsOpen, onClose }: DeleteModalProps) => {
           onClick={(e) => {
             onClose();
           }}
-          className="!relative !w-6 !h-6 !aspect-[1] cursor-pointer"
+          className="absolute right-5 top-6 !aspect-[1] cursor-pointer"
           aria-label="닫기"
           type="button"
         >
-          <Close className="!relative !w-6 !h-6 text-Grey-300" />
+          <Close className="w-6 h-6 text-Grey-300" />
         </button>
       </header>
 
@@ -60,8 +60,9 @@ export const DeleteModal = ({ setIsOpen, onClose }: DeleteModalProps) => {
         <div className="flex flex-col items-start gap-6 self-stretch w-full relative flex-[0_0_auto]">
           <div className="flex items-center gap-3 self-stretch w-full relative flex-[0_0_auto] Body_2_semibold ">
             <GlassButton
+              variant="default"
               onClick={onClose}
-              className="items-center gap-2.5 py-3 flex-1 grow bg-opacitywhite-3 rounded flex justify-center relative h-[2.9375rem]"
+              className="items-center flex-1 grow flex justify-center relative !h-[2.9375rem]"
               type="button"
               aria-label="닫기"
             >
@@ -69,8 +70,9 @@ export const DeleteModal = ({ setIsOpen, onClose }: DeleteModalProps) => {
             </GlassButton>
 
             <GlassButton
+              variant="red"
               onClick={handleDelete}
-              className="flex items-center justify-center gap-2.5 px-0 py-3 relative bg-[rgba(255,48,48,0.45)] hover:bg-[rgba(255,48,48,0.75)]  flex-1 grow h-[2.9375rem]rounded"
+              className="flex items-center justify-center relative flex-1 grow !h-[2.9375rem]"
               type="button"
               aria-label="삭제하기"
             >
