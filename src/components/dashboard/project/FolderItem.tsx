@@ -1,7 +1,7 @@
 import { Folder, Meatball, NotFolder } from "@/assets/icons";
 import Image from "next/image";
 import clsx from "clsx";
-import { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import MeatballModal from "./MeatballModal";
 import useClickOutside from "@/hooks/useClickOutside";
 
@@ -20,7 +20,7 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
   const [renameModalOpen, setRenameModalOpen] = useState(false);
   const [name, setname] = useState<string>(lists.name);
   const [rename, setrename] = useState<string>(name);
-  const renameModalRef = useRef<HTMLInputElement>(null);
+  const renameModalRef = useRef<HTMLTextAreaElement>(null);
   const meatballRef = useRef<HTMLDivElement>(null);
   useClickOutside(meatballRef, () => setIsOpenMeatball(false), isOpenMeatball);
   useClickOutside(
@@ -32,13 +32,44 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
     renameModalOpen,
   );
 
-  const onNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    if (renameModalOpen) setrename(e.target.value);
+  const limitLine = useCallback((value: string) => {
+    const lines = value.split("");
+    if (lines.length > 4) {
+      return lines.slice(0, 4).join("\n");
+    }
+    return value;
+  }, []);
+
+  const onNameChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (!renameModalOpen) return;
+
+    const target = e.target;
+    const originalValue = rename; // 이전 값 (입력 전)
+    const newValue = target.value; // 현재 입력 시도 중인 값
+
+    target.style.height = "auto";
+
+    const style = window.getComputedStyle(target);
+    const lineHeight = parseInt(style.lineHeight);
+
+    const currentScrollHeight = target.scrollHeight;
+    const currentLines = Math.round(currentScrollHeight / lineHeight);
+
+    if (currentLines <= 4) {
+      // 4줄 이하일 때만 상태를 업데이트
+      setrename(newValue);
+      target.style.height = `${currentScrollHeight}px`;
+    } else {
+      // 4줄을 초과하면 이전 값으로 강제 고정
+      setrename(originalValue);
+      // 높이는 4줄 최대치에 맞게 유지
+      target.style.height = `${lineHeight * 4}px`;
+    }
   };
 
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
       setname(rename);
       setRenameModalOpen(false);
     }
@@ -120,19 +151,20 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
           <div
             className={`${lists.isFolder ? "flex-1 flex flex-col" : "flex-1 flex "}`}
           >
-            <input
-              aria-label="name"
-              className="bottom-5 Body_1_medium z-10 flex-1 opacity-100 bg-transparent leading-none pt-0 pb-0"
-              onChange={onNameChange}
-              ref={renameModalRef}
-              type="text"
-              value={renameModalOpen ? rename : name}
-              readOnly={!renameModalOpen}
-              onBlur={() => setRenameModalOpen(false)}
-              onKeyDown={onKeyDown}
-            />
-
-            <div className="relative self-end">
+            <div className="flex-1">
+              <textarea
+                aria-label="name"
+                className="bottom-5 Body_1_medium opacity-100 bg-transparent leading-tight pt-0 pb-0 w-full resize-none overflow-hidden focus:outline-none max-h-[7.75rem]"
+                onChange={onNameChange}
+                ref={renameModalRef}
+                value={renameModalOpen ? rename : name}
+                readOnly={!renameModalOpen}
+                onBlur={() => setRenameModalOpen(false)}
+                onKeyDown={onKeyDown}
+              />
+            </div>
+            {/* h-6확인필요 */}
+            <div className="relative self-end h-6">
               <button
                 onClick={() => setIsOpenMeatball(!isOpenMeatball)}
                 aria-label="더보기"
