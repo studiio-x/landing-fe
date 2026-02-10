@@ -19,6 +19,9 @@ export const useProfileImageUpload = () => {
       const uploadResponse = await fetch(uploadUrl, {
         method: "PUT",
         body: file,
+        headers: {
+          "Content-Type": file.type,
+        },
       });
 
       if (!uploadResponse.ok) {

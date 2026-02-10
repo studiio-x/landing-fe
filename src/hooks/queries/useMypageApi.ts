@@ -20,12 +20,6 @@ export const useUpdateUsername = () =>
     mutationFn: updateUsername,
   });
 
-export const useProfileUploadUrl = () =>
-  useQuery({
-    queryKey: queryKeys.mypage.profileUploadUrl(),
-    queryFn: getProfileUploadUrl,
-  });
-
 export const useUpdateProfileImage = () =>
   useMutation({
     mutationFn: updateProfileImage,

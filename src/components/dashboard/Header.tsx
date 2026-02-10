@@ -28,7 +28,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
   const searchParams = useSearchParams();
   const userMenuRef = useRef<HTMLDivElement>(null);
 
-  const { data: mypageData } = useMypage();
+  const { data: mypageData, isLoading } = useMypage();
 
   const mode =
     (searchParams.get(QUERY_KEYS.WORKBENCH_MODE) as WorkbenchMode | null) ??
@@ -70,10 +70,12 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
   }, [isUserOpen]);
 
   const onUserClick = () => {
-    if (!mypageData) {
+    if (!mypageData && !isLoading) {
       router.push(PATHS.LOGIN);
       return;
     }
+
+    if (isLoading) return;
 
     if (!isUserClicked) {
       setIsUserClicked(true);
