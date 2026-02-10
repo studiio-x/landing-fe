@@ -1,5 +1,6 @@
 import { Down, Up } from "@/assets/icons";
 import clsx from "clsx";
+import { HTMLAttributes } from "react";
 
 interface ProjectListItemProps extends HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
