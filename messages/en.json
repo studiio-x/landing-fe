@@ -1,0 +1,190 @@
+{
+  "notFound": {
+    "badge": "404 error",
+    "title": "Page not found",
+    "description": "The page you’re looking for may have been moved,\ndeleted, or the URL may be incorrect.",
+    "homeButton": "Go Home"
+  },
+  "mobileModal": {
+    "closeLabel": "Close modal",
+    "title": "For the best experience,\nplease use a desktop.",
+    "imageAlt": "Desktop usage guide"
+  },
+  "login": {
+    "title": "Log in to <brand>StudioX</brand>",
+    "closeLabel": "Close",
+    "googleContinue": "Continue with Google",
+    "or": "OR",
+    "emailPlaceholder": "Email address",
+    "emailAriaLabel": "Email",
+    "passwordPlaceholder": "Password",
+    "passwordAriaLabel": "Password",
+    "submit": "Log in",
+    "forgotPassword": "Forgot your password?",
+    "noAccount": "Don’t have an account?",
+    "signup": "Sign up"
+  },
+  "signup": {
+    "title": "Sign Up",
+    "emailPlaceholder": "Enter your email",
+    "termsAgreement": "I agree to the Terms and Conditions and\nPrivacy Policy",
+    "submit": "Register",
+    "submitting": "Registering...",
+    "emailAriaLabel": "Email",
+    "hasAccount": "Already have an account?",
+    "login": "Log in",
+
+    "emailSent": {
+      "title": "Check Your Email",
+      "description": "A verification link was just sent to your email.\nPlease follow the link to verify your StudioX\naccount and proceed to the platform.",
+      "confirm": "Next"
+    },
+
+    "verificationComplete": {
+      "title": "The email has been successfully verified.",
+      "continue": "Continue"
+    },
+
+    "passwordSetup": {
+      "title": "Set your password",
+      "confirmEmail": "Email: {email}",
+      "passwordRequirement": "<bold>8-35 characters</bold> including <bold>upper, lower case</bold> and <bold>number</bold>.",
+      "passwordPlaceholder": "Your Password",
+      "passwordAriaLabel": "Password",
+      "confirmPasswordPlaceholder": "Confirm Password",
+      "confirmPasswordAriaLabel": "Confirm password",
+      "passwordMismatch": "*Passwords do not match.",
+      "submit": "Get Started"
+    }
+  },
+  "dashboard": {
+    "header": {
+      "backLabel": "Go back",
+      "goDashboardLabel": "Go to dashboard",
+      "howToUse": "How to use",
+      "settings": "Settings",
+      "planManage": "Manage plan",
+      "logout": "Log out",
+      "workbenchTabs": {
+        "studio": "Studio",
+        "model": "Model"
+      }
+    },
+    "title": "DASH BOARD",
+    "cards": {
+      "studio": {
+        "title": "Studio\nShoot",
+        "content": "Upload one\nproduct photo,\nget a studio\nshot instantly"
+      },
+      "model": {
+        "title": "Model\nShoot",
+        "content": "Upload one\nproduct photo,\nget a model\nconcept shot\ninstantly"
+      },
+      "video": {
+        "title": "AI Video\nGeneration",
+        "content": "Upload one\nimage, get an\nad video in 3\nseconds"
+      }
+    },
+    "template": {
+      "sectionTitle": "Start with a sample template",
+      "imageAlt": "Template {id}",
+      "hoverText": "Generate image\nwith this background"
+    },
+    "create": {
+      "badge": "Start New Project",
+      "title": "Choose the task you want.",
+      "backButtonLabel": "Go to previous page"
+    },
+    "continue": {
+      "badge": "Continue Project",
+      "title": "Choose the task you want.",
+      "backButtonLabel": "Go to previous page"
+    },
+    "workbench": {
+      "tabs": {
+        "product": "Product",
+        "background": "Background",
+        "options": "Options",
+        "aiChatbot": "AI Chatbot"
+      },
+      "workbenchTabs": {
+        "studio": "Studio",
+        "model": "Model"
+      },
+      "editModeGuide": "Highlight all the parts you want to edit.",
+      "uploadedImageAlt": "Uploaded image",
+      "emptyState": {
+        "title": "Ideas to Explore",
+        "ideas": {
+          "promotion": "Luxury promotional imagery featuring products",
+          "lifestyle": "Lifestyle context shots for social media campaign",
+          "creative": "A car commercial shot on the moon"
+        }
+      },
+      "productImageRequiredModal": {
+        "closeLabel": "Close",
+        "title": "Please upload\na product image first",
+        "description": "A product image is required\nto apply a background image.",
+        "uploadGuide": "Click to upload product image"
+      },
+      "historyPanel": {
+        "emptyTitle": "Make your\nfirst generation",
+        "emptyDescription": "Create beautiful images\nwith nothing but a text.",
+        "videoEmptyTitle": "Create your\nfirst video",
+        "videoEmptyDescription": "Make an ad video\nfrom a single image.",
+        "title": "History",
+        "imageAlt": "Generated image {index}"
+      },
+      "backgroundTab": {
+        "categories": {
+          "display": "General Display",
+          "fabric": "Fabric & Velvet",
+          "outdoor": "Outdoor"
+        },
+        "uploadBackground": "Upload Background",
+        "generate": "Generate"
+      },
+      "optionsTab": {
+        "selectQuality": "Select video quality",
+        "qualityAriaLabel": "Video quality selection",
+        "basicQuality": "Basic Quality",
+        "premiumQuality": "Premium Quality",
+        "creditsConsumed": "{credits} video credits\nwill be consumed.",
+        "uploadBackground": "Upload Background",
+        "generate": "Generate"
+      },
+      "searchBar": {
+        "placeholder": "Search categories",
+        "searchLabel": "Search",
+        "closeLabel": "Close",
+        "openSearchLabel": "Open search",
+        "recommended": "Recommended"
+      },
+      "productTab": {
+        "uploadGuide": "Click to upload product image"
+      },
+      "chatbot": {
+        "title": "StudioX Chatbot",
+        "subtitle": "Ask the chatbot for your desired edits.",
+        "disclaimer": "AI may produce inaccurate results.",
+        "editModeGuide": "Mark the areas to edit,\nthen describe your changes.",
+        "cancel": "Cancel",
+        "submitInput": "Describe",
+        "inputPlaceholder": "Tell the AI what you want to change.",
+        "sendLabel": "Send",
+        "attachmentAlt": "Attachment",
+        "recommendedLabel": "Recommended",
+        "plusMenu": {
+          "add": "Add",
+          "uploadReferenceImage": "Upload reference",
+          "markEditArea": "Mark Areas\nto Edit"
+        },
+        "recommendations": {
+          "0": "I have a reference image I want to recreate.",
+          "1": "I’ll describe the background, you create it.",
+          "2": "Suggest a concept that matches the product."
+        }
+      }
+    }
+  }
+}

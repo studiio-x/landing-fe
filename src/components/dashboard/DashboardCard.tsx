@@ -29,11 +29,12 @@ const DashboardCard = ({
         }
       )}
     >
-      <div className="h-full w-full rounded bg-Grey-800 overflow-hidden flex">
-        <div className="pl-5 flex flex-col py-5 justify-between w-[7.3125rem]">
+      <div className="h-full w-full rounded bg-Grey-800 overflow-hidden flex gap-4">
+        <div className="pl-[1.1875rem] flex flex-col py-5 justify-between w-[7.3125rem]">
           <h3
             className={clsx(
-              "Body_1_semibold whitespace-pre-line",
+              "whitespace-pre-line",
+              isVideo(mediaSrc) ? "Body_2_semibold" : "Body_1_semibold",
               isActive ? "text-Red-300" : "text-white group-hover:text-Red-300"
             )}
           >
@@ -44,7 +45,7 @@ const DashboardCard = ({
           </span>
         </div>
 
-        <div className="relative h-full w-[11.9375rem] shrink-0">
+        <div className="relative h-full w-[11.875rem] shrink-0">
           {isVideo(mediaSrc) ? (
             <video
               className="h-full w-full object-cover"

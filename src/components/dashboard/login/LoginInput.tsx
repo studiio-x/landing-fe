@@ -3,21 +3,27 @@ import { Watch, WatchOff } from "@/assets/icons";
 import { useState } from "react";
 
 interface LoginInputProps {
+  type?: string;
   placeholder: string;
   ariaLabel: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClick?: () => void;
   isPasswordOpen?: boolean;
   watchIcon?: boolean;
+  value?: string;
+  onChange?: (value: string) => void;
 }
 
 const LoginInput = ({
+  type,
   placeholder,
   ariaLabel,
   onChange,
   onClick,
   isPasswordOpen,
   watchIcon,
+  value,
+  onChange,
 }: LoginInputProps) => {
   const [isFocused, setIsFocused] = useState(false);
 
@@ -27,12 +33,20 @@ const LoginInput = ({
         <div
           className={clsx(
             "absolute inset-0 bg-Grey-900 rounded-[4px] transition-opacity duration-200 ease-in-out",
-            isFocused ? "opacity-0" : "opacity-100"
+            isFocused ? "opacity-0" : "opacity-100",
           )}
         />
         <input
-          type={watchIcon ? (isPasswordOpen ? "text" : "password") : "text"}
+          type={
+            watchIcon
+              ? isPasswordOpen
+                ? "text"
+                : "password"
+              : (type ?? "text")
+          }
           placeholder={placeholder}
+          value={value}
+          onChange={onChange ? (e) => onChange(e.target.value) : undefined}
           className="bg-Grey-800 py-3 px-4 placeholder:text-Grey-400 text-Grey-100 Body_2_medium w-full rounded-[4px] relative z-10"
           aria-label={ariaLabel}
           onFocus={() => setIsFocused(true)}
