@@ -15,4 +15,11 @@ export const queryKeys = {
     categoryList: (params: GetTemplatesByCategoryParams) =>
       [...queryKeys.templates.category(), params] as const,
   },
+
+  mypage: {
+    all: ["mypage"] as const,
+    detail: () => [...queryKeys.mypage.all, "detail"] as const,
+    profileUploadUrl: () =>
+      [...queryKeys.mypage.all, "profileUploadUrl"] as const,
+  },
 } as const;

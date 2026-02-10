@@ -5,15 +5,35 @@ import LanguageDropdown from "./LanguageDropdown";
 import { LanguageType } from "@/types/mypage/language.type";
 import { useRouter, usePathname } from "@/i18n/routing";
 import { useLocale } from "next-intl";
+import { useMypage, useUpdateUsername } from "@/hooks/queries/useMypageApi";
+import { useProfileImageUpload } from "@/hooks/useProfileImageUpload";
+import Image from "next/image";
 
 const SettingsContent = () => {
   const locale = useLocale() as LanguageType;
   const router = useRouter();
   const pathname = usePathname();
-  const [nickname, setNickname] = useState("임세민");
+
+  const { data: mypageData } = useMypage();
+  const updateUsernameMutation = useUpdateUsername();
+  const { uploadProfileImage, isUploading } = useProfileImageUpload();
+
+  const [nickname, setNickname] = useState("");
   const [isEditingNickname, setIsEditingNickname] = useState(false);
+  const [imageError, setImageError] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const nicknameInputRef = useRef<HTMLInputElement>(null);
   const prevNicknameRef = useRef(nickname);
+
+  useEffect(() => {
+    if (mypageData?.username) {
+      setNickname(mypageData.username);
+      prevNicknameRef.current = mypageData.username;
+    }
+    if (mypageData?.profileImage) {
+      setImageError(false);
+    }
+  }, [mypageData]);
 
   useEffect(() => {
     if (isEditingNickname && nicknameInputRef.current) {
@@ -28,9 +48,19 @@ const SettingsContent = () => {
   };
 
   const handleNicknameSubmit = () => {
-    if (nickname.trim()) {
-      prevNicknameRef.current = nickname;
-    } else {
+    if (nickname.trim() && nickname !== prevNicknameRef.current) {
+      updateUsernameMutation.mutate(
+        { username: nickname },
+        {
+          onSuccess: () => {
+            prevNicknameRef.current = nickname;
+          },
+          onError: () => {
+            setNickname(prevNicknameRef.current);
+          },
+        },
+      );
+    } else if (!nickname.trim()) {
       setNickname(prevNicknameRef.current);
     }
     setIsEditingNickname(false);
@@ -45,6 +75,34 @@ const SettingsContent = () => {
     }
   };
 
+  const isValidImageUrl = (url: string | undefined): boolean => {
+    if (!url) return false;
+    return url.startsWith("http://") || url.startsWith("https://");
+  };
+
+  const handleProfileImageClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      await uploadProfileImage(file);
+      alert("프로필 이미지가 업데이트되었습니다.");
+    } catch (error) {
+      if (error instanceof Error) {
+        alert(error.message);
+      } else {
+        alert("프로필 이미지 업데이트에 실패했습니다.");
+      }
+    } finally {
+      // input 초기화
+      e.target.value = "";
+    }
+  };
+
   return (
     <>
       {/* 프로필 */}
@@ -54,10 +112,33 @@ const SettingsContent = () => {
 
           <div className="flex items-center gap-5">
             <div className="relative">
-              <ProfileDefault className="w-[4.5rem] h-[4.5rem]" />
+              {mypageData?.profileImage &&
+              isValidImageUrl(mypageData.profileImage) &&
+              !imageError ? (
+                <Image
+                  src={mypageData.profileImage}
+                  alt="프로필 이미지"
+                  width={72}
+                  height={72}
+                  className="w-[4.5rem] h-[4.5rem] rounded-full object-cover"
+                  onError={() => setImageError(true)}
+                />
+              ) : (
+                <ProfileDefault className="w-[4.5rem] h-[4.5rem]" />
+              )}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleFileChange}
+                className="hidden"
+              />
               <button
+                type="button"
                 aria-label="프로필 사진 변경"
-                className="absolute bottom-0 right-0 w-6 h-6 bg-Grey-500 border-Grey-300 border flex items-center justify-center rounded-full"
+                onClick={handleProfileImageClick}
+                disabled={isUploading}
+                className="absolute bottom-0 right-0 w-6 h-6 bg-Grey-500 border-Grey-300 border flex items-center justify-center rounded-full disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Pencil className="w-3 h-3" />
               </button>
@@ -96,7 +177,7 @@ const SettingsContent = () => {
                 </button>
               </div>
               <span className="text-Grey-300 Body_2_medium">
-                이메일sndckscsk@gmail.com
+                {mypageData?.email}
               </span>
             </div>
           </div>
