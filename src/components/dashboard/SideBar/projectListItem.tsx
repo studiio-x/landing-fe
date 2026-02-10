@@ -1,7 +1,7 @@
 import { Down, Up } from "@/assets/icons";
 import clsx from "clsx";
 
-interface ProjectListItemProps {
+interface ProjectListItemProps extends HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   isShareOpen?: boolean;
   currentSharedProject?: string | null;

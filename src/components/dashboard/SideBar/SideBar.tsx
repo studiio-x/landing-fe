@@ -100,14 +100,14 @@ export default function SideBar() {
             <>
               <span className="self-end w-[11.625rem] h-px bg-Grey-700" />
               {mockSharedProjects.map((project, index) => (
-                <motion.div
+                <motion.button
                   key={index}
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.25, ease: "easeOut" }}
                   onClick={() => handleSharedProject(project.name)}
-                  className="flex w-full"
+                  className="flex w-full text-left"
                 >
                   <div
                     className={`pl-12 py-2 text-Grey-300 hover:text-white  transition-colors cursor-pointer w-full
@@ -119,7 +119,7 @@ export default function SideBar() {
                   {sharedProjectFromQuery === project.name && (
                     <Check className="w-[1.25rem] justify-self-end" />
                   )}
-                </motion.div>
+                </motion.button>
               ))}
             </>
           )}

@@ -3,7 +3,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { CreateFolder, Down, Up } from "@/assets/icons";
 import Header from "@/components/dashboard/Header";
 import SideBar from "@/components/dashboard/SideBar/SideBar";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import FolderItem from "@/components/dashboard/project/FolderItem";
 import GlassButton from "@/components/common/GlassButton";
 import DropDown from "@/components/common/DropDown";
@@ -81,6 +81,18 @@ const ProjectPage = () => {
     setCreateModalOpen(true);
   };
 
+  // 폴더와 프로젝트에 분리된 인덱스 부여
+  const itemsWithIndex = useMemo(() => {
+    let folderCount = 0;
+    let projectCount = 0;
+
+    return mockData.map((item, originalIndex) => ({
+      ...item,
+      displayIndex: item.isFolder ? folderCount++ : projectCount++,
+      originalIndex,
+    }));
+  }, [mockData]);
+
   return (
     <main className="relative min-h-screen w-full flex flex-col">
       <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">
@@ -132,10 +144,7 @@ const ProjectPage = () => {
               </span>
               <button onClick={() => setInviteModalOpen(true)}>
                 {inviteModalOpen ? (
-                  <Up
-                    className="w-[1.5rem] h-[1.5rem] cursor-"
-                    color="#A9B4C6"
-                  />
+                  <Up className="w-[1.5rem] h-[1.5rem]" color="#A9B4C6" />
                 ) : (
                   <Down className="w-[1.5rem] h-[1.5rem]" color="#A9B4C6" />
                 )}
@@ -164,12 +173,11 @@ const ProjectPage = () => {
           </div>
 
           <section className="grid grid-cols-3  gap-x-9 gap-y-11 mt-8">
-            {mockData.map((lists, index) => (
+            {itemsWithIndex.map((item) => (
               <FolderItem
-                lists={lists}
-                index={index}
-                key={index}
-                setRenameModalOpen={setRenameModalOpen}
+                lists={item}
+                index={item.displayIndex}
+                key={item.originalIndex}
                 setDeleteModalOpen={setDeleteModalOpen}
               />
             ))}

@@ -54,8 +54,8 @@ const InvitedUserItem = ({ user }: InvitedUserItemProps) => {
       </div>
 
       <DropDown
-        type="auth"
         ref={dropdownRef}
+        type="auth"
         currentState={currentPermission}
         setCurrentState={setCurrentPermission}
         isOpen={isDropDownOpen}

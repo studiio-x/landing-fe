@@ -1,6 +1,5 @@
 import { Down, Up } from "@/assets/icons";
 import clsx from "clsx";
-import { pre } from "framer-motion/client";
 import { Dispatch } from "react";
 
 const ARRAY_OPTIONS = ["최신순", "오래된순"];

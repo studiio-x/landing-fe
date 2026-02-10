@@ -12,8 +12,6 @@ interface FolderItemProps {
     imageUrl: string | string[];
   };
   index: number;
-
-  setRename: (open: boolean) => void;
   setDeleteModalOpen: (open: boolean) => void;
 }
 
@@ -27,7 +25,10 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
   useClickOutside(meatballRef, () => setIsOpenMeatball(false), isOpenMeatball);
   useClickOutside(
     renameModalRef,
-    () => setRenameModalOpen(false),
+    () => {
+      setRenameModalOpen(false);
+      setrename(name);
+    },
     renameModalOpen,
   );
 
@@ -64,7 +65,7 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
             "text-base top-[0.44rem] text-Grey-100 font-normal font-calSans absolute  left-4"
           }
         >
-          Folder 0{index + 1}
+          Folder {String(index + 1).padStart(2, "0")}
         </span>
       )}
 
@@ -113,7 +114,7 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
                 "text-[0.875rem] text-Grey-100 font-normal font-calSans opacity-100"
               }
             >
-              Project 0{index + 1}
+              Project {String(index + 1).padStart(2, "0")}
             </span>
           )}
           <div
@@ -121,7 +122,7 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
           >
             <input
               aria-label="name"
-              className="bottom-5 Body_1_medium z-10 flex-1 opacity-100 bg-transparent block "
+              className="bottom-5 Body_1_medium z-10 flex-1 opacity-100 bg-transparent leading-none pt-0 pb-0"
               onChange={onNameChange}
               ref={renameModalRef}
               type="text"
