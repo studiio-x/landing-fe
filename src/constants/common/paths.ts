@@ -7,7 +7,6 @@ export const PATHS = {
   // Auth pages
   LOGIN: "/login",
   SIGNUP: "/signup",
-  AUTH_GOOGLE_CALLBACK: "/auth/google/callback",
 
   // Dashboard pages
   DASHBOARD: "/dashboard",
