@@ -6,7 +6,7 @@ import { Checkbox, SelectedCheckbox } from "@/assets/icons";
 import GlassButton from "@/components/common/GlassButton";
 import { EMAIL_REGEX } from "@/constants/signup/funnel";
 import type { EmailInputStepProps } from "@/types/signup/funnel.type";
-import LoginInput from "@/components/dashboard/login/LoginInput";
+import LoginInput from "@/components/login/LoginInput";
 import { useRouter } from "next/navigation";
 import { PATHS } from "@/constants/common/paths";
 import { useSendVerificationEmail } from "@/hooks/queries/useAuthApi";

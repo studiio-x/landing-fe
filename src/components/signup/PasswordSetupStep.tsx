@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import GlassButton from "@/components/common/GlassButton";
-import LoginInput from "@/components/dashboard/login/LoginInput";
+import LoginInput from "@/components/login/LoginInput";
 import { PASSWORD_REGEX } from "@/constants/signup/funnel";
 import type { PasswordSetupStepProps } from "@/types/signup/funnel.type";
 
