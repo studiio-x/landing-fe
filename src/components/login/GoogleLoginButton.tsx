@@ -9,8 +9,11 @@ const GoogleLoginButton = () => {
   const locale = useLocale();
 
   const handleGoogleLogin = () => {
+    if (!BASE_URL) {
+      return;
+    }
     const redirectUrl = `${window.location.origin}/${locale}/dashboard`;
-    window.location.href = `${BASE_URL}/api/v1/oauth/google?redirectUrl=${redirectUrl}`;
+    window.location.href = `${BASE_URL}/api/v1/oauth/google?redirectUrl=${encodeURIComponent(redirectUrl)}`;
   };
 
   return (
