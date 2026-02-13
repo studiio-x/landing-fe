@@ -12,7 +12,7 @@ const EmailSentStep = ({ email, onNext }: EmailSentStepProps) => {
   const t = useTranslations("signup.emailSent");
   const te = useTranslations("signup.error");
   const [isVerified, setIsVerified] = useState(false);
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(true);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
   const hasMovedRef = useRef(false);
   const { mutate: checkValidation } = useCheckEmailValidation();
 
