@@ -52,7 +52,7 @@ const DropDown = ({
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
         className={clsx(
-          "flex items-center w-28 justify-center transition-colors duration-300",
+          "flex items-center gap-3 w-28 justify-center transition-colors duration-300",
           (type === "array" || type === "auth") &&
             "Body_2_medium  p-[0.5rem_0.65rem_0.5rem_1.25rem]",
           type === "lang" && "Caption_medium",
@@ -71,7 +71,7 @@ const DropDown = ({
       {isOpen && (
         <div
           className={clsx(
-            "absolute z-10 mt-2  bg-[rgba(255,255,255,0.15)] p-[0.5rem_0.75rem]",
+            "absolute z-10 mt-2  bg-[rgba(255,255,255,0.15)] backdrop-blur-[10px] p-[0.5rem_0.75rem]",
             type === "array" && "rounded-[0.5rem] w-full",
             type === "auth" && "rounded-[0.25rem] right-0",
             type === "lang" && "rounded-[0.25rem] w-full",

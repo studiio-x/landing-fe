@@ -6,7 +6,6 @@ interface LoginInputProps {
   type?: string;
   placeholder: string;
   ariaLabel: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onClick?: () => void;
   isPasswordOpen?: boolean;
   watchIcon?: boolean;
@@ -18,7 +17,6 @@ const LoginInput = ({
   type,
   placeholder,
   ariaLabel,
-  onChange,
   onClick,
   isPasswordOpen,
   watchIcon,
@@ -47,12 +45,11 @@ const LoginInput = ({
           placeholder={placeholder}
           value={value}
           autoComplete="on"
-          onChange={onChange ? (e) => onChange(e.target.value) : undefined}
           className="bg-Grey-800 py-3 px-4 placeholder:text-Grey-400 text-Grey-100 Body_2_medium w-full rounded-[4px] relative z-10"
           aria-label={ariaLabel}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
-          onChange={onChange}
+          onChange={onChange ? (e) => onChange(e.target.value) : undefined}
         />
       </div>
       {watchIcon && (

@@ -22,6 +22,7 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
   const [rename, setrename] = useState<string>(name);
   const renameModalRef = useRef<HTMLTextAreaElement>(null);
   const meatballRef = useRef<HTMLDivElement>(null);
+  const lastValidValue = useRef<string>(name);
   useClickOutside(meatballRef, () => setIsOpenMeatball(false), isOpenMeatball);
   useClickOutside(
     renameModalRef,
@@ -32,15 +33,13 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
     renameModalOpen,
   );
 
- 
-
   const adjustTextareaHeight = useCallback(() => {
     const textarea = renameModalRef.current;
     if (!textarea) return;
     textarea.style.height = "auto";
     const style = window.getComputedStyle(textarea);
     const lineHeight = parseInt(style.lineHeight);
-    const maxHeight = lineHeight * 3;
+    const maxHeight = lineHeight * 4;
     textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
   }, []);
 
@@ -48,8 +47,7 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
     if (!renameModalOpen) return;
 
     const target = e.target;
-    const originalValue = rename; // 이전 값 (입력 전)
-    const newValue = target.value; // 현재 입력 시도 중인 값
+    const newValue = target.value;
 
     target.style.height = "auto";
 
@@ -57,15 +55,15 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
     const lineHeight = parseInt(style.lineHeight);
 
     const currentScrollHeight = target.scrollHeight;
-    const currentLines = Math.round(currentScrollHeight / lineHeight);
+    const currentLines = Math.floor(currentScrollHeight / lineHeight);
 
     if (currentLines <= 4) {
-      // 4줄 이하일 때만 상태를 업데이트
+      lastValidValue.current = newValue;
       setrename(newValue);
       target.style.height = `${currentScrollHeight}px`;
     } else {
-      setrename(originalValue);
-      // 높이는 4줄 최대치에 맞게 유지
+      target.value = lastValidValue.current;
+      setrename(lastValidValue.current);
       target.style.height = `${lineHeight * 4}px`;
     }
   };
@@ -80,6 +78,7 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
 
   useEffect(() => {
     if (renameModalOpen) {
+      lastValidValue.current = rename;
       renameModalRef.current?.focus();
       setIsOpenMeatball(false);
     }
@@ -161,7 +160,7 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
               <textarea
                 rows={1}
                 aria-label="name"
-                className="bottom-5 Body_1_medium opacity-100 bg-transparent leading-tight pt-0 pb-0 w-full resize-none overflow-hidden focus:outline-none"
+                className="bottom-5 Body_1_medium opacity-100 bg-transparent leading-tight pt-0 pb-0 w-full resize-none overflow-hidden focus:outline-none "
                 onChange={onNameChange}
                 ref={renameModalRef}
                 value={renameModalOpen ? rename : name}

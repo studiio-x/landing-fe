@@ -13,7 +13,7 @@ const MeatballModal = ({
 }: MeatballModalProps) => {
   return (
     <div
-      className={`${isFolder ? "bg-[rgba(255,255,255,0.12)]" : "bg-Grey-600"} Body_2_medium text-Grey-100 rounded py-[0.63rem] px-[0.75rem] flex flex-col justify-center items-center gap-2 absolute bottom-9 right-1 z-10`}
+      className={`${isFolder ? "bg-[rgba(255,255,255,0.12)] backdrop-blur-[10px]" : "bg-Grey-600"} Body_2_medium text-Grey-100 rounded py-[0.63rem] px-[0.75rem] flex flex-col justify-center items-center gap-2 absolute bottom-7 right-1 z-10`}
       ref={meatballRef}
     >
       <button
