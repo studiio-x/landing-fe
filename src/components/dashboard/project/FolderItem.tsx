@@ -32,12 +32,16 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
     renameModalOpen,
   );
 
-  const limitLine = useCallback((value: string) => {
-    const lines = value.split("");
-    if (lines.length > 4) {
-      return lines.slice(0, 4).join("\n");
-    }
-    return value;
+ 
+
+  const adjustTextareaHeight = useCallback(() => {
+    const textarea = renameModalRef.current;
+    if (!textarea) return;
+    textarea.style.height = "auto";
+    const style = window.getComputedStyle(textarea);
+    const lineHeight = parseInt(style.lineHeight);
+    const maxHeight = lineHeight * 3;
+    textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
   }, []);
 
   const onNameChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -60,7 +64,6 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
       setrename(newValue);
       target.style.height = `${currentScrollHeight}px`;
     } else {
-      // 4줄을 초과하면 이전 값으로 강제 고정
       setrename(originalValue);
       // 높이는 4줄 최대치에 맞게 유지
       target.style.height = `${lineHeight * 4}px`;
@@ -80,7 +83,12 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
       renameModalRef.current?.focus();
       setIsOpenMeatball(false);
     }
-  }, [renameModalOpen]);
+    adjustTextareaHeight();
+  }, [renameModalOpen, adjustTextareaHeight]);
+
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [name, rename, adjustTextareaHeight]);
 
   return (
     <div key={index} className="relative w-[19.25rem]">
@@ -101,7 +109,7 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
       )}
 
       <div
-        className={`${lists.isFolder ? "flex top-[2.5625rem] gap-4 h-[calc(100%-3rem)] w-fit" : "w-[18.25rem] h-[calc(100%-0.95rem)] top-[0.44rem]"} left-[0.5rem] absolute`}
+        className={`${lists.isFolder ? "flex top-[2.5625rem] gap-4 w-fit" : "w-[18.25rem] h-[calc(100%-0.875rem)] top-[0.44rem]"} left-[0.5rem] absolute`}
       >
         {lists.isFolder ? (
           <div
@@ -137,7 +145,7 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
         )}
 
         <div
-          className={`${lists.isFolder ? "w-[7.75rem] relative" : "w-full bg-gradient-to-b from-[rgba(22,24,29,0.7)] to-[rgba(29,32,37,0.7)] absolute bottom-0 backdrop-blur-[16px] pt-[0.38rem] pl-[0.5rem] gap-[0.31rem]"} flex flex-col text-Grey-50 `}
+          className={`${lists.isFolder ? "w-[7.75rem] relative" : "w-[18.25rem] bg-gradient-to-b from-Grey-900/70 to-Grey-800/70 absolute bottom-0 left-0 backdrop-blur-lg pt-1.5 pl-2 gap-1"} flex flex-col text-Grey-50 `}
         >
           {!lists.isFolder && (
             <span
@@ -148,13 +156,12 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
               Project {String(index + 1).padStart(2, "0")}
             </span>
           )}
-          <div
-            className={`${lists.isFolder ? "flex-1 flex flex-col" : "flex-1 flex "}`}
-          >
+          <div className={`flex flex-1 ${lists.isFolder ? "flex-col" : ""}`}>
             <div className="flex-1">
               <textarea
+                rows={1}
                 aria-label="name"
-                className="bottom-5 Body_1_medium opacity-100 bg-transparent leading-tight pt-0 pb-0 w-full resize-none overflow-hidden focus:outline-none max-h-[7.75rem]"
+                className="bottom-5 Body_1_medium opacity-100 bg-transparent leading-tight pt-0 pb-0 w-full resize-none overflow-hidden focus:outline-none"
                 onChange={onNameChange}
                 ref={renameModalRef}
                 value={renameModalOpen ? rename : name}
@@ -164,7 +171,9 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
               />
             </div>
             {/* h-6확인필요 */}
-            <div className="relative self-end h-6">
+            <div
+              className={`relative h-6 self-end ${lists.isFolder ? "" : "mb-1.5"}`}
+            >
               <button
                 onClick={() => setIsOpenMeatball(!isOpenMeatball)}
                 aria-label="더보기"

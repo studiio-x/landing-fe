@@ -151,7 +151,7 @@ const ProjectPage = () => {
               </button>
             </div>
 
-            <div className="flex ml-auto gap-3">
+            <div className="flex ml-auto gap-3 items-center self-end">
               <GlassButton
                 onClick={onCreatButtonClick}
                 type="button"
