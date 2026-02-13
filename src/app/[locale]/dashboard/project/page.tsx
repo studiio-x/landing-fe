@@ -9,7 +9,7 @@ import GlassButton from "@/components/common/GlassButton";
 import DropDown from "@/components/common/DropDown";
 import useClickOutside from "@/hooks/useClickOutside";
 import CreatFolderModal from "@/components/dashboard/project/CreatFolderModal";
-import DeleteModal from "@/components/dashboard/project/DeleteModal";
+import AlertModal from "@/components/common/AlertModal";
 import InviteModal from "@/components/dashboard/project/InviteModal";
 
 const mockData = [
@@ -108,10 +108,15 @@ const ProjectPage = () => {
       <CreatFolderModal isOpen={createModalOpen} onClose={() => setCreateModalOpen(false)} />
 
       {/* 제거 모달 */}
-      <DeleteModal
+      <AlertModal
         isOpen={deleteModalOpen}
-        setIsOpen={setDeleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
+        title="정말 삭제하시겠습니까?"
+        description="폴더를 삭제하면 하위의 폴더와 프로젝트가 모두 삭제되며, 복구할 수 없습니다."
+        buttons={[
+          { label: "닫기", variant: "default", onClick: () => setDeleteModalOpen(false) },
+          { label: "삭제하기", variant: "red", onClick: () => setDeleteModalOpen(false) },
+        ]}
       />
 
       {/* 초대 모달 */}

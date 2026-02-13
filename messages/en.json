@@ -40,6 +40,22 @@
       "confirm": "Next"
     },
 
+    "error": {
+      "emailSendFailed": {
+        "title": "Failed to send email",
+        "description": "We couldn't send the email.\nPlease try again or contact support."
+      },
+      "emailAlreadyRegistered": {
+        "title": "Email already registered",
+        "description": "This email is already registered.\nPlease log in from the login page."
+      },
+      "confirm": "Confirm",
+      "verificationFailed": {
+        "title": "Email verification failed",
+        "description": "Please try verifying your email again."
+      }
+    },
+
     "verificationComplete": {
       "title": "The email has been successfully verified.",
       "continue": "Continue"

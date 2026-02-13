@@ -4,12 +4,14 @@ import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Checkbox, SelectedCheckbox } from "@/assets/icons";
 import GlassButton from "@/components/common/GlassButton";
+import AlertModal from "@/components/common/AlertModal";
 import { EMAIL_REGEX } from "@/constants/signup/funnel";
 import type { EmailInputStepProps } from "@/types/signup/funnel.type";
 import LoginInput from "@/components/login/LoginInput";
 import { useRouter } from "next/navigation";
 import { PATHS } from "@/constants/common/paths";
 import { useSendVerificationEmail } from "@/hooks/queries/useAuthApi";
+import axios from "axios";
 
 const EmailInputStep = ({
   email: initialEmail,
@@ -21,6 +23,7 @@ const EmailInputStep = ({
   const [isCheckboxClicked, setIsCheckboxClicked] = useState(initialAgreed);
   const router = useRouter();
   const [email, setEmail] = useState(initialEmail);
+  const [errorType, setErrorType] = useState<"emailSendFailed" | "emailAlreadyRegistered" | null>(null);
   const { mutate: sendVerificationEmail, isPending } =
     useSendVerificationEmail();
 
@@ -39,6 +42,13 @@ const EmailInputStep = ({
       {
         onSuccess: () => {
           onNext({ email: trimmedEmail, agreedToTerms: true });
+        },
+        onError: (error) => {
+          if (axios.isAxiosError(error) && error.response?.status === 409) {
+            setErrorType("emailAlreadyRegistered");
+          } else {
+            setErrorType("emailSendFailed");
+          }
         },
       },
     );
@@ -95,6 +105,17 @@ const EmailInputStep = ({
           {t("login")}
         </button>
       </div>
+
+      <AlertModal
+        isOpen={!!errorType}
+        onClose={() => setErrorType(null)}
+        title={errorType ? t(`error.${errorType}.title`) : ""}
+        description={errorType ? t(`error.${errorType}.description`) : ""}
+        buttons={[
+          { label: t("error.confirm"), variant: "red", onClick: () => setErrorType(null) },
+        ]}
+        contained
+      />
     </>
   );
 };

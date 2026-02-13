@@ -4,8 +4,8 @@ import {
   SignupResponse,
   LoginRequest,
   LoginResponse,
-  VerifyEmailParams,
   SendVerificationEmailRequest,
+  EmailValidationResponse,
 } from "@/types/api/auth.type";
 
 // 토큰 갱신
@@ -34,4 +34,15 @@ export const sendVerificationEmail = async (
   body: SendVerificationEmailRequest,
 ): Promise<void> => {
   await axiosInstance.post("/auth/email/verification", body);
+};
+
+// 이메일 인증 여부 확인
+export const checkEmailValidation = async (
+  email: string,
+): Promise<EmailValidationResponse> => {
+  const response = await axiosInstance.get<EmailValidationResponse>(
+    "/auth/email/validation",
+    { params: { email } },
+  );
+  return response.data;
 };

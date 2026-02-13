@@ -40,6 +40,22 @@
       "confirm": "다음으로"
     },
 
+    "error": {
+      "emailSendFailed": {
+        "title": "이메일 전송에 실패했습니다",
+        "description": "일시적인 오류로 이메일을 보내지 못했어요.\n잠시 후 다시 시도하거나,\n문제가 계속되면 고객센터로 문의해 주세요."
+      },
+      "emailAlreadyRegistered": {
+        "title": "이미 가입된 이메일입니다",
+        "description": "이미 가입된 이메일 계정입니다.\n로그인 페이지에서 로그인해 주세요."
+      },
+      "confirm": "확인",
+      "verificationFailed": {
+        "title": "이메일 인증에 실패했습니다",
+        "description": "이메일 인증을 다시 시도해 주세요."
+      }
+    },
+
     "verificationComplete": {
       "title": "이메일 인증이 완료되었습니다.",
       "continue": "계속하기"
