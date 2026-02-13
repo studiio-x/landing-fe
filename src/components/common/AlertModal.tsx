@@ -54,7 +54,7 @@ const AlertModal = ({
 
           <p
             id="modal-description"
-            className="self-stretch text-Grey-300 Body_1_medium"
+            className="self-stretch text-Grey-300 Body_1_medium whitespace-pre-line"
           >
             {description}
           </p>
