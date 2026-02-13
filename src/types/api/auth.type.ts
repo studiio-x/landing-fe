@@ -26,10 +26,10 @@ export interface LoginResponse {
   profileImageUrl: string;
 }
 
-// 이메일 인증 확인 (GET)
-export interface VerifyEmailParams {
+// 이메일 인증 확인 응답
+export interface EmailValidationResponse {
   email: string;
-  token: string;
+  isVerified: boolean;
 }
 
 // 이메일 인증 요청 (POST)

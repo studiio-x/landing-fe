@@ -11,6 +11,7 @@ import LoginInput from "@/components/login/LoginInput";
 import { useRouter } from "next/navigation";
 import { PATHS } from "@/constants/common/paths";
 import { useSendVerificationEmail } from "@/hooks/queries/useAuthApi";
+import axios from "axios";
 
 const EmailInputStep = ({
   email: initialEmail,
@@ -22,7 +23,7 @@ const EmailInputStep = ({
   const [isCheckboxClicked, setIsCheckboxClicked] = useState(initialAgreed);
   const router = useRouter();
   const [email, setEmail] = useState(initialEmail);
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false); 
+  const [errorModal, setErrorModal] = useState<{ title: string; description: React.ReactNode } | null>(null);
   const { mutate: sendVerificationEmail, isPending } =
     useSendVerificationEmail();
 
@@ -42,8 +43,18 @@ const EmailInputStep = ({
         onSuccess: () => {
           onNext({ email: trimmedEmail, agreedToTerms: true });
         },
-        onError: () => {
-          setIsErrorModalOpen(true);
+        onError: (error) => {
+          if (axios.isAxiosError(error) && error.response?.status === 409) {
+            setErrorModal({
+              title: "이미 가입된 이메일입니다",
+              description: (<>이미 가입된 이메일 계정입니다.<br/>로그인 페이지에서 로그인해 주세요.</>),
+            });
+          } else {
+            setErrorModal({
+              title: "이메일 전송에 실패했습니다",
+              description: (<>일시적인 오류로 이메일을 보내지 못했어요.<br />잠시 후 다시 시도하거나,<br />문제가 계속되면 고객센터로 문의해 주세요.</>),
+            });
+          }
         },
       },
     );
@@ -102,12 +113,12 @@ const EmailInputStep = ({
       </div>
 
       <AlertModal
-        isOpen={isErrorModalOpen}
-        onClose={() => setIsErrorModalOpen(false)}
-        title="이메일 전송에 실패했습니다"
-        description={<>일시적인 오류로 이메일을 보내지 못했어요.<br />잠시 후 다시 시도하거나,<br />문제가 계속되면 고객센터로 문의해 주세요.</>}
+        isOpen={!!errorModal}
+        onClose={() => setErrorModal(null)}
+        title={errorModal?.title ?? ""}
+        description={errorModal?.description ?? ""}
         buttons={[
-          { label: "확인", variant: "red", onClick: () => setIsErrorModalOpen(false) },
+          { label: "확인", variant: "red", onClick: () => setErrorModal(null) },
         ]}
         contained
       />
