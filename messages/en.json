@@ -49,7 +49,11 @@
         "title": "Email already registered",
         "description": "This email is already registered.\nPlease log in from the login page."
       },
-      "confirm": "Confirm"
+      "confirm": "Confirm",
+      "verificationFailed": {
+        "title": "Email verification failed",
+        "description": "Please try verifying your email again."
+      }
     },
 
     "verificationComplete": {

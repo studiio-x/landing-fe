@@ -3,13 +3,16 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import GlassButton from "@/components/common/GlassButton";
+import AlertModal from "@/components/common/AlertModal";
 import type { EmailSentStepProps } from "@/types/signup/funnel.type";
 import { CHANNEL_NAME, MESSAGE_TYPE } from "@/constants/signup/funnel";
 import { useCheckEmailValidation } from "@/hooks/queries/useAuthApi";
 
 const EmailSentStep = ({ email, onNext }: EmailSentStepProps) => {
   const t = useTranslations("signup.emailSent");
+  const te = useTranslations("signup.error");
   const [isVerified, setIsVerified] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(true);
   const hasMovedRef = useRef(false);
   const { mutate: checkValidation } = useCheckEmailValidation();
 
@@ -26,6 +29,9 @@ const EmailSentStep = ({ email, onNext }: EmailSentStepProps) => {
           setIsVerified(true);
           safeNext();
         }
+      },
+      onError: () => {
+        setIsErrorModalOpen(true);
       },
     });
   }, [email, checkValidation, safeNext]);
@@ -57,6 +63,17 @@ const EmailSentStep = ({ email, onNext }: EmailSentStepProps) => {
       >
         {t("confirm")}
       </GlassButton>
+
+      <AlertModal
+        isOpen={isErrorModalOpen}
+        onClose={() => setIsErrorModalOpen(false)}
+        title={te("verificationFailed.title")}
+        description={te("verificationFailed.description")}
+        buttons={[
+          { label: te("confirm"), variant: "red", onClick: () => setIsErrorModalOpen(false) },
+        ]}
+        contained
+      />
     </>
   );
 };

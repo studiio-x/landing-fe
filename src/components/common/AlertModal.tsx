@@ -1,7 +1,7 @@
 import { Close } from "@/assets/icons";
 import GlassButton from "@/components/common/GlassButton";
 import ModalOverlay from "@/components/common/ModalOverlay";
-import { type ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 
 interface AlertModalButton {
   label: string;
@@ -27,6 +27,21 @@ const AlertModal = ({
   contained = false,
 }: AlertModalProps) => {
   if (!isOpen) return null;
+  
+  // contained 모드에서도 Escape 및 스크롤 잠금 적용
+ useEffect(() => {
+    if (!contained) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKeyDown = (e: KeyboardEvent) => {
+     if (e.key === "Escape") onClose();
+    };
+   window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [contained, onClose]);
 
   const modalContent = (
     <div className="flex flex-col items-start gap-2.5 pb-9 px-11 relative bg-[#272b33e6] rounded-[0.5rem] backdrop-blur-sm shadow-[0_0_12px_0_rgba(8,8,8,0.25)]">
@@ -41,7 +56,7 @@ const AlertModal = ({
         <button
           onClick={onClose}
           className="absolute right-5 top-6 !aspect-[1] cursor-pointer"
-          aria-label="닫기"
+          aria-label="Close"
           type="button"
         >
           <Close className="w-6 h-6 text-Grey-300" />
