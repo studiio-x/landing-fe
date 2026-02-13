@@ -10,7 +10,6 @@ import DropDown from "@/components/common/DropDown";
 import useClickOutside from "@/hooks/useClickOutside";
 import CreatFolderModal from "@/components/dashboard/project/CreatFolderModal";
 import DeleteModal from "@/components/dashboard/project/DeleteModal";
-import ModalOverlay from "@/components/common/ModalOverlay";
 import InviteModal from "@/components/dashboard/project/InviteModal";
 
 const mockData = [
@@ -106,28 +105,17 @@ const ProjectPage = () => {
       </div>
 
       {/* 폴더 생성 모달 */}
-      {createModalOpen && (
-        <ModalOverlay onClose={() => setCreateModalOpen(false)}>
-          <CreatFolderModal onClose={() => setCreateModalOpen(false)} />
-        </ModalOverlay>
-      )}
+      <CreatFolderModal isOpen={createModalOpen} onClose={() => setCreateModalOpen(false)} />
 
       {/* 제거 모달 */}
-      {deleteModalOpen && (
-        <ModalOverlay onClose={() => setDeleteModalOpen(false)}>
-          <DeleteModal
-            setIsOpen={setDeleteModalOpen}
-            onClose={() => setDeleteModalOpen(false)}
-          />
-        </ModalOverlay>
-      )}
+      <DeleteModal
+        isOpen={deleteModalOpen}
+        setIsOpen={setDeleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+      />
 
       {/* 초대 모달 */}
-      {inviteModalOpen && (
-        <ModalOverlay onClose={() => setInviteModalOpen(false)}>
-          <InviteModal />
-        </ModalOverlay>
-      )}
+      <InviteModal isOpen={inviteModalOpen} onClose={() => setInviteModalOpen(false)} />
 
       <Header />
 
@@ -140,7 +128,7 @@ const ProjectPage = () => {
             </h1>
             <div className="flex gap-[0.25rem]">
               <span className="whitespace-nowrap Body_2_medium text-Grey-200">
-                {sharedProjectFromQuery}의 프로젝트
+                {sharedProjectFromQuery ?? ""}의 프로젝트
               </span>
               <button onClick={() => setInviteModalOpen(true)}>
                 {inviteModalOpen ? (

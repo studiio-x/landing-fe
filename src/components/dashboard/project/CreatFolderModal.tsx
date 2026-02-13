@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { Close } from "@/assets/icons";
 import GlassButton from "@/components/common/GlassButton";
+import ModalOverlay from "@/components/common/ModalOverlay";
 import clsx from "clsx";
 import InvitedUserItem from "./InvitedUserItem";
 import { MOCK_DATA_USERS } from "@/constants/dashboard/project/user";
 
 interface CreatFolderModalProps {
+  isOpen: boolean;
   onClose: () => void;
 }
-export const CreatFolderModal = ({ onClose }: CreatFolderModalProps) => {
+export const CreatFolderModal = ({ isOpen, onClose }: CreatFolderModalProps) => {
   const [folderName, setFolderName] = useState("");
   const [inviteEmail, setInviteEmail] = useState("");
   const [isFolderNameFocused, setIsFolderNameFocused] = useState(false);
@@ -22,7 +24,10 @@ export const CreatFolderModal = ({ onClose }: CreatFolderModalProps) => {
     console.log("Creating folder:", folderName);
   };
 
+  if (!isOpen) return null;
+
   return (
+    <ModalOverlay onClose={onClose}>
     <div className="inline-flex flex-col items-start gap-2.5 pt-0 pb-9 px-0 relative bg-[#272b33e6] rounded-[var(--border-radius-radius-8)]">
       <div className="flex flex-col items-center gap-3 relative self-stretch w-full flex-[0_0_auto]">
         <header className="flex items-start justify-between pl-7 pr-5 pt-6 pb-0 relative self-stretch w-full flex-[0_0_auto]">
@@ -137,8 +142,8 @@ export const CreatFolderModal = ({ onClose }: CreatFolderModalProps) => {
             <GlassButton
               onClick={handleCreate}
               className={clsx(
-                "w-full flex items-center justify-center gap-2.5 px-0 py-3 relative  hover:bg-[rgba(255,48,48,0.75)] flex-1 grow h-[2.9375rem]rounded Body_2_semibold ",
-                folderName.trim() === "" || inviteEmail.trim() === ""
+                "w-full flex items-center justify-center gap-2.5 px-0 py-3 relative  hover:bg-[rgba(255,48,48,0.75)] flex-1 grow h-[2.9375rem] rounded Body_2_semibold ",
+                folderName.trim() === "" 
                   ? "pointer-events-none text-Grey-500 bg-[rgba(53,59,69,0.45)]"
                   : "text-Grey-50 bg-[rgba(255,48,48,0.45)]",
               )}
@@ -151,6 +156,7 @@ export const CreatFolderModal = ({ onClose }: CreatFolderModalProps) => {
         </div>
       </div>
     </div>
+    </ModalOverlay>
   );
 };
 

@@ -18,20 +18,12 @@ interface FolderItemProps {
 const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
   const [isOpenMeatball, setIsOpenMeatball] = useState(false);
   const [renameModalOpen, setRenameModalOpen] = useState(false);
-  const [name, setname] = useState<string>(lists.name);
-  const [rename, setrename] = useState<string>(name);
+  const [name, setName] = useState<string>(lists.name);
+  const [rename, setRename] = useState<string>(name);
   const renameModalRef = useRef<HTMLTextAreaElement>(null);
   const meatballRef = useRef<HTMLDivElement>(null);
   const lastValidValue = useRef<string>(name);
   useClickOutside(meatballRef, () => setIsOpenMeatball(false), isOpenMeatball);
-  useClickOutside(
-    renameModalRef,
-    () => {
-      setRenameModalOpen(false);
-      setrename(name);
-    },
-    renameModalOpen,
-  );
 
   const adjustTextareaHeight = useCallback(() => {
     const textarea = renameModalRef.current;
@@ -59,11 +51,11 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
 
     if (currentLines <= 4) {
       lastValidValue.current = newValue;
-      setrename(newValue);
+      setRename(newValue);
       target.style.height = `${currentScrollHeight}px`;
     } else {
       target.value = lastValidValue.current;
-      setrename(lastValidValue.current);
+      setRename(lastValidValue.current);
       target.style.height = `${lineHeight * 4}px`;
     }
   };
@@ -71,7 +63,7 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      setname(rename);
+      setName(rename);
       setRenameModalOpen(false);
     }
   };
@@ -165,11 +157,14 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
                 ref={renameModalRef}
                 value={renameModalOpen ? rename : name}
                 readOnly={!renameModalOpen}
-                onBlur={() => setRenameModalOpen(false)}
+                onBlur={() => {
+                  setName(rename);
+                  setRenameModalOpen(false);
+                }}
                 onKeyDown={onKeyDown}
               />
             </div>
-            {/* h-6확인필요 */}
+            
             <div
               className={`relative h-6 self-end ${lists.isFolder ? "" : "mb-1.5"}`}
             >

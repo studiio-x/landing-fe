@@ -5,10 +5,11 @@ import Link from "next/link";
 import { useActivePage } from "@/hooks/useActivePage";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { PAGE_CONFIG } from "@/constants/dashboard/sideBar";
 import ProjectListItem from "./projectListItem";
 import CreateButton from "./CreatButton";
 import { useRouter, useSearchParams } from "next/navigation";
+import { PAGE_CONFIG } from "@/constants/dashboard/sideBar";
+import { PATHS } from "@/constants/common/paths";
 
 const MotionLink = motion(Link);
 
@@ -50,7 +51,7 @@ export default function SideBar() {
   };
 
   const handleSharedProject = (projectName: string) => {
-    router.push(`/dashboard/project?shared=${projectName}`);
+    router.push(`${PATHS.DASHBOARD_PROJECT}?shared=${projectName}`);
   };
 
   return (
@@ -85,7 +86,7 @@ export default function SideBar() {
         {/* 내 프로젝트 ~ 공유된 프로젝트*/}
         <div className="flex flex-col Body_2_medium flex-1">
           <ProjectListItem
-            onClick={() => router.push("/dashboard/project?shared=my")}
+            onClick={() => router.push(`${PATHS.DASHBOARD_PROJECT}?shared=my`)}
             currentSharedProject={sharedProjectFromQuery}
           >
             내 프로젝트

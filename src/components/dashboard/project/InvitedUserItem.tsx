@@ -18,14 +18,11 @@ const InvitedUserItem = ({ user }: InvitedUserItemProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setCurrentPermission(user.permission);
-  }, []);
-
-  useEffect(() => {
     if (currentPermission) {
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         setIsDropDownOpen(false);
       }, 100);
+      return () => clearTimeout(timer);
     }
   }, [currentPermission]);
   useClickOutside(dropdownRef, () => setIsDropDownOpen(false), isDropDownOpen);

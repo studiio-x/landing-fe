@@ -1,17 +1,22 @@
 import { Close } from "@/assets/icons";
 import GlassButton from "@/components/common/GlassButton";
+import ModalOverlay from "@/components/common/ModalOverlay";
 
 interface DeleteModalProps {
+  isOpen: boolean;
   setIsOpen: (open: boolean) => void;
   onClose: () => void;
 }
 
-export const DeleteModal = ({ setIsOpen, onClose }: DeleteModalProps) => {
+export const DeleteModal = ({ isOpen, setIsOpen, onClose }: DeleteModalProps) => {
   const handleDelete = () => {
     setIsOpen(false);
   };
 
+  if (!isOpen) return null;
+
   return (
+    <ModalOverlay onClose={onClose}>
     <div className="flex flex-col items-start gap-2.5 pb-9 px-11 relative bg-[#272b33e6] rounded-[0.5rem] backdrop-blur-sm shadow-[0_0_12px_0_rgba(8,8,8,0.25)]">
       <header className="flex items-start justify-between pt-7 self-stretch w-full">
         <h2
@@ -75,6 +80,7 @@ export const DeleteModal = ({ setIsOpen, onClose }: DeleteModalProps) => {
         </div>
       </div>
     </div>
+    </ModalOverlay>
   );
 };
 

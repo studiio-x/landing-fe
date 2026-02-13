@@ -1,10 +1,16 @@
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import InvitedUserItem from "./InvitedUserItem";
 import { MOCK_DATA_USERS } from "@/constants/dashboard/project/user";
 import { useState } from "react";
 import clsx from "clsx";
+import ModalOverlay from "@/components/common/ModalOverlay";
 
-const InviteModal = () => {
+interface InviteModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const InviteModal = ({ isOpen, onClose }: InviteModalProps) => {
   const userName = useSearchParams().get("shared");
   const [inviteEmail, setInviteEmail] = useState("");
 
@@ -12,7 +18,10 @@ const InviteModal = () => {
     console.log("Inviting:", inviteEmail);
   };
 
+  if (!isOpen) return null;
+
   return (
+    <ModalOverlay onClose={onClose}>
     <div className="bg-[rgba(40,44,52,0.90)] backdrop-blur-[5px] p-[1.25rem_1.5rem_2.25rem_1.5rem] rounded-[0.50019rem]">
       <h1 className="Body_2_semibold text-Grey-50 py-1 pl-2 mb-2">
         {userName}
@@ -57,6 +66,7 @@ const InviteModal = () => {
         </div>
       </div>
     </div>
+    </ModalOverlay>
   );
 };
 

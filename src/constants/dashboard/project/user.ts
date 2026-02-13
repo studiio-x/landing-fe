@@ -1,9 +1,11 @@
+export type Permission = "전체 허용" | "편집 허용" | "읽기 허용";
+
 interface User {
   id: number;
   name: string;
   email: string;
   avatar: string;
-  permission: string;
+  permission: Permission;
 }
 
 export const MOCK_DATA_USERS: User[] = [
