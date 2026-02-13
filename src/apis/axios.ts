@@ -1,8 +1,8 @@
 import axios from "axios";
 
+import { BASE_URL } from "./config";
 import type { SuccessResponse } from "@/types/api/response.type";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 if (!BASE_URL) {
   throw new Error("API_BASE_URL이 정의되지 않았습니다");
 }
