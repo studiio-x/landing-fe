@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Checkbox, SelectedCheckbox } from "@/assets/icons";
 import GlassButton from "@/components/common/GlassButton";
+import AlertModal from "@/components/common/AlertModal";
 import { EMAIL_REGEX } from "@/constants/signup/funnel";
 import type { EmailInputStepProps } from "@/types/signup/funnel.type";
 import LoginInput from "@/components/login/LoginInput";
@@ -21,6 +22,7 @@ const EmailInputStep = ({
   const [isCheckboxClicked, setIsCheckboxClicked] = useState(initialAgreed);
   const router = useRouter();
   const [email, setEmail] = useState(initialEmail);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false); 
   const { mutate: sendVerificationEmail, isPending } =
     useSendVerificationEmail();
 
@@ -39,6 +41,9 @@ const EmailInputStep = ({
       {
         onSuccess: () => {
           onNext({ email: trimmedEmail, agreedToTerms: true });
+        },
+        onError: () => {
+          setIsErrorModalOpen(true);
         },
       },
     );
@@ -95,6 +100,17 @@ const EmailInputStep = ({
           {t("login")}
         </button>
       </div>
+
+      <AlertModal
+        isOpen={isErrorModalOpen}
+        onClose={() => setIsErrorModalOpen(false)}
+        title="이메일 전송에 실패했습니다"
+        description={<>일시적인 오류로 이메일을 보내지 못했어요.<br />잠시 후 다시 시도하거나,<br />문제가 계속되면 고객센터로 문의해 주세요.</>}
+        buttons={[
+          { label: "확인", variant: "red", onClick: () => setIsErrorModalOpen(false) },
+        ]}
+        contained
+      />
     </>
   );
 };

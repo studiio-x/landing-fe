@@ -22,7 +22,7 @@ const SignupLayout = ({ children }: { children: ReactNode }) => {
           <LogoRed className="z-20 w-[21rem] h-auto" />
         </section>
 
-        <section className="flex-[44%] pt-[11.25rem] flex flex-col px-[8.5rem]">
+        <section className="flex-[44%] pt-[11.25rem] flex flex-col px-[8.5rem] relative">
           {children}
         </section>
       </main>
