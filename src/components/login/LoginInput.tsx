@@ -45,11 +45,11 @@ const LoginInput = ({
           placeholder={placeholder}
           value={value}
           autoComplete="on"
-          onChange={onChange ? (e) => onChange(e.target.value) : undefined}
           className="bg-Grey-800 py-3 px-4 placeholder:text-Grey-400 text-Grey-100 Body_2_medium w-full rounded-[4px] relative z-10"
           aria-label={ariaLabel}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          onChange={onChange ? (e) => onChange(e.target.value) : undefined}
         />
       </div>
       {watchIcon && (

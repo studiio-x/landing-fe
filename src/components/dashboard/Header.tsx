@@ -112,7 +112,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
           onClick={() => router.push(PATHS.DASHBOARD)}
           aria-label={t("goDashboardLabel")}
         >
-          <Logo className="w-[5.3125rem]" />
+          <Logo className="w-[5.25681rem] h-[1.13rem] " />
         </button>
       </div>
 

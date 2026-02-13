@@ -14,8 +14,6 @@ const SvgBack = ({
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 29 29"
-    width="1em"
-    height="1em"
     role="img"
     focusable="false"
     aria-hidden="true"
@@ -51,7 +49,7 @@ const SvgBack = ({
         transform="matrix(-1 0 0 1 28.16 .16)"
       />
       <path
-        fill="#A9B4C6"
+        fill="currentColor"
         fillRule="evenodd"
         d="M8.345 14.564a.573.573 0 0 1 0-.81L12.8 9.299a.573.573 0 1 1 .81.81l-3.477 3.477h9.435a.573.573 0 0 1 0 1.146h-9.435l3.477 3.476a.573.573 0 1 1-.81.81z"
         clipRule="evenodd"
@@ -67,7 +65,7 @@ const SvgBack = ({
         gradientUnits="userSpaceOnUse"
       >
         <stop stopColor="#1D2025" />
-        <stop offset={1} stopColor="#808A9D" />
+        <stop offset={1} stopColor="currentColor" />
       </linearGradient>
       <clipPath id="back_svg__a" transform="translate(5.09 5.09)">
         <rect
