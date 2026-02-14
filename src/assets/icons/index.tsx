@@ -1,4 +1,5 @@
 export { default as Arrow } from "./Arrow";
+export { default as BackArrow } from "./BackArrow";
 export { default as Check } from "./Check";
 export { default as Checkbox } from "./Checkbox";
 export { default as Down } from "./Down";

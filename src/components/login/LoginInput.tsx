@@ -60,9 +60,9 @@ const LoginInput = ({
           onClick={onClick}
         >
           {isPasswordOpen ? (
-            <Watch className="w-5 h-5" />
+            <Watch className="w-5 h-5 text-Grey-400" />
           ) : (
-            <WatchOff className="w-5 h-5" />
+            <WatchOff className="w-5 h-5 text-Grey-400" />
           )}
         </button>
       )}
