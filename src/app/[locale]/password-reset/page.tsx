@@ -20,7 +20,7 @@ import PasswordResetStep from "@/components/passwordReset/PasswordResetStep";
 
 import type { PasswordResetFunnelSteps } from "@/types/passwordReset/funnel.type";
 
-const PasswordReset = () => {
+const PasswordResetPage = () => {
   const router = useRouter();
   const t = useTranslations("passwordReset");
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
@@ -108,4 +108,4 @@ const PasswordReset = () => {
   );
 };
 
-export default PasswordReset;
+export default PasswordResetPage;
