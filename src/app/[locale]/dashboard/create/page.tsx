@@ -12,7 +12,7 @@ const CreatePage = () => {
   const t = useTranslations("dashboard");
 
   return (
-    <div className="flex flex-col h-screen relative">
+    <div className="flex flex-col min-h-dvh relative">
       <div className="fixed inset-0 bg-[url('/images/dashboard/create-background.png')]  bg-no-repeat bg-top [background-size:100%_auto] -z-10 pointer-events-none" />
       <Header />
 
@@ -25,7 +25,7 @@ const CreatePage = () => {
         <Back className="w-11 h-11" />
       </button>
 
-      <main className="w-full flex flex-col items-center gap-[4.5rem] flex-1 justify-center mb-[6.75rem]">
+      <main className="w-full flex flex-col items-center gap-[4.5rem] flex-1 mt-[8.25rem] mb-[6.75rem]">
         <div className="flex flex-col gap-3 items-center">
           <span className="py-2 px-5 border border-Grey-700 bg-[rgba(255,255,255,0.03)] Body_2_medium text-Grey-100 rounded-[5rem]">
             {t("create.badge")}

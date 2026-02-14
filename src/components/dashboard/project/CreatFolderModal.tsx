@@ -4,7 +4,7 @@ import GlassButton from "@/components/common/GlassButton";
 import ModalOverlay from "@/components/common/ModalOverlay";
 import clsx from "clsx";
 import InvitedUserItem from "./InvitedUserItem";
-import { MOCK_DATA_USERS } from "@/constants/dashboard/project/user";
+import { MOCK_DATA_USERS } from "@/mocks/dashboard/user.mock";
 
 interface CreatFolderModalProps {
   isOpen: boolean;

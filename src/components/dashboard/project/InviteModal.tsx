@@ -1,6 +1,6 @@
 import { useSearchParams } from "next/navigation";
 import InvitedUserItem from "./InvitedUserItem";
-import { MOCK_DATA_USERS } from "@/constants/dashboard/project/user";
+import { MOCK_DATA_USERS } from "@/mocks/dashboard/user.mock";
 import { useState } from "react";
 import clsx from "clsx";
 import ModalOverlay from "@/components/common/ModalOverlay";
