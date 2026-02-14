@@ -7,6 +7,7 @@ export const PATHS = {
   // Auth pages
   LOGIN: "/login",
   SIGNUP: "/signup",
+  PASSWORD_RESET: "/password-reset",
 
   // Dashboard pages
   DASHBOARD: "/dashboard",
