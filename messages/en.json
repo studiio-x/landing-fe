@@ -73,6 +73,43 @@
       "submit": "Get Started"
     }
   },
+  "passwordReset": {
+    "backLabel": "Go back",
+    "emailInput": {
+      "title": "Reset Password",
+      "description": "Enter the email address of the account you want to reset your password for, and we will send a password reset code to your registered email.",
+      "emailPlaceholder": "Email address",
+      "emailAriaLabel": "Email",
+      "submit": "Send Reset Email"
+    },
+    "codeVerification": {
+      "title": "Enter Verification Code",
+      "description": "Please enter the verification code sent to {email}.",
+      "codePlaceholder": "6-digit code",
+      "codeAriaLabel": "Verification code",
+      "submit": "Continue",
+      "noEmail": "Didn't receive the email?",
+      "timerMinutes": "You can resend in {minutes}:{seconds}.",
+      "timerSeconds": "You can resend in {seconds}s.",
+      "resend": "Resend"
+    },
+    "passwordSetup": {
+      "title": "Reset Password",
+      "description": "Please enter your new password.",
+      "passwordRequirement": "<bold>8-35 characters</bold> including <bold>upper, lower case</bold> and <bold>number</bold>.",
+      "passwordPlaceholder": "password",
+      "passwordAriaLabel": "password",
+      "confirmPasswordPlaceholder": "Confirm password",
+      "confirmPasswordAriaLabel": "Confirm password",
+      "passwordMismatch": "*Passwords do not match.",
+      "submit": "Reset Password"
+    },
+    "complete": {
+      "title": "Password Reset Complete",
+      "description": "Please log in with your new password.",
+      "confirm": "Confirm"
+    }
+  },
   "dashboard": {
     "header": {
       "backLabel": "Go back",

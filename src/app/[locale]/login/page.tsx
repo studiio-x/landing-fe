@@ -104,6 +104,7 @@ export default function Login() {
               <div className="text-center flex flex-col gap-2 mt-3">
                 <button
                   type="button"
+                  onClick={() => router.push(PATHS.PASSWORD_RESET)}
                   className="Body_3_medium text-Grey-200 underline"
                 >
                   {t("forgotPassword")}

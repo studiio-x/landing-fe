@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl";
 import DashboardCard from "@/components/dashboard/DashboardCard";
 import { DASHBOARD_CARDS } from "@/constants/dashboard/card";
 import Header from "@/components/dashboard/Header";
-import SideBar from "@/components/dashboard/SideBar/SideBar";
+import SideBar from "@/components/dashboard/sidebar/SideBar";
 import { useTemplatesByCategory } from "@/hooks/queries/useTemplateApi";
 import { TemplateCategory } from "@/types/api/template.type";
 
@@ -20,7 +20,7 @@ const DashboardPage = () => {
 
   const activeIndex = useMemo(
     () => (pinnedIndex !== null ? pinnedIndex : hoverIndex),
-    [pinnedIndex, hoverIndex]
+    [pinnedIndex, hoverIndex],
   );
 
   const category = activeIndex !== null ? CATEGORY_MAP[activeIndex] : null;
@@ -31,7 +31,7 @@ const DashboardPage = () => {
       pageNum: 1,
       limit: 20,
     },
-    category !== null
+    category !== null,
   );
 
   const templates = data?.templates ?? [];
@@ -41,7 +41,7 @@ const DashboardPage = () => {
     <main className="relative min-h-dvh w-full flex flex-col">
       <div className="fixed inset-0 bg-[url('/images/dashboard/background.png')] bg-cover bg-center -z-10 pointer-events-none" />
       <Header />
-      
+
       <div className="flex">
         <SideBar />
         <div className="mx-auto mt-[3.25rem]">
@@ -96,7 +96,9 @@ const DashboardPage = () => {
                             >
                               <Image
                                 src={template.imageUrl}
-                                alt={t("template.imageAlt", { id: template.templateId })}
+                                alt={t("template.imageAlt", {
+                                  id: template.templateId,
+                                })}
                                 fill
                                 className="object-cover"
                               />

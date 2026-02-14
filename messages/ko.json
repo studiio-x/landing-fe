@@ -73,6 +73,43 @@
       "submit": "시작하기"
     }
   },
+  "passwordReset": {
+    "backLabel": "뒤로가기",
+    "emailInput": {
+      "title": "비밀번호 찾기",
+      "description": "비밀번호를 찾으시려는 계정의 이메일 주소를 입력하시면\n등록된 이메일로 비밀번호 재설정 코드를 전송해드립니다.",
+      "emailPlaceholder": "이메일 주소",
+      "emailAriaLabel": "이메일",
+      "submit": "재설정 메일 보내기"
+    },
+    "codeVerification": {
+      "title": "인증코드 입력",
+      "description": "이메일({email})로 전송받은 인증 코드를 입력해 주세요.",
+      "codePlaceholder": "인증코드 6자리",
+      "codeAriaLabel": "인증코드",
+      "submit": "계속하기",
+      "noEmail": "아직 이메일을 받지 못했나요?",
+      "timerMinutes": "{minutes}:{seconds} 뒤에 재전송할 수 있습니다.",
+      "timerSeconds": "{seconds}초 뒤에 재전송할 수 있습니다.",
+      "resend": "재전송"
+    },
+    "passwordSetup": {
+      "title": "비밀번호 재설정",
+      "description": "새롭게 사용할 비밀번호를 입력해 주세요.",
+      "passwordRequirement": "<bold>영문 대·소문자</bold>와 <bold>숫자</bold>를 모두 포함한\n<bold>8-35자</bold> 비밀번호를 입력해 주세요.",
+      "passwordPlaceholder": "비밀번호",
+      "passwordAriaLabel": "비밀번호",
+      "confirmPasswordPlaceholder": "비밀번호 확인",
+      "confirmPasswordAriaLabel": "비밀번호 확인",
+      "passwordMismatch": "*비밀번호가 일치하지 않습니다.",
+      "submit": "비밀번호 재설정 완료"
+    },
+    "complete": {
+      "title": "비밀번호 재설정이 완료되었습니다.",
+      "description": "재설정된 비밀번호로 다시 로그인해주세요.",
+      "confirm": "확인"
+    }
+  },
   "dashboard": {
     "header": {
       "backLabel": "뒤로 가기",

@@ -2,7 +2,7 @@
 import { useSearchParams, useRouter } from "next/navigation";
 import { CreateFolder, Down, Up } from "@/assets/icons";
 import Header from "@/components/dashboard/Header";
-import SideBar from "@/components/dashboard/SideBar/SideBar";
+import SideBar from "@/components/dashboard/sidebar/SideBar";
 import { useEffect, useMemo, useRef, useState } from "react";
 import FolderItem from "@/components/dashboard/project/FolderItem";
 import GlassButton from "@/components/common/GlassButton";
@@ -105,7 +105,10 @@ const ProjectPage = () => {
       </div>
 
       {/* 폴더 생성 모달 */}
-      <CreatFolderModal isOpen={createModalOpen} onClose={() => setCreateModalOpen(false)} />
+      <CreatFolderModal
+        isOpen={createModalOpen}
+        onClose={() => setCreateModalOpen(false)}
+      />
 
       {/* 제거 모달 */}
       <AlertModal
@@ -114,13 +117,24 @@ const ProjectPage = () => {
         title="정말 삭제하시겠습니까?"
         description="폴더를 삭제하면 하위의 폴더와 프로젝트가 모두 삭제되며, 복구할 수 없습니다."
         buttons={[
-          { label: "닫기", variant: "default", onClick: () => setDeleteModalOpen(false) },
-          { label: "삭제하기", variant: "red", onClick: () => setDeleteModalOpen(false) },
+          {
+            label: "닫기",
+            variant: "default",
+            onClick: () => setDeleteModalOpen(false),
+          },
+          {
+            label: "삭제하기",
+            variant: "red",
+            onClick: () => setDeleteModalOpen(false),
+          },
         ]}
       />
 
       {/* 초대 모달 */}
-      <InviteModal isOpen={inviteModalOpen} onClose={() => setInviteModalOpen(false)} />
+      <InviteModal
+        isOpen={inviteModalOpen}
+        onClose={() => setInviteModalOpen(false)}
+      />
 
       <Header />
 
