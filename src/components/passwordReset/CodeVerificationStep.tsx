@@ -66,14 +66,16 @@ const CodeVerificationStep = ({
         />
 
         <div className="mt-9 text-left flex">
-          <p className="Body_3_medium text-Grey-500">
-            {t("noEmail")}
-          </p>
-          <p className="Body_3_medium text-Grey-500 ml-1">
-            {remainingSeconds >= 60
-              ? t("timerMinutes", { minutes, seconds })
-              : t("timerSeconds", { seconds: remainingSeconds })}
-          </p>
+          {!isExpired && (
+            <>
+              <p className="Body_3_medium text-Grey-500">{t("noEmail")}</p>
+              <p className="Body_3_medium text-Grey-500 ml-1">
+                {remainingSeconds >= 60
+                  ? t("timerMinutes", { minutes, seconds })
+                  : t("timerSeconds", { seconds: remainingSeconds })}
+              </p>
+            </>
+          )}
         </div>
 
         {isExpired ? (

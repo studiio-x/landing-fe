@@ -79,7 +79,6 @@ const PasswordResetPage = () => {
               )}
               PasswordReset={({ context }) => (
                 <PasswordResetStep
-                  email={context.email}
                   onComplete={() => {
                     setIsCompleteModalOpen(true);
                   }}
@@ -89,7 +88,10 @@ const PasswordResetPage = () => {
 
             <AlertModal
               isOpen={isCompleteModalOpen}
-              onClose={() => setIsCompleteModalOpen(false)}
+              onClose={() => {
+                setIsCompleteModalOpen(false);
+                router.push(PATHS.LOGIN);
+              }}
               title={t("complete.title")}
               description={t("complete.description")}
               buttons={[

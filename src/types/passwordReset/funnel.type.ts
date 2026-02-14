@@ -29,6 +29,5 @@ export interface CodeVerificationStepProps {
 }
 
 export interface PasswordResetStepProps {
-  email: string;
-  onComplete: () => void;
+  onComplete: (data: { password: string }) => void;
 }
