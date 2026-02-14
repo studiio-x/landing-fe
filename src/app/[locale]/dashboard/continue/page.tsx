@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { mockData } from "@/mocks/dashboard/continue.mock";
+import AlertModal from "@/components/common/AlertModal";
 
 const ContinuePage = () => {
   const router = useRouter();
@@ -50,6 +51,18 @@ const ContinuePage = () => {
           </ul>
         </section>
       </main>
+
+       {/* 제거 모달 */}
+      <AlertModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        title="정말 삭제하시겠습니까?"
+        description="폴더를 삭제하면 하위의 폴더와 프로젝트가 모두 삭제되며, 복구할 수 없습니다."
+        buttons={[
+          { label: "닫기", variant: "default", onClick: () => setDeleteModalOpen(false) },
+          { label: "삭제하기", variant: "red", onClick: () => setDeleteModalOpen(false) },
+        ]}
+      />
     </div>
   );
 };
