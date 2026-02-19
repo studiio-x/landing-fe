@@ -9,7 +9,7 @@ export type TemplateCategory = "MODEL" | "STUDIO" | "IMAGE" | "VIDEO";
 // 키워드 기준 템플릿 아이템
 export interface TemplateItem {
   templateId: number;
-  keywordType: TemplateKeyword
+  keywordType: TemplateKeyword;
   imageObjectKey: string;
   category: TemplateCategory;
   keywordTitle: string;
@@ -46,13 +46,7 @@ export interface GetTemplatesByCategoryResponse {
 }
 
 // 템플릿 검색 아이템
-export interface TemplateSearchItem {
-  templateId: number;
-  keywordType: TemplateKeyword;
-  imageObjectKey: string;
-  category: TemplateCategory;
-  keywordTitle: string;
-}
+export type TemplateSearchItem = TemplateItem;
 
 // 템플릿 검색
 export interface SearchTemplatesParams {

@@ -48,19 +48,21 @@ const BackgroundSwiper = ({
       )}
 
       <div className="relative items-center flex gap-3">
-        <button className={`swiper-prev-${id}`} aria-label="이전">
-          <Down className="rotate-90 h-6 w-6" />
-        </button>
+        {!showSkeleton && (
+          <button className={`swiper-prev-${id}`} aria-label="이전">
+            <Down className="rotate-90 h-6 w-6" />
+          </button>
+        )}
 
         <div className="flex-1 w-[324px] min-w-0">
           {showSkeleton ? (
-            <div className="flex gap-3">
+            <div className="flex gap-3 justify-center">
               {Array.from({ length: 3 }, (_, i) => (
                 <div
                   key={i}
                   className={clsx(
-                    "flex-1 h-[6.25rem] rounded bg-Grey-700",
-                    isLoading && "animate-pulse"
+                    "w-[6.25rem] h-[6.25rem] rounded bg-Grey-700",
+                    isLoading && "animate-pulse",
                   )}
                 />
               ))}
@@ -92,7 +94,7 @@ const BackgroundSwiper = ({
                           "relative w-full h-[6.25rem] rounded overflow-hidden",
                           isSelected
                             ? "bg-gradient-to-b from-Red-350 to-Red-500 p-[1.5px]"
-                            : "bg-Grey-800"
+                            : "bg-Grey-800",
                         )}
                       >
                         <div className="relative w-full h-full rounded overflow-hidden bg-Grey-800">
@@ -113,9 +115,11 @@ const BackgroundSwiper = ({
           )}
         </div>
 
-        <button className={`swiper-next-${id}`} aria-label="다음">
-          <Down className="-rotate-90 h-6 w-6" />
-        </button>
+        {!showSkeleton && (
+          <button className={`swiper-next-${id}`} aria-label="다음">
+            <Down className="-rotate-90 h-6 w-6" />
+          </button>
+        )}
       </div>
     </section>
   );
