@@ -30,10 +30,14 @@ export const useTemplatesByCategory = (
     enabled,
   });
 
-export const useSearchTemplates = (params: SearchTemplatesParams) =>
+export const useSearchTemplates = (
+  params: SearchTemplatesParams,
+  enabled: boolean = true,
+) =>
   useQuery({
     queryKey: queryKeys.templates.searchList(params),
     queryFn: () => getSearchTemplates(params),
+    enabled,
   });
 
 export const useTemplateKeywords = () =>

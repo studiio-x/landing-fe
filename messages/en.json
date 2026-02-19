@@ -196,7 +196,8 @@
           "outdoor": "Outdoor"
         },
         "uploadBackground": "Upload Background",
-        "generate": "Generate"
+        "generate": "Generate",
+        "noSearchResults": "No search results found"
       },
       "optionsTab": {
         "selectQuality": "Select video quality",

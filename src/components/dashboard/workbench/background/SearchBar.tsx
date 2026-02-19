@@ -47,9 +47,15 @@ const SearchBar = ({
   );
 
   useEffect(() => {
-    if (!isSearching || !keyword.trim()) return;
+    if (!isSearching) return;
 
     clearTimer();
+
+    if (!keyword.trim()) {
+      onSearch("");
+      return;
+    }
+
     timerRef.current = setTimeout(() => {
       onSearch(keyword.trim());
     }, DEBOUNCE_MS);
