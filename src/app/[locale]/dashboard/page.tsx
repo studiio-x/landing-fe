@@ -35,7 +35,7 @@ const DashboardPage = () => {
   );
 
   const templates = data?.templates ?? [];
-  const showSkeleton = isLoading || templates.length === 0;
+  const showSkeleton = isLoading;
 
   return (
     <main className="relative min-h-dvh w-full flex flex-col">
@@ -77,6 +77,11 @@ const DashboardPage = () => {
                   </h2>
 
                   <div className="rounded-lg bg-Grey-800 py-6 px-[1.63rem]">
+                    {!isLoading && templates.length === 0 ? (
+                      <p className="text-Grey-400 Body_2_medium text-center py-10">
+                        {t("template.empty")}
+                      </p>
+                    ) : (
                     <div className="grid grid-cols-5 gap-x-4 gap-y-6">
                       {showSkeleton
                         ? Array.from({ length: 15 }, (_, i) => (
@@ -110,6 +115,7 @@ const DashboardPage = () => {
                             </div>
                           ))}
                     </div>
+                    )}
                   </div>
                 </section>
               )}
