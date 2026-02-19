@@ -141,7 +141,8 @@
     "template": {
       "sectionTitle": "예시 템플릿으로 시작하기",
       "imageAlt": "템플릿 {id}",
-      "hoverText": "이 배경으로\n이미지 생성하기"
+      "hoverText": "이 배경으로\n이미지 생성하기",
+      "empty": "사용 가능한 템플릿이 없습니다"
     },
     "create": {
       "badge": "새 프로젝트 시작하기",
@@ -195,7 +196,8 @@
           "outdoor": "아웃도어"
         },
         "uploadBackground": "배경 업로드",
-        "generate": "생성하기"
+        "generate": "생성하기",
+        "noSearchResults": "검색 결과가 없습니다"
       },
       "optionsTab": {
         "selectQuality": "비디오 화질을 선택하세요",

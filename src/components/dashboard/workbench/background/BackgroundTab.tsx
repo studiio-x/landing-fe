@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
 import { Plus } from "@/assets/icons";
@@ -9,34 +9,48 @@ import BackgroundSwiper from "./BackgroundSwiper";
 import SearchBar from "./SearchBar";
 import ProductImageRequiredModal from "./ProductImageRequiredModal";
 import GlassButton from "@/components/common/GlassButton";
+import { useTemplateKeywords, useTemplatesByKeyword, useSearchTemplates } from "@/hooks/queries/useTemplateApi";
+import { TEMPLATE_KEYWORDS } from "@/constants/dashboard/template";
+import { TemplateKeyword } from "@/types/api/template.type";
 
 interface BackgroundTabProps {
   uploadedImage: File | null;
 }
 
+const toItems = (templates: { templateId: number; imageObjectKey: string }[]) =>
+  templates.map((t) => ({ id: String(t.templateId), src: t.imageObjectKey }));
+
 const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
   const t = useTranslations("dashboard.workbench.backgroundTab");
   const [isSearching, setIsSearching] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedBackgroundId, setSelectedBackgroundId] = useState<
     string | null
   >(null);
 
   const [isProductImageModalOpen, setIsProductImageModalOpen] = useState(false);
 
-  const displayBackgrounds = Array.from({ length: 6 }, (_, idx) => ({
-    id: `display-${idx}`,
-    src: "/images/landing/product1.png",
-  }));
+  const { data: keywords, isLoading: isKeywordsLoading } = useTemplateKeywords();
+  const { data: templatesData, isLoading: isTemplatesLoading } = useTemplatesByKeyword({
+    keywords: TEMPLATE_KEYWORDS,
+    limitPerKeyword: 9,
+  });
+  const { data: searchResults, isLoading: isSearchLoading } = useSearchTemplates(
+    { keyword: searchKeyword },
+    !!searchKeyword,
+  );
 
-  const fabricBackgrounds = Array.from({ length: 6 }, (_, idx) => ({
-    id: `fabric-${idx}`,
-    src: "/images/landing/product2.png",
-  }));
+  useEffect(() => {
+    if (!isSearching) setSearchKeyword("");
+  }, [isSearching]);
 
-  const outdoorBackgrounds = Array.from({ length: 6 }, (_, idx) => ({
-    id: `outdoor-${idx}`,
-    src: "/images/landing/product3.png",
-  }));
+  const isLoading = isKeywordsLoading || isTemplatesLoading;
+
+  const findTemplates = (keyword: TemplateKeyword) =>
+    toItems(templatesData?.find((g) => g.keyword === keyword)?.templates ?? []);
+
+  const getTitle = (keyword: TemplateKeyword) =>
+    keywords?.find((k) => k.keyword === keyword)?.title ?? "";
 
   const handleClickGenerate = () => {
     if (!uploadedImage) {
@@ -52,9 +66,7 @@ const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
       <SearchBar
         isSearching={isSearching}
         setIsSearching={setIsSearching}
-        onSearch={(keyword) => {
-          console.log("검색어:", keyword);
-        }}
+        onSearch={setSearchKeyword}
       />
 
       <div
@@ -63,27 +75,33 @@ const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
           isSearching ? "h-[413px]" : "h-[452px]"
         )}
       >
-        <BackgroundSwiper
-          id="display"
-          title={t("categories.display")}
-          items={displayBackgrounds}
-          selectedId={selectedBackgroundId}
-          onSelect={setSelectedBackgroundId}
-        />
-        <BackgroundSwiper
-          id="fabric"
-          title={t("categories.fabric")}
-          items={fabricBackgrounds}
-          selectedId={selectedBackgroundId}
-          onSelect={setSelectedBackgroundId}
-        />
-        <BackgroundSwiper
-          id="outdoor"
-          title={t("categories.outdoor")}
-          items={outdoorBackgrounds}
-          selectedId={selectedBackgroundId}
-          onSelect={setSelectedBackgroundId}
-        />
+        {searchKeyword ? (
+          isSearchLoading || (searchResults && searchResults.length > 0) ? (
+            <BackgroundSwiper
+              id="search"
+              items={toItems(searchResults ?? [])}
+              selectedId={selectedBackgroundId}
+              onSelect={setSelectedBackgroundId}
+              isLoading={isSearchLoading}
+            />
+          ) : (
+            <p className="flex items-center justify-center h-full Body_3_medium text-Grey-500">
+              {t("noSearchResults")}
+            </p>
+          )
+        ) : (
+          TEMPLATE_KEYWORDS.map((keyword) => (
+            <BackgroundSwiper
+              key={keyword}
+              id={keyword}
+              title={getTitle(keyword)}
+              items={findTemplates(keyword)}
+              selectedId={selectedBackgroundId}
+              onSelect={setSelectedBackgroundId}
+              isLoading={isLoading}
+            />
+          ))
+        )}
       </div>
 
       <div className="flex items-center justify-center gap-4 mt-6 Body_2_semibold">

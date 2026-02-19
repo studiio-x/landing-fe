@@ -9,10 +9,10 @@ export type TemplateCategory = "MODEL" | "STUDIO" | "IMAGE" | "VIDEO";
 // 키워드 기준 템플릿 아이템
 export interface TemplateItem {
   templateId: number;
-  keyword: TemplateKeyword;
-  keywordTitle: string;
-  imageUrl: string;
+  keywordType: TemplateKeyword;
+  imageObjectKey: string;
   category: TemplateCategory;
+  keywordTitle: string;
 }
 
 // 카테고리 기준 템플릿 아이템
@@ -23,14 +23,14 @@ export interface TemplateCategoryItem {
 
 // 키워드 기준 템플릿 조회
 export interface GetTemplatesByKeywordParams {
-  keyword: TemplateKeyword;
-  pageNum: number;
-  limit: number;
+  keywords: TemplateKeyword[];
+  limitPerKeyword: number;
 }
 
 export interface GetTemplatesByKeywordResponse {
+  keyword: TemplateKeyword;
+  keywordTitle: string;
   templates: TemplateItem[];
-  pageInfo: PageInfo;
 }
 
 // 카테고리 기준 템플릿 조회
@@ -44,3 +44,21 @@ export interface GetTemplatesByCategoryResponse {
   templates: TemplateCategoryItem[];
   pageInfo: PageInfo;
 }
+
+// 템플릿 검색 아이템
+export type TemplateSearchItem = TemplateItem;
+
+// 템플릿 검색
+export interface SearchTemplatesParams {
+  keyword: string;
+}
+
+export type SearchTemplatesResponse = TemplateSearchItem[];
+
+// 템플릿 키워드 목록 아이템
+export interface TemplateKeywordItem {
+  keyword: TemplateKeyword;
+  title: string;
+}
+
+export type GetTemplateKeywordsResponse = TemplateKeywordItem[];
