@@ -6,7 +6,13 @@ import { routing } from "./i18n/routing";
 const handleI18nRouting = createIntlMiddleware(routing);
 
 // [locale] 폴더 안에 실제로 존재하는 페이지들
-const localePages = ["signup", "dashboard", "mypage", "login"];
+const localePages = [
+  "signup",
+  "dashboard",
+  "mypage",
+  "login",
+  "password-reset",
+];
 
 export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
