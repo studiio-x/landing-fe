@@ -1,6 +1,7 @@
 import {
   GetTemplatesByCategoryParams,
   GetTemplatesByKeywordParams,
+  SearchTemplatesParams,
 } from "@/types/api/template.type";
 
 export const queryKeys = {
@@ -14,6 +15,13 @@ export const queryKeys = {
     category: () => [...queryKeys.templates.all, "category"] as const,
     categoryList: (params: GetTemplatesByCategoryParams) =>
       [...queryKeys.templates.category(), params] as const,
+
+    search: () => [...queryKeys.templates.all, "search"] as const,
+    searchList: (params: SearchTemplatesParams) =>
+      [...queryKeys.templates.search(), params] as const,
+
+    templateKeywords: () =>
+      [...queryKeys.templates.all, "templateKeywords"] as const,
   },
 
   mypage: {

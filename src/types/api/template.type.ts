@@ -44,3 +44,27 @@ export interface GetTemplatesByCategoryResponse {
   templates: TemplateCategoryItem[];
   pageInfo: PageInfo;
 }
+
+// 템플릿 검색 아이템
+export interface TemplateSearchItem {
+  templateId: number;
+  keywordType: TemplateKeyword;
+  imageObjectKey: string;
+  category: TemplateCategory;
+  keywordTitle: string;
+}
+
+// 템플릿 검색
+export interface SearchTemplatesParams {
+  keyword: string;
+}
+
+export type SearchTemplatesResponse = TemplateSearchItem[];
+
+// 템플릿 키워드 목록 아이템
+export interface TemplateKeywordItem {
+  keyword: TemplateKeyword;
+  title: string;
+}
+
+export type GetTemplateKeywordsResponse = TemplateKeywordItem[];
