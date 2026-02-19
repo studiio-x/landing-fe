@@ -31,8 +31,8 @@ export const getSearchTemplates = async (
 
 export const getTemplatesByKeyword = async (
   params: GetTemplatesByKeywordParams,
-): Promise<GetTemplatesByKeywordResponse> => {
-  const response = await axiosInstance.get<GetTemplatesByKeywordResponse>(
+): Promise<GetTemplatesByKeywordResponse[]> => {
+  const response = await axiosInstance.get<GetTemplatesByKeywordResponse[]>(
     "/templates/keyword",
     {
       params,

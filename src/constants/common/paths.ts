@@ -29,6 +29,7 @@ export const LANDING_SECTION_HASH = {
 export const QUERY_KEYS = {
   WORKBENCH_MODE: "mode",
   PORTFOLIO_CATEGORY: "category",
+  TEMPLATE_ID: "templateId",
 } as const;
 
 export const PORTFOLIO_CATEGORY = {

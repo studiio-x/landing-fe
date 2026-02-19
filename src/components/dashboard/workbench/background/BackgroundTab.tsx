@@ -9,10 +9,16 @@ import BackgroundSwiper from "./BackgroundSwiper";
 import SearchBar from "./SearchBar";
 import ProductImageRequiredModal from "./ProductImageRequiredModal";
 import GlassButton from "@/components/common/GlassButton";
+import { useTemplatesByKeyword } from "@/hooks/queries/useTemplateApi";
+import { TEMPLATE_KEYWORDS } from "@/constants/dashboard/template";
+import { TemplateKeyword } from "@/types/api/template.type";
 
 interface BackgroundTabProps {
   uploadedImage: File | null;
 }
+
+const toItems = (templates: { templateId: number; imageObjectKey: string }[]) =>
+  templates.map((t) => ({ id: String(t.templateId), src: t.imageObjectKey }));
 
 const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
   const t = useTranslations("dashboard.workbench.backgroundTab");
@@ -23,20 +29,17 @@ const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
 
   const [isProductImageModalOpen, setIsProductImageModalOpen] = useState(false);
 
-  const displayBackgrounds = Array.from({ length: 6 }, (_, idx) => ({
-    id: `display-${idx}`,
-    src: "/images/landing/product1.png",
-  }));
+  const { data, isLoading } = useTemplatesByKeyword({
+    keywords: TEMPLATE_KEYWORDS,
+    limitPerKeyword: 9,
+  });
 
-  const fabricBackgrounds = Array.from({ length: 6 }, (_, idx) => ({
-    id: `fabric-${idx}`,
-    src: "/images/landing/product2.png",
-  }));
+  const findTemplates = (keyword: TemplateKeyword) =>
+    toItems(data?.find((g) => g.keyword === keyword)?.templates ?? []);
 
-  const outdoorBackgrounds = Array.from({ length: 6 }, (_, idx) => ({
-    id: `outdoor-${idx}`,
-    src: "/images/landing/product3.png",
-  }));
+  const displayBackgrounds = findTemplates("GENERAL_DISPLAY");
+  const fabricBackgrounds = findTemplates("FABRIC_VELVET");
+  const outdoorBackgrounds = findTemplates("OUTDOOR");
 
   const handleClickGenerate = () => {
     if (!uploadedImage) {
@@ -69,6 +72,7 @@ const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
           items={displayBackgrounds}
           selectedId={selectedBackgroundId}
           onSelect={setSelectedBackgroundId}
+          isLoading={isLoading}
         />
         <BackgroundSwiper
           id="fabric"
@@ -76,6 +80,7 @@ const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
           items={fabricBackgrounds}
           selectedId={selectedBackgroundId}
           onSelect={setSelectedBackgroundId}
+          isLoading={isLoading}
         />
         <BackgroundSwiper
           id="outdoor"
@@ -83,6 +88,7 @@ const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
           items={outdoorBackgrounds}
           selectedId={selectedBackgroundId}
           onSelect={setSelectedBackgroundId}
+          isLoading={isLoading}
         />
       </div>
 

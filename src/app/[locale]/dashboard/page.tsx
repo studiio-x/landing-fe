@@ -2,12 +2,14 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 
 import DashboardCard from "@/components/dashboard/DashboardCard";
 import { DASHBOARD_CARDS } from "@/constants/dashboard/card";
 import Header from "@/components/dashboard/Header";
 import SideBar from "@/components/dashboard/sidebar/SideBar";
+import { PATHS, QUERY_KEYS } from "@/constants/common/paths";
 import { useTemplatesByCategory } from "@/hooks/queries/useTemplateApi";
 import { TemplateCategory } from "@/types/api/template.type";
 
@@ -15,6 +17,7 @@ const CATEGORY_MAP: TemplateCategory[] = ["STUDIO", "MODEL", "VIDEO"];
 
 const DashboardPage = () => {
   const t = useTranslations("dashboard");
+  const router = useRouter();
   const [hoverIndex, setHoverIndex] = useState<number | null>(null);
   const [pinnedIndex, setPinnedIndex] = useState<number | null>(null);
 
@@ -36,6 +39,16 @@ const DashboardPage = () => {
 
   const templates = data?.templates ?? [];
   const showSkeleton = isLoading;
+
+  const handleTemplateClick = (templateId: number) => {
+    if (activeIndex === null) return;
+    const mode = DASHBOARD_CARDS[activeIndex].key;
+    const params = new URLSearchParams({
+      [QUERY_KEYS.WORKBENCH_MODE]: mode,
+      [QUERY_KEYS.TEMPLATE_ID]: String(templateId),
+    });
+    router.push(`${PATHS.DASHBOARD_WORKBENCH}?${params.toString()}`);
+  };
 
   return (
     <main className="relative min-h-dvh w-full flex flex-col">
@@ -98,6 +111,8 @@ const DashboardPage = () => {
                               tabIndex={0}
                               role="button"
                               className="w-[11rem] h-[11rem] relative aspect-square rounded overflow-hidden bg-Grey-200 group box-border border border-transparent hover:border-Red-400"
+                              onClick={() => handleTemplateClick(template.templateId)}
+                              onKeyDown={(e) => e.key === "Enter" && handleTemplateClick(template.templateId)}
                             >
                               <Image
                                 src={template.imageUrl}
