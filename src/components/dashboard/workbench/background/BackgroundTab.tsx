@@ -9,7 +9,7 @@ import BackgroundSwiper from "./BackgroundSwiper";
 import SearchBar from "./SearchBar";
 import ProductImageRequiredModal from "./ProductImageRequiredModal";
 import GlassButton from "@/components/common/GlassButton";
-import { useTemplatesByKeyword } from "@/hooks/queries/useTemplateApi";
+import { useTemplateKeywords, useTemplatesByKeyword } from "@/hooks/queries/useTemplateApi";
 import { TEMPLATE_KEYWORDS } from "@/constants/dashboard/template";
 import { TemplateKeyword } from "@/types/api/template.type";
 
@@ -29,17 +29,19 @@ const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
 
   const [isProductImageModalOpen, setIsProductImageModalOpen] = useState(false);
 
-  const { data, isLoading } = useTemplatesByKeyword({
+  const { data: keywords, isLoading: isKeywordsLoading } = useTemplateKeywords();
+  const { data: templatesData, isLoading: isTemplatesLoading } = useTemplatesByKeyword({
     keywords: TEMPLATE_KEYWORDS,
     limitPerKeyword: 9,
   });
 
-  const findTemplates = (keyword: TemplateKeyword) =>
-    toItems(data?.find((g) => g.keyword === keyword)?.templates ?? []);
+  const isLoading = isKeywordsLoading || isTemplatesLoading;
 
-  const displayBackgrounds = findTemplates("GENERAL_DISPLAY");
-  const fabricBackgrounds = findTemplates("FABRIC_VELVET");
-  const outdoorBackgrounds = findTemplates("OUTDOOR");
+  const findTemplates = (keyword: TemplateKeyword) =>
+    toItems(templatesData?.find((g) => g.keyword === keyword)?.templates ?? []);
+
+  const getTitle = (keyword: TemplateKeyword) =>
+    keywords?.find((k) => k.keyword === keyword)?.title ?? "";
 
   const handleClickGenerate = () => {
     if (!uploadedImage) {
@@ -66,30 +68,17 @@ const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
           isSearching ? "h-[413px]" : "h-[452px]"
         )}
       >
-        <BackgroundSwiper
-          id="display"
-          title={t("categories.display")}
-          items={displayBackgrounds}
-          selectedId={selectedBackgroundId}
-          onSelect={setSelectedBackgroundId}
-          isLoading={isLoading}
-        />
-        <BackgroundSwiper
-          id="fabric"
-          title={t("categories.fabric")}
-          items={fabricBackgrounds}
-          selectedId={selectedBackgroundId}
-          onSelect={setSelectedBackgroundId}
-          isLoading={isLoading}
-        />
-        <BackgroundSwiper
-          id="outdoor"
-          title={t("categories.outdoor")}
-          items={outdoorBackgrounds}
-          selectedId={selectedBackgroundId}
-          onSelect={setSelectedBackgroundId}
-          isLoading={isLoading}
-        />
+        {TEMPLATE_KEYWORDS.map((keyword) => (
+          <BackgroundSwiper
+            key={keyword}
+            id={keyword}
+            title={getTitle(keyword)}
+            items={findTemplates(keyword)}
+            selectedId={selectedBackgroundId}
+            onSelect={setSelectedBackgroundId}
+            isLoading={isLoading}
+          />
+        ))}
       </div>
 
       <div className="flex items-center justify-center gap-4 mt-6 Body_2_semibold">

@@ -37,7 +37,13 @@ const BackgroundSwiper = ({
 
   return (
     <section className="w-full flex flex-col gap-2">
-      <h3 className="pl-9 Body_2_medium text-Grey-100">{title}</h3>
+      <h3 className="pl-9 Body_2_medium">
+        {isLoading ? (
+          <span className="inline-block w-20 h-[1em] rounded bg-Grey-700 animate-pulse" />
+        ) : (
+          <span className="text-Grey-100">{title}</span>
+        )}
+      </h3>
 
       <div className="relative items-center flex gap-3">
         <button className={`swiper-prev-${id}`} aria-label="이전">
