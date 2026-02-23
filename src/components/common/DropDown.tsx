@@ -45,7 +45,7 @@ const DropDown = ({
           isOpen ? "text-Grey-400" : "text-Grey-200",
         )}
       >
-        <span>
+        <span className="whitespace-nowrap">
           {type === "array"
             ? t(`sort.${currentState}`)
             : type === "auth"

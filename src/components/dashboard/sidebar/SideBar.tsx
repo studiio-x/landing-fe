@@ -11,6 +11,7 @@ import CreateButton from "./CreatButton";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PAGE_CONFIG } from "@/constants/dashboard/sideBar";
 import { PATHS } from "@/constants/common/paths";
+import { useProject } from "@/hooks/queries/useProject";
 
 const MotionLink = motion(Link);
 
@@ -37,6 +38,7 @@ export default function SideBar() {
   const currentPage = useActivePage(PAGE_CONFIG);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const { data, isLoading } = useProject();
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -55,6 +57,8 @@ export default function SideBar() {
   const handleSharedProject = (projectName: string) => {
     router.push(`${PATHS.DASHBOARD_PROJECT}?shared=${projectName}`);
   };
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <aside className="bg-Grey-800 max-w-[17.625rem] w-full left-0 sticky top-[var(--header-height)] h-[calc(100vh-var(--header-height))] px-7 pt-7 pb-[3.25rem] border-r border-Grey-600">
@@ -86,25 +90,37 @@ export default function SideBar() {
         })}
 
         {/* 내 프로젝트 ~ 공유된 프로젝트*/}
-        <div className="flex flex-col Body_2_medium flex-1">
+        <div
+          className={`flex flex-col Body_2_medium flex-1
+         `}
+        >
           <ProjectListItem
-            onClick={() => router.push(`${PATHS.DASHBOARD_PROJECT}?shared=my`)}
+            onClick={() =>
+              router.push(
+                `${PATHS.DASHBOARD_PROJECT}?shared=${data?.myProject[0]?.name}`,
+              )
+            }
             currentSharedProject={sharedProjectFromQuery}
           >
             {t("myProject")}
           </ProjectListItem>
-          <span className="self-end w-[11.625rem] h-px bg-Grey-700" />
-          <ProjectListItem isShareOpen={isShareOpen} onClick={shareOnClick}>
-            {t("sharedProject")}
-          </ProjectListItem>
+          {data && data.sharedProject.length > 0 && (
+            <>
+              <span className="self-end w-[11.625rem] h-px bg-Grey-700" />
+
+              <ProjectListItem isShareOpen={isShareOpen} onClick={shareOnClick}>
+                {t("sharedProject")}
+              </ProjectListItem>
+            </>
+          )}
 
           {/* 공유된 프로젝트 리스트 */}
           {isShareOpen && (
             <>
               <span className="self-end w-[11.625rem] h-px bg-Grey-700" />
-              {mockSharedProjects.map((project, index) => (
+              {data?.sharedProject.map((project) => (
                 <motion.button
-                  key={index}
+                  key={project.folderId}
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}

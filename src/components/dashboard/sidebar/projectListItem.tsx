@@ -1,4 +1,5 @@
 import { Down, Up } from "@/assets/icons";
+import { useProject } from "@/hooks/queries/useProject";
 import clsx from "clsx";
 import { HTMLAttributes } from "react";
 
@@ -16,6 +17,7 @@ const ProjectListItem = ({
   currentSharedProject,
   ...props
 }: ProjectListItemProps) => {
+  const { data } = useProject();
   return (
     <div
       className="pt-3 pb-2 pl-9 flex items-center gap-2 hover:text-white cursor-pointer"
@@ -29,6 +31,9 @@ const ProjectListItem = ({
           currentSharedProject === "my" && currentSharedProject
             ? "text-white"
             : "text-Grey-300",
+          currentSharedProject === data?.myProject[0]?.name
+            ? "text-white"
+            : " text-Grey-300",
         )}
       >
         {children}

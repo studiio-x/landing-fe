@@ -12,6 +12,7 @@ import CreatFolderModal from "@/components/dashboard/project/CreatFolderModal";
 import AlertModal from "@/components/common/AlertModal";
 import InviteModal from "@/components/dashboard/project/InviteModal";
 import { useTranslations } from "next-intl";
+import { useProject } from "@/hooks/queries/useProject";
 
 const mockData = [
   {
@@ -50,23 +51,24 @@ const mockData = [
 
 const ProjectPage = () => {
   const t = useTranslations("project");
+  const { data } = useProject();
   const searchParams = useSearchParams();
   const sharedProjectFromQuery = searchParams.get("shared");
   const router = useRouter();
   const [array, setArray] = useState("newest");
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  // const [renameModalOpen, setRenameModalOpen] = useState(false);
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
 
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const dropDownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!sharedProjectFromQuery) {
-      router.replace("/dashboard/project?shared=my");
+    if (!sharedProjectFromQuery && data?.myProject.length) {
+      router.replace(`/dashboard/project?shared=${data.myProject[0].name}`);
     }
   }, [sharedProjectFromQuery]);
+  console.log("data", data);
 
   useClickOutside(dropDownRef, () => setIsDropDownOpen(false), isDropDownOpen);
 
