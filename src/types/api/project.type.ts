@@ -12,3 +12,13 @@ export interface getProjectsResponse {
     },
   ];
 }
+
+export interface makeFolderParams {
+  rootFolderId: number;
+  folderName: string;
+}
+
+export interface makeFolderResponse {
+  status?: number;
+  message?: string;
+}

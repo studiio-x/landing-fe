@@ -44,6 +44,7 @@ export default function SideBar() {
   const searchParams = useSearchParams();
   const sharedProjectFromQuery = searchParams.get("shared");
   const t = useTranslations("sidebar");
+  const params = new URLSearchParams();
 
   console.log("sharedProjectFromQuery", sharedProjectFromQuery);
 
@@ -54,8 +55,10 @@ export default function SideBar() {
     setIsShareOpen((pre) => !pre);
   };
 
-  const handleSharedProject = (projectName: string) => {
-    router.push(`${PATHS.DASHBOARD_PROJECT}?shared=${projectName}`);
+  const handleSharedProject = (projectName: string, folderId: number) => {
+    params.set("shared", projectName);
+    params.set("folderId", String(folderId));
+    router.push(`${PATHS.DASHBOARD_PROJECT}?${params.toString()}`);
   };
 
   if (isLoading) return <div>Loading...</div>;
@@ -95,11 +98,14 @@ export default function SideBar() {
          `}
         >
           <ProjectListItem
-            onClick={() =>
-              router.push(
-                `${PATHS.DASHBOARD_PROJECT}?shared=${data?.myProject[0]?.name}`,
-              )
-            }
+            onClick={() => {
+              params.set("shared", data?.myProject[0]?.name || "");
+              params.set(
+                "folderId",
+                String(data?.myProject[0]?.folderId || ""),
+              );
+              router.push(`${PATHS.DASHBOARD_PROJECT}?${params.toString()}`);
+            }}
             currentSharedProject={sharedProjectFromQuery}
           >
             {t("myProject")}
@@ -125,7 +131,9 @@ export default function SideBar() {
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.25, ease: "easeOut" }}
-                  onClick={() => handleSharedProject(project.name)}
+                  onClick={() =>
+                    handleSharedProject(project.name, project.folderId)
+                  }
                   className="flex w-full text-left"
                 >
                   <div

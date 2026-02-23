@@ -65,7 +65,10 @@ const ProjectPage = () => {
 
   useEffect(() => {
     if (!sharedProjectFromQuery && data?.myProject.length) {
-      router.replace(`/dashboard/project?shared=${data.myProject[0].name}`);
+      const params = new URLSearchParams();
+      params.set("shared", data.myProject[0].name);
+      params.set("folderId", String(data.myProject[0].folderId));
+      router.replace(`/dashboard/project?${params.toString()}`);
     }
   }, [sharedProjectFromQuery]);
   console.log("data", data);
