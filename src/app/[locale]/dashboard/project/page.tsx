@@ -53,7 +53,8 @@ const ProjectPage = () => {
   const t = useTranslations("project");
   const { data } = useProject();
   const searchParams = useSearchParams();
-  const sharedProjectFromQuery = searchParams.get("shared");
+  const sharedProjectFromQuery =
+    searchParams.get("shared") || searchParams.get("not-shared");
   const router = useRouter();
   const [array, setArray] = useState("newest");
   const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -66,7 +67,7 @@ const ProjectPage = () => {
   useEffect(() => {
     if (!sharedProjectFromQuery && data?.myProject.length) {
       const params = new URLSearchParams();
-      params.set("shared", data.myProject[0].name);
+      params.set("not-shared", data.myProject[0].name);
       params.set("folderId", String(data.myProject[0].folderId));
       router.replace(`/dashboard/project?${params.toString()}`);
     }

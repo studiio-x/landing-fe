@@ -285,5 +285,11 @@
     "emailPlaceholder": "Enter email address",
     "inviteButton": "Invite",
     "createButton": "Create"
+  },
+  "inviteModal": {
+    "title": "{user}'s Project",
+    "inviteByEmail": "Invite by Email",
+    "emailPlaceholder": "Enter email address",
+    "inviteButton": "Invite"
   }
 }

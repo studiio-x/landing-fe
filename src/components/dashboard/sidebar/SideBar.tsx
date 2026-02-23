@@ -92,14 +92,14 @@ export default function SideBar() {
           );
         })}
 
-        {/* 내 프로젝트 ~ 공유된 프로젝트*/}
+        {/* 내 프로젝트*/}
         <div
           className={`flex flex-col Body_2_medium flex-1
          `}
         >
           <ProjectListItem
             onClick={() => {
-              params.set("shared", data?.myProject[0]?.name || "");
+              params.set("not-shared", data?.myProject[0]?.name || "");
               params.set(
                 "folderId",
                 String(data?.myProject[0]?.folderId || ""),
@@ -110,6 +110,8 @@ export default function SideBar() {
           >
             {t("myProject")}
           </ProjectListItem>
+
+          {/*공유된 프로젝트*/}
           {data && data.sharedProject.length > 0 && (
             <>
               <span className="self-end w-[11.625rem] h-px bg-Grey-700" />
