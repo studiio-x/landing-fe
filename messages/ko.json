@@ -241,5 +241,16 @@
         }
       }
     }
+  },
+  "sidebar": {
+    "pages": {
+      "dashboard": "대시보드",
+      "project": "프로젝트"
+    },
+    "sharedProject": "공유된 프로젝트",
+    "myProject": "내 프로젝트",
+    "generate": "생성하기",
+    "newProject": "새 프로젝트 시작하기",
+    "continueProject": "프로젝트 이어하기"
   }
 }

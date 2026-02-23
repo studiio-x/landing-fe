@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Check } from "@/assets/icons";
 import Link from "next/link";
 import { useActivePage } from "@/hooks/useActivePage";
@@ -40,6 +41,7 @@ export default function SideBar() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const sharedProjectFromQuery = searchParams.get("shared");
+  const t = useTranslations("sidebar");
 
   console.log("sharedProjectFromQuery", sharedProjectFromQuery);
 
@@ -77,7 +79,7 @@ export default function SideBar() {
                 />
               )}
               <span className="relative z-10 hover:text-white  transition-colors">
-                {pageName}
+                {t(`pages.${pageName}`)}
               </span>
             </MotionLink>
           );
@@ -89,11 +91,11 @@ export default function SideBar() {
             onClick={() => router.push(`${PATHS.DASHBOARD_PROJECT}?shared=my`)}
             currentSharedProject={sharedProjectFromQuery}
           >
-            내 프로젝트
+            {t("myProject")}
           </ProjectListItem>
           <span className="self-end w-[11.625rem] h-px bg-Grey-700" />
           <ProjectListItem isShareOpen={isShareOpen} onClick={shareOnClick}>
-            공유된 프로젝트
+            {t("sharedProject")}
           </ProjectListItem>
 
           {/* 공유된 프로젝트 리스트 */}

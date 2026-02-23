@@ -1,6 +1,7 @@
 import { Close, Pencil, Plus } from "@/assets/icons";
 import { AnimatePresence, motion } from "framer-motion";
 import GlassButton from "../../common/GlassButton";
+import { useTranslations } from "next-intl";
 
 interface CreateButtonProps {
   isCreateOpen: boolean;
@@ -8,6 +9,7 @@ interface CreateButtonProps {
 }
 
 const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
+  const t = useTranslations("sidebar");
   return (
     <div className="flex flex-col gap-[0.75rem] w-full">
       <AnimatePresence>
@@ -22,7 +24,7 @@ const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
             >
               <GlassButton className="w-full bg-[rgba(255,48,48,0.45)] rounded-[0.25rem] hover:bg-[rgba(255,48,48,0.75)] Body_2_semibold flex gap-[0.62rem]">
                 <Plus className="w-[1.125rem]" />
-                <span>새 프로젝트 시작하기</span>
+                <span>{t("newProject")}</span>
               </GlassButton>
             </motion.div>
             <motion.div
@@ -34,7 +36,7 @@ const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
             >
               <GlassButton className="w-full">
                 <Pencil className="w-[1.125rem]" />
-                프로젝트 이어하기
+                <span>{t("continueProject")}</span>
               </GlassButton>
             </motion.div>
           </>
@@ -107,7 +109,7 @@ const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
                 className="flex gap-[0.62rem] items-center"
               >
                 <Plus className="w-[1.125rem] h-[1.125rem]" color="white" />
-                <span className="Body_1_semibold">생성하기</span>
+                <span className="Body_1_semibold">{t("generate")}</span>
               </motion.div>
             )}
           </AnimatePresence>

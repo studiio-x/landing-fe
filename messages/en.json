@@ -241,5 +241,16 @@
         }
       }
     }
+  },
+  "sidebar": {
+    "pages": {
+      "dashboard": "Dash board",
+      "project": "Projects"
+    },
+    "sharedProject": "Shared Projects",
+    "myProject": "My Project",
+    "generate": "Generate",
+    "newProject": "Start New Project",
+    "continueProject": "Continue Project"
   }
 }
