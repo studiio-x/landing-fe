@@ -16,6 +16,8 @@ const InviteModal = ({ isOpen, onClose }: InviteModalProps) => {
     useSearchParams().get("shared") || useSearchParams().get("not-shared");
   const [inviteEmail, setInviteEmail] = useState("");
 
+  const isValidEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(inviteEmail);
+
   const handleInvite = () => {
     console.log("Inviting:", inviteEmail);
   };
@@ -55,9 +57,10 @@ const InviteModal = ({ isOpen, onClose }: InviteModalProps) => {
             <button
               type="button"
               onClick={handleInvite}
-              className="group inline-flex items-center justify-center gap-2.5 py-3 px-6 relative flex-[0_0_auto] bg-opacitywhite-3 rounded-md border-[none] border-color-greyscale-grey-800 before:content-[''] before:absolute before:inset-0 before:p-px before:rounded-md before:[background:linear-gradient(180deg,rgba(241,244,248,0.25)_0%,rgba(29,32,37,0.25)_100%)] before:[-webkit-mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[-webkit-mask-composite:xor] before:[mask-composite:exclude] before:z-[1] before:pointer-events-none peer-invalid:pointer-events-none hover:focus:ring-Red-400 hover:before:[background:linear-gradient(180deg,rgba(255,134,134,0.25)_0%,rgba(255,48,48,0.25)_100%)] transition-all duration-1000"
+              disabled={!isValidEmail}
+              className="group inline-flex items-center justify-center gap-2.5 py-3 px-6 relative flex-[0_0_auto] bg-opacitywhite-3 rounded-md border-[none] border-color-greyscale-grey-800 before:content-[''] before:absolute before:inset-0 before:p-px before:rounded-md before:[background:linear-gradient(180deg,rgba(241,244,248,0.25)_0%,rgba(29,32,37,0.25)_100%)] before:[-webkit-mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[-webkit-mask-composite:xor] before:[mask-composite:exclude] before:z-[1] before:pointer-events-none disabled:pointer-events-none hover:focus:ring-Red-400 hover:before:[background:linear-gradient(180deg,rgba(255,134,134,0.25)_0%,rgba(255,48,48,0.25)_100%)] transition-all duration-1000"
             >
-              <span className="relative flex items-end justify-center w-fit mt-[-1.00px] Caption_semibold group-hover:text-Red-400 peer-invalid:text-Grey-500 peer-valid:text-Grey-50">
+              <span className={`relative flex items-end justify-center w-fit mt-[-1.00px] Caption_semibold group-hover:text-Red-400 ${!isValidEmail ? 'text-Grey-500' : 'text-Grey-50'}`}>
                 {t("inviteButton")}
               </span>
             </button>
