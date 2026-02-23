@@ -11,6 +11,7 @@ import useClickOutside from "@/hooks/useClickOutside";
 import CreatFolderModal from "@/components/dashboard/project/CreatFolderModal";
 import AlertModal from "@/components/common/AlertModal";
 import InviteModal from "@/components/dashboard/project/InviteModal";
+import { useTranslations } from "next-intl";
 
 const mockData = [
   {
@@ -48,13 +49,14 @@ const mockData = [
 ];
 
 const ProjectPage = () => {
+  const t = useTranslations("project");
   const searchParams = useSearchParams();
   const sharedProjectFromQuery = searchParams.get("shared");
   const router = useRouter();
-  const [array, setArray] = useState("최신순");
+  const [array, setArray] = useState("newest");
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [renameModalOpen, setRenameModalOpen] = useState(false);
+  // const [renameModalOpen, setRenameModalOpen] = useState(false);
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
 
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
@@ -64,7 +66,7 @@ const ProjectPage = () => {
     if (!sharedProjectFromQuery) {
       router.replace("/dashboard/project?shared=my");
     }
-  }, []);
+  }, [sharedProjectFromQuery]);
 
   useClickOutside(dropDownRef, () => setIsDropDownOpen(false), isDropDownOpen);
 
@@ -143,11 +145,11 @@ const ProjectPage = () => {
         <div className="mt-[3.25rem] flex items-center flex-col flex-1 w-[62.25rem] mr-[1.125rem]">
           <div className="w-[62.25rem] flex items-center gap-4">
             <h1 className="Heading_1_bold bg-gradient-to-b from-Red-300 to-Red-500 bg-clip-text text-transparent  ">
-              프로젝트
+              {t("title")}
             </h1>
             <div className="flex gap-[0.25rem]">
               <span className="whitespace-nowrap Body_2_medium text-Grey-200">
-                {sharedProjectFromQuery ?? ""}의 프로젝트
+                {t("subtitle", { user: sharedProjectFromQuery ?? "" })}
               </span>
               <button onClick={() => setInviteModalOpen(true)}>
                 {inviteModalOpen ? (

@@ -1,4 +1,4 @@
-export type Permission = "전체 허용" | "편집 허용" | "읽기 허용";
+export type Permission = "fullAccess" | "editOnly" | "readOnly";
 
 export interface User {
   id: number;

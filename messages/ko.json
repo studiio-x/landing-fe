@@ -252,5 +252,27 @@
     "generate": "생성하기",
     "newProject": "새 프로젝트 시작하기",
     "continueProject": "프로젝트 이어하기"
+  },
+  "dropdown": {
+    "sort": {
+      "newest": "최신순",
+      "oldest": "오래된순"
+    },
+    "auth": {
+      "fullAccess": "전체 허용",
+      "fullAccessDesc": "편집 및 다른 사람과 공유 허용",
+      "editOnly": "편집 허용",
+      "editOnlyDesc": "편집 허용, 다른 사람과 공유 불가",
+      "readOnly": "읽기 전용",
+      "readOnlyDesc": "편집 및 다른 사람과 공유 불가"
+    },
+    "lang": {
+      "ko": "한국어",
+      "en": "영어"
+    }
+  },
+  "project": {
+    "title": "프로젝트",
+    "subtitle": "{user}의 프로젝트"
   }
 }

@@ -6,6 +6,7 @@ import {
 } from "@/constants/dashboard/project/dropdown-options";
 import clsx from "clsx";
 import { Dispatch } from "react";
+import { useTranslations } from "next-intl";
 
 interface DropDownProps extends React.HTMLAttributes<HTMLDivElement> {
   ref: React.Ref<HTMLDivElement>;
@@ -25,6 +26,8 @@ const DropDown = ({
   setIsOpen,
   ...props
 }: DropDownProps) => {
+  const t = useTranslations("dropdown");
+
   return (
     <div {...props} ref={ref} className="relative">
       <button
@@ -42,7 +45,13 @@ const DropDown = ({
           isOpen ? "text-Grey-400" : "text-Grey-200",
         )}
       >
-        <span>{currentState}</span>
+        <span>
+          {type === "array"
+            ? t(`sort.${currentState}`)
+            : type === "auth"
+              ? t(`auth.${currentState}`)
+              : t(`lang.${currentState}`)}
+        </span>
         <div>
           {isOpen ? <Up className="w-5 h-5" /> : <Down className="w-5 h-5" />}
         </div>
@@ -90,11 +99,17 @@ const DropDown = ({
                     type === "auth" && "Caption_semibold",
                   )}
                 >
-                  {typeof option === "string" ? option : option.name}
+                  {typeof option === "string"
+                    ? t(`sort.${option}`)
+                    : type === "auth"
+                      ? t(`auth.${option.name}`)
+                      : t(`lang.${option.name}`)}
                 </div>
                 {typeof option !== "string" && (
                   <div className="text-Grey-300 Caption_medium whitespace-nowrap">
-                    {option.description}
+                    {type === "auth"
+                      ? t(`auth.${option.description}`)
+                      : option.description}
                   </div>
                 )}
               </li>

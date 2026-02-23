@@ -252,5 +252,27 @@
     "generate": "Generate",
     "newProject": "Start New Project",
     "continueProject": "Continue Project"
+  },
+  "dropdown": {
+    "sort": {
+      "newest": "Newest",
+      "oldest": "Oldest"
+    },
+    "auth": {
+      "fullAccess": "Full Access",
+      "fullAccessDesc": "Edit and share with others",
+      "editOnly": "Edit Only",
+      "editOnlyDesc": "Edit allowed, no sharing",
+      "readOnly": "Read Only",
+      "readOnlyDesc": "No editing or sharing"
+    },
+    "lang": {
+      "ko": "Korean",
+      "en": "English"
+    }
+  },
+  "project": {
+    "title": "Projects",
+    "subtitle": "{user}'s Projects"
   }
 }
