@@ -259,11 +259,11 @@
       "oldest": "Oldest"
     },
     "auth": {
-      "fullAccess": "Full Access",
+      "FULL_ACCESS": "Full Access",
       "fullAccessDesc": "Edit and share with others",
-      "editOnly": "Edit Only",
+      "WRITE": "Edit Only",
       "editOnlyDesc": "Edit allowed, no sharing",
-      "readOnly": "Read Only",
+      "READ": "Read Only",
       "readOnlyDesc": "No editing or sharing"
     },
     "lang": {
@@ -284,12 +284,14 @@
     "optional": "Optional",
     "emailPlaceholder": "Enter email address",
     "inviteButton": "Invite",
-    "createButton": "Create"
+    "createButton": "Create",
+    "creating": "Creating..."
   },
   "inviteModal": {
     "title": "{user}'s Project",
     "inviteByEmail": "Invite by Email",
     "emailPlaceholder": "Enter email address",
-    "inviteButton": "Invite"
+    "inviteButton": "Invite",
+    "inviting": "Inviting..."
   }
 }

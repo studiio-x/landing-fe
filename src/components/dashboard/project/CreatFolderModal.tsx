@@ -4,9 +4,11 @@ import GlassButton from "@/components/common/GlassButton";
 import ModalOverlay from "@/components/common/ModalOverlay";
 import clsx from "clsx";
 import InvitedUserItem from "./InvitedUserItem";
-import { MOCK_DATA_USERS } from "@/mocks/dashboard/user.mock";
 import { useTranslations } from "next-intl";
-import { useMakeFolder } from "@/hooks/queries/useProject";
+import {
+  useGetInvitedFolders,
+  useMakeFolder,
+} from "@/hooks/queries/useProject";
 import { useSearchParams } from "next/navigation";
 
 interface CreatFolderModalProps {
@@ -24,6 +26,7 @@ export const CreatFolderModal = ({
   const [isInviteEmailFocused, setIsInviteEmailFocused] = useState(false);
   const searchParams = useSearchParams();
   const rootFolderId = searchParams.get("folderId");
+  const { data } = useGetInvitedFolders(Number(rootFolderId), isOpen);
 
   const { mutate: createFolder, isPending } = useMakeFolder();
 
@@ -162,8 +165,8 @@ export const CreatFolderModal = ({
 
                   <div className="flex flex-col items-start gap-14 relative self-stretch w-full flex-[0_0_auto]">
                     <div className="flex flex-col items-start pt-2 pb-0 px-0 relative self-stretch w-full flex-[0_0_auto] mt-[-0.50px] mb-[-0.50px] ml-[-0.50px] mr-[-0.50px] border-t border-Grey-500 ">
-                      {MOCK_DATA_USERS.map((user, index) => (
-                        <InvitedUserItem key={index} user={user} />
+                      {data?.managers.map((user) => (
+                        <InvitedUserItem key={user.userId} {...user} />
                       ))}
                     </div>
                   </div>
@@ -182,7 +185,7 @@ export const CreatFolderModal = ({
                 aria-label={t("createButton")}
                 disabled={folderName.trim() === "" || isPending}
               >
-                {isPending ? "생성 중..." : t("createButton")}
+                {isPending ? t("creating") : t("createButton")}
               </GlassButton>
             </div>
           </div>

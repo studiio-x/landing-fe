@@ -2,17 +2,17 @@ export const ARRAY_OPTIONS = ["newest", "oldest"] as const;
 
 export const AUTH_OPTIONS = [
   {
-    key: "fullAccess",
+    key: "FULL_ACCESS",
     name: "fullAccess",
     description: "fullAccessDesc",
   },
   {
-    key: "editOnly",
+    key: "WRITE",
     name: "editOnly",
     description: "editOnlyDesc",
   },
   {
-    key: "readOnly",
+    key: "READ",
     name: "readOnly",
     description: "readOnlyDesc",
   },

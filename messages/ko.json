@@ -259,11 +259,11 @@
       "oldest": "오래된순"
     },
     "auth": {
-      "fullAccess": "전체 허용",
+      "FULL_ACCESS": "전체 허용",
       "fullAccessDesc": "편집 및 다른 사람과 공유 허용",
-      "editOnly": "편집 허용",
+      "WRITE": "편집 허용",
       "editOnlyDesc": "편집 허용, 다른 사람과 공유 불가",
-      "readOnly": "읽기 전용",
+      "READ": "읽기 전용",
       "readOnlyDesc": "편집 및 다른 사람과 공유 불가"
     },
     "lang": {
@@ -284,12 +284,14 @@
     "optional": "선택",
     "emailPlaceholder": "이메일을 입력해 주세요",
     "inviteButton": "초대하기",
-    "createButton": "생성하기"
+    "createButton": "생성하기",
+    "creating": "생성 중..."
   },
   "inviteModal": {
     "title": "{user}의 프로젝트",
     "inviteByEmail": "이메일로 초대하기",
     "emailPlaceholder": "이메일을 입력해 주세요",
-    "inviteButton": "초대하기"
+    "inviteButton": "초대하기",
+    "inviting": "초대 중..."
   }
 }

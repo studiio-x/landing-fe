@@ -7,12 +7,13 @@ import {
 import clsx from "clsx";
 import { Dispatch } from "react";
 import { useTranslations } from "next-intl";
+import { Permission } from "@/types/api/project.type";
 
 interface DropDownProps extends React.HTMLAttributes<HTMLDivElement> {
   ref: React.Ref<HTMLDivElement>;
   type: "array" | "auth" | "lang";
-  currentState: string;
-  setCurrentState: Dispatch<React.SetStateAction<string>>;
+  currentState: Permission | string;
+  setCurrentState: Dispatch<React.SetStateAction<Permission | string>>;
   isOpen: boolean;
   setIsOpen: Dispatch<React.SetStateAction<boolean>>;
 }

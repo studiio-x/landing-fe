@@ -1,16 +1,12 @@
 export interface getProjectsResponse {
-  myProject: [
-    {
-      folderId: number;
-      name: string;
-    },
-  ];
-  sharedProject: [
-    {
-      folderId: number;
-      name: string;
-    },
-  ];
+  myProject: {
+    folderId: number;
+    name: string;
+  }[];
+  sharedProject: {
+    folderId: number;
+    name: string;
+  }[];
 }
 
 export interface makeFolderParams {
@@ -19,6 +15,32 @@ export interface makeFolderParams {
 }
 
 export interface makeFolderResponse {
-  status?: number;
-  message?: string;
+  folderId: number;
+}
+
+export interface postInviteFolderParams {
+  folderId: number;
+  email: string;
+}
+
+export interface postInviteFolderResponse {
+  success: boolean;
+}
+
+export type Permission = "WRITE" | "READ" | "FULL_ACCESS" | "OWNER";
+
+export interface Manager {
+  userId: number;
+  profileUrl: string;
+  username: string;
+  email: string;
+  permission: Permission;
+}
+
+export interface getInvitedFoldersResponse {
+  myPermission: {
+    permission: Permission;
+    canWrite: boolean;
+  };
+  managers: Manager[];
 }

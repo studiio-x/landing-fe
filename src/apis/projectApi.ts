@@ -3,6 +3,9 @@ import {
   getProjectsResponse,
   makeFolderParams,
   makeFolderResponse,
+  postInviteFolderParams,
+  postInviteFolderResponse,
+  getInvitedFoldersResponse,
 } from "@/types/api/project.type";
 
 export const getProjects = async (): Promise<getProjectsResponse> => {
@@ -20,5 +23,25 @@ export const makefolder = async (
     },
   );
 
+  return response.data;
+};
+
+export const postInviteFolder = async (
+  params: postInviteFolderParams,
+): Promise<void> => {
+  await axiosInstance.post<postInviteFolderResponse>(
+    `/folder/manager/${params.folderId}`,
+    {
+      email: params.email,
+    },
+  );
+};
+
+export const getInvitedFolders = async (
+  folderId: number,
+): Promise<getInvitedFoldersResponse> => {
+  const response = await axiosInstance.get<getInvitedFoldersResponse>(
+    `/folder/manager/${folderId}`,
+  );
   return response.data;
 };

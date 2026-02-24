@@ -12,7 +12,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { PAGE_CONFIG } from "@/constants/dashboard/sideBar";
 import { PATHS } from "@/constants/common/paths";
 import { useProject } from "@/hooks/queries/useProject";
-import ModalOverlay from "@/components/common/ModalOverlay";
 import useClickOutside from "@/hooks/useClickOutside";
 
 const MotionLink = motion(Link);
@@ -20,21 +19,6 @@ const MotionLink = motion(Link);
 type PageName = keyof typeof PAGE_CONFIG;
 
 const PAGE_NAMES = Object.keys(PAGE_CONFIG) as PageName[];
-
-const mockSharedProjects = [
-  {
-    name: "임셈",
-  },
-  {
-    name: "류원",
-  },
-  {
-    name: "semin",
-  },
-  {
-    name: "임세민",
-  },
-];
 
 export default function SideBar() {
   const currentPage = useActivePage(PAGE_CONFIG);
