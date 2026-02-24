@@ -5,13 +5,15 @@ import { Check } from "@/assets/icons";
 import Link from "next/link";
 import { useActivePage } from "@/hooks/useActivePage";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ProjectListItem from "./projectListItem";
 import CreateButton from "./CreatButton";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PAGE_CONFIG } from "@/constants/dashboard/sideBar";
 import { PATHS } from "@/constants/common/paths";
 import { useProject } from "@/hooks/queries/useProject";
+import ModalOverlay from "@/components/common/ModalOverlay";
+import useClickOutside from "@/hooks/useClickOutside";
 
 const MotionLink = motion(Link);
 
@@ -38,6 +40,7 @@ export default function SideBar() {
   const currentPage = useActivePage(PAGE_CONFIG);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const createRef = useRef<HTMLDivElement>(null);
   const { data, isLoading } = useProject();
 
   const router = useRouter();
@@ -60,6 +63,7 @@ export default function SideBar() {
     params.set("folderId", String(folderId));
     router.push(`${PATHS.DASHBOARD_PROJECT}?${params.toString()}`);
   };
+  useClickOutside(createRef, () => setIsCreateOpen(false), isCreateOpen);
 
   if (isLoading) return <div>Loading...</div>;
 
@@ -154,8 +158,9 @@ export default function SideBar() {
           )}
         </div>
 
-        {/* 하단 생성하기 버튼 */}
-        <CreateButton isCreateOpen={isCreateOpen} onClick={CreatOnClick} />
+        <div ref={createRef}>
+          <CreateButton isCreateOpen={isCreateOpen} onClick={CreatOnClick} />
+        </div>
       </div>
     </aside>
   );

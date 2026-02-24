@@ -28,7 +28,7 @@ const ProjectListItem = ({
       <button
         className={clsx(
           "text-Grey-300 hover:text-white transition-colors flex-1 text-left",
-          currentSharedProject === "my" && currentSharedProject
+          currentSharedProject === currentSharedProject
             ? "text-white"
             : "text-Grey-300",
           currentSharedProject === data?.myProject[0]?.name
