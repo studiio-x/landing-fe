@@ -76,7 +76,7 @@ const DropDown = ({
                 : LANG_OPTIONS
             ).map((option) => (
               <li
-                key={typeof option === "string" ? option : option.name}
+                key={typeof option === "string" ? option : option.key}
                 className={clsx(
                   "text-center cursor-pointer",
                   (type === "auth" || type === "lang") &&
@@ -84,14 +84,14 @@ const DropDown = ({
                 )}
                 onClick={() =>
                   setCurrentState(
-                    typeof option === "string" ? option : option.name,
+                    typeof option === "string" ? option : option.key,
                   )
                 }
               >
                 <div
                   className={clsx(
                     currentState ===
-                      (typeof option === "string" ? option : option.name)
+                      (typeof option === "string" ? option : option.key)
                       ? "text-Grey-100"
                       : type === "array"
                         ? "text-Grey-400"
@@ -103,8 +103,8 @@ const DropDown = ({
                   {typeof option === "string"
                     ? t(`sort.${option}`)
                     : type === "auth"
-                      ? t(`auth.${option.name}`)
-                      : t(`lang.${option.name}`)}
+                      ? t(`auth.${option.key}`)
+                      : t(`lang.${option.key}`)}
                 </div>
                 {typeof option !== "string" && (
                   <div className="text-Grey-300 Caption_medium whitespace-nowrap">
