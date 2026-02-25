@@ -6,6 +6,7 @@ import {
   postInviteFolderParams,
   postInviteFolderResponse,
   getInvitedFoldersResponse,
+  updateInvitedUserParams,
 } from "@/types/api/project.type";
 
 export const getProjects = async (): Promise<getProjectsResponse> => {
@@ -44,4 +45,12 @@ export const getInvitedFolders = async (
     `/folder/manager/${folderId}`,
   );
   return response.data;
+};
+
+export const updateUserPermission = async (
+  params: updateInvitedUserParams,
+): Promise<void> => {
+  await axiosInstance.put(
+    `/folder/manager/${params.folderId}/${params.userId}?permission=${params.permission}`,
+  );
 };

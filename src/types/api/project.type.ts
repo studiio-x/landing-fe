@@ -44,3 +44,9 @@ export interface getInvitedFoldersResponse {
   };
   managers: Manager[];
 }
+
+export interface updateInvitedUserParams {
+  folderId: number;
+  userId: number;
+  permission: Permission;
+}

@@ -13,6 +13,7 @@ import AlertModal from "@/components/common/AlertModal";
 import InviteModal from "@/components/dashboard/project/InviteModal";
 import { useTranslations } from "next-intl";
 import { useProject } from "@/hooks/queries/useProject";
+import { useMypage } from "@/hooks/queries/useMypageApi";
 
 const mockData = [
   {
@@ -52,7 +53,9 @@ const mockData = [
 const ProjectPage = () => {
   const t = useTranslations("project");
   const { data } = useProject();
+  const { data: userData } = useMypage();
   const searchParams = useSearchParams();
+  const params = new URLSearchParams();
   const sharedProjectFromQuery =
     searchParams.get("shared") || searchParams.get("not-shared");
   const router = useRouter();
@@ -60,19 +63,19 @@ const ProjectPage = () => {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
-
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const dropDownRef = useRef<HTMLDivElement>(null);
 
+  const targetUserId = userData?.userId || null;
+
   useEffect(() => {
     if (!sharedProjectFromQuery && data?.myProject.length) {
-      const params = new URLSearchParams();
       params.set("not-shared", data.myProject[0].name);
       params.set("folderId", String(data.myProject[0].folderId));
       router.replace(`/dashboard/project?${params.toString()}`);
     }
   }, [sharedProjectFromQuery]);
-  console.log("data", data);
+  console.log("쳐", data);
 
   useClickOutside(dropDownRef, () => setIsDropDownOpen(false), isDropDownOpen);
 
@@ -142,6 +145,7 @@ const ProjectPage = () => {
       <InviteModal
         isOpen={inviteModalOpen}
         onClose={() => setInviteModalOpen(false)}
+        targetUserId={targetUserId}
       />
 
       <Header />

@@ -8,6 +8,9 @@ import clsx from "clsx";
 import { Dispatch } from "react";
 import { useTranslations } from "next-intl";
 import { Permission } from "@/types/api/project.type";
+import { useUpdateUserPermission } from "@/hooks/queries/useProject";
+import { useSearchParams } from "next/navigation";
+import { useMypage } from "@/hooks/queries/useMypageApi";
 
 interface DropDownProps extends React.HTMLAttributes<HTMLDivElement> {
   ref: React.Ref<HTMLDivElement>;
@@ -27,7 +30,38 @@ const DropDown = ({
   setIsOpen,
   ...props
 }: DropDownProps) => {
+  const searchParams = useSearchParams();
+  const { data: userData, isLoading } = useMypage();
+  const { mutate: updateUserPermission, isPending } = useUpdateUserPermission();
+
+  if (isLoading || !userData) return null;
+
+  const userId = userData.userId;
+  const folderId = Number(searchParams.get("folderId"));
+
   const t = useTranslations("dropdown");
+
+  const onOptionClick = (
+    option: string | { key: string; description: string },
+  ) => {
+    const value = typeof option === "string" ? option : option.key;
+    setCurrentState(value);
+    setIsOpen(false);
+    if (type === "auth" && folderId) {
+      updateUserPermission(
+        { userId, folderId, permission: value as Permission },
+        {
+          onSuccess: (data) => {
+            console.log("Permission updated:", data);
+            setIsOpen(false);
+          },
+          onError: (error) => {
+            console.error("Failed to update permission:", error);
+          },
+        },
+      );
+    }
+  };
 
   return (
     <div {...props} ref={ref} className="relative">
@@ -82,11 +116,7 @@ const DropDown = ({
                   (type === "auth" || type === "lang") &&
                     "border-b border-Grey-500 last:border-b-0 p-3",
                 )}
-                onClick={() =>
-                  setCurrentState(
-                    typeof option === "string" ? option : option.key,
-                  )
-                }
+                onClick={() => onOptionClick(option)}
               >
                 <div
                   className={clsx(

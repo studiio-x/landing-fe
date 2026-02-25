@@ -3,10 +3,12 @@ import {
   getProjects,
   makefolder,
   postInviteFolder,
+  updateUserPermission,
 } from "@/apis/projectApi";
 import {
   makeFolderParams,
   postInviteFolderParams,
+  updateInvitedUserParams,
 } from "@/types/api/project.type";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
@@ -26,9 +28,19 @@ export const useInviteFolder = () =>
     mutationFn: (params: postInviteFolderParams) => postInviteFolder(params),
   });
 
-export const useGetInvitedFolders = (folderId: number, enabled: boolean = true) =>
+export const useGetInvitedFolders = (
+  folderId: number,
+  enabled: boolean = true,
+) =>
   useQuery({
     queryKey: ["invitedFolders", folderId],
     queryFn: () => getInvitedFolders(folderId),
     enabled: enabled && !!folderId,
   });
+
+export const useUpdateUserPermission = () => {
+  return useMutation({
+    mutationFn: (params: updateInvitedUserParams) =>
+      updateUserPermission(params),
+  });
+};

@@ -29,11 +29,9 @@ export default function SideBar() {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const sharedProjectFromQuery = searchParams.get("shared");
+  const currentFolderId = Number(searchParams.get("folderId") || null);
   const t = useTranslations("sidebar");
   const params = new URLSearchParams();
-
-  console.log("sharedProjectFromQuery", sharedProjectFromQuery);
 
   const CreatOnClick = () => {
     setIsCreateOpen((pre) => !pre);
@@ -94,7 +92,7 @@ export default function SideBar() {
               );
               router.push(`${PATHS.DASHBOARD_PROJECT}?${params.toString()}`);
             }}
-            currentSharedProject={sharedProjectFromQuery}
+            currentSharedProject={currentFolderId}
           >
             {t("myProject")}
           </ProjectListItem>
@@ -104,7 +102,11 @@ export default function SideBar() {
             <>
               <span className="self-end w-[11.625rem] h-px bg-Grey-700" />
 
-              <ProjectListItem isShareOpen={isShareOpen} onClick={shareOnClick}>
+              <ProjectListItem
+                isShareOpen={isShareOpen}
+                onClick={shareOnClick}
+                currentSharedProject={currentFolderId}
+              >
                 {t("sharedProject")}
               </ProjectListItem>
             </>
@@ -128,12 +130,12 @@ export default function SideBar() {
                 >
                   <div
                     className={`pl-12 py-2 text-Grey-300 hover:text-white  transition-colors cursor-pointer w-full
-                    ${sharedProjectFromQuery === project.name ? "text-white" : " text-Grey-300"}
+                    ${currentFolderId === project.folderId ? "text-white" : " text-Grey-300"}
                     `}
                   >
                     {project.name}의 프로젝트
                   </div>
-                  {sharedProjectFromQuery === project.name && (
+                  {currentFolderId === project.folderId && (
                     <Check className="w-[1.25rem] justify-self-end" />
                   )}
                 </motion.button>

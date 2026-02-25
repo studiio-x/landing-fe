@@ -12,9 +12,10 @@ import {
 interface InviteModalProps {
   isOpen: boolean;
   onClose: () => void;
+  targetUserId: number | null;
 }
 
-const InviteModal = ({ isOpen, onClose }: InviteModalProps) => {
+const InviteModal = ({ isOpen, onClose, targetUserId }: InviteModalProps) => {
   const [inviteEmail, setInviteEmail] = useState("");
   const t = useTranslations("inviteModal");
   const searchParams = useSearchParams();
@@ -23,8 +24,7 @@ const InviteModal = ({ isOpen, onClose }: InviteModalProps) => {
   const { mutate: inviteFolder, isPending } = useInviteFolder();
   const { data } = useGetInvitedFolders(Number(rootFolderId), isOpen);
 
-  const userName =
-    useSearchParams().get("shared") || useSearchParams().get("not-shared");
+  const userName = searchParams.get("shared") || searchParams.get("not-shared");
 
   const isValidEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
     inviteEmail,
