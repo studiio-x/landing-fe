@@ -50,3 +50,8 @@ export interface updateInvitedUserParams {
   userId: number;
   permission: Permission;
 }
+
+export interface moveFolderParams {
+  folderId: number;
+  newFolderId: number;
+}

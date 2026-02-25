@@ -33,13 +33,12 @@ const DropDown = ({
   const searchParams = useSearchParams();
   const { data: userData, isLoading } = useMypage();
   const { mutate: updateUserPermission, isPending } = useUpdateUserPermission();
+  const t = useTranslations("dropdown");
 
   if (isLoading || !userData) return null;
 
   const userId = userData.userId;
   const folderId = Number(searchParams.get("folderId"));
-
-  const t = useTranslations("dropdown");
 
   const onOptionClick = (
     option: string | { key: string; description: string },

@@ -4,9 +4,12 @@ import clsx from "clsx";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import MeatballModal from "./MeatballModal";
 import useClickOutside from "@/hooks/useClickOutside";
+import { useSearchParams } from "next/navigation";
+import { useMoveFolder } from "@/hooks/queries/useProject";
 
 interface FolderItemProps {
   lists: {
+    folderId: number;
     name: string;
     isFolder: boolean;
     imageUrl: string | string[];
@@ -23,6 +26,12 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
   const renameModalRef = useRef<HTMLTextAreaElement>(null);
   const meatballRef = useRef<HTMLDivElement>(null);
   const lastValidValue = useRef<string>(name);
+  const searchParams = useSearchParams();
+  const { mutate: moveFolder } = useMoveFolder();
+
+  const folderId = Number(searchParams.get("folderId"));
+  const isDraggable = !folderId;
+
   useClickOutside(meatballRef, () => setIsOpenMeatball(false), isOpenMeatball);
 
   const adjustTextareaHeight = useCallback(() => {
@@ -81,8 +90,44 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
     adjustTextareaHeight();
   }, [name, rename, adjustTextareaHeight]);
 
+  // 폴더 이동 핸들러
+  const onDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    e.dataTransfer.setData("draggedFolderId", String(lists.folderId));
+  };
+
+  const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
+  const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const draggedFolderId = Number(e.dataTransfer.getData("draggedFolderId"));
+
+    moveFolder(
+      {
+        folderId: draggedFolderId,
+        newFolderId: lists.folderId,
+      },
+      {
+        onSuccess: () => {
+          console.log("폴더 이동 성공");
+        },
+        onError: (error) => {
+          console.error("폴더 이동 실패:", error);
+        },
+      },
+    );
+  };
+
   return (
-    <div key={index} className="relative w-[19.25rem]">
+    <div
+      key={index}
+      className="relative w-[19.25rem]"
+      draggable={isDraggable}
+      onDragStart={onDragStart}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
+    >
       {lists.isFolder ? (
         <Folder className="w-[19.25rem] h-50" />
       ) : (
@@ -164,7 +209,7 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
                 onKeyDown={onKeyDown}
               />
             </div>
-            
+
             <div
               className={`relative h-6 self-end ${lists.isFolder ? "" : "mb-1.5"}`}
             >

@@ -7,13 +7,33 @@ import {
   postInviteFolderResponse,
   getInvitedFoldersResponse,
   updateInvitedUserParams,
+  moveFolderParams,
 } from "@/types/api/project.type";
 
+//폴더 이동
+export const moveFolder = async (
+  params: moveFolderParams,
+): Promise<void> => {
+  await axiosInstance.put(`/folder/${params.folderId}/${params.newFolderId}`);
+};
+
+// 폴더 전체 목록 조회
 export const getProjects = async (): Promise<getProjectsResponse> => {
   const response = await axiosInstance.get<getProjectsResponse>("/folder");
   return response.data;
 };
 
+//특정 폴더 안 프로젝트 목록 조회
+export const getProjectsInFolder = async (
+  folderId: number,
+): Promise<getProjectsResponse> => {
+  const response = await axiosInstance.get<getProjectsResponse>(
+    `/folder/${folderId}`,
+  );
+  return response.data;
+};
+
+// 폴더 생성
 export const makefolder = async (
   params: makeFolderParams,
 ): Promise<makeFolderResponse> => {
@@ -27,6 +47,7 @@ export const makefolder = async (
   return response.data;
 };
 
+// 폴더 사용자 초대
 export const postInviteFolder = async (
   params: postInviteFolderParams,
 ): Promise<void> => {
@@ -38,6 +59,7 @@ export const postInviteFolder = async (
   );
 };
 
+// 초대된 사용자 목록 조회
 export const getInvitedFolders = async (
   folderId: number,
 ): Promise<getInvitedFoldersResponse> => {
@@ -47,10 +69,26 @@ export const getInvitedFolders = async (
   return response.data;
 };
 
+// 초대된 사용자 권한 업데이트
 export const updateUserPermission = async (
   params: updateInvitedUserParams,
 ): Promise<void> => {
   await axiosInstance.put(
     `/folder/manager/${params.folderId}/${params.userId}?permission=${params.permission}`,
   );
+};
+
+//폴더 이름 변경
+export const updateFolderName = async (
+  folderId: number,
+  newName: string,
+): Promise<void> => {
+  await axiosInstance.put(`/folder/${folderId}/name`, {
+    name: newName,
+  });
+};
+
+//폴더 삭제
+export const deleteFolder = async (folderId: number): Promise<void> => {
+  await axiosInstance.delete(`/folder/${folderId}`);
 };

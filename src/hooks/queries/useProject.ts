@@ -4,11 +4,13 @@ import {
   makefolder,
   postInviteFolder,
   updateUserPermission,
+  moveFolder,
 } from "@/apis/projectApi";
 import {
   makeFolderParams,
   postInviteFolderParams,
   updateInvitedUserParams,
+  moveFolderParams,
 } from "@/types/api/project.type";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
@@ -44,3 +46,8 @@ export const useUpdateUserPermission = () => {
       updateUserPermission(params),
   });
 };
+
+export const useMoveFolder = () =>
+  useMutation({
+    mutationFn: (params: moveFolderParams) => moveFolder(params),
+  });
