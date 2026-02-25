@@ -144,6 +144,11 @@
       "hoverText": "Generate image\nwith this background",
       "empty": "No templates available"
     },
+    "sidebar": {
+      "createButton": "Create",
+      "newProject": "Start New Project",
+      "continueProject": "Continue Project"
+    },
     "create": {
       "badge": "Start New Project",
       "title": "Choose the task you want.",
