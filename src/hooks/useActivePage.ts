@@ -7,7 +7,8 @@ export function useActivePage<T extends Record<string, string>>(
   const pathname = usePathname();
 
   return useMemo(() => {
-    const entry = Object.entries(config).find(([_, path]) => pathname === path);
+    const strippedPathname = "/" + pathname.split("/").slice(2).join("/");
+    const entry = Object.entries(config).find(([_, path]) => strippedPathname === path);
     return entry?.[0] as keyof T | undefined;
   }, [pathname, config]);
 }

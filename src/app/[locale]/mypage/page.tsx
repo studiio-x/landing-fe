@@ -1,7 +1,7 @@
 "use client";
 
 import Header from "@/components/dashboard/Header";
-import SideBar from "@/components/dashboard/SideBar";
+import SideBar from "@/components/dashboard/sidebar/SideBar";
 import { useState } from "react";
 import MyPageTabs from "@/components/mypage/MyPageTabs";
 import SettingsContent from "@/components/mypage/SettingsContent";
