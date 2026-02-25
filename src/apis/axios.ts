@@ -30,7 +30,8 @@ axiosInstance.interceptors.response.use(
       !window.location.pathname.includes(PATHS.SIGNUP) &&
       !window.location.pathname.includes(PATHS.PASSWORD_RESET)
     ) {
-      window.location.href = PATHS.LOGIN;
+      const callbackUrl = encodeURIComponent(window.location.pathname + window.location.search);
+      window.location.href = `${PATHS.LOGIN}?callbackUrl=${callbackUrl}`;
     }
     return Promise.reject(error);
   },

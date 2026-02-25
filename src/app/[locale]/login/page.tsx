@@ -2,7 +2,7 @@
 
 import { Close } from "@/assets/icons";
 import LoginInput from "@/components/login/LoginInput";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { PATHS } from "@/constants/common/paths";
 import Header from "@/components/dashboard/Header";
@@ -16,6 +16,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [isPasswordOpen, setIsPasswordOpen] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const t = useTranslations("login");
   const { mutate: login, isPending } = useLogin();
 
@@ -31,7 +32,8 @@ export default function Login() {
       { email, password },
       {
         onSuccess: () => {
-          router.push(PATHS.DASHBOARD);
+          const callbackUrl = searchParams.get("callbackUrl");
+          router.push(callbackUrl ?? PATHS.DASHBOARD);
         },
       },
     );
