@@ -6,6 +6,7 @@ interface DashboardCardProps {
   content: string;
   mediaSrc: string;
   isActive?: boolean;
+  onClick?: () => void;
 }
 
 const DashboardCard = ({
@@ -13,6 +14,7 @@ const DashboardCard = ({
   content,
   mediaSrc,
   isActive,
+  onClick,
 }: DashboardCardProps) => {
   const isVideo = (src: string) => /\.(mp4|webm|ogg)$/i.test(src);
 
@@ -20,6 +22,8 @@ const DashboardCard = ({
     <div
       role="button"
       tabIndex={0}
+      onClick={onClick}
+      onKeyDown={(e) => e.key === "Enter" && onClick?.()}
       className={clsx(
         "h-[12.5rem] w-[19.25rem] group rounded bg-gradient-to-b p-px cursor-pointer",
         {
