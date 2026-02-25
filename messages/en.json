@@ -43,7 +43,9 @@
     "error": {
       "emailSendFailed": {
         "title": "Failed to send email",
-        "description": "We couldn't send the email.\nPlease try again or contact support."
+        "description": "We’re having trouble sending the email right now.\nPlease try again in a moment,",
+        "contact": "or contact us if the issue persists:",
+        "contactEmail": "studiox.co.kr@gmail.com"
       },
       "emailAlreadyRegistered": {
         "title": "Email already registered",

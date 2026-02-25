@@ -13,7 +13,7 @@ interface AlertModalProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
-  description: ReactNode;
+  description: ReactNode | ReactNode[];
   buttons: AlertModalButton[];
   contained?: boolean;
 }
@@ -44,7 +44,7 @@ const AlertModal = ({
   if (!isOpen) return null;
   
   const modalContent = (
-    <div className="flex flex-col items-start gap-2.5 pb-9 px-11 relative bg-[#272b33e6] rounded-[0.5rem] backdrop-blur-sm shadow-[0_0_12px_0_rgba(8,8,8,0.25)]">
+    <div className="flex flex-col items-start gap-3 pb-9 px-11 relative bg-Grey-700/90 rounded-[0.5rem] backdrop-blur-sm shadow-[0_0_12px_0_rgba(8,8,8,0.25)]">
       <header className="flex items-start justify-between pt-7 self-stretch w-full">
         <h2
           id="modal-title"
@@ -67,12 +67,22 @@ const AlertModal = ({
         <div className="flex flex-col items-start gap-4 self-stretch w-full relative flex-[0_0_auto]">
           <div className="w-full h-[0.0625rem] bg-Grey-600" />
 
-          <p
-            id="modal-description"
-            className="self-stretch text-Grey-300 Body_1_medium whitespace-pre-line"
-          >
-            {description}
-          </p>
+          {Array.isArray(description) ? (
+            <div id="modal-description" className="flex flex-col gap-3 self-stretch">
+              {description.map((desc, i) => (
+                <p key={i} className="text-Grey-300 Body_1_medium whitespace-pre-line">
+                  {desc}
+                </p>
+              ))}
+            </div>
+          ) : (
+            <p
+              id="modal-description"
+              className="self-stretch text-Grey-300 Body_1_medium whitespace-pre-line"
+            >
+              {description}
+            </p>
+          )}
         </div>
 
         <div className="flex items-center gap-3 self-stretch w-full Body_2_semibold">

@@ -43,7 +43,9 @@
     "error": {
       "emailSendFailed": {
         "title": "이메일 전송에 실패했습니다",
-        "description": "일시적인 오류로 이메일을 보내지 못했어요.\n잠시 후 다시 시도하거나,\n문제가 계속되면 고객센터로 문의해 주세요."
+        "description": "일시적인 오류로 이메일을 보내지 못했어요.\n잠시 후 다시 시도하거나,",
+        "contact": "문제가 계속되면 아래로 문의해 주세요:",
+        "contactEmail": "studiox.co.kr@gmail.com"
       },
       "emailAlreadyRegistered": {
         "title": "이미 가입된 이메일입니다",

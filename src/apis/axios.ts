@@ -24,7 +24,12 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response?.status === 403 && !window.location.pathname.includes(PATHS.LOGIN)) {
+    if (
+      error.response?.status === 403 &&
+      !window.location.pathname.includes(PATHS.LOGIN) &&
+      !window.location.pathname.includes(PATHS.SIGNUP) &&
+      !window.location.pathname.includes(PATHS.PASSWORD_RESET)
+    ) {
       window.location.href = PATHS.LOGIN;
     }
     return Promise.reject(error);
