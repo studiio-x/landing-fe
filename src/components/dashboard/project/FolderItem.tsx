@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import MeatballModal from "./MeatballModal";
 import useClickOutside from "@/hooks/useClickOutside";
 import { useSearchParams } from "next/navigation";
-import { useMoveFolder } from "@/hooks/queries/useProject";
+import { useMoveFolder, useUpdateFolderName } from "@/hooks/queries/useProject";
 
 interface FolderItemProps {
   lists: {
@@ -28,6 +28,7 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
   const lastValidValue = useRef<string>(name);
   const searchParams = useSearchParams();
   const { mutate: moveFolder } = useMoveFolder();
+  const { mutate: updateFolderName } = useUpdateFolderName();
 
   const folderId = Number(searchParams.get("folderId"));
   const isDraggable = !folderId;
@@ -72,8 +73,20 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      setName(rename);
-      setRenameModalOpen(false);
+      updateFolderName(
+        { folderId: lists.folderId, newName: rename },
+        {
+          onSuccess: () => {
+            console.log("폴더 이름 변경 성공");
+            setName(rename);
+            setRenameModalOpen(false);
+          },
+          onError: (error) => {
+            console.error("폴더 이름 변경 실패:", error);
+            setRenameModalOpen(false);
+          },
+        }
+      );
     }
   };
 
@@ -203,8 +216,24 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
                 value={renameModalOpen ? rename : name}
                 readOnly={!renameModalOpen}
                 onBlur={() => {
-                  setName(rename);
-                  setRenameModalOpen(false);
+                  if (rename !== name) {
+                    updateFolderName(
+                      { folderId: lists.folderId, newName: rename },
+                      {
+                        onSuccess: () => {
+                          console.log("폴더 이름 변경 성공");
+                          setName(rename);
+                          setRenameModalOpen(false);
+                        },
+                        onError: (error) => {
+                          console.error("폴더 이름 변경 실패:", error);
+                          setRenameModalOpen(false);
+                        },
+                      }
+                    );
+                  } else {
+                    setRenameModalOpen(false);
+                  }
                 }}
                 onKeyDown={onKeyDown}
               />
