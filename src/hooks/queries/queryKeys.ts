@@ -30,4 +30,11 @@ export const queryKeys = {
     profileUploadUrl: () =>
       [...queryKeys.mypage.all, "profileUploadUrl"] as const,
   },
+
+  image: {
+    all: ["image"] as const,
+    detail: (imageId: number) =>
+      [...queryKeys.image.all, imageId] as const,
+    rawPresign: () => [...queryKeys.image.all, "rawPresign"] as const,
+  },
 } as const;
