@@ -15,10 +15,10 @@ interface FolderItemProps {
     imageUrl: string | string[];
   };
   index: number;
-  setDeleteModalOpen: (open: boolean) => void;
+  setDeleteTargetId: (folderId: number | null) => void;
 }
 
-const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
+const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
   const [isOpenMeatball, setIsOpenMeatball] = useState(false);
   const [renameModalOpen, setRenameModalOpen] = useState(false);
   const [name, setName] = useState<string>(lists.name);
@@ -225,8 +225,9 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
               {isOpenMeatball && (
                 <MeatballModal
                   meatballRef={meatballRef}
+                  folderId={lists.folderId}
                   setRenameModalOpen={setRenameModalOpen}
-                  setDeleteModalOpen={setDeleteModalOpen}
+                  setDeleteTargetId={setDeleteTargetId}
                   isFolder={lists.isFolder}
                 />
               )}

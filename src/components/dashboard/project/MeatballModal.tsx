@@ -1,13 +1,15 @@
 interface MeatballModalProps {
   isFolder: boolean;
-  setDeleteModalOpen: (open: boolean) => void;
+  folderId: number;
+  setDeleteTargetId: (folderId: number | null) => void;
   setRenameModalOpen: (open: boolean) => void;
   meatballRef: React.RefObject<HTMLDivElement | null>;
 }
 
 const MeatballModal = ({
   isFolder,
-  setDeleteModalOpen,
+  folderId,
+  setDeleteTargetId,
   setRenameModalOpen,
   meatballRef,
 }: MeatballModalProps) => {
@@ -18,7 +20,7 @@ const MeatballModal = ({
     >
       <button
         type="button"
-        onClick={() => setDeleteModalOpen(true)}
+        onClick={() => setDeleteTargetId(folderId)}
         className="cursor-pointer"
       >
         삭제하기

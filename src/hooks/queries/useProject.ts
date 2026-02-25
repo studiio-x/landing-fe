@@ -5,6 +5,7 @@ import {
   postInviteFolder,
   updateUserPermission,
   moveFolder,
+  deleteFolder,
 } from "@/apis/projectApi";
 import {
   makeFolderParams,
@@ -50,4 +51,9 @@ export const useUpdateUserPermission = () => {
 export const useMoveFolder = () =>
   useMutation({
     mutationFn: (params: moveFolderParams) => moveFolder(params),
+  });
+
+export const useDeleteFolder = () =>
+  useMutation({
+    mutationFn: (folderId: number) => deleteFolder(folderId),
   });

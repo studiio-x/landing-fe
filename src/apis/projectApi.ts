@@ -11,9 +11,7 @@ import {
 } from "@/types/api/project.type";
 
 //폴더 이동
-export const moveFolder = async (
-  params: moveFolderParams,
-): Promise<void> => {
+export const moveFolder = async (params: moveFolderParams): Promise<void> => {
   await axiosInstance.put(`/folder/${params.folderId}/${params.newFolderId}`);
 };
 
