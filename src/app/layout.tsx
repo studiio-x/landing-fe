@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { pretendard, calSans } from "./font";
 import QueryProvider from "./query-provider";
+import Footer from "@/components/landing/Footer";
 
 export const metadata: Metadata = {
   title: "Studio X",
@@ -19,7 +20,10 @@ export default function RootLayout({
       className={`${pretendard.variable} ${calSans.variable} scroll-smooth h-full`}
     >
       <body className="h-full antialiased">
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          {children}
+          <Footer />
+        </QueryProvider>
       </body>
     </html>
   );

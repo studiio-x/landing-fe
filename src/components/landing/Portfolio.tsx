@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import MediaItem from "@/components/landing/MediaItem";
 import { useItemsInfinite } from "@/hooks/useItemsInfinite";
 import type { Category } from "@/types/landing/item.type";
@@ -24,28 +23,6 @@ export default function Portfolio() {
 
   const allUrls = data?.pages.flatMap((page) => page.urls) ?? [];
 
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const el = sentinelRef.current;
-    if (!el || !hasNextPage || isFetchingNextPage) {
-      return;
-    }
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          fetchNextPage();
-        }
-      },
-      { rootMargin: "0px 0px 400px 0px" },
-    );
-
-    io.observe(el);
-
-    return () => io.disconnect();
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
-
   const handleCategoryChange = (c: Category) => {
     const newParams = new URLSearchParams(searchParams.toString());
     if (c === PORTFOLIO_CATEGORY.ALL) {
@@ -64,6 +41,7 @@ export default function Portfolio() {
           return (
             <button
               key={c}
+              type="button"
               onClick={() => handleCategoryChange(c)}
               className={[
                 "Body_2_medium rounded-full px-5 py-2 capitalize transition",
@@ -85,7 +63,19 @@ export default function Portfolio() {
           ))}
         </div>
       )}
-      <div ref={sentinelRef} className="h-1" />
+
+      {hasNextPage && (
+        <div className="flex justify-center mt-12 mb-8">
+          <button
+            type="button"
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+            className="Body_1_semibold rounded-full px-8 py-3 bg-gradient-to-b from-[#F1F4F8]/30 to-[#1D2025]/50 border border-Grey-500 text-Grey-100 hover:text-Red-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isFetchingNextPage ? "Loading..." : "Load More"}
+          </button>
+        </div>
+      )}
     </div>
   );
 }
