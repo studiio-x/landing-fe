@@ -52,7 +52,7 @@
     @apply font-pretendard text-[2rem] font-bold leading-[140%] tracking-[-0.004rem];
   }
   .Heading_2_semibold {
-    @apply font-pretendard text-[2rem] font-semibold leading-[140%] tracking-[-0.004rem];
+    @apply font-pretendard text-[2rem] font-semibold leading-[140%] tracking-[-0.04rem];
   }
   .Heading_3_semibold {
     @apply font-pretendard text-[1.75rem] font-semibold leading-[140%] tracking-[-0.0035rem];

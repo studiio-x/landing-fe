@@ -12,7 +12,7 @@ const PriceGrid = ({ isMonthly }: PriceGridProps) => {
   const t = useTranslations("price.plans");
 
   return (
-    <div className="grid 2xl:grid-cols-4 gap-4 w-full lg:grid-cols-2 grid-cols-[repeat(4,18.7rem)] overflow-x-auto -mr-4 sm:-mr-6 lg:-mr-0 ml-0">
+    <div className="grid  gap-4 w-full lg:grid-cols-2 grid-cols-[repeat(4,18.7rem)] overflow-x-auto -mr-4 sm:-mr-6 lg:-mr-0 ml-0">
       {priceData.map((plan) => {
         const planData = {
           name: t(`${plan.key}.name`),
@@ -30,7 +30,9 @@ const PriceGrid = ({ isMonthly }: PriceGridProps) => {
           features: t.raw(`${plan.key}.features`) as string[],
         };
 
-        return <PriceTag key={plan.key} plan={planData} isMonthly={isMonthly} />;
+        return (
+          <PriceTag key={plan.key} plan={planData} isMonthly={isMonthly} />
+        );
       })}
     </div>
   );

@@ -58,10 +58,11 @@ const PricePage = () => {
               }}
             />
           </section>
-          <div
+          {/* <div
             className="Caption_medium text-Grey-500 ml-[1.37rem] mb-40"
             dangerouslySetInnerHTML={{ __html: t("storageInfo") }}
-          />
+          /> */}
+          <div className="h-[10rem]"></div>
 
           <SectionWrapper>
             <PricingTable />

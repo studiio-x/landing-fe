@@ -21,7 +21,7 @@ const FreePlanSection = ({ isMonthly, messages }: FreePlanSectionProps) => {
   const features = [messages.credits, messages.storage, messages.downloads];
 
   return (
-    <div className="bg-Grey-900 px-5 sm:px-10 lg:px-16 2xl:px-16 py-9 w-full flex flex-col lg:flex-row justify-between mt-9 mb-5 rounded-lg">
+    <div className="bg-Grey-900 px-5 sm:px-10 lg:px-16 2xl:px-16 py-9 w-full flex flex-col lg:flex-row justify-between mt-9 rounded-lg">
       <div className="flex justify-between gap-6">
         <div className="flex flex-col">
           <div className="font-calSans text-[2rem]">{messages.name}</div>
