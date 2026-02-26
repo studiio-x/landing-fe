@@ -70,9 +70,11 @@ export default function Portfolio() {
             type="button"
             onClick={() => fetchNextPage()}
             disabled={isFetchingNextPage}
-            className="Body_1_semibold rounded-full px-8 py-3 bg-gradient-to-b from-[#F1F4F8]/30 to-[#1D2025]/50 border border-Grey-500 text-Grey-100 hover:text-Red-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-fit h-fit rounded-[2.25rem] bg-gradient-to-b from-[#F1F4F8]/50 to-[#1D2025]/50 p-[1px] disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isFetchingNextPage ? "Loading..." : "Load More"}
+            <div className="Body_2_semibold flex items-center justify-center rounded-[2.25rem] bg-[rgb(23,24,27)] px-6 py-3 text-White transition-colors duration-300 hover:bg-[rgb(33,34,37)]">
+              {isFetchingNextPage ? "Loading..." : "Load More"}
+            </div>
           </button>
         </div>
       )}

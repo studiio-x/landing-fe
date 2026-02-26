@@ -52,15 +52,18 @@ const Footer = () => {
       <div className="border-t border-Grey-700 pt-6">
         <div className="Caption_medium lg:Body_3_regular text-Grey-400 space-y-1">
           <div className="mb-2">
-            <span className="text-Grey-300">주식회사 렐엑스</span>
+            <span className="text-Grey-300">주식회사 랩엑스</span>
             <span className="mx-2">|</span>
             <span>대표: 임세인, 김류원</span>
           </div>
           <div>사업자등록번호: 432-81-03889</div>
-          <div>주소: 서울특별시 마포구 마포대로 78, 11층 1113호(도화동, 자람빌딩)</div>
+          <div>
+            주소: 제주특별자치도 제주시 월랑로8길 1, 402-비22호(노형동,
+            아란야플라자)
+          </div>
         </div>
         <div className="Body_3_regular text-Red-400 mt-4">
-          © 2025 Relex Inc. All Rights Reserved
+          © 2026 Relex Inc. All Rights Reserved
         </div>
       </div>
     </footer>
