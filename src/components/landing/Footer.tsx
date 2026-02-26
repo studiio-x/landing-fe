@@ -1,20 +1,23 @@
 import { Logo } from "@/assets/icons";
+import { useTranslations } from "next-intl";
 
 const Footer = () => {
+  const t = useTranslations("footer");
+
   const footerLinks = [
     {
-      title: "Follow us",
-      items: ["Instagram"],
+      title: t("followUs"),
+      items: [t("instagram")],
       href: `${process.env.NEXT_PUBLIC_INSTAGRAM_URL}`,
     },
     {
-      title: "Company",
-      items: ["Feedback"],
+      title: t("company"),
+      items: [t("feedback")],
       href: `mailto:${process.env.NEXT_PUBLIC_EMAIL_ADDRESS}`,
     },
     {
-      title: "Resources",
-      items: ["Privacy policy"],
+      title: t("resources"),
+      items: [t("privacyPolicy")],
       href: `${process.env.NEXT_PUBLIC_PRIVACY_POLICY_NOTION_URL}`,
     },
   ];
@@ -25,7 +28,7 @@ const Footer = () => {
         <div className="flex flex-col">
           <Logo className="mb-8 h-6 w-28" />
           <div className="Body_2_medium mb-3 text-Grey-400">
-            No prompts needed <br /> — just talk to your AI studio.
+            {t("tagline")}
           </div>
         </div>
         <div className="flex gap-14">
@@ -52,18 +55,21 @@ const Footer = () => {
       <div className="border-t border-Grey-700 pt-6">
         <div className="Caption_medium lg:Body_3_regular text-Grey-400 space-y-1">
           <div className="mb-2">
-            <span className="text-Grey-300">주식회사 랩엑스</span>
+            <span className="text-Grey-300">{t("companyInfo.name")}</span>
             <span className="mx-2">|</span>
-            <span>대표: 임세인, 김류원</span>
+            <span>{t("companyInfo.representatives")}</span>
           </div>
-          <div>사업자등록번호: 432-81-03889</div>
+          <div>{t("companyInfo.businessNumber")}</div>
+          <div>{t("companyInfo.address")}</div>
+          <div>{t("companyInfo.phone")}</div>
           <div>
-            주소: 제주특별자치도 제주시 월랑로8길 1, 402-비22호(노형동,
-            아란야플라자)
+            {t("companyInfo.email", {
+              email: process.env.NEXT_PUBLIC_EMAIL_ADDRESS || "",
+            })}
           </div>
         </div>
         <div className="Body_3_regular text-Red-400 mt-4">
-          © 2026 Relex Inc. All Rights Reserved
+          {t("copyright")}
         </div>
       </div>
     </footer>
