@@ -5,6 +5,65 @@
     "description": "주소가 잘못 입력되거나,\n변경 혹은 삭제되어 페이지를 찾을 수 없어요.",
     "homeButton": "홈으로"
   },
+  "price": {
+    "freePlan": {
+      "name": "Free",
+      "description": "영원히 무료",
+      "price": "$0 USD",
+      "perMonth": "/ 월",
+      "onlyMonthly": "&lt;기본 플랜은 월 단위로만 이용 가능&gt;",
+      "credits": "100 크레딧 / 월",
+      "storage": "5GB 클라우드 스토리지",
+      "downloads": "이미지 및 영상 다운로드<br/>(워터마크 포함)"
+    },
+    "hero": {
+      "title": "요금제 선택",
+      "yearly": "연간",
+      "monthly": "월간",
+      "discount": "원래 플랜 가격의 1%로 동일한 혜택을 누리세요!"
+    },
+    "plans": {
+      "basic": {
+        "name": "Basic",
+        "for": "개인 크리에이터를 위한",
+        "subtitle": "기본 플랜은 월 단위로만 이용 가능",
+        "buttonText": "무료로 시작하기",
+        "features": ["월 300 크레딧", "10GB 클라우드 스토리지", "이미지 및 영상 다운로드", "StudioX 워터마크 제거", "무제한 AI 채팅 편집 (텍스트만)", "참조 이미지 첨부: 월 15회"]
+      },
+      "standard": {
+        "name": "Standard",
+        "for": "전문 크리에이터를 위한",
+        "subtitle": {"yearly": "월 $3 USD", "monthly": "월 $33 USD"},
+        "buttonText": "무료로 시작하기",
+        "features": ["월 900 크레딧", "50GB 클라우드 스토리지", "이미지 및 영상 다운로드", "StudioX 워터마크 제거", "무제한 AI 채팅 편집 (참조 이미지 포함)", "이미지 히스토리 및 버전 관리"]
+      },
+      "pro": {
+        "name": "Pro",
+        "for": "전문 마케터 및 팀을 위한",
+        "subtitle": {"yearly": "월 $5 USD", "monthly": "월 $59 USD"},
+        "buttonText": "무료로 시작하기",
+        "features": ["월 3,000 크레딧", "200GB 클라우드 스토리지", "이미지 및 영상 다운로드", "StudioX 워터마크 제거", "무제한 AI 채팅 편집 (참조 이미지 포함)", "이미지 히스토리 및 버전 관리", "팀 협업 (최대 5명 초대)", "우선 채팅 및 이메일 지원"]
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "for": "대규모 협업 및 맞춤 지원이 필요한 조직을 위한",
+        "subtitle": "맞춤형 가격",
+        "buttonText": "데모 예약",
+        "features": ["유연한 크레딧 (무제한 포함)", "1TB+ 클라우드 스토리지", "이미지 및 영상 다운로드", "StudioX 워터마크 제거", "무제한 AI 채팅 편집 (참조 이미지 포함)", "이미지 히스토리 및 버전 관리", "무제한 팀 좌석 및 실시간 협업", "브랜드별 템플릿 및 브랜드 킷", "전담 고객 성공 매니저", "맞춤형 온보딩 및 AI 교육", "엔터프라이즈급 보안"]
+      }
+    },
+    "storageInfo": "이미지(고해상도 4K 기준): 5~10MB<br/>짧은 영상(15초): 150MB<br/>→ Basic 10GB = 이미지 약 5,000장 + 짧은 영상 약 500 ~ 1,000개 저장 가능",
+    "review": {
+      "title": "사람들이 우리를 좋아하는 이유",
+      "galleryLink": "갤러리로 이동"
+    },
+    "faq": {
+      "title": "StudioX FAQ"
+    },
+    "cta": {
+      "title": "AI Studio를 사용할 준비가 되셨나요?"
+    }
+  },
   "mobileModal": {
     "closeLabel": "모달 닫기",
     "title": "원활한 이용을 위해\nPC 환경에서 접속해 주세요.",

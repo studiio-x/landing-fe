@@ -12,17 +12,14 @@ const localePages = [
   "mypage",
   "login",
   "password-reset",
+  "price",
 ];
 
 export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // 다국어 처리가 필요 없는 경로
-  if (
-    pathname.startsWith("/price") ||
-    pathname.startsWith("/guide") ||
-    pathname === "/"
-  ) {
+  if (pathname.startsWith("/guide") || pathname === "/") {
     return NextResponse.next();
   }
 
@@ -58,6 +55,6 @@ export const config = {
   // 미들웨어를 실행할 경로를 지정합니다.
   matcher: [
     "/((?!api|_next/static|_next/image|favicon.ico|public|assets|images|videos|icon.svg).*)",
-    "/guide/:path*, /price/:path*, /",
+    "/guide/:path*, /",
   ],
 };
