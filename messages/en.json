@@ -255,7 +255,7 @@
       "representatives": "Representatives: Semin Lim, Ryuwon Kim",
       "businessNumber": "Business Registration: 432-81-03889",
       "address": "Address: 402-B22, Aranya Plaza, 1 Wollang-ro 8-gil, Jeju-si, Jeju-do, South Korea",
-      "phone": "Phone: 010-6471-9070",
+      "phone": "Tel: {phone}",
       "email": "Email: {email}"
     },
     "copyright": "© 2026 Relex Inc. All Rights Reserved"

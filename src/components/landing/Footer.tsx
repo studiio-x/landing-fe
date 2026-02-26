@@ -61,7 +61,11 @@ const Footer = () => {
           </div>
           <div>{t("companyInfo.businessNumber")}</div>
           <div>{t("companyInfo.address")}</div>
-          <div>{t("companyInfo.phone")}</div>
+          <div>
+            {t("companyInfo.phone", {
+              phone: process.env.NEXT_PUBLIC_PHONE_NUMBER || "",
+            })}
+          </div>
           <div>
             {t("companyInfo.email", {
               email: process.env.NEXT_PUBLIC_EMAIL_ADDRESS || "",
