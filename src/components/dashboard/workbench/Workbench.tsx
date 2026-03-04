@@ -6,11 +6,12 @@ import { useTranslations } from "next-intl";
 
 import TabContent from "./TabContent";
 import TabPanel from "./TabPanel";
-import HistoryPanel, {
-  HistoryItem} from "./HistoryPanel";
+import HistoryPanel, { HistoryItem } from "./HistoryPanel";
 import MarkCanvas from "@/components/dashboard/workbench/chatbot/MarkCanvas";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 import ProductImageRequiredModal from "@/components/dashboard/workbench/background/ProductImageRequiredModal";
+import { useImageUploadAndCutout } from "@/hooks/useImageUploadAndCutout";
+import { useGetFolders } from "@/hooks/queries/useFolderApi";
 import type { WorkbenchMode } from "@/types/dashboard/mode.type";
 
 const DUMMY_HISTORY: HistoryItem[] = [
@@ -43,6 +44,14 @@ const Workbench = ({ mode }: WorkbenchProps) => {
 
   const [history] = useState<HistoryItem[]>(DUMMY_HISTORY);
 
+  const { data: foldersData } = useGetFolders();
+  const folderId =
+    foldersData?.myProject[0]?.folderId ??
+    0;
+
+  const { isProcessing, cutoutImageUrl, uploadAndCutout, resetCutout } =
+    useImageUploadAndCutout(folderId);
+
   const handleTabChange = (nextIdx: number) => {
     const isChatbotTab = nextIdx === 2;
 
@@ -58,11 +67,13 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     setNaturalSize(null);
     if (!uploadedImage) {
       setPreviewUrl(null);
+      resetCutout();
       return;
     }
 
     const url = URL.createObjectURL(uploadedImage);
     setPreviewUrl(url);
+    uploadAndCutout(uploadedImage);
 
     return () => {
       URL.revokeObjectURL(url);
@@ -72,7 +83,11 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   return (
     <div className="flex justify-center w-full">
       <div className="flex flex-col">
-        <TabPanel activeTab={activeTab} onChange={handleTabChange} mode={mode} />
+        <TabPanel
+          activeTab={activeTab}
+          onChange={handleTabChange}
+          mode={mode}
+        />
         <TabContent
           activeTab={activeTab}
           uploadedImage={uploadedImage}
@@ -121,7 +136,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
               <Image
                 width={590}
                 height={646}
-                src={previewUrl}
+                src={cutoutImageUrl ?? previewUrl}
                 alt={t("uploadedImageAlt")}
                 className="w-full h-full object-contain"
                 onLoad={(e) => {
@@ -133,7 +148,13 @@ const Workbench = ({ mode }: WorkbenchProps) => {
                 }}
               />
 
-              {isEditMode && naturalSize && (
+              {isProcessing && (
+                <div className="absolute inset-0 flex items-center justify-center bg-Grey-900/60">
+                  <div className="w-10 h-10 border-4 border-Grey-600 border-t-White rounded-full animate-spin" />
+                </div>
+              )}
+
+              {isEditMode && naturalSize && !isProcessing && (
                 <MarkCanvas
                   imageContainerRef={imageContainerRef}
                   naturalSize={naturalSize}

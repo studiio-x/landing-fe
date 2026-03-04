@@ -37,4 +37,9 @@ export const queryKeys = {
       [...queryKeys.image.all, imageId] as const,
     rawPresign: () => [...queryKeys.image.all, "rawPresign"] as const,
   },
+
+  folder: {
+    all: ["folder"] as const,
+    list: () => [...queryKeys.folder.all, "list"] as const,
+  },
 } as const;
