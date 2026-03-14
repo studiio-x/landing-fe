@@ -48,6 +48,7 @@ const MobileModal = () => {
             height={166}
             className="w-full h-auto"
             priority
+            unoptimized
           />
         </div>
       </div>

@@ -11,7 +11,7 @@ export const useImageUploadAndCutout = (folderId: number) => {
     setCutoutImageUrl(null);
 
     try {
-      const { uploadUrl, rawImageObjectKey } = await getRawPresign();
+      const { uploadUrl, objectKey } = await getRawPresign();
       const uploadResponse = await fetch(uploadUrl, {
         method: "PUT",
         body: file,
@@ -23,7 +23,7 @@ export const useImageUploadAndCutout = (folderId: number) => {
       }
 
       const { cutoutImageUrl: resultUrl } = await postCutoutImage({
-        rawObjectKey: rawImageObjectKey,
+        rawObjectKey: objectKey,
         folderId,
       });
 

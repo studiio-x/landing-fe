@@ -36,6 +36,6 @@ export interface GetImageResponse {
 // 원본 이미지 presigned URL 조회 응답
 export interface GetRawPresignResponse {
   uploadUrl: string;
-  rawImageObjectKey: string;
-  rawImageUrl: string;
+  objectKey: string;
+  imageUrl: string;
 }

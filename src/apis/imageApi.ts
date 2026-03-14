@@ -10,8 +10,7 @@ import {
 
 export const getRawPresign = async (): Promise<GetRawPresignResponse> => {
   const response =
-    await axiosInstance.get<GetRawPresignResponse>("/image/raw/presign");
-
+    await axiosInstance.get<GetRawPresignResponse>("/s3/presign/raw")
   return response.data;
 };
 
