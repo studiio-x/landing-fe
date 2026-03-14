@@ -11,15 +11,11 @@ import MarkCanvas from "@/components/dashboard/workbench/chatbot/MarkCanvas";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 import ProductImageRequiredModal from "@/components/dashboard/workbench/background/ProductImageRequiredModal";
 import { useImageUploadAndCutout } from "@/hooks/useImageUploadAndCutout";
-import { useGetFolders } from "@/hooks/queries/useFolderApi";
+import {
+  useGetFolders,
+  useGetFolderDetail,
+} from "@/hooks/queries/useFolderApi";
 import type { WorkbenchMode } from "@/types/dashboard/mode.type";
-
-const DUMMY_HISTORY: HistoryItem[] = [
-  {
-    id: "dummy-1",
-    imageUrls: ["/images/dashboard/model.png", "/images/dashboard/studio.png"],
-  },
-];
 
 interface WorkbenchProps {
   mode: WorkbenchMode;
@@ -42,17 +38,34 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  const [history] = useState<HistoryItem[]>(DUMMY_HISTORY);
-  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
+  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(
+    null,
+  );
   const [isGenerating, setIsGenerating] = useState(false);
 
   const { data: foldersData } = useGetFolders();
-  const folderId =
-    foldersData?.myProject[0]?.folderId ??
-    0;
+  const folderId = foldersData?.myProject[0]?.folderId ?? 0;
 
-  const { isProcessing, cutoutImageUrl, cutoutImageObjectKey, projectId, uploadAndCutout, resetCutout } =
-    useImageUploadAndCutout(folderId);
+  const { data: folderDetail } = useGetFolderDetail(folderId);
+  const images = folderDetail?.folders[0]?.images ?? [];
+
+  const history: HistoryItem[] = [];
+
+  for (let i = 0; i < images.length; i += 2) {
+    history.push({
+      id: String(i),
+      imageUrls: [images[i], images[i + 1] ?? images[i]],
+    });
+  }
+
+  const {
+    isProcessing,
+    cutoutImageUrl,
+    cutoutImageObjectKey,
+    projectId,
+    uploadAndCutout,
+    resetCutout,
+  } = useImageUploadAndCutout(folderId);
 
   const handleTabChange = (nextIdx: number) => {
     const isChatbotTab = nextIdx === 2;

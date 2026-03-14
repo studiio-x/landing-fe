@@ -41,5 +41,6 @@ export const queryKeys = {
   folder: {
     all: ["folder"] as const,
     list: () => [...queryKeys.folder.all, "list"] as const,
+    detail: (folderId: number) => [...queryKeys.folder.all, "detail", folderId] as const,
   },
 } as const;
