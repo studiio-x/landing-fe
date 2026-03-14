@@ -33,14 +33,14 @@ export const queryKeys = {
 
   image: {
     all: ["image"] as const,
-    detail: (imageId: number) =>
-      [...queryKeys.image.all, imageId] as const,
+    detail: (imageId: number) => [...queryKeys.image.all, imageId] as const,
     rawPresign: () => [...queryKeys.image.all, "rawPresign"] as const,
   },
 
   folder: {
     all: ["folder"] as const,
     list: () => [...queryKeys.folder.all, "list"] as const,
-    detail: (folderId: number) => [...queryKeys.folder.all, "detail", folderId] as const,
+    detail: (folderId: number, pageNum?: number, limit?: number) =>
+      [...queryKeys.folder.all, "detail", folderId, pageNum, limit] as const,
   },
 } as const;

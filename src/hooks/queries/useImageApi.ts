@@ -1,19 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import {
-  getRawPresign,
-  postCutoutImage,
-  postImage,
-  getImage,
-} from "@/apis/imageApi";
+import { postCutoutImage, postImage, getImage } from "@/apis/imageApi";
 
 import { queryKeys } from "./queryKeys";
-
-export const useRawPresign = () =>
-  useQuery({
-    queryKey: queryKeys.image.rawPresign(),
-    queryFn: getRawPresign,
-  });
 
 export const useGetImage = (imageId: number) =>
   useQuery({

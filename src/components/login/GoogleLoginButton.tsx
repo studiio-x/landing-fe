@@ -2,6 +2,7 @@
 
 import { Google } from "@/assets/icons";
 import { BASE_URL } from "@/apis/config";
+import { getSafeCallbackDestination } from "@/utils/authUtils";
 import { useLocale, useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 
@@ -15,7 +16,7 @@ const GoogleLoginButton = () => {
       return;
     }
     const callbackUrl = searchParams.get("callbackUrl");
-    const destination = callbackUrl ?? `/${locale}/dashboard`;
+    const destination = getSafeCallbackDestination(callbackUrl, `/${locale}/dashboard`);
     const redirectUrl = `${window.location.origin}${destination}`;
     window.location.href = `${BASE_URL}/api/v1/oauth/google?redirectUrl=${encodeURIComponent(redirectUrl)}`;
   };

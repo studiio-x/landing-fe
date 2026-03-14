@@ -11,7 +11,7 @@ export const useGetFolders = () =>
 
 export const useGetFolderDetail = (folderId: number, pageNum = 1, limit = 10) =>
   useQuery({
-    queryKey: queryKeys.folder.detail(folderId),
+    queryKey: queryKeys.folder.detail(folderId, pageNum, limit),
     queryFn: () => getFolderDetail({ folderId, pageNum, limit }),
     enabled: !!folderId,
   });

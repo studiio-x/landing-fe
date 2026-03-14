@@ -10,6 +10,7 @@ import GlassButton from "@/components/common/GlassButton";
 import { useTranslations } from "next-intl";
 import { useLogin } from "@/hooks/queries/useAuthApi";
 import GoogleLoginButton from "@/components/login/GoogleLoginButton";
+import { getSafeCallbackDestination } from "@/utils/authUtils";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -33,7 +34,7 @@ export default function Login() {
       {
         onSuccess: () => {
           const callbackUrl = searchParams.get("callbackUrl");
-          router.push(callbackUrl ?? PATHS.DASHBOARD);
+          router.push(getSafeCallbackDestination(callbackUrl, PATHS.DASHBOARD));
         },
       },
     );
