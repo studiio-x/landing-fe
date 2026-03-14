@@ -32,7 +32,7 @@ export interface CodeVerificationStepProps {
   isResending?: boolean;
   isError?: boolean;
   onNext: (data: { code: string }) => void;
-  onResend: () => void;
+  onResend: () => Promise<void>;
 }
 
 export interface PasswordResetStepProps {

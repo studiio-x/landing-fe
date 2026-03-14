@@ -28,6 +28,12 @@ const CodeVerificationStep = ({
   const isValidCode = /^\d{6}$/.test(code);
 
   useEffect(() => {
+    setRemainingSeconds(
+      Math.max(0, TIMER_SECONDS - Math.floor((Date.now() - sentAt) / 1000)),
+    );
+  }, [sentAt]);
+
+  useEffect(() => {
     if (isExpired) return;
 
     const interval = setInterval(() => {
@@ -51,10 +57,10 @@ const CodeVerificationStep = ({
     onNext({ code });
   };
 
-  const handleResend = useCallback(() => {
+  const handleResend = useCallback(async () => {
+    await onResend();
     setCode("");
     setRemainingSeconds(TIMER_SECONDS);
-    onResend();
   }, [onResend]);
 
   return (
