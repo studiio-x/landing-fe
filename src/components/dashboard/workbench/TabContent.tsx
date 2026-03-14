@@ -9,16 +9,20 @@ interface TabContentProps {
   uploadedImage: File | null;
   setUploadedImage: (file: File | null) => void;
   mode: WorkbenchMode;
+  cutoutImageObjectKey: string | null;
+  projectId: number | null;
+  onGenerated: (imageUrl: string) => void;
+  onGeneratingChange: (isGenerating: boolean) => void;
 }
 
-const TabContent = ({ activeTab, uploadedImage, setUploadedImage, mode }: TabContentProps) => {
+const TabContent = ({ activeTab, uploadedImage, setUploadedImage, mode, cutoutImageObjectKey, projectId, onGenerated, onGeneratingChange }: TabContentProps) => {
   switch (activeTab) {
     case 0:
       return <ProductTab setUploadedImage={setUploadedImage} />;
     case 1:
       return mode === "video"
         ? <OptionsTab uploadedImage={uploadedImage} />
-        : <BackgroundTab uploadedImage={uploadedImage} />;
+        : <BackgroundTab uploadedImage={uploadedImage} cutoutImageObjectKey={cutoutImageObjectKey} projectId={projectId} onGenerated={onGenerated} onGeneratingChange={onGeneratingChange} />;
     case 2:
       return <ChatbotTab />;
     default:

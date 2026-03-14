@@ -43,13 +43,15 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const [history] = useState<HistoryItem[]>(DUMMY_HISTORY);
+  const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const { data: foldersData } = useGetFolders();
   const folderId =
     foldersData?.myProject[0]?.folderId ??
     0;
 
-  const { isProcessing, cutoutImageUrl, uploadAndCutout, resetCutout } =
+  const { isProcessing, cutoutImageUrl, cutoutImageObjectKey, projectId, uploadAndCutout, resetCutout } =
     useImageUploadAndCutout(folderId);
 
   const handleTabChange = (nextIdx: number) => {
@@ -65,6 +67,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
 
   useEffect(() => {
     setNaturalSize(null);
+    setGeneratedImageUrl(null);
     if (!uploadedImage) {
       setPreviewUrl(null);
       resetCutout();
@@ -93,6 +96,10 @@ const Workbench = ({ mode }: WorkbenchProps) => {
           uploadedImage={uploadedImage}
           setUploadedImage={setUploadedImage}
           mode={mode}
+          cutoutImageObjectKey={cutoutImageObjectKey}
+          projectId={projectId}
+          onGenerated={setGeneratedImageUrl}
+          onGeneratingChange={setIsGenerating}
         />
       </div>
 
@@ -136,7 +143,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
               <Image
                 width={590}
                 height={646}
-                src={cutoutImageUrl ?? previewUrl}
+                src={generatedImageUrl ?? cutoutImageUrl ?? previewUrl}
                 alt={t("uploadedImageAlt")}
                 className="w-full h-full object-contain"
                 onLoad={(e) => {
@@ -148,13 +155,13 @@ const Workbench = ({ mode }: WorkbenchProps) => {
                 }}
               />
 
-              {isProcessing && (
+              {(isProcessing || isGenerating) && (
                 <div className="absolute inset-0 flex items-center justify-center bg-Grey-900/60">
                   <div className="w-10 h-10 border-4 border-Grey-600 border-t-White rounded-full animate-spin" />
                 </div>
               )}
 
-              {isEditMode && naturalSize && !isProcessing && (
+              {isEditMode && naturalSize && !isProcessing && !isGenerating && (
                 <MarkCanvas
                   imageContainerRef={imageContainerRef}
                   naturalSize={naturalSize}
