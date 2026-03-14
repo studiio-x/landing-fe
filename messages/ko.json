@@ -90,6 +90,7 @@
       "codePlaceholder": "인증코드 6자리",
       "codeAriaLabel": "인증코드",
       "submit": "계속하기",
+      "invalidCode": "*유효하지 않은 인증 코드입니다.",
       "noEmail": "아직 이메일을 받지 못했나요?",
       "timerMinutes": "{minutes}:{seconds} 뒤에 재전송할 수 있습니다.",
       "timerSeconds": "{seconds}초 뒤에 재전송할 수 있습니다.",
