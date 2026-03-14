@@ -90,6 +90,7 @@
       "codePlaceholder": "6-digit code",
       "codeAriaLabel": "Verification code",
       "submit": "Continue",
+      "invalidCode": "*Invalid verification code.",
       "noEmail": "Didn't receive the email?",
       "timerMinutes": "You can resend in {minutes}:{seconds}.",
       "timerSeconds": "You can resend in {seconds}s.",

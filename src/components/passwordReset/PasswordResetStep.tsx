@@ -7,7 +7,7 @@ import LoginInput from "@/components/login/LoginInput";
 import { PASSWORD_REGEX } from "@/constants/signup/funnel";
 import type { PasswordResetStepProps } from "@/types/passwordReset/funnel.type";
 
-const PasswordResetStep = ({ onComplete }: PasswordResetStepProps) => {
+const PasswordResetStep = ({ isLoading, onComplete }: PasswordResetStepProps) => {
   const t = useTranslations("passwordReset.passwordSetup");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -71,7 +71,7 @@ const PasswordResetStep = ({ onComplete }: PasswordResetStepProps) => {
           variant="red"
           size="xl"
           className="Body_2_semibold mt-8 w-full"
-          disabled={isSubmitDisabled}
+          disabled={isSubmitDisabled || isLoading}
         >
           {t("submit")}
         </GlassButton>

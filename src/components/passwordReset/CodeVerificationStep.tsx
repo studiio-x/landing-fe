@@ -11,12 +11,18 @@ const TIMER_SECONDS = 300;
 
 const CodeVerificationStep = ({
   email,
+  sentAt,
+  isLoading,
+  isResending,
+  isError,
   onNext,
   onResend,
 }: CodeVerificationStepProps) => {
   const t = useTranslations("passwordReset.codeVerification");
   const [code, setCode] = useState("");
-  const [remainingSeconds, setRemainingSeconds] = useState(TIMER_SECONDS);
+  const [remainingSeconds, setRemainingSeconds] = useState(() =>
+    Math.max(0, TIMER_SECONDS - Math.floor((Date.now() - sentAt) / 1000)),
+  );
 
   const isExpired = remainingSeconds <= 0;
   const isValidCode = /^\d{6}$/.test(code);
@@ -65,6 +71,12 @@ const CodeVerificationStep = ({
           ariaLabel={t("codeAriaLabel")}
         />
 
+        {isError && (
+          <span className="Body_3_regular text-Red-350 mt-2 block">
+            {t("invalidCode")}
+          </span>
+        )}
+
         <div className="mt-9 text-left flex">
           {!isExpired && (
             <>
@@ -84,6 +96,7 @@ const CodeVerificationStep = ({
             variant="red"
             size="xl"
             className="Body_2_semibold mt-3 w-full"
+            disabled={isResending}
             onClick={handleResend}
           >
             {t("resend")}
@@ -94,7 +107,7 @@ const CodeVerificationStep = ({
             variant="red"
             size="xl"
             className="Body_2_semibold mt-3 w-full"
-            disabled={!isValidCode}
+            disabled={!isValidCode || isLoading}
           >
             {t("submit")}
           </GlassButton>

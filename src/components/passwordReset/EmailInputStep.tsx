@@ -7,7 +7,7 @@ import LoginInput from "@/components/login/LoginInput";
 import { EMAIL_REGEX } from "@/constants/signup/funnel";
 import type { EmailInputStepProps } from "@/types/passwordReset/funnel.type";
 
-const EmailInputStep = ({ email: initialEmail, onNext }: EmailInputStepProps) => {
+const EmailInputStep = ({ email: initialEmail, isLoading, onNext }: EmailInputStepProps) => {
   const t = useTranslations("passwordReset.emailInput");
   const [email, setEmail] = useState(initialEmail);
 
@@ -15,7 +15,7 @@ const EmailInputStep = ({ email: initialEmail, onNext }: EmailInputStepProps) =>
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isValidEmail) return;
+    if (!isValidEmail || isLoading) return;
     onNext({ email: email.trim() });
   };
 
@@ -38,7 +38,7 @@ const EmailInputStep = ({ email: initialEmail, onNext }: EmailInputStepProps) =>
           variant="red"
           size="xl"
           className="Body_2_semibold w-full"
-          disabled={!isValidEmail}
+          disabled={!isValidEmail || isLoading}
         >
           {t("submit")}
         </GlassButton>
