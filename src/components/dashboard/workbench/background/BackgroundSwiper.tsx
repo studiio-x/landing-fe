@@ -47,14 +47,15 @@ const BackgroundSwiper = ({
         </h3>
       )}
 
-      <div className="relative items-center flex gap-3">
-        {!showSkeleton && (
-          <button className={`swiper-prev-${id}`} aria-label="이전">
-            <Down className="rotate-90 h-6 w-6" />
-          </button>
-        )}
+      <div className="relative items-center flex gap-3 justify-center">
+        <button
+          className={clsx(`swiper-prev-${id}`, showSkeleton && "invisible")}
+          aria-label="이전"
+        >
+          <Down className="rotate-90 h-6 w-6" />
+        </button>
 
-        <div className="flex-1 w-[324px] min-w-0">
+        <div className="w-[324px] min-w-0">
           {showSkeleton ? (
             <div className="flex gap-3 justify-center">
               {Array.from({ length: 3 }, (_, i) => (
@@ -87,7 +88,7 @@ const BackgroundSwiper = ({
                     <button
                       type="button"
                       onClick={() => onSelect(item.id)}
-                      className="w-full"
+                      className="w-[6.25rem]"
                     >
                       <div
                         className={clsx(
@@ -115,11 +116,12 @@ const BackgroundSwiper = ({
           )}
         </div>
 
-        {!showSkeleton && (
-          <button className={`swiper-next-${id}`} aria-label="다음">
-            <Down className="-rotate-90 h-6 w-6" />
-          </button>
-        )}
+        <button
+          className={clsx(`swiper-next-${id}`, showSkeleton && "invisible")}
+          aria-label="다음"
+        >
+          <Down className="-rotate-90 h-6 w-6" />
+        </button>
       </div>
     </section>
   );

@@ -1,5 +1,8 @@
 import { Close, Pencil, Plus } from "@/assets/icons";
+import { PATHS } from "@/constants/common/paths";
+import { useRouter } from "@/i18n/routing";
 import { AnimatePresence, motion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import GlassButton from "../../common/GlassButton";
 
 interface CreateButtonProps {
@@ -8,6 +11,9 @@ interface CreateButtonProps {
 }
 
 const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
+  const router = useRouter();
+  const t = useTranslations("dashboard");
+
   return (
     <div className="flex flex-col gap-[0.75rem] w-full">
       <AnimatePresence>
@@ -20,9 +26,12 @@ const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
               transition={{ duration: 0.25, ease: "easeOut" }}
               className="overflow-hidden Body_2_semibold text-grey-50"
             >
-              <GlassButton className="w-full bg-[rgba(255,48,48,0.45)] rounded-[0.25rem] hover:bg-[rgba(255,48,48,0.75)] Body_2_semibold flex gap-[0.62rem]">
-                <Plus className="w-[1.125rem]" />
-                <span>새 프로젝트 시작하기</span>
+              <GlassButton
+                onClick={() => router.push(PATHS.DASHBOARD_CREATE)}
+                className="w-full bg-[rgba(255,48,48,0.45)] rounded-[0.25rem] hover:bg-[rgba(255,48,48,0.75)] Body_2_semibold flex gap-[0.62rem]"
+              >
+                <Plus className="w-[1.5rem] h-[1.5rem] [&_path]:fill-White" />
+                <span>{t("sidebar.newProject")}</span>
               </GlassButton>
             </motion.div>
             <motion.div
@@ -32,9 +41,12 @@ const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
               transition={{ duration: 0.25, ease: "easeOut", delay: 0.05 }}
               className="overflow-hidden Body_2_semibold text-grey-50 flex gap-[1.125rem]"
             >
-              <GlassButton className="w-full">
+              <GlassButton
+                onClick={() => router.push(PATHS.DASHBOARD_CONTINUE)}
+                className="w-full"
+              >
                 <Pencil className="w-[1.125rem]" />
-                프로젝트 이어하기
+                {t("sidebar.continueProject")}
               </GlassButton>
             </motion.div>
           </>
@@ -106,8 +118,10 @@ const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
                 transition={{ duration: 0.15 }}
                 className="flex gap-[0.62rem] items-center"
               >
-                <Plus className="w-[1.125rem] h-[1.125rem]" color="white" />
-                <span className="Body_1_semibold">생성하기</span>
+                <Plus className="w-[1.5rem] h-[1.5rem] [&_path]:fill-White" />
+                <span className="Body_1_semibold">
+                  {t("sidebar.createButton")}
+                </span>
               </motion.div>
             )}
           </AnimatePresence>

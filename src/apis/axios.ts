@@ -24,8 +24,14 @@ axiosInstance.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (error.response?.status === 403 && !window.location.pathname.includes(PATHS.LOGIN)) {
-      window.location.href = PATHS.LOGIN;
+    if (
+      error.response?.status === 403 &&
+      !window.location.pathname.includes(PATHS.LOGIN) &&
+      !window.location.pathname.includes(PATHS.SIGNUP) &&
+      !window.location.pathname.includes(PATHS.PASSWORD_RESET)
+    ) {
+      const callbackUrl = encodeURIComponent(window.location.pathname + window.location.search);
+      window.location.href = `${PATHS.LOGIN}?callbackUrl=${callbackUrl}`;
     }
     return Promise.reject(error);
   },

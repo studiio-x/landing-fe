@@ -6,6 +6,7 @@ interface DashboardCardProps {
   content: string;
   mediaSrc: string;
   isActive?: boolean;
+  onClick?: () => void;
 }
 
 const DashboardCard = ({
@@ -13,20 +14,31 @@ const DashboardCard = ({
   content,
   mediaSrc,
   isActive,
+  onClick,
 }: DashboardCardProps) => {
   const isVideo = (src: string) => /\.(mp4|webm|ogg)$/i.test(src);
+  const isInteractive = Boolean(onClick);
 
   return (
     <div
-      role="button"
-      tabIndex={0}
+      role={isInteractive ? "button" : undefined}
+      tabIndex={isInteractive ? 0 : -1}
+      onClick={onClick}
+      onKeyDown={(e) => {
+        if (!isInteractive) return;
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick?.();
+        }
+      }}
       className={clsx(
-        "h-[12.5rem] w-[19.25rem] group rounded bg-gradient-to-b p-px cursor-pointer",
+        "h-[12.5rem] w-[19.25rem] group rounded bg-gradient-to-b p-px",
+        isInteractive && "cursor-pointer",
         {
           "from-Grey-300 to-Grey-700 hover:from-Red-350 hover:to-Red-500":
             !isActive,
           "from-Red-350 to-Red-500": isActive,
-        }
+        },
       )}
     >
       <div className="h-full w-full rounded bg-Grey-800 overflow-hidden flex gap-4">
@@ -35,7 +47,7 @@ const DashboardCard = ({
             className={clsx(
               "whitespace-pre-line",
               isVideo(mediaSrc) ? "Body_2_semibold" : "Body_1_semibold",
-              isActive ? "text-Red-300" : "text-white group-hover:text-Red-300"
+              isActive ? "text-Red-300" : "text-white group-hover:text-Red-300",
             )}
           >
             {title}

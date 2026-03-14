@@ -10,25 +10,33 @@ import SearchBar from "./SearchBar";
 import ProductImageRequiredModal from "./ProductImageRequiredModal";
 import GlassButton from "@/components/common/GlassButton";
 import { useTemplateKeywords, useTemplatesByKeyword, useSearchTemplates } from "@/hooks/queries/useTemplateApi";
+import { usePostImage } from "@/hooks/queries/useImageApi";
 import { TEMPLATE_KEYWORDS } from "@/constants/dashboard/template";
 import { TemplateKeyword } from "@/types/api/template.type";
 
 interface BackgroundTabProps {
   uploadedImage: File | null;
+  cutoutImageObjectKey: string | null;
+  projectId: number | null;
+  onGenerated: (imageUrl: string) => void;
+  onGeneratingChange: (isGenerating: boolean) => void;
 }
 
 const toItems = (templates: { templateId: number; imageObjectKey: string }[]) =>
   templates.map((t) => ({ id: String(t.templateId), src: t.imageObjectKey }));
 
-const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
+const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, onGenerated, onGeneratingChange }: BackgroundTabProps) => {
   const t = useTranslations("dashboard.workbench.backgroundTab");
   const [isSearching, setIsSearching] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
-  const [selectedBackgroundId, setSelectedBackgroundId] = useState<
-    string | null
-  >(null);
+  const [selectedBackground, setSelectedBackground] = useState<{
+    sectionId: string;
+    itemId: string;
+  } | null>(null);
 
   const [isProductImageModalOpen, setIsProductImageModalOpen] = useState(false);
+
+  const { mutate: postImage, isPending: isGenerating } = usePostImage();
 
   const { data: keywords, isLoading: isKeywordsLoading } = useTemplateKeywords();
   const { data: templatesData, isLoading: isTemplatesLoading } = useTemplatesByKeyword({
@@ -57,8 +65,23 @@ const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
       setIsProductImageModalOpen(true);
       return;
     }
+    if (!cutoutImageObjectKey || !projectId || !selectedBackground) return;
 
-    console.log("생성 시작", { uploadedImage, selectedBackgroundId });
+    onGeneratingChange(true);
+    postImage(
+      {
+        cutoutImageObjectKey,
+        templateId: Number(selectedBackground.itemId),
+        projectId,
+      },
+      {
+        onSuccess: (data) => {
+          onGenerated(data.imageUrl);
+          onGeneratingChange(false);
+        },
+        onError: () => onGeneratingChange(false),
+      },
+    );
   };
 
   return (
@@ -80,8 +103,8 @@ const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
             <BackgroundSwiper
               id="search"
               items={toItems(searchResults ?? [])}
-              selectedId={selectedBackgroundId}
-              onSelect={setSelectedBackgroundId}
+              selectedId={selectedBackground?.sectionId === "search" ? selectedBackground.itemId : null}
+              onSelect={(itemId) => setSelectedBackground({ sectionId: "search", itemId })}
               isLoading={isSearchLoading}
             />
           ) : (
@@ -96,8 +119,8 @@ const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
               id={keyword}
               title={getTitle(keyword)}
               items={findTemplates(keyword)}
-              selectedId={selectedBackgroundId}
-              onSelect={setSelectedBackgroundId}
+              selectedId={selectedBackground?.sectionId === keyword ? selectedBackground.itemId : null}
+              onSelect={(itemId) => setSelectedBackground({ sectionId: keyword, itemId })}
               isLoading={isLoading}
             />
           ))
@@ -120,6 +143,7 @@ const BackgroundTab = ({ uploadedImage }: BackgroundTabProps) => {
           type="button"
           className="Body_2_semibold"
           onClick={handleClickGenerate}
+          disabled={isGenerating}
         >
           {t("generate")}
         </GlassButton>
