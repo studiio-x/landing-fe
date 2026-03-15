@@ -153,9 +153,8 @@ const Workbench = ({ mode }: WorkbenchProps) => {
         >
           {previewUrl ? (
             <>
-              <Image
-                width={590}
-                height={646}
+              <img
+                crossOrigin="anonymous"
                 src={generatedImageUrl ?? cutoutImageUrl ?? previewUrl}
                 alt={t("uploadedImageAlt")}
                 className="w-full h-full object-contain"

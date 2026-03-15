@@ -1,126 +1,126 @@
 import { useCallback } from "react";
-import html2canvas from "html2canvas";
 
 interface UsePaintCaptureOptions {
-  scale?: number;
   debug?: boolean;
   tightCrop?: boolean;
   padding?: number;
 }
 
 export const usePaintCapture = (
-  containerRef: React.RefObject<HTMLElement | null>,
+  imageContainerRef: React.RefObject<HTMLElement | null>,
   overlayCanvasRef: React.RefObject<HTMLCanvasElement | null>,
-  options: UsePaintCaptureOptions = {}
+  options: UsePaintCaptureOptions = {},
 ) => {
-  const { scale = 2, debug = false, tightCrop = true, padding = 8 } = options;
+  const { debug = true, tightCrop = false, padding = 8 } = options;
 
   const capturePaintedArea = useCallback(async () => {
-    const container = containerRef.current;
+    const container = imageContainerRef.current;
     const maskCanvas = overlayCanvasRef.current;
+
     if (!container || !maskCanvas) return null;
 
+    const img = container.querySelector("img") as HTMLImageElement | null;
+    if (!img) return null;
+
+    if (!img.complete || img.naturalWidth === 0) return null;
+
+    const imgRect = img.getBoundingClientRect();
     const containerRect = container.getBoundingClientRect();
 
-    try {
-      const fullCanvas = await html2canvas(container, {
-        useCORS: true,
-        backgroundColor: null,
-        scale,
-        width: containerRect.width,
-        height: containerRect.height,
-        ignoreElements: (el) => {
-          if ((el as HTMLElement).dataset?.captureIgnore === "true")
-            return true;
-          return el === maskCanvas || maskCanvas.contains(el);
-        },
-      });
-      // 마스크 스케일링
-      const scaledMask = document.createElement("canvas");
-      scaledMask.width = fullCanvas.width;
-      scaledMask.height = fullCanvas.height;
+    const offsetX = imgRect.left - containerRect.left;
+    const offsetY = imgRect.top - containerRect.top;
 
-      const mctx = scaledMask.getContext("2d");
-      if (!mctx) return null;
+    const renderW = imgRect.width;
+    const renderH = imgRect.height;
 
-      mctx.drawImage(
-        maskCanvas,
-        0,
-        0,
-        maskCanvas.width,
-        maskCanvas.height,
-        0,
-        0,
-        scaledMask.width,
-        scaledMask.height
-      );
+    const imageCanvas = document.createElement("canvas");
+    imageCanvas.width = renderW;
+    imageCanvas.height = renderH;
 
-      // 마스크 적용
-      const out = document.createElement("canvas");
-      out.width = fullCanvas.width;
-      out.height = fullCanvas.height;
+    const ictx = imageCanvas.getContext("2d");
+    if (!ictx) return null;
 
-      const octx = out.getContext("2d");
-      if (!octx) return null;
+    ictx.drawImage(
+      img,
+      0,
+      0,
+      img.naturalWidth,
+      img.naturalHeight,
+      0,
+      0,
+      renderW,
+      renderH,
+    );
 
-      octx.drawImage(fullCanvas, 0, 0);
-      octx.globalCompositeOperation = "destination-in";
-      octx.drawImage(scaledMask, 0, 0);
-      octx.globalCompositeOperation = "source-over";
+    const maskCrop = document.createElement("canvas");
+    maskCrop.width = renderW;
+    maskCrop.height = renderH;
 
-      // 타이트 크롭(선택)
-      let resultCanvas: HTMLCanvasElement = out;
+    const mctx = maskCrop.getContext("2d");
+    if (!mctx) return null;
 
-      if (tightCrop) {
-        const bbox = getNonTransparentBBox(out);
-        if (!bbox) return null;
-        if (bbox) {
-          const x = Math.max(0, bbox.x - padding);
-          const y = Math.max(0, bbox.y - padding);
-          const w = Math.min(out.width - x, bbox.w + padding * 2);
-          const h = Math.min(out.height - y, bbox.h + padding * 2);
+    mctx.drawImage(
+      maskCanvas,
+      offsetX,
+      offsetY,
+      renderW,
+      renderH,
+      0,
+      0,
+      renderW,
+      renderH,
+    );
 
-          const cropped = document.createElement("canvas");
-          cropped.width = w;
-          cropped.height = h;
+    const out = document.createElement("canvas");
+    out.width = renderW;
+    out.height = renderH;
 
-          const cctx = cropped.getContext("2d");
-          if (!cctx) return null;
+    const octx = out.getContext("2d");
+    if (!octx) return null;
 
-          cctx.drawImage(out, x, y, w, h, 0, 0, w, h);
-          resultCanvas = cropped;
-        }
-      }
+    octx.drawImage(imageCanvas, 0, 0);
+    octx.globalCompositeOperation = "destination-in";
+    octx.drawImage(maskCrop, 0, 0);
+    octx.globalCompositeOperation = "source-over";
 
-      const dataUrl = resultCanvas.toDataURL("image/png");
+    let resultCanvas: HTMLCanvasElement = out;
 
-      if (debug) {
-        const w = window.open("", "_blank");
-        w?.document.write(`
-          <html><body style="background:#111;color:#fff;font-family:monospace;padding:16px">
-            <h3>full</h3><img src="${fullCanvas.toDataURL("image/png")}" style="max-width:520px;display:block"/>
-            <h3>mask</h3><img src="${scaledMask.toDataURL("image/png")}" style="max-width:520px;display:block"/>
-            <h3>out</h3><img src="${out.toDataURL("image/png")}" style="max-width:520px;display:block"/>
-            <h3>result</h3><img src="${dataUrl}" style="max-width:520px;display:block"/>
-          </body></html>
-        `);
-      }
+    if (tightCrop) {
+      const bbox = getNonTransparentBBox(out);
+      if (!bbox) return null;
+      const x = Math.max(0, bbox.x - padding);
+      const y = Math.max(0, bbox.y - padding);
+      const w = Math.min(out.width - x, bbox.w + padding * 2);
+      const h = Math.min(out.height - y, bbox.h + padding * 2);
 
-      return dataUrl;
-    } catch (err) {
-      console.error("html2canvas paint capture error:", err);
-      return null;
+      const cropped = document.createElement("canvas");
+      cropped.width = w;
+      cropped.height = h;
+
+      const cctx = cropped.getContext("2d");
+      if (!cctx) return null;
+
+      cctx.drawImage(out, x, y, w, h, 0, 0, w, h);
+      resultCanvas = cropped;
     }
-  }, [containerRef, overlayCanvasRef, scale, debug, tightCrop, padding]);
 
-  const clearMask = useCallback(() => {
-    const c = overlayCanvasRef.current;
-    const ctx = c?.getContext("2d");
-    if (!c || !ctx) return;
-    ctx.clearRect(0, 0, c.width, c.height);
-  }, [overlayCanvasRef]);
+    const dataUrl = resultCanvas.toDataURL("image/png");
 
-  return { capturePaintedArea, clearMask };
+    if (debug) {
+      const w = window.open("", "_blank");
+      w?.document.write(`
+      <html><body style="background:#111;color:#fff;font-family:monospace;padding:16px">
+      <h3>image</h3><img src="${imageCanvas.toDataURL()}" style="max-width:520px"/>
+      <h3>mask</h3><img src="${maskCrop.toDataURL()}" style="max-width:520px"/>
+      <h3>result</h3><img src="${dataUrl}" style="max-width:520px"/>
+      </body></html>
+      `);
+    }
+
+    return dataUrl;
+  }, [imageContainerRef, overlayCanvasRef, debug, tightCrop, padding]);
+
+  return { capturePaintedArea };
 };
 
 function getNonTransparentBBox(canvas: HTMLCanvasElement) {
@@ -131,10 +131,10 @@ function getNonTransparentBBox(canvas: HTMLCanvasElement) {
   const img = ctx.getImageData(0, 0, width, height);
   const data = img.data;
 
-  let minX = width,
-    minY = height,
-    maxX = -1,
-    maxY = -1;
+  let minX = width;
+  let minY = height;
+  let maxX = -1;
+  let maxY = -1;
 
   for (let y = 0; y < height; y++) {
     for (let x = 0; x < width; x++) {
@@ -149,5 +149,11 @@ function getNonTransparentBBox(canvas: HTMLCanvasElement) {
   }
 
   if (maxX === -1) return null;
-  return { x: minX, y: minY, w: maxX - minX + 1, h: maxY - minY + 1 };
+
+  return {
+    x: minX,
+    y: minY,
+    w: maxX - minX + 1,
+    h: maxY - minY + 1,
+  };
 }
