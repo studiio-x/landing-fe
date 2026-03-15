@@ -236,12 +236,14 @@
         "inputPlaceholder": "Tell the AI what you want to change.",
         "sendLabel": "Send",
         "attachmentAlt": "Attachment",
+        "refineDefaultMessage": "Please refine the marked area.",
         "recommendedLabel": "Recommended",
         "plusMenu": {
           "add": "Add",
           "uploadReferenceImage": "Upload reference",
           "markEditArea": "Mark Areas\nto Edit"
         },
+        "selectConcept": "Generate with this concept",
         "recommendations": {
           "0": "I have a reference image I want to recreate.",
           "1": "I’ll describe the background, you create it.",

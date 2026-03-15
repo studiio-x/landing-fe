@@ -5,25 +5,36 @@ import { useTranslations } from "next-intl";
 import { LogoRed } from "@/assets/icons";
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
-import { CHAT_RECOMMENDATIONS } from "@/constants/dashboard/chat-recommendations";
 import type {
-  ChatAttachment,
   ChatItem,
   ChatSendPayload,
 } from "@/types/dashboard/chat.type";
 import clsx from "clsx";
 import GlassButton from "@/components/common/GlassButton";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
+import {
+  usePostChatMessage,
+  usePostConceptSelect,
+  useGetChatHistory,
+} from "@/hooks/queries/useChatApi";
+import { getReferencePresign, getMaskPresign } from "@/apis/chatApi";
+interface ChatContainerProps {
+  projectId: number | null;
+}
 
-const ChatContainer = () => {
+const ChatContainer = ({ projectId }: ChatContainerProps) => {
   const t = useTranslations("dashboard.workbench.chatbot");
   const { isEditMode, hasPaint, commitPaint, setEditMode } =
     useStudioMarkStore();
   const canSubmit = hasPaint && !!commitPaint;
 
   const [messages, setMessages] = useState<ChatItem[]>([]);
-  const timersRef = useRef<number[]>([]);
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  const hasInitialized = useRef(false);
+
+  const { mutateAsync: sendMessage } = usePostChatMessage();
+  const { mutateAsync: selectConcept } = usePostConceptSelect();
+  const { data: historyData } = useGetChatHistory(projectId ?? 0);
 
   const recommendations = [
     t("recommendations.0"),
@@ -33,55 +44,187 @@ const ChatContainer = () => {
 
   const isEmpty = messages.length === 0;
 
+  // projectId가 바뀌면 상태 초기화
   useEffect(() => {
-    return () => timersRef.current.forEach((t) => clearTimeout(t));
-  }, []);
+    hasInitialized.current = false;
+    setMessages([]);
+  }, [projectId]);
 
-  const sendUserMessage = useCallback((payload: ChatSendPayload) => {
-    const text = payload.text?.trim() ?? "";
-    const attachments = payload.attachments ?? [];
+  // 서버 채팅 내역 최초 1회 로드
+  useEffect(() => {
+    if (!historyData || hasInitialized.current) return;
+    hasInitialized.current = true;
+    if (!historyData.messages.length) return;
 
-    if (!text && attachments.length === 0) return;
+    setMessages(
+      historyData.messages.map((m) => ({
+        id: String(m.messageId),
+        role: m.role === "USER" ? ("user" as const) : ("assistant" as const),
+        text: m.content,
+        status: "done" as const,
+        imageKeys: m.imageKeys.length > 0 ? m.imageKeys : undefined,
+      })),
+    );
+  }, [historyData]);
+
+  const sendUserMessage = useCallback(
+    async (payload: ChatSendPayload) => {
+      if (!projectId) return;
+      const text = payload.text?.trim() ?? "";
+      const attachments = payload.attachments ?? [];
+
+      if (!text && attachments.length === 0) return;
+
+      const userId = crypto.randomUUID();
+      const typingId = crypto.randomUUID();
+
+      setMessages((prev) => [
+        ...prev,
+        { id: userId, role: "user", text, status: "sent", attachments },
+        { id: typingId, role: "assistant", text: "", status: "typing" },
+      ]);
+
+      try {
+        let referenceImageObjectKey: string | undefined;
+        if (attachments[0]?.imageUrl) {
+          const presign = await getReferencePresign(projectId);
+          const blob = await fetch(attachments[0].imageUrl).then((r) =>
+            r.blob(),
+          );
+          await fetch(presign.uploadUrl, {
+            method: "PUT",
+            body: blob,
+            headers: { "Content-Type": blob.type },
+          });
+          referenceImageObjectKey = presign.objectKey;
+        }
+
+        const response = await sendMessage({
+          projectId,
+          mode: "CONCEPT",
+          body: {
+            content: text || t("recommendations.0"),
+            referenceImageObjectKey,
+          },
+        });
+
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === typingId
+              ? {
+                  ...m,
+                  status: "done" as const,
+                  text: response.aiText,
+                  imageKeys:
+                    response.imageKeys.length > 0
+                      ? response.imageKeys
+                      : undefined,
+                  conceptSelectable: response.imageKeys.length > 0,
+                }
+              : m,
+          ),
+        );
+      } catch {
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === typingId
+              ? {
+                  ...m,
+                  status: "done" as const,
+                  text: "오류가 발생했습니다. 다시 시도해주세요.",
+                }
+              : m,
+          ),
+        );
+      }
+    },
+    [projectId, sendMessage],
+  );
+
+  const sendMarkImages = useCallback(async () => {
+    if (!commitPaint || !projectId) return;
+
+    const region = await commitPaint();
+    if (!region) return;
+
+    setEditMode(false);
 
     const userId = crypto.randomUUID();
     const typingId = crypto.randomUUID();
 
     setMessages((prev) => [
       ...prev,
-      { id: userId, role: "user", text, status: "sent", attachments },
+      {
+        id: userId,
+        role: "user",
+        text: "",
+        status: "sent",
+        attachments: [{ id: region.id, imageUrl: region.imageUrl }],
+      },
       { id: typingId, role: "assistant", text: "", status: "typing" },
     ]);
 
-    const t = window.setTimeout(() => {
+    try {
+      const presign = await getMaskPresign(projectId);
+      const blob = await fetch(region.imageUrl).then((r) => r.blob());
+      await fetch(presign.uploadUrl, {
+        method: "PUT",
+        body: blob,
+        headers: { "Content-Type": "image/png" },
+      });
+
+      const response = await sendMessage({
+        projectId,
+        mode: "REFINE",
+        body: { content: t("refineDefaultMessage"), maskImageObjectKey: presign.objectKey },
+      });
+
       setMessages((prev) =>
         prev.map((m) =>
           m.id === typingId
             ? {
                 ...m,
-                status: "done",
-                text: "알겠어. 전달해준 내용을 기준으로 이어서 진행할게.",
+                status: "done" as const,
+                text: response.aiText,
+                imageKeys:
+                  response.imageKeys.length > 0
+                    ? response.imageKeys
+                    : undefined,
               }
             : m,
         ),
       );
-    }, 1200);
+    } catch {
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === typingId
+            ? {
+                ...m,
+                status: "done" as const,
+                text: "오류가 발생했습니다. 다시 시도해주세요.",
+              }
+            : m,
+        ),
+      );
+    }
+  }, [commitPaint, projectId, sendMessage, setEditMode]);
 
-    timersRef.current.push(t);
-  }, []);
-
-  const sendMarkImages = useCallback(async () => {
-    if (!commitPaint) return;
-
-    const region = await commitPaint();
-    if (!region) return;
-
-    const attachments: ChatAttachment[] = [
-      { id: region.id, imageUrl: region.imageUrl },
-    ];
-
-    sendUserMessage({ attachments });
-    setEditMode(false);
-  }, [commitPaint, sendUserMessage, setEditMode]);
+  const handleConceptSelect = useCallback(
+    async (messageId: string, index: number) => {
+      if (!projectId) return;
+      setMessages((prev) =>
+        prev.map((m) =>
+          m.id === messageId ? { ...m, conceptSelectable: false } : m,
+        ),
+      );
+      try {
+        await selectConcept({ projectId, body: { selectedIndex: index } });
+      } catch {
+        console.error("컨셉 선택 실패");
+      }
+    },
+    [projectId, selectConcept],
+  );
 
   const handleClickRecommendation = useCallback(
     (text: string) => sendUserMessage({ text }),
@@ -121,7 +264,10 @@ const ChatContainer = () => {
           />
         ) : (
           <>
-            <ChatMessage.List messages={messages} />
+            <ChatMessage.List
+              messages={messages}
+              onConceptSelect={handleConceptSelect}
+            />
             <div ref={bottomRef} />
           </>
         )}
