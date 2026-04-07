@@ -27,9 +27,7 @@ const Footer = () => {
       <div className="flex flex-col sm:flex-row gap-[3.25rem] justify-between mb-8">
         <div className="flex flex-col">
           <Logo className="mb-8 h-6 w-28" />
-          <div className="Body_2_medium mb-3 text-Grey-400">
-            {t("tagline")}
-          </div>
+          <div className="Body_2_medium mb-3 text-Grey-400">{t("tagline")}</div>
         </div>
         <div className="flex gap-14">
           {footerLinks.map((section, index) => (
@@ -72,9 +70,7 @@ const Footer = () => {
             })}
           </div>
         </div>
-        <div className="Body_3_regular text-Red-400 mt-4">
-          {t("copyright")}
-        </div>
+        <div className="Body_3_regular text-Red-400 mt-4">{t("copyright")}</div>
       </div>
     </footer>
   );
