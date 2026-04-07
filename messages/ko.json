@@ -249,5 +249,23 @@
         }
       }
     }
+  },
+  "footer": {
+    "tagline": "No prompts needed — just talk to your AI studio.",
+    "followUs": "Follow us",
+    "instagram": "Instagram",
+    "company": "Company",
+    "feedback": "Feedback",
+    "resources": "Resources",
+    "privacyPolicy": "Privacy policy",
+    "companyInfo": {
+      "name": "주식회사 랩엑스",
+      "representatives": "대표: 김류원, 임세민",
+      "businessNumber": "사업자등록번호: 432-81-03889",
+      "address": "주소: 제주특별자치도 제주시 월랑로8길 1, 402-비22호(노형동, 아란야플라자)",
+      "phone": "전화: {phone}",
+      "email": "이메일: {email}"
+    },
+    "copyright": "© 2026 Relex Inc. All Rights Reserved"
   }
 }
