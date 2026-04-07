@@ -2,9 +2,11 @@
 
 import { Check } from "@/assets/icons";
 import { useLocale } from "next-intl";
+import type { PlanKey } from "@/types/api/payment.type";
 
 interface PriceTagProps {
   plan: {
+    key: PlanKey;
     name: string;
     for: string;
     yearlyPrice: number | null;
@@ -14,9 +16,10 @@ interface PriceTagProps {
     features: string[];
   };
   isMonthly: boolean;
+  onSelectPlan?: (planKey: PlanKey, isMonthly: boolean) => void;
 }
 
-const PriceTag = ({ plan, isMonthly }: PriceTagProps) => {
+const PriceTag = ({ plan, isMonthly, onSelectPlan }: PriceTagProps) => {
   const locale = useLocale();
   const isEnterprise =
     plan.name === "엔터프라이즈 플랜" || plan.name === "Enterprise";
@@ -75,7 +78,10 @@ const PriceTag = ({ plan, isMonthly }: PriceTagProps) => {
         </div>
       </div>
       <div className="w-full rounded-[2.25rem] bg-gradient-to-b from-[#F1F4F8]/30 to-[#1D2025]/50 p-[1px]">
-        <button className="Body_2_semibold flex w-full items-center justify-center rounded-[2.25rem] bg-[rgb(37,39,44)] py-3">
+        <button
+          className="Body_2_semibold flex w-full items-center justify-center rounded-[2.25rem] bg-[rgb(37,39,44)] py-3"
+          onClick={() => onSelectPlan?.(plan.key, isMonthly)}
+        >
           {plan.buttonText}
         </button>
       </div>

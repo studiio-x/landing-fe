@@ -1,17 +1,17 @@
 export const priceData = [
   {
     key: "basic",
-    yearlyPrice: 15,
-    monthlyPrice: 15,
+    yearlyPrice: 8,
+    monthlyPrice: 8,
   },
   {
     key: "standard",
-    yearlyPrice: 3,
+    yearlyPrice: 24,
     monthlyPrice: 33,
   },
   {
     key: "pro",
-    yearlyPrice: 5,
+    yearlyPrice: 48,
     monthlyPrice: 59,
   },
   {

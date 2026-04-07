@@ -1,20 +1,16 @@
 "use client";
 
-import { useState } from "react";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 import SectionWrapper from "@/components/landing/SectionWrapper";
 import PricingTable from "@/components/landing/PricingTable";
-import FreePlanSection from "@/components/landing/price/FreePlanSection";
-import PriceToggle from "@/components/landing/price/PriceToggle";
 import ReviewSection from "@/components/landing/price/ReviewSection";
 import FaqSection from "@/components/landing/price/FaqSection";
-import PriceGrid from "@/components/landing/price/PriceGrid";
 import CtaSection from "@/components/landing/price/CtaSection";
+import PriceHeroSection from "@/components/landing/price/PriceHeroSection";
 import { useTranslations } from "next-intl";
 
 const PricePage = () => {
-  const [isMonthly, setIsMonthly] = useState(false);
   const t = useTranslations("price");
 
   return (
@@ -30,34 +26,7 @@ const PricePage = () => {
         }}
       >
         <div className="px-4 sm:px-6 lg:px-8 2xl:px-[6.12rem]">
-          <section className="flex flex-col items-center pt-[7.5rem]">
-            <div className="text-center font-calSans text-[2rem] sm:text-[3rem] lg:text-[4rem] mb-5">
-              {t("hero.title")}
-            </div>
-            <PriceToggle
-              isMonthly={isMonthly}
-              onToggle={() => setIsMonthly(!isMonthly)}
-              yearlyLabel={t("hero.yearly")}
-              monthlyLabel={t("hero.monthly")}
-            />
-            <div className="Caption_medium text-Red-400 mb-16">
-              {t("hero.discount")}
-            </div>
-            <PriceGrid isMonthly={isMonthly} />
-            <FreePlanSection
-              isMonthly={isMonthly}
-              messages={{
-                name: t("freePlan.name"),
-                description: t("freePlan.description"),
-                price: t("freePlan.price"),
-                perMonth: t("freePlan.perMonth"),
-                onlyMonthly: t("freePlan.onlyMonthly"),
-                credits: t("freePlan.credits"),
-                storage: t("freePlan.storage"),
-                downloads: t("freePlan.downloads"),
-              }}
-            />
-          </section>
+          <PriceHeroSection />
           {/* <div
             className="Caption_medium text-Grey-500 ml-[1.37rem] mb-40"
             dangerouslySetInnerHTML={{ __html: t("storageInfo") }}

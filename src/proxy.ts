@@ -13,6 +13,7 @@ const localePages = [
   "login",
   "password-reset",
   "price",
+  "payment",
 ];
 
 export default function proxy(request: NextRequest) {
