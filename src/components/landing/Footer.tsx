@@ -39,6 +39,9 @@ const Footer = () => {
                 <a
                   href={section.href}
                   key={itemIndex}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={item}
                   className="Body_3_medium lg:Body_2_medium text-Grey-300 block"
                 >
                   {item}
