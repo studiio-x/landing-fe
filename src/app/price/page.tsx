@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Header from "@/components/landing/Header";
-import Footer from "@/components/landing/Footer";
 import PriceTag from "@/components/landing/PriceTag";
 import { priceData } from "@/constants/landing/price";
 import { Table, Check, Arrow } from "@/assets/icons";
@@ -169,7 +168,6 @@ const PricePage = () => {
           </section>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };

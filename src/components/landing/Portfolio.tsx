@@ -1,51 +1,34 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import MediaItem from "@/components/landing/MediaItem";
 import { useItemsInfinite } from "@/hooks/useItemsInfinite";
-import type { Category } from "@/types/item";
+import type { Category } from "@/types/landing/item.type";
 import { useSearchParams, useRouter } from "next/navigation";
+import { QUERY_KEYS, PORTFOLIO_CATEGORY } from "@/constants/common/paths";
 
-const CATEGORIES: Category[] = ["all", "studio", "model", "image"];
+const CATEGORIES: Category[] = [
+  PORTFOLIO_CATEGORY.ALL,
+  PORTFOLIO_CATEGORY.STUDIO,
+  PORTFOLIO_CATEGORY.MODEL,
+  PORTFOLIO_CATEGORY.IMAGE,
+];
 
 export default function Portfolio() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const category = (searchParams.get("category") as Category) || "all";
+  const category = (searchParams.get(QUERY_KEYS.PORTFOLIO_CATEGORY) as Category) || PORTFOLIO_CATEGORY.ALL;
 
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useItemsInfinite(category, 20);
 
   const allUrls = data?.pages.flatMap((page) => page.urls) ?? [];
 
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    const el = sentinelRef.current;
-    if (!el || !hasNextPage || isFetchingNextPage) {
-      return;
-    }
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          fetchNextPage();
-        }
-      },
-      { rootMargin: "0px 0px 400px 0px" }
-    );
-
-    io.observe(el);
-
-    return () => io.disconnect();
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
-
   const handleCategoryChange = (c: Category) => {
     const newParams = new URLSearchParams(searchParams.toString());
-    if (c === "all") {
-      newParams.delete("category");
+    if (c === PORTFOLIO_CATEGORY.ALL) {
+      newParams.delete(QUERY_KEYS.PORTFOLIO_CATEGORY);
     } else {
-      newParams.set("category", c);
+      newParams.set(QUERY_KEYS.PORTFOLIO_CATEGORY, c);
     }
     router.push(`?${newParams.toString()}`, { scroll: false });
   };
@@ -58,6 +41,7 @@ export default function Portfolio() {
           return (
             <button
               key={c}
+              type="button"
               onClick={() => handleCategoryChange(c)}
               className={[
                 "Body_2_medium rounded-full px-5 py-2 capitalize transition",
@@ -79,7 +63,21 @@ export default function Portfolio() {
           ))}
         </div>
       )}
-      <div ref={sentinelRef} className="h-1" />
+
+      {hasNextPage && (
+        <div className="flex justify-center mt-12 mb-8">
+          <button
+            type="button"
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+            className="w-fit h-fit rounded-[2.25rem] bg-gradient-to-b from-[#F1F4F8]/50 to-[#1D2025]/50 p-[1px] disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <div className="Body_2_semibold flex items-center justify-center rounded-[2.25rem] bg-[rgb(23,24,27)] px-6 py-3 text-White transition-colors duration-300 hover:bg-[rgb(33,34,37)]">
+              {isFetchingNextPage ? "Loading..." : "Load More"}
+            </div>
+          </button>
+        </div>
+      )}
     </div>
   );
 }

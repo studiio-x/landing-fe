@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --header-height: 3.75rem;
+}
+:root {
+  --border-radius-radius-4: 0.25rem;
+  --border-radius-radius-8: 0.5rem;
+  --border-radius-radius-12: 0.75rem;
+  --border-radius-radius-16: 1rem;
+  --border-radius-radius-20: 1.25rem;
+  --border-radius-radius-24: 1.5rem;
+  --border-radius-radius-32: 2rem;
+}
+
 @layer base {
   * {
     margin: 0;
@@ -10,9 +23,11 @@
   }
   html {
     background: #0f1114;
+    height: 100%;
   }
   body {
     color: #ffffff;
+    height: 100%;
   }
   button {
     background-color: transparent;

@@ -10,14 +10,32 @@
     "aria-hidden": "true"
   },
   "replaceAttrValues": {
-    "#000": "currentColor",
-    "#000000": "currentColor"
+    "#000000": "currentColor",
+    "#626B7F": "currentColor",
+    "#A9B4C6": "currentColor",
+    "#808A9D": "currentColor"
   },
   "svgoConfig": {
     "plugins": [
-      "preset-default",
-      { "name": "removeDimensions", "active": true },
-      { "name": "prefixIds", "params": { "prefix": "x" } }
+      {
+        "name": "preset-default",
+        "params": {
+          "overrides": {
+            "convertColors": true
+          }
+        }
+      },
+      {
+        "name": "removeDimensions",
+        "active": true
+      },
+      {
+        "name": "prefixIds",
+        "params": {
+          "prefixIds": true,
+          "prefixClassNames": true
+        }
+      }
     ]
   }
 }

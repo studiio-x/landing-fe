@@ -1,0 +1,271 @@
+{
+  "notFound": {
+    "badge": "404 error",
+    "title": "Page not found",
+    "description": "The page you’re looking for may have been moved,\ndeleted, or the URL may be incorrect.",
+    "homeButton": "Go Home"
+  },
+  "mobileModal": {
+    "closeLabel": "Close modal",
+    "title": "For the best experience,\nplease use a desktop.",
+    "imageAlt": "Desktop usage guide"
+  },
+  "login": {
+    "title": "Log in to <brand>StudioX</brand>",
+    "closeLabel": "Close",
+    "googleContinue": "Continue with Google",
+    "or": "OR",
+    "emailPlaceholder": "Email address",
+    "emailAriaLabel": "Email",
+    "passwordPlaceholder": "Password",
+    "passwordAriaLabel": "Password",
+    "submit": "Log in",
+    "forgotPassword": "Forgot your password?",
+    "noAccount": "Don’t have an account?",
+    "signup": "Sign up"
+  },
+  "signup": {
+    "title": "Sign Up",
+    "emailPlaceholder": "Enter your email",
+    "termsAgreement": "I agree to the Terms and Conditions and\nPrivacy Policy",
+    "submit": "Register",
+    "submitting": "Registering...",
+    "emailAriaLabel": "Email",
+    "hasAccount": "Already have an account?",
+    "login": "Log in",
+
+    "emailSent": {
+      "title": "Check Your Email",
+      "description": "A verification link was just sent to your email.\nPlease follow the link to verify your StudioX\naccount and proceed to the platform.",
+      "confirm": "Next"
+    },
+
+    "error": {
+      "emailSendFailed": {
+        "title": "Failed to send email",
+        "description": "We’re having trouble sending the email right now.\nPlease try again in a moment,",
+        "contact": "or contact us if the issue persists:",
+        "contactEmail": "studiox.co.kr@gmail.com"
+      },
+      "emailAlreadyRegistered": {
+        "title": "Email already registered",
+        "description": "This email is already registered.\nPlease log in from the login page."
+      },
+      "confirm": "Confirm",
+      "verificationFailed": {
+        "title": "Email verification failed",
+        "description": "Please try verifying your email again."
+      }
+    },
+
+    "verificationComplete": {
+      "title": "The email has been successfully verified.",
+      "continue": "Continue"
+    },
+
+    "passwordSetup": {
+      "title": "Set your password",
+      "confirmEmail": "Email: {email}",
+      "passwordRequirement": "<bold>8-35 characters</bold> including <bold>upper, lower case</bold> and <bold>number</bold>.",
+      "passwordPlaceholder": "Your Password",
+      "passwordAriaLabel": "Password",
+      "confirmPasswordPlaceholder": "Confirm Password",
+      "confirmPasswordAriaLabel": "Confirm password",
+      "passwordMismatch": "*Passwords do not match.",
+      "submit": "Get Started"
+    }
+  },
+  "passwordReset": {
+    "backLabel": "Go back",
+    "emailInput": {
+      "title": "Reset Password",
+      "description": "Enter the email address of the account you want to reset your password for, and we will send a password reset code to your registered email.",
+      "emailPlaceholder": "Email address",
+      "emailAriaLabel": "Email",
+      "submit": "Send Reset Email"
+    },
+    "codeVerification": {
+      "title": "Enter Verification Code",
+      "description": "Please enter the verification code sent to {email}.",
+      "codePlaceholder": "6-digit code",
+      "codeAriaLabel": "Verification code",
+      "submit": "Continue",
+      "invalidCode": "*Invalid verification code.",
+      "noEmail": "Didn't receive the email?",
+      "timerMinutes": "You can resend in {minutes}:{seconds}.",
+      "timerSeconds": "You can resend in {seconds}s.",
+      "resend": "Resend"
+    },
+    "passwordSetup": {
+      "title": "Reset Password",
+      "description": "Please enter your new password.",
+      "passwordRequirement": "<bold>8-35 characters</bold> including <bold>upper, lower case</bold> and <bold>number</bold>.",
+      "passwordPlaceholder": "password",
+      "passwordAriaLabel": "password",
+      "confirmPasswordPlaceholder": "Confirm password",
+      "confirmPasswordAriaLabel": "Confirm password",
+      "passwordMismatch": "*Passwords do not match.",
+      "submit": "Reset Password"
+    },
+    "complete": {
+      "title": "Password Reset Complete",
+      "description": "Please log in with your new password.",
+      "confirm": "Confirm"
+    }
+  },
+  "dashboard": {
+    "header": {
+      "backLabel": "Go back",
+      "goDashboardLabel": "Go to dashboard",
+      "howToUse": "How to use",
+      "settings": "Settings",
+      "planManage": "Manage plan",
+      "logout": "Log out",
+      "workbenchTabs": {
+        "studio": "Studio",
+        "model": "Model"
+      }
+    },
+    "title": "DASH BOARD",
+    "cards": {
+      "studio": {
+        "title": "Studio\nShoot",
+        "content": "Upload one\nproduct photo,\nget a studio\nshot instantly"
+      },
+      "model": {
+        "title": "Model\nShoot",
+        "content": "Upload one\nproduct photo,\nget a model\nconcept shot\ninstantly"
+      },
+      "video": {
+        "title": "AI Video\nGeneration",
+        "content": "Upload one\nimage, get an\nad video in 3\nseconds"
+      }
+    },
+    "template": {
+      "sectionTitle": "Start with a sample template",
+      "imageAlt": "Template {id}",
+      "hoverText": "Generate image\nwith this background",
+      "empty": "No templates available"
+    },
+    "sidebar": {
+      "createButton": "Create",
+      "newProject": "Start New Project",
+      "continueProject": "Continue Project"
+    },
+    "create": {
+      "badge": "Start New Project",
+      "title": "Choose the task you want.",
+      "backButtonLabel": "Go to previous page"
+    },
+    "continue": {
+      "badge": "Continue Project",
+      "title": "Choose the task you want.",
+      "backButtonLabel": "Go to previous page"
+    },
+    "workbench": {
+      "tabs": {
+        "product": "Product",
+        "background": "Background",
+        "options": "Options",
+        "aiChatbot": "AI Chatbot"
+      },
+      "workbenchTabs": {
+        "studio": "Studio",
+        "model": "Model"
+      },
+      "editModeGuide": "Highlight all the parts you want to edit.",
+      "uploadedImageAlt": "Uploaded image",
+      "emptyState": {
+        "title": "Ideas to Explore",
+        "ideas": {
+          "promotion": "Luxury promotional imagery featuring products",
+          "lifestyle": "Lifestyle context shots for social media campaign",
+          "creative": "A car commercial shot on the moon"
+        }
+      },
+      "productImageRequiredModal": {
+        "closeLabel": "Close",
+        "title": "Please upload\na product image first",
+        "description": "A product image is required\nto apply a background image.",
+        "uploadGuide": "Click to upload product image"
+      },
+      "historyPanel": {
+        "emptyTitle": "Make your\nfirst generation",
+        "emptyDescription": "Create beautiful images\nwith nothing but a text.",
+        "videoEmptyTitle": "Create your\nfirst video",
+        "videoEmptyDescription": "Make an ad video\nfrom a single image.",
+        "title": "History",
+        "imageAlt": "Generated image {index}"
+      },
+      "backgroundTab": {
+        "categories": {
+          "display": "General Display",
+          "fabric": "Fabric & Velvet",
+          "outdoor": "Outdoor"
+        },
+        "uploadBackground": "Upload Background",
+        "generate": "Generate",
+        "noSearchResults": "No search results found"
+      },
+      "optionsTab": {
+        "selectQuality": "Select video quality",
+        "qualityAriaLabel": "Video quality selection",
+        "basicQuality": "Basic Quality",
+        "premiumQuality": "Premium Quality",
+        "creditsConsumed": "{credits} video credits\nwill be consumed.",
+        "uploadBackground": "Upload Background",
+        "generate": "Generate"
+      },
+      "searchBar": {
+        "placeholder": "Search categories",
+        "searchLabel": "Search",
+        "closeLabel": "Close",
+        "openSearchLabel": "Open search",
+        "recommended": "Recommended"
+      },
+      "productTab": {
+        "uploadGuide": "Click to upload product image"
+      },
+      "chatbot": {
+        "title": "StudioX Chatbot",
+        "subtitle": "Ask the chatbot for your desired edits.",
+        "disclaimer": "AI may produce inaccurate results.",
+        "editModeGuide": "Mark the areas to edit,\nthen describe your changes.",
+        "cancel": "Cancel",
+        "submitInput": "Describe",
+        "inputPlaceholder": "Tell the AI what you want to change.",
+        "sendLabel": "Send",
+        "attachmentAlt": "Attachment",
+        "recommendedLabel": "Recommended",
+        "plusMenu": {
+          "add": "Add",
+          "uploadReferenceImage": "Upload reference",
+          "markEditArea": "Mark Areas\nto Edit"
+        },
+        "recommendations": {
+          "0": "I have a reference image I want to recreate.",
+          "1": "I’ll describe the background, you create it.",
+          "2": "Suggest a concept that matches the product."
+        }
+      }
+    }
+  },
+  "footer": {
+    "tagline": "No prompts needed — just talk to your AI studio.",
+    "followUs": "Follow us",
+    "instagram": "Instagram",
+    "company": "Company",
+    "feedback": "Feedback",
+    "resources": "Resources",
+    "privacyPolicy": "Privacy policy",
+    "companyInfo": {
+      "name": "Relex Inc.",
+      "representatives": "Representatives: Ryuwon Kim, Semin Lim",
+      "businessNumber": "Business Registration: 432-81-03889",
+      "address": "Address: 402-B22, Aranya Plaza, 1 Wollang-ro 8-gil, Jeju-si, Jeju-do, South Korea",
+      "phone": "Tel: {phone}",
+      "email": "Email: {email}"
+    },
+    "copyright": "© 2026 Relex Inc. All Rights Reserved"
+  }
+}

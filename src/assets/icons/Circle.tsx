@@ -8,11 +8,9 @@ interface SVGRProps {
 const SvgCircle = ({
   title,
   titleId,
-
   ...props
 }: SVGProps<SVGSVGElement> & SVGRProps) => (
   <svg
-    className="w-[0.55rem] h-[0.55rem] lg:w-[0.99rem] lg:h-[0.99rem] 2xl:w-6 2xl:h-6 mx-auto block"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 25 25"

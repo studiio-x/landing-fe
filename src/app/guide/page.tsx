@@ -231,6 +231,7 @@ const GuidePage = () => {
                 >
                   {items.map((url, index) => (
                     <Image
+                    fill
                       key={index}
                       src={url}
                       alt={`Portfolio item ${index}`}
