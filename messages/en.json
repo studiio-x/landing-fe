@@ -43,7 +43,9 @@
     "error": {
       "emailSendFailed": {
         "title": "Failed to send email",
-        "description": "We couldn't send the email.\nPlease try again or contact support."
+        "description": "We’re having trouble sending the email right now.\nPlease try again in a moment,",
+        "contact": "or contact us if the issue persists:",
+        "contactEmail": "studiox.co.kr@gmail.com"
       },
       "emailAlreadyRegistered": {
         "title": "Email already registered",
@@ -88,6 +90,7 @@
       "codePlaceholder": "6-digit code",
       "codeAriaLabel": "Verification code",
       "submit": "Continue",
+      "invalidCode": "*Invalid verification code.",
       "noEmail": "Didn't receive the email?",
       "timerMinutes": "You can resend in {minutes}:{seconds}.",
       "timerSeconds": "You can resend in {seconds}s.",
@@ -143,6 +146,11 @@
       "imageAlt": "Template {id}",
       "hoverText": "Generate image\nwith this background",
       "empty": "No templates available"
+    },
+    "sidebar": {
+      "createButton": "Create",
+      "newProject": "Start New Project",
+      "continueProject": "Continue Project"
     },
     "create": {
       "badge": "Start New Project",

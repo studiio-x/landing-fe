@@ -4,7 +4,8 @@ import { Back } from "@/assets/icons";
 import DashboardCard from "@/components/dashboard/DashboardCard";
 import Header from "@/components/dashboard/Header";
 import { DASHBOARD_CARDS } from "@/constants/dashboard/card";
-import { useRouter } from "next/navigation";
+import { PATHS, QUERY_KEYS } from "@/constants/common/paths";
+import { useRouter } from "@/i18n/routing";
 import { useTranslations } from "next-intl";
 
 const CreatePage = () => {
@@ -43,6 +44,11 @@ const CreatePage = () => {
                   title={t(`cards.${card.key}.title`)}
                   content={t(`cards.${card.key}.content`)}
                   mediaSrc={card.mediaSrc}
+                  onClick={() =>
+                    router.push(
+                      `${PATHS.DASHBOARD_WORKBENCH}?${QUERY_KEYS.WORKBENCH_MODE}=${card.key}`,
+                    )
+                  }
                 />
               </li>
             ))}

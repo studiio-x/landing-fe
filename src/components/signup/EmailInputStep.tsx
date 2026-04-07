@@ -110,7 +110,19 @@ const EmailInputStep = ({
         isOpen={!!errorType}
         onClose={() => setErrorType(null)}
         title={errorType ? t(`error.${errorType}.title`) : ""}
-        description={errorType ? t(`error.${errorType}.description`) : ""}
+        description={
+          errorType === "emailSendFailed"
+            ? [
+                t("error.emailSendFailed.description"),
+                <span key="contact" className="whitespace-pre-line">
+                  {t("error.emailSendFailed.contact")}{"\n"}
+                  <span className="text-Red-300">{t("error.emailSendFailed.contactEmail")}</span>
+                </span>,
+              ]
+            : errorType
+              ? t(`error.${errorType}.description`)
+              : ""
+        }
         buttons={[
           { label: t("error.confirm"), variant: "red", onClick: () => setErrorType(null) },
         ]}

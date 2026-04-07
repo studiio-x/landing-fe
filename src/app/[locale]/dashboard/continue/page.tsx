@@ -29,7 +29,7 @@ const ContinuePage = () => {
         <Back className="w-11 h-11" />
       </button>
 
-      <main className="w-full flex flex-col items-center gap-[4.5rem] flex-1 mt-[8.25rem] mb-[6.75rem]">
+      <main className="w-full flex flex-col items-center gap-[4.5rem] flex-1 mt-[3.25rem] mb-[6.75rem]">
         <div className="flex flex-col gap-3 items-center">
           <span className="py-2 px-5 border border-Grey-700 bg-[rgba(255,255,255,0.03)] Body_2_medium text-Grey-100 rounded-[5rem]">
             {t("continue.badge")}
