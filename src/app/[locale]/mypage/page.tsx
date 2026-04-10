@@ -1,12 +1,12 @@
 "use client";
 
 import Header from "@/components/dashboard/Header";
-import SideBar from "@/components/dashboard/sidebar/SideBar";
 import { useState } from "react";
 import MyPageTabs from "@/components/mypage/MyPageTabs";
 import SettingsContent from "@/components/mypage/SettingsContent";
 import UpgradeContent from "@/components/mypage/UpgradeContent";
 import { TabKey } from "@/types/mypage/tab.type";
+import SideBar from "@/components/dashboard/sidebar/SideBar";
 
 const MyPage = () => {
   const [activeTab, setActiveTab] = useState<TabKey>("settings");

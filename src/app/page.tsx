@@ -3,6 +3,7 @@
 import Header from "@/components/landing/Header";
 import MainVideo from "@/components/landing/MainVideo";
 import dynamic from "next/dynamic";
+import Footer from "@/components/landing/Footer";
 
 const Portfolio = dynamic(() => import("@/components/landing/Portfolio"), {
   ssr: false,
@@ -16,6 +17,7 @@ export default function Home() {
       <div id="gallery">
         <Portfolio />
       </div>
+      <Footer />
     </div>
   );
 }
