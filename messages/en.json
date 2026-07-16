@@ -175,6 +175,7 @@
       },
       "editModeGuide": "Highlight all the parts you want to edit.",
       "uploadedImageAlt": "Uploaded image",
+      "retry": "Retry",
       "emptyState": {
         "title": "Ideas to Explore",
         "ideas": {

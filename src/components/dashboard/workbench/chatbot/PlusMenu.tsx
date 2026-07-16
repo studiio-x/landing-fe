@@ -8,9 +8,10 @@ import { useLocale, useTranslations } from "next-intl";
 interface PlusMenuProps {
   onUploadImage: (file: File) => void;
   onClickMark: () => void;
+  disabled?: boolean;
 }
 
-const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
+const PlusMenu = ({ onUploadImage, onClickMark, disabled }: PlusMenuProps) => {
   const t = useTranslations("dashboard.workbench.chatbot.plusMenu");
   const locale = useLocale();
   const plusWrapRef = useRef<HTMLDivElement | null>(null);
@@ -50,7 +51,9 @@ const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
       <button
         type="button"
         aria-label={t("add")}
+        disabled={disabled}
         onClick={() => {
+          if (disabled) return;
           setIsPlusPinned((prev) => !prev);
           setIsPlusOpen(true);
         }}

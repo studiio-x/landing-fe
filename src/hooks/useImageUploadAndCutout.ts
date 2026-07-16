@@ -1,3 +1,4 @@
+import { isAxiosError } from "axios";
 import { useCallback, useState } from "react";
 
 import { getRawPresign, postCutoutImage } from "@/apis/imageApi";
@@ -9,6 +10,7 @@ export const useImageUploadAndCutout = (folderId: number) => {
     string | null
   >(null);
   const [projectId, setProjectId] = useState<number | null>(null);
+  const [cutoutError, setCutoutError] = useState<string | null>(null);
 
   const uploadAndCutout = useCallback(
     async (file: File) => {
@@ -16,6 +18,7 @@ export const useImageUploadAndCutout = (folderId: number) => {
       setCutoutImageUrl(null);
       setCutoutImageObjectKey(null);
       setProjectId(null);
+      setCutoutError(null);
 
       try {
         const { uploadUrl, objectKey } = await getRawPresign();
@@ -42,7 +45,10 @@ export const useImageUploadAndCutout = (folderId: number) => {
         setCutoutImageObjectKey(resultObjectKey);
         setProjectId(resultProjectId);
       } catch (error) {
-        console.error("누끼 처리 실패:", error);
+        const reason = isAxiosError(error)
+          ? (error.response?.data?.reason ?? "이미지 처리 중 오류가 발생했습니다.")
+          : "이미지 처리 중 오류가 발생했습니다.";
+        setCutoutError(reason);
       } finally {
         setIsProcessing(false);
       }
@@ -54,6 +60,7 @@ export const useImageUploadAndCutout = (folderId: number) => {
     setCutoutImageUrl(null);
     setCutoutImageObjectKey(null);
     setProjectId(null);
+    setCutoutError(null);
   }, []);
 
   return {
@@ -61,6 +68,7 @@ export const useImageUploadAndCutout = (folderId: number) => {
     cutoutImageUrl,
     cutoutImageObjectKey,
     projectId,
+    cutoutError,
     uploadAndCutout,
     resetCutout,
   };

@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useQueryClient } from "@tanstack/react-query";
+import { isAxiosError } from "axios";
 import { LogoRed } from "@/assets/icons";
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
@@ -18,12 +20,15 @@ import {
   useGetChatHistory,
 } from "@/hooks/queries/useChatApi";
 import { getReferencePresign, getMaskPresign } from "@/apis/chatApi";
+import { queryKeys } from "@/hooks/queries/queryKeys";
+
 interface ChatContainerProps {
   projectId: number | null;
 }
 
 const ChatContainer = ({ projectId }: ChatContainerProps) => {
   const t = useTranslations("dashboard.workbench.chatbot");
+  const queryClient = useQueryClient();
   const { isEditMode, hasPaint, commitPaint, setEditMode } =
     useStudioMarkStore();
   const canSubmit = hasPaint && !!commitPaint;
@@ -43,6 +48,7 @@ const ChatContainer = ({ projectId }: ChatContainerProps) => {
   ] as const;
 
   const isEmpty = messages.length === 0;
+  const isPendingConceptSelect = messages.some((m) => m.conceptSelectable);
 
   // projectId가 바뀌면 상태 초기화
   useEffect(() => {
@@ -56,15 +62,23 @@ const ChatContainer = ({ projectId }: ChatContainerProps) => {
     hasInitialized.current = true;
     if (!historyData.messages.length) return;
 
-    setMessages(
-      historyData.messages.map((m) => ({
-        id: String(m.messageId),
-        role: m.role === "USER" ? ("user" as const) : ("assistant" as const),
-        text: m.content,
-        status: "done" as const,
-        imageKeys: m.imageKeys.length > 0 ? m.imageKeys : undefined,
-      })),
-    );
+    const isPending = historyData.status !== "IDLE";
+    const mapped: ChatItem[] = historyData.messages.map((m) => ({
+      id: String(m.messageId),
+      role: m.role === "USER" ? ("user" as const) : ("assistant" as const),
+      text: m.content,
+      status: "done" as const,
+      imageKeys: m.imageKeys.length > 0 ? m.imageKeys : undefined,
+    }));
+
+    if (isPending) {
+      const lastWithImages = [...mapped].reverse().find(
+        (m) => m.role === "assistant" && m.imageKeys,
+      );
+      if (lastWithImages) lastWithImages.conceptSelectable = true;
+    }
+
+    setMessages(mapped);
   }, [historyData]);
 
   const sendUserMessage = useCallback(
@@ -124,16 +138,13 @@ const ChatContainer = ({ projectId }: ChatContainerProps) => {
               : m,
           ),
         );
-      } catch {
+      } catch (error) {
+        const text = isAxiosError(error)
+          ? (error.response?.data?.reason ?? "오류가 발생했습니다. 다시 시도해주세요.")
+          : "오류가 발생했습니다. 다시 시도해주세요.";
         setMessages((prev) =>
           prev.map((m) =>
-            m.id === typingId
-              ? {
-                  ...m,
-                  status: "done" as const,
-                  text: "오류가 발생했습니다. 다시 시도해주세요.",
-                }
-              : m,
+            m.id === typingId ? { ...m, status: "done" as const, text } : m,
           ),
         );
       }
@@ -194,16 +205,13 @@ const ChatContainer = ({ projectId }: ChatContainerProps) => {
             : m,
         ),
       );
-    } catch {
+    } catch (error) {
+      const text = isAxiosError(error)
+        ? (error.response?.data?.reason ?? "오류가 발생했습니다. 다시 시도해주세요.")
+        : "오류가 발생했습니다. 다시 시도해주세요.";
       setMessages((prev) =>
         prev.map((m) =>
-          m.id === typingId
-            ? {
-                ...m,
-                status: "done" as const,
-                text: "오류가 발생했습니다. 다시 시도해주세요.",
-              }
-            : m,
+          m.id === typingId ? { ...m, status: "done" as const, text } : m,
         ),
       );
     }
@@ -212,15 +220,42 @@ const ChatContainer = ({ projectId }: ChatContainerProps) => {
   const handleConceptSelect = useCallback(
     async (messageId: string, index: number) => {
       if (!projectId) return;
-      setMessages((prev) =>
-        prev.map((m) =>
+
+      const typingId = crypto.randomUUID();
+
+      setMessages((prev) => [
+        ...prev.map((m) =>
           m.id === messageId ? { ...m, conceptSelectable: false } : m,
         ),
-      );
+        { id: typingId, role: "assistant" as const, text: "", status: "typing" as const },
+      ]);
+
       try {
-        await selectConcept({ projectId, body: { selectedIndex: index } });
-      } catch {
-        console.error("컨셉 선택 실패");
+        const response = await selectConcept({ projectId, body: { selectedIndex: index } });
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === typingId
+              ? {
+                  ...m,
+                  status: "done" as const,
+                  text: response.content,
+                  imageKeys: response.imageKeys.length > 0 ? response.imageKeys : undefined,
+                }
+              : m,
+          ),
+        );
+        if (response.imageKeys.length > 0) {
+          queryClient.invalidateQueries({ queryKey: queryKeys.project.all });
+        }
+      } catch (error) {
+        const text = isAxiosError(error)
+          ? (error.response?.data?.reason ?? "오류가 발생했습니다. 다시 시도해주세요.")
+          : "오류가 발생했습니다. 다시 시도해주세요.";
+        setMessages((prev) =>
+          prev.map((m) =>
+            m.id === typingId ? { ...m, status: "done" as const, text } : m,
+          ),
+        );
       }
     },
     [projectId, selectConcept],
@@ -274,7 +309,7 @@ const ChatContainer = ({ projectId }: ChatContainerProps) => {
       </div>
 
       <div className="flex flex-col gap-[0.65rem] items-center mt-5">
-        <ChatInput onSend={(payload) => sendUserMessage(payload)} />
+        <ChatInput onSend={(payload) => sendUserMessage(payload)} disabled={isPendingConceptSelect} />
         <span className="Caption_medium text-Grey-500">{t("disclaimer")}</span>
       </div>
 

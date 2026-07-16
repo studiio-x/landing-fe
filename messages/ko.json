@@ -175,6 +175,7 @@
       },
       "editModeGuide": "수정하고 싶은 모든 부분을 표시해 주세요.",
       "uploadedImageAlt": "업로드 이미지",
+      "retry": "다시 시도",
       "emptyState": {
         "title": "추천 아이디어",
         "ideas": {

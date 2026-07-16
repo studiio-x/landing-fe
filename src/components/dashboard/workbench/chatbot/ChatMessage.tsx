@@ -50,6 +50,7 @@ const ConceptImageGrid = ({
                 alt={t("attachmentAlt")}
                 className="w-[8.25rem] h-[8.25rem] object-cover"
                 loading="lazy"
+                unoptimized
               />
             </div>
           </button>
@@ -156,19 +157,30 @@ const ChatMessageList = ({
                 )}
 
                 {hasImageKeys && !m.conceptSelectable && (
-                  <div className="grid grid-cols-2 gap-2">
-                    {m.imageKeys!.map((key) => (
-                      <Image
-                        key={key}
-                        src={key}
-                        width={132}
-                        height={132}
-                        alt={t("attachmentAlt")}
-                        className="w-[8.25rem] h-[8.25rem] rounded object-cover"
-                        loading="lazy"
-                      />
-                    ))}
-                  </div>
+                  m.imageKeys!.length === 1 ? (
+                    <Image
+                      src={m.imageKeys![0]}
+                      width={272}
+                      height={272}
+                      alt={t("attachmentAlt")}
+                      className="w-[17rem] h-[17rem] rounded object-cover"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="grid grid-cols-2 gap-2 w-[17rem]">
+                      {m.imageKeys!.map((key) => (
+                        <Image
+                          key={key}
+                          src={key}
+                          width={132}
+                          height={132}
+                          alt={t("attachmentAlt")}
+                          className="w-[8.25rem] h-[8.25rem] rounded object-cover"
+                          loading="lazy"
+                        />
+                      ))}
+                    </div>
+                  )
                 )}
               </div>
             )}
