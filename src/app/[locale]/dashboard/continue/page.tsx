@@ -2,17 +2,22 @@
 
 import { Back } from "@/assets/icons";
 import Header from "@/components/dashboard/Header";
-import FolderItem from "@/components/dashboard/project/FolderItem";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
-import { mockData } from "@/mocks/dashboard/continue.mock";
 import AlertModal from "@/components/common/AlertModal";
+import FolderItemContainer from "@/components/dashboard/project/FolderItemContainer";
+import { useGetFolders } from "@/hooks/queries/useFolderApi";
 
 const ContinuePage = () => {
   const router = useRouter();
   const t = useTranslations("dashboard");
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const { data: foldersData } = useGetFolders();
+  const folders = [
+    ...(foldersData?.myProject ?? []),
+    ...(foldersData?.sharedProject ?? []),
+  ];
 
   return (
     <div className="flex flex-col min-h-dvh relative">
@@ -39,10 +44,11 @@ const ContinuePage = () => {
 
         <section aria-label={t("continue.badge")}>
           <ul className="grid grid-cols-3 gap-x-9 gap-y-11">
-            {mockData.map((item, index) => (
-              <li key={index}>
-                <FolderItem
-                  lists={item}
+            {folders.map((folder, index) => (
+              <li key={folder.folderId}>
+                <FolderItemContainer
+                  folderId={folder.folderId}
+                  name={folder.name}
                   index={index}
                   setDeleteModalOpen={setDeleteModalOpen}
                 />

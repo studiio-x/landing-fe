@@ -32,8 +32,7 @@ const DashboardCard = ({
         }
       }}
       className={clsx(
-        "h-[12.5rem] w-[19.25rem] group rounded bg-gradient-to-b p-px",
-        isInteractive && "cursor-pointer",
+        "h-[12.5rem] w-[19.25rem] group rounded bg-gradient-to-b p-px cursor-pointer",
         {
           "from-Grey-300 to-Grey-700 hover:from-Red-350 hover:to-Red-500":
             !isActive,

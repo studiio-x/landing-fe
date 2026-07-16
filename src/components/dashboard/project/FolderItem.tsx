@@ -13,9 +13,10 @@ interface FolderItemProps {
   };
   index: number;
   setDeleteModalOpen: (open: boolean) => void;
+  onClick?: () => void;
 }
 
-const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
+const FolderItem = ({ lists, index, setDeleteModalOpen, onClick }: FolderItemProps) => {
   const [isOpenMeatball, setIsOpenMeatball] = useState(false);
   const [renameModalOpen, setRenameModalOpen] = useState(false);
   const [name, setName] = useState<string>(lists.name);
@@ -82,7 +83,7 @@ const FolderItem = ({ lists, index, setDeleteModalOpen }: FolderItemProps) => {
   }, [name, rename, adjustTextareaHeight]);
 
   return (
-    <div key={index} className="relative w-[19.25rem]">
+    <div key={index} className="relative w-[19.25rem] cursor-pointer" onClick={onClick}>
       {lists.isFolder ? (
         <Folder className="w-[19.25rem] h-50" />
       ) : (
