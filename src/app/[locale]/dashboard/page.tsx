@@ -31,7 +31,7 @@ const DashboardPage = () => {
   const { data, isLoading } = useTemplatesByCategory(
     {
       category: category ?? "STUDIO",
-      pageNum: 1,
+      pageNum: 0,
       limit: 20,
     },
     category !== null,
