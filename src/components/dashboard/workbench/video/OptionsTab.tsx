@@ -28,7 +28,7 @@ const OptionsTab = ({ uploadedImage }: OptionsTabProps) => {
       <div
         role="radiogroup"
         aria-label={t("qualityAriaLabel")}
-        className="mt-3 mb-5 flex gap-[0.625rem] w-full"
+        className="mt-3 mb-5 flex gap-2.5 w-full"
       >
         {QUALITY_OPTIONS.map(({ key, credits, labelKey, icon: Icon }) => {
           const isSelected = selected === key;
@@ -46,13 +46,13 @@ const OptionsTab = ({ uploadedImage }: OptionsTabProps) => {
               onMouseEnter={() => setHovered(key)}
               onMouseLeave={() => setHovered(null)}
               className={clsx(
-                "w-1/2 bg-gradient-to-b p-px rounded",
+                "w-1/2 bg-linear-to-b p-px rounded",
                 isSelected
                   ? "from-Red-350 to-Red-500"
                   : "from-Grey-300 to-Grey-700 hover:from-Red-350 hover:to-Red-500",
               )}
             >
-              <div className="flex flex-col gap-1 items-center rounded bg-Grey-800 h-full justify-center pt-[0.81rem] pb-[0.9375rem] px-[1.12rem]">
+              <div className="flex flex-col gap-1 items-center rounded bg-Grey-800 h-full justify-center pt-[0.81rem] pb-3.75 px-[1.12rem]">
                 <div className="flex items-center gap-1">
                   {Icon && (
                     <Icon
@@ -86,7 +86,7 @@ const OptionsTab = ({ uploadedImage }: OptionsTabProps) => {
       <div
         className={clsx(
           "grid grid-cols-3 gap-3 overflow-y-auto",
-          locale === "ko" ? "max-h-[366px]" : "max-h-[350px]",
+          locale === "ko" ? "max-h-91.5" : "max-h-87.5",
         )}
       >
         {ACTION_OPTIONS.map(({ key, label }) => (
@@ -107,7 +107,7 @@ const OptionsTab = ({ uploadedImage }: OptionsTabProps) => {
           gap="sm"
           type="button"
           className="Body_3_semibold"
-          leftIcon={<Plus className="w-[1.375rem] h-[1.375rem]" />}
+          leftIcon={<Plus className="w-5.5 h-5.5" />}
         >
           {t("uploadBackground")}
         </GlassButton>

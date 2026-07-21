@@ -49,7 +49,7 @@ const ProductTab = ({ setUploadedImage }: ProductTabProps) => {
   };
 
   return (
-    <div className="relative w-full h-[35.1875rem] mt-[1.88rem] rounded-lg">
+    <div className="relative w-full h-140.75 mt-[1.88rem] rounded-lg">
       <svg
         className="absolute inset-0 w-full h-full pointer-events-none"
         viewBox="0 0 100 100"

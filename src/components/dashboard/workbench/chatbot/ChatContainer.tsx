@@ -276,12 +276,12 @@ const ChatContainer = ({ projectId }: ChatContainerProps) => {
   }, [messages]);
 
   return (
-    <div className="relative w-[24.75rem] h-[35.8125rem] rounded-lg border border-Grey-600 bg-Grey-900 p-5 pb-4 flex flex-col overflow-hidden">
+    <div className="relative w-99 h-143.25 rounded-lg border border-Grey-600 bg-Grey-900 p-5 pb-4 flex flex-col overflow-hidden">
       <div className="flex gap-1 flex-col pb-2 border-b border-Grey-600 shrink-0">
         <div className="flex gap-3 items-center">
-          <div className="rounded-full h-[3.25rem] w-[3.25rem] p-[1px] bg-gradient-to-b from-Grey-400 to-Grey-700">
+          <div className="rounded-full h-13 w-13 p-px bg-linear-to-b from-Grey-400 to-Grey-700">
             <div className="h-full w-full rounded-full bg-Black flex items-center justify-center">
-              <LogoRed className="w-[2.0625rem] h-[0.4368rem]" />
+              <LogoRed className="w-8.25 h-[0.4368rem]" />
             </div>
           </div>
           <span className="Subhead_2_semibold text-Grey-100">{t("title")}</span>

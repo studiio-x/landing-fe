@@ -52,14 +52,14 @@ const OtpInput = ({ length, value, onChange, ariaLabel }: OtpInputProps) => {
   };
 
   return (
-    <div className="flex gap-5 justify-between mx-[2px]" role="group" aria-label={ariaLabel}>
+    <div className="flex gap-5 justify-between mx-0.5" role="group" aria-label={ariaLabel}>
       {digits.slice(0, length).map((digit, index) => (
         <div
           key={index}
           className={clsx(
-            "rounded p-[1px] flex-1",
+            "rounded p-px flex-1",
             isFocused && activeIndex === index
-              ? "bg-gradient-to-b from-[rgba(255,48,48,0.45)] to-[rgba(255,48,48,0.15)]"
+              ? "bg-linear-to-b from-[rgba(255,48,48,0.45)] to-[rgba(255,48,48,0.15)]"
               : "bg-transparent",
           )}
         >
@@ -77,7 +77,7 @@ const OtpInput = ({ length, value, onChange, ariaLabel }: OtpInputProps) => {
             onBlur={() => setIsFocused(false)}
             onPaste={index === 0 ? handlePaste : undefined}
             className={clsx(
-              "bg-Grey-800 rounded text-center py-3 px-4 w-[2.625rem]",
+              "bg-Grey-800 rounded text-center py-3 px-4 w-10.5",
               "text-Grey-100 Body_2_semibold",
               "focus:outline-none",
               "caret-transparent",

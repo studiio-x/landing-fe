@@ -11,7 +11,7 @@ const MyPageTabs = ({ activeTab, onChangeTab }: MyPageTabsProps) => {
   return (
     <nav
       aria-label="마이페이지 탭"
-      className="w-[14.375rem] bg-Grey-700 border-r border-Grey-600 rounded-l-lg"
+      className="w-57.5 bg-Grey-700 border-r border-Grey-600 rounded-l-lg"
     >
       <ul className="flex flex-col gap-1">
         {MYPAGE_TABS.map((tab, idx) => {

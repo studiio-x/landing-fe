@@ -55,7 +55,7 @@ export default function SideBar() {
   };
 
   return (
-    <aside className="bg-Grey-800 max-w-[17.625rem] w-full left-0 sticky top-[var(--header-height)] h-[calc(100vh-var(--header-height))] px-7 pt-7 pb-[3.25rem] border-r border-Grey-600">
+    <aside className="bg-Grey-800 max-w-70.5 w-full left-0 sticky top-(--header-height) h-[calc(100vh-var(--header-height))] px-7 pt-7 pb-13 border-r border-Grey-600">
       <div className="flex flex-col h-full">
         {PAGE_NAMES.map((pageName, index) => {
           const isActive = currentPage === pageName;
@@ -91,7 +91,7 @@ export default function SideBar() {
           >
             내 프로젝트
           </ProjectListItem>
-          <span className="self-end w-[11.625rem] h-px bg-Grey-700" />
+          <span className="self-end w-46.5 h-px bg-Grey-700" />
           <ProjectListItem isShareOpen={isShareOpen} onClick={shareOnClick}>
             공유된 프로젝트
           </ProjectListItem>
@@ -99,7 +99,7 @@ export default function SideBar() {
           {/* 공유된 프로젝트 리스트 */}
           {isShareOpen && (
             <>
-              <span className="self-end w-[11.625rem] h-px bg-Grey-700" />
+              <span className="self-end w-46.5 h-px bg-Grey-700" />
               {mockSharedProjects.map((project, index) => (
                 <motion.button
                   key={index}
@@ -118,7 +118,7 @@ export default function SideBar() {
                     {project.name}의 프로젝트
                   </div>
                   {sharedProjectFromQuery === project.name && (
-                    <Check className="w-[1.25rem] justify-self-end" />
+                    <Check className="w-5 justify-self-end" />
                   )}
                 </motion.button>
               ))}

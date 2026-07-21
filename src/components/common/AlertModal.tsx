@@ -55,7 +55,7 @@ const AlertModal = ({
 
         <button
           onClick={onClose}
-          className="absolute right-5 top-6 !aspect-[1] cursor-pointer"
+          className="absolute right-5 top-6 aspect-[1]! cursor-pointer"
           aria-label="Close"
           type="button"
         >
@@ -63,14 +63,20 @@ const AlertModal = ({
         </button>
       </header>
 
-      <div className="flex flex-col w-[26rem] items-center gap-8 relative flex-[0_0_auto]">
+      <div className="flex flex-col w-104 items-center gap-8 relative flex-[0_0_auto]">
         <div className="flex flex-col items-start gap-4 self-stretch w-full relative flex-[0_0_auto]">
-          <div className="w-full h-[0.0625rem] bg-Grey-600" />
+          <div className="w-full h-px bg-Grey-600" />
 
           {Array.isArray(description) ? (
-            <div id="modal-description" className="flex flex-col gap-3 self-stretch">
+            <div
+              id="modal-description"
+              className="flex flex-col gap-3 self-stretch"
+            >
               {description.map((desc, i) => (
-                <p key={i} className="text-Grey-300 Body_1_medium whitespace-pre-line">
+                <p
+                  key={i}
+                  className="text-Grey-300 Body_1_medium whitespace-pre-line"
+                >
                   {desc}
                 </p>
               ))}
@@ -91,7 +97,7 @@ const AlertModal = ({
               key={button.label}
               variant={button.variant ?? "default"}
               onClick={button.onClick}
-              className="flex items-center justify-center flex-1 grow !h-[2.9375rem]"
+              className="flex items-center justify-center flex-1 grow h-11.75!"
               type="button"
             >
               {button.label}

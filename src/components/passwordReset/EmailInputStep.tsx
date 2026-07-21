@@ -20,7 +20,7 @@ const EmailInputStep = ({ email: initialEmail, isLoading, onNext }: EmailInputSt
   };
 
   return (
-    <div className="my-[2.3125rem]">
+    <div className="my-9.25">
       <div className="Heading_3_semibold text-Grey-50 mb-3">{t("title")}</div>
       <span className="Body_2_medium text-Grey-300">{t("description")}</span>
       

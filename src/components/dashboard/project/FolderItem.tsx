@@ -83,11 +83,11 @@ const FolderItem = ({ lists, index, setDeleteModalOpen, onClick }: FolderItemPro
   }, [name, rename, adjustTextareaHeight]);
 
   return (
-    <div key={index} className="relative w-[19.25rem] cursor-pointer" onClick={onClick}>
+    <div key={index} className="relative w-77 cursor-pointer" onClick={onClick}>
       {lists.isFolder ? (
-        <Folder className="w-[19.25rem] h-50" />
+        <Folder className="w-77 h-50" />
       ) : (
-        <NotFolder className="w-[19.25rem] h-50" />
+        <NotFolder className="w-77 h-50" />
       )}
 
       {lists.isFolder && (
@@ -101,11 +101,11 @@ const FolderItem = ({ lists, index, setDeleteModalOpen, onClick }: FolderItemPro
       )}
 
       <div
-        className={`${lists.isFolder ? "flex top-[2.5625rem] gap-4 w-fit" : "w-[18.25rem] h-[calc(100%-0.875rem)] top-[0.44rem]"} left-[0.5rem] absolute`}
+        className={`${lists.isFolder ? "flex top-10.25 gap-4 w-fit" : "w-73 h-[calc(100%-0.875rem)] top-[0.44rem]"} left-2 absolute`}
       >
         {lists.isFolder ? (
           <div
-            className="grid gap-[0.125rem]"
+            className="grid gap-0.5"
             style={{
               gridTemplateColumns: "49px 49px 49px",
               gridTemplateRows: "49px 49px 49px",
@@ -118,7 +118,7 @@ const FolderItem = ({ lists, index, setDeleteModalOpen, onClick }: FolderItemPro
                 alt="대시보드 이미지"
                 width={92}
                 height={92}
-                className={clsx("w-full h-full object-cover rounded-[2px]", {
+                className={clsx("w-full h-full object-cover rounded-xs", {
                   "col-span-2 row-span-2": idx === 0,
                 })}
               />
@@ -131,13 +131,13 @@ const FolderItem = ({ lists, index, setDeleteModalOpen, onClick }: FolderItemPro
               alt="폴더이미지"
               width={292}
               height={292}
-              className="object-cover w-[18.25rem] h-full"
+              className="object-cover w-73 h-full"
             />
           </div>
         )}
 
         <div
-          className={`${lists.isFolder ? "w-[7.75rem] relative" : "w-[18.25rem] bg-gradient-to-b from-Grey-900/70 to-Grey-800/70 absolute bottom-0 left-0 backdrop-blur-lg pt-1.5 pl-2 gap-1"} flex flex-col text-Grey-50 `}
+          className={`${lists.isFolder ? "w-31 relative" : "w-73 bg-linear-to-b from-Grey-900/70 to-Grey-800/70 absolute bottom-0 left-0 backdrop-blur-lg pt-1.5 pl-2 gap-1"} flex flex-col text-Grey-50 `}
         >
           {!lists.isFolder && (
             <span

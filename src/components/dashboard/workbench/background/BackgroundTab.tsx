@@ -95,7 +95,7 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, onGener
       <div
         className={clsx(
           "flex flex-col gap-4 overflow-y-auto",
-          isSearching ? "h-[413px]" : "h-[452px]"
+          isSearching ? "h-103.25" : "h-113"
         )}
       >
         {searchKeyword ? (
@@ -132,7 +132,7 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, onGener
           size="md"
           gap="sm"
           className="Body_3_semibold"
-          leftIcon={<Plus className="w-[1.375rem] h-[1.375rem]" />}
+          leftIcon={<Plus className="w-5.5 h-5.5" />}
         >
           {t("uploadBackground")}
         </GlassButton>

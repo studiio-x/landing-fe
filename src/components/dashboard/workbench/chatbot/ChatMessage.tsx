@@ -28,7 +28,7 @@ const ConceptImageGrid = ({
   const [btnHovered, setBtnHovered] = useState(false);
 
   return (
-    <div className="flex flex-col gap-2 w-[17rem]">
+    <div className="flex flex-col gap-2 w-68">
       <div className="grid grid-cols-2 gap-2">
         {imageKeys.map((key, index) => (
           <button
@@ -38,7 +38,7 @@ const ConceptImageGrid = ({
             className={clsx(
               "rounded p-[1.5px] transition-colors",
               selectedIndex === index
-                ? "bg-gradient-to-b from-Red-350 to-Red-500"
+                ? "bg-linear-to-b from-Red-350 to-Red-500"
                 : "bg-Grey-800",
             )}
           >
@@ -48,7 +48,7 @@ const ConceptImageGrid = ({
                 width={132}
                 height={132}
                 alt={t("attachmentAlt")}
-                className="w-[8.25rem] h-[8.25rem] object-cover"
+                className="w-33 h-33 object-cover"
                 loading="lazy"
                 unoptimized
               />
@@ -59,7 +59,7 @@ const ConceptImageGrid = ({
 
       <div
         className={clsx(
-          "w-[8.8125rem] p-[1px] rounded-[36px] bg-gradient-to-b transition-all",
+          "w-35.25 p-px rounded-[36px] bg-linear-to-b transition-all",
           selectedIndex !== null
             ? "from-Grey-50/25 to-Grey-800/25 hover:from-Red-300/25 hover:to-Red-500/25"
             : "from-Grey-50/25 to-Grey-800/25",
@@ -128,7 +128,7 @@ const ChatMessageList = ({
                         key={a.id}
                         src={a.imageUrl}
                         alt={t("attachmentAlt")}
-                        className="w-[8.25rem] h-[8.25rem] rounded object-cover"
+                        className="w-33 h-33 rounded object-cover"
                         loading="lazy"
                       />
                     ))}
@@ -163,11 +163,11 @@ const ChatMessageList = ({
                       width={272}
                       height={272}
                       alt={t("attachmentAlt")}
-                      className="w-[17rem] h-[17rem] rounded object-cover"
+                      className="w-68 h-68 rounded object-cover"
                       loading="lazy"
                     />
                   ) : (
-                    <div className="grid grid-cols-2 gap-2 w-[17rem]">
+                    <div className="grid grid-cols-2 gap-2 w-68">
                       {m.imageKeys!.map((key) => (
                         <Image
                           key={key}
@@ -175,7 +175,7 @@ const ChatMessageList = ({
                           width={132}
                           height={132}
                           alt={t("attachmentAlt")}
-                          className="w-[8.25rem] h-[8.25rem] rounded object-cover"
+                          className="w-33 h-33 rounded object-cover"
                           loading="lazy"
                         />
                       ))}

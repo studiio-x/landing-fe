@@ -70,7 +70,13 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   } = useImageUploadAndCutout(folderId);
 
   const handleTabChange = (nextIdx: number) => {
+    const isBackgroundTab = nextIdx === 1 && mode !== "video";
     const isChatbotTab = nextIdx === 2;
+
+    if (isBackgroundTab && !cutoutImageObjectKey) {
+      setIsProductImageRequiredOpen(true);
+      return;
+    }
 
     if (isChatbotTab && !uploadedImage) {
       setIsProductImageRequiredOpen(true);
@@ -123,7 +129,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
         />
       </div>
 
-      <div className="relative ml-[1.75rem] w-[36.875rem] h-[40.375rem] rounded-lg">
+      <div className="relative ml-7 w-147.5 h-161.5 rounded-lg">
         {isEditMode && !hasPaint && (
           <div className="absolute left-1/2 bottom-6 -translate-x-1/2 z-40">
             <div className="rounded-md bg-Grey-900 px-6 py-2 Subhead_2_medium text-White whitespace-nowrap">

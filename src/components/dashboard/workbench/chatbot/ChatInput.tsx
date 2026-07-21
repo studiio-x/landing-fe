@@ -68,11 +68,11 @@ const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
   return (
     <div
       className={clsx(
-        "relative rounded-md p-[1px]",
+        "relative rounded-md p-px",
         disabled
           ? "opacity-40 cursor-not-allowed"
           : hasValue
-            ? "bg-gradient-to-b from-Red-500/45 to-Red-500/15"
+            ? "bg-linear-to-b from-Red-500/45 to-Red-500/15"
             : "bg-transparent",
       )}
     >
@@ -85,10 +85,10 @@ const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
           placeholder={t("inputPlaceholder")}
           rows={1}
           disabled={disabled}
-          className="w-[16.375rem] pt-[2px] bg-transparent min-h-6 max-h-20 placeholder:text-Grey-400 text-Grey-100 resize-none outline-none Body_3_medium disabled:cursor-not-allowed"
+          className="w-65.5 pt-0.5 bg-transparent min-h-6 max-h-20 placeholder:text-Grey-400 text-Grey-100 resize-none outline-none Body_3_medium disabled:cursor-not-allowed"
         />
 
-        <div className="flex items-start gap-[0.625rem]">
+        <div className="flex items-start gap-2.5">
           <PlusMenu
             onUploadImage={handleUploadReferenceImage}
             onClickMark={() => {

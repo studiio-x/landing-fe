@@ -36,9 +36,9 @@ const DropDown = ({
             "Body_2_medium  p-[0.5rem_0.65rem_0.5rem_1.25rem]",
           type === "lang" && "Caption_medium",
           type === "array" &&
-            "bg-[rgba(255,255,255,0.05)] rounded-[5rem] gap-[0.25rem]",
+            "bg-[rgba(255,255,255,0.05)] rounded-[5rem] gap-1",
           type === "auth" && "Caption_medium ",
-          type === "lang" && "bg-[rgba(255,255,255,0.1)] rounded-[0.25rem]",
+          type === "lang" && "bg-[rgba(255,255,255,0.1)] rounded-4",
           isOpen ? "text-Grey-400" : "text-Grey-200",
         )}
       >
