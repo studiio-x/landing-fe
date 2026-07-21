@@ -57,9 +57,9 @@ const DashboardPage = () => {
 
       <div className="flex">
         <SideBar />
-        <div className="mx-auto mt-[3.25rem]">
-          <div className="w-full flex flex-col pr-[2.125rem] gap-[1.94rem]">
-            <h1 className="Heading_1_bold bg-gradient-to-b from-Red-300 to-Red-500 bg-clip-text text-transparent">
+        <div className="mx-auto mt-13">
+          <div className="w-full flex flex-col pr-8.5 gap-[1.94rem]">
+            <h1 className="Heading_1_bold bg-linear-to-b from-Red-300 to-Red-500 bg-clip-text text-transparent">
               {t("title")}
             </h1>
 
@@ -84,7 +84,7 @@ const DashboardPage = () => {
               </div>
 
               {activeIndex !== null && (
-                <section className="mt-[3.44rem] mb-[3.75rem]">
+                <section className="mt-[3.44rem] mb-15">
                   <h2 className="text-Grey-100 Subhead_1_semibold mb-4 ml-4">
                     {t("template.sectionTitle")}
                   </h2>
@@ -100,7 +100,7 @@ const DashboardPage = () => {
                           ? Array.from({ length: 15 }, (_, i) => (
                               <div
                                 key={`skeleton-${i}`}
-                                className="w-[11rem] h-[11rem] rounded overflow-hidden"
+                                className="w-44 h-44 rounded overflow-hidden"
                               >
                                 <div className="w-full h-full bg-Grey-600 animate-pulse" />
                               </div>
@@ -110,7 +110,7 @@ const DashboardPage = () => {
                                 key={template.templateId}
                                 tabIndex={0}
                                 role="button"
-                                className="w-[11rem] h-[11rem] relative aspect-square rounded overflow-hidden bg-Grey-200 group box-border border border-transparent hover:border-Red-400"
+                                className="w-44 h-44 relative aspect-square rounded overflow-hidden bg-Grey-200 group box-border border border-transparent hover:border-Red-400"
                                 onClick={() =>
                                   handleTemplateClick(template.templateId)
                                 }

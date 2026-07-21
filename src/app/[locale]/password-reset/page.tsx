@@ -46,8 +46,8 @@ const PasswordResetPage = () => {
     <div className="min-h-dvh flex flex-col">
       <Header />
 
-      <main className="flex flex-col items-center justify-center flex-1 pb-[var(--header-height)]">
-        <div className="h-fit max-w-[28.75rem] w-full rounded-lg bg-gradient-to-b from-Red-500/35 to-Red-500/15 p-[1.5px] shadow-[0_0_8px_0_rgba(255,82,82,0.10),0_0_20px_0_rgba(8,8,8,0.12)]">
+      <main className="flex flex-col items-center justify-center flex-1 pb-(--header-height)">
+        <div className="h-fit max-w-115 w-full rounded-lg bg-linear-to-b from-Red-500/35 to-Red-500/15 p-[1.5px] shadow-[0_0_8px_0_rgba(255,82,82,0.10),0_0_20px_0_rgba(8,8,8,0.12)]">
           <div className="pt-10 pb-12 px-[3.15625rem] rounded-[calc(0.5rem-1.5px)] bg-Grey-900 relative">
             <button
               onClick={() =>

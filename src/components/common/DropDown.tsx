@@ -57,7 +57,7 @@ const DropDown = ({
           )}
         >
           <ul
-            className={clsx(type === "array" && "gap-[0.5rem] flex flex-col")}
+            className={clsx(type === "array" && "gap-2 flex flex-col")}
           >
             {(type === "array"
               ? ARRAY_OPTIONS

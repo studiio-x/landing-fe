@@ -21,13 +21,13 @@ const MetricsSection = () => {
   ];
 
   return (
-    <div className="mt-[3.5rem] flex flex-col gap-7 lg:flex-row w-full items-center">
+    <div className="mt-14 flex flex-col gap-7 lg:flex-row w-full items-center">
       {metrics.map((metric, index) => (
         <div
           key={index}
-          className="w-full flex-1 rounded-[0.75rem] bg-gradient-to-b from-[#FF8686]/50 to-[#1D2025]/50 p-[1px]"
+          className="w-full flex-1 rounded-[0.75rem] bg-linear-to-b from-[#FF8686]/50 to-[#1D2025]/50 p-px"
         >
-          <div className="flex w-full py-[3.25rem] flex-col items-center justify-center rounded-[0.75rem] bg-[rgb(23,24,27)]">
+          <div className="flex w-full py-13 flex-col items-center justify-center rounded-[0.75rem] bg-[rgb(23,24,27)]">
             <div className="font-calSans text-5xl sm:text-[4rem] lg:text-[5rem]">
               {metric.value}
             </div>
@@ -60,7 +60,7 @@ const ContactSection = () => {
   return (
     <section
       id="contact"
-      className="flex flex-col items-center pt-14 mb-[12.5rem]"
+      className="flex flex-col items-center pt-14 mb-50"
     >
       <div className="Body_2_medium rounded-full bg-[rgba(255,255,255,0.03)] px-5 py-2 mb-6">
         Our Users
@@ -68,13 +68,13 @@ const ContactSection = () => {
       <div className="font-calSans  text-[1.75rem] lg:text-[3rem] mb-2">
         Contact Us
       </div>
-      <div className="Body_2_medium lg:Subhead_1_medium text-Grey-400 mb-[3.75rem]">
+      <div className="Body_2_medium lg:Subhead_1_medium text-Grey-400 mb-15">
         We Are Just A Massage Away
       </div>
       <div className="flex flex-col w-full items-center">
         {contactItems.map((item, index) => (
           <div
-            className="flex-1 w-full bg-Grey-800 px-10 py-6 flex justify-between items-center rounded-[0.625rem] max-w-[40rem] mb-5 Body_2_medium sm:Subhead_1_medium"
+            className="flex-1 w-full bg-Grey-800 px-10 py-6 flex justify-between items-center rounded-[0.625rem] max-w-160 mb-5 Body_2_medium sm:Subhead_1_medium"
             key={index}
           >
             {item.label}
@@ -117,8 +117,8 @@ const GuidePage = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="2xl:px-[6.12rem] lg:px-8 sm:px-[1.5rem] px-4">
-          <section className="mb-[11.75rem] flex flex-col items-center gap-8 pt-20">
+        <div className="2xl:px-[6.12rem] lg:px-8 sm:px-6 px-4">
+          <section className="mb-47 flex flex-col items-center gap-8 pt-20">
             <div className="text-center font-calSans  text-[2rem] sm:text-[2rem] lg:text-[3rem]">
               StudioX <br /> Create Ads, Skip the Cost.
             </div>
@@ -127,7 +127,7 @@ const GuidePage = () => {
               turns your products into ad-ready creatives.
             </div>
             <OpenBtn />
-            <div className="mt-[4.25rem] max-h-[30rem] max-w-[60rem] min-2 bg-Grey-700">
+            <div className="mt-17 max-h-120 max-w-240 min-2 bg-Grey-700">
               <video
                 autoPlay
                 loop
@@ -235,7 +235,7 @@ const GuidePage = () => {
                       key={index}
                       src={url}
                       alt={`Portfolio item ${index}`}
-                      className="w-[18rem] h-[21rem] rounded-xl object-cover shrink-0"
+                      className="w-[18rem] h-84 rounded-xl object-cover shrink-0"
                     />
                   ))}
                 </Marquee>
