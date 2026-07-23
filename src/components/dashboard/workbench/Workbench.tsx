@@ -34,15 +34,10 @@ const Workbench = ({ mode }: WorkbenchProps) => {
 
   const imageContainerRef = useRef<HTMLElement>(null);
 
-  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(
     null,
   );
   const [isGenerating, setIsGenerating] = useState(false);
-  const [isCutoutImageLoading, setIsCutoutImageLoading] = useState(false);
-  const [isErrorVisible, setIsErrorVisible] = useState(false);
 
   const searchParams = useSearchParams();
   const folderIdParam = searchParams.get("folderId");
@@ -61,13 +56,17 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   }));
 
   const {
+    uploadedImage,
+    setUploadedImage,
+    previewUrl,
     isProcessing,
+    isCutoutImageLoading,
+    setIsCutoutImageLoading,
     cutoutImageUrl,
     cutoutImageObjectKey,
     projectId,
     cutoutError,
-    uploadAndCutout,
-    resetCutout,
+    isErrorVisible,
   } = useImageUploadAndCutout(folderId);
 
   const handleTabChange = (nextIdx: number) => {
@@ -90,38 +89,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   useEffect(() => {
     setNaturalSize(null);
     setGeneratedImageUrl(null);
-    setIsCutoutImageLoading(false);
-    if (!uploadedImage) {
-      setPreviewUrl(null);
-      resetCutout();
-      return;
-    }
-
-    const url = URL.createObjectURL(uploadedImage);
-    setPreviewUrl(url);
-    uploadAndCutout(uploadedImage);
-
-    return () => {
-      URL.revokeObjectURL(url);
-    };
   }, [uploadedImage]);
-
-  useEffect(() => {
-    if (cutoutImageUrl) setIsCutoutImageLoading(true);
-  }, [cutoutImageUrl]);
-
-  useEffect(() => {
-    if (!cutoutError) return;
-    setIsErrorVisible(true);
-
-    const fadeTimer = setTimeout(() => setIsErrorVisible(false), 1500);
-    const resetTimer = setTimeout(() => setUploadedImage(null), 1800);
-
-    return () => {
-      clearTimeout(fadeTimer);
-      clearTimeout(resetTimer);
-    };
-  }, [cutoutError]);
 
   return (
     <div className="flex justify-center w-full">

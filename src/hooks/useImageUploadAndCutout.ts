@@ -1,16 +1,24 @@
 import { isAxiosError } from "axios";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { getRawPresign, postCutoutImage } from "@/apis/imageApi";
 
+const ERROR_FADE_DELAY_MS = 1500;
+const ERROR_FADE_DURATION_MS = 300;
+
 export const useImageUploadAndCutout = (folderId: number) => {
+  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isCutoutImageLoading, setIsCutoutImageLoading] = useState(false);
   const [cutoutImageUrl, setCutoutImageUrl] = useState<string | null>(null);
   const [cutoutImageObjectKey, setCutoutImageObjectKey] = useState<
     string | null
   >(null);
   const [projectId, setProjectId] = useState<number | null>(null);
   const [cutoutError, setCutoutError] = useState<string | null>(null);
+  const [isErrorVisible, setIsErrorVisible] = useState(false);
 
   const uploadAndCutout = useCallback(
     async (file: File) => {
@@ -63,13 +71,58 @@ export const useImageUploadAndCutout = (folderId: number) => {
     setCutoutError(null);
   }, []);
 
+  useEffect(() => {
+    setIsCutoutImageLoading(false);
+
+    if (!uploadedImage) {
+      setPreviewUrl(null);
+      resetCutout();
+      return;
+    }
+
+    const url = URL.createObjectURL(uploadedImage);
+    setPreviewUrl(url);
+    uploadAndCutout(uploadedImage);
+
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [uploadedImage, resetCutout, uploadAndCutout]);
+
+  useEffect(() => {
+    if (cutoutImageUrl) setIsCutoutImageLoading(true);
+  }, [cutoutImageUrl]);
+
+  useEffect(() => {
+    if (!cutoutError) return;
+    setIsErrorVisible(true);
+
+    const fadeTimer = setTimeout(
+      () => setIsErrorVisible(false),
+      ERROR_FADE_DELAY_MS,
+    );
+    const resetTimer = setTimeout(
+      () => setUploadedImage(null),
+      ERROR_FADE_DELAY_MS + ERROR_FADE_DURATION_MS,
+    );
+
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(resetTimer);
+    };
+  }, [cutoutError]);
+
   return {
+    uploadedImage,
+    setUploadedImage,
+    previewUrl,
     isProcessing,
+    isCutoutImageLoading,
+    setIsCutoutImageLoading,
     cutoutImageUrl,
     cutoutImageObjectKey,
     projectId,
     cutoutError,
-    uploadAndCutout,
-    resetCutout,
+    isErrorVisible,
   };
 };
