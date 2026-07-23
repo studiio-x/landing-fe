@@ -7,12 +7,12 @@ import { LANGUAGE_OPTIONS } from "@/constants/mypage/tab";
 import { LanguageOption, LanguageType} from "@/types/mypage/language.type";
 import LanguageItem from "./LanguageItem";
 
-type LanguageDropdownProps = {
+interface LanguageDropdownProps {
   value: LanguageType;
   options?: LanguageOption[];
   onChange: (value: LanguageType) => void;
   className?: string;
-};
+}
 
 const LanguageDropdown = ({
   value,

@@ -1,11 +1,11 @@
 import { LanguageOption } from "@/types/mypage/language.type";
 import clsx from "clsx";
 
-type LanguageItemProps = {
+interface LanguageItemProps {
   option: LanguageOption;
   isSelected: boolean;
   onClick: () => void;
-};
+}
 
 const LanguageItem = ({ option, isSelected, onClick }: LanguageItemProps) => {
   return (

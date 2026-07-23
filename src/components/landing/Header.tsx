@@ -38,7 +38,7 @@ const Header = () => {
         {/* Logo & Desktop Navigation */}
         <div className="flex w-fit items-center">
           <Link href={PATHS.HOME}>
-            <Logo className="mr-12 w-[5.3125rem]" />
+            <Logo className="mr-12 w-21.25" />
           </Link>
           <nav className="Body_2_semibold hidden gap-10 lg:flex">
             {NAV_LINKS.map((link) => (
@@ -69,7 +69,7 @@ const Header = () => {
 
       {/* Mobile Menu Sidebar */}
       <aside
-        className={`fixed right-0 top-0 z-20 h-full w-[18.375rem] bg-Black px-5 pt-[3.75rem] transition-transform duration-500 lg:hidden ${
+        className={`fixed right-0 top-0 z-20 h-full w-73.5 bg-Black px-5 pt-15 transition-transform duration-500 lg:hidden ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -101,7 +101,7 @@ const Header = () => {
 const MenuButton = ({ onClick }: { onClick: () => void }) => (
   <button
     onClick={onClick}
-    className="h-fit w-fit rounded-[2.25rem] p-[1px] lg:hidden sm:bg-gradient-to-b sm:from-[#F1F4F8]/50 sm:to-[#1D2025]/50"
+    className="h-fit w-fit rounded-[2.25rem] p-px lg:hidden sm:bg-linear-to-b sm:from-[#F1F4F8]/50 sm:to-[#1D2025]/50"
     aria-label="Toggle menu"
   >
     <div className="h-full w-full rounded-[2.25rem] p-3 sm:bg-[rgb(23,24,27)]">

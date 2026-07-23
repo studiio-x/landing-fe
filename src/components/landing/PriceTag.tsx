@@ -30,9 +30,9 @@ const PriceTag = ({ plan, isMonthly }: PriceTagProps) => {
   return (
     <div
       className="
-        bg-Grey-800 rounded-lg py-8 px-5 w-full min-w-[18.7rem]  min-h-[46rem] group
+        bg-Grey-800 rounded-lg py-8 px-5 w-full min-w-[18.7rem]  min-h-184 group
         hover:shadow-[inset_0_0_0_1px_rgba(255,134,134,0.25)]
-        hover:bg-[radial-gradient(ellipse_400%_110%_at_0%_0%,_#1D2025_0%,_rgba(29,32,37,0.5)_26.99%,_rgba(29,32,37,0.25)_55.71%,_rgba(255,117,117,0.1)_100%)]
+        hover:bg-[radial-gradient(ellipse_400%_110%_at_0%_0%,#1D2025_0%,rgba(29,32,37,0.5)_26.99%,rgba(29,32,37,0.25)_55.71%,rgba(255,117,117,0.1)_100%)]
         transition-colors duration-300 ease-in-out
       "
     >
@@ -64,7 +64,7 @@ const PriceTag = ({ plan, isMonthly }: PriceTagProps) => {
           </div>
         )}
       </div>
-      <div className="w-full rounded-[2.25rem] bg-gradient-to-b from-[#F1F4F8]/30 to-[#1D2025]/50 p-[1px]">
+      <div className="w-full rounded-[2.25rem] bg-linear-to-b from-[#F1F4F8]/30 to-[#1D2025]/50 p-px">
         <button className="Body_2_semibold flex w-full items-center justify-center rounded-[2.25rem] bg-[rgb(37,39,44)] py-3">
           {plan.buttonText}
         </button>

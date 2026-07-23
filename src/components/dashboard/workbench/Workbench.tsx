@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import Image from "next/image";
+
 import { useTranslations } from "next-intl";
 
 import TabContent from "./TabContent";

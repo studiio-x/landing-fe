@@ -2,10 +2,10 @@ import clsx from "clsx";
 import { MYPAGE_TABS } from "@/constants/mypage/tab";
 import { TabKey } from "@/types/mypage/tab.type";
 
-type MyPageTabsProps = {
+interface MyPageTabsProps {
   activeTab: TabKey;
   onChangeTab: (tab: TabKey) => void;
-};
+}
 
 const MyPageTabs = ({ activeTab, onChangeTab }: MyPageTabsProps) => {
   return (

@@ -6,10 +6,10 @@ import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 import { usePaintCapture } from "@/hooks/usePaintCapture";
 import { clamp01, getContainedImageRect, inRect } from "@/utils/canvasUtils";
 
-type MarkCanvasProps = {
+interface MarkCanvasProps {
   imageContainerRef: React.RefObject<HTMLElement | null>;
   naturalSize: { w: number; h: number };
-};
+}
 
 const BRUSH = {
   radius: 40,

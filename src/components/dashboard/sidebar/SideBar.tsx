@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useActivePage } from "@/hooks/useActivePage";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import ProjectListItem from "./projectListItem";
+import ProjectListItem from "./ProjectListItem";
 import CreateButton from "./CreatButton";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PAGE_CONFIG } from "@/constants/dashboard/sideBar";
