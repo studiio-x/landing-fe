@@ -42,6 +42,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   );
   const [isGenerating, setIsGenerating] = useState(false);
   const [isCutoutImageLoading, setIsCutoutImageLoading] = useState(false);
+  const [isErrorVisible, setIsErrorVisible] = useState(false);
 
   const searchParams = useSearchParams();
   const folderIdParam = searchParams.get("folderId");
@@ -108,6 +109,19 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   useEffect(() => {
     if (cutoutImageUrl) setIsCutoutImageLoading(true);
   }, [cutoutImageUrl]);
+
+  useEffect(() => {
+    if (!cutoutError) return;
+    setIsErrorVisible(true);
+
+    const fadeTimer = setTimeout(() => setIsErrorVisible(false), 1500);
+    const resetTimer = setTimeout(() => setUploadedImage(null), 1800);
+
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(resetTimer);
+    };
+  }, [cutoutError]);
 
   return (
     <div className="flex justify-center w-full">
@@ -188,19 +202,14 @@ const Workbench = ({ mode }: WorkbenchProps) => {
               )}
 
               {cutoutError && !isProcessing && (
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-40 flex flex-col items-center gap-2">
+                <div
+                  className={`absolute bottom-6 left-1/2 -translate-x-1/2 z-40 transition-opacity duration-300 ${
+                    isErrorVisible ? "opacity-100" : "opacity-0"
+                  }`}
+                >
                   <div className="rounded-md bg-Grey-900 px-6 py-2 Subhead_2_medium text-White whitespace-nowrap">
                     {cutoutError}
                   </div>
-                  {uploadedImage && (
-                    <button
-                      type="button"
-                      onClick={() => uploadAndCutout(uploadedImage)}
-                      className="rounded-md bg-Red-500 hover:bg-Red-400 transition-colors px-6 py-2 Subhead_2_medium text-White whitespace-nowrap"
-                    >
-                      {t("retry")}
-                    </button>
-                  )}
                 </div>
               )}
 
