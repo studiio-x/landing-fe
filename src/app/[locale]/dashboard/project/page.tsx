@@ -8,7 +8,7 @@ import FolderItem from "@/components/dashboard/project/FolderItem";
 import GlassButton from "@/components/common/GlassButton";
 import DropDown from "@/components/common/DropDown";
 import useClickOutside from "@/hooks/useClickOutside";
-import CreatFolderModal from "@/components/dashboard/project/CreatFolderModal";
+import CreateFolderModal from "@/components/dashboard/project/CreateFolderModal";
 import AlertModal from "@/components/common/AlertModal";
 import InviteModal from "@/components/dashboard/project/InviteModal";
 
@@ -105,7 +105,7 @@ const ProjectPage = () => {
       </div>
 
       {/* 폴더 생성 모달 */}
-      <CreatFolderModal
+      <CreateFolderModal
         isOpen={createModalOpen}
         onClose={() => setCreateModalOpen(false)}
       />
@@ -149,7 +149,10 @@ const ProjectPage = () => {
               <span className="whitespace-nowrap Body_2_medium text-Grey-200">
                 {sharedProjectFromQuery ?? ""}의 프로젝트
               </span>
-              <button onClick={() => setInviteModalOpen(true)}>
+              <button
+                onClick={() => setInviteModalOpen(true)}
+                aria-label="프로젝트 초대"
+              >
                 {inviteModalOpen ? (
                   <Up className="w-6 h-6" color="#A9B4C6" />
                 ) : (

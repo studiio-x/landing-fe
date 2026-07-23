@@ -6,11 +6,14 @@ import clsx from "clsx";
 import InvitedUserItem from "./InvitedUserItem";
 import { MOCK_DATA_USERS } from "@/mocks/dashboard/user.mock";
 
-interface CreatFolderModalProps {
+interface CreateFolderModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
-export const CreatFolderModal = ({ isOpen, onClose }: CreatFolderModalProps) => {
+export const CreateFolderModal = ({
+  isOpen,
+  onClose,
+}: CreateFolderModalProps) => {
   const [folderName, setFolderName] = useState("");
   const [inviteEmail, setInviteEmail] = useState("");
   const [isFolderNameFocused, setIsFolderNameFocused] = useState(false);
@@ -37,11 +40,13 @@ export const CreatFolderModal = ({ isOpen, onClose }: CreatFolderModalProps) => 
               </h1>
             </div>
 
-            <button type="button" aria-label="닫기" className="cursor-pointer">
-              <Close
-                className="relative! w-6! h-6! aspect-[1]! text-Grey-300"
-                onClick={onClose}
-              />
+            <button
+              type="button"
+              aria-label="닫기"
+              className="cursor-pointer"
+              onClick={onClose}
+            >
+              <Close className="relative! w-6! h-6! aspect-[1]! text-Grey-300" />
             </button>
           </header>
 
@@ -115,7 +120,7 @@ export const CreatFolderModal = ({ isOpen, onClose }: CreatFolderModalProps) => 
                       <button
                         type="button"
                         onClick={handleInvite}
-                        className="group inline-flex items-center justify-center gap-2.5 py-3 px-6 relative flex-[0_0_auto] h-10.25 bg-[rgba(255,255,255,0.03)] rounded-md border-[none] border-color-greyscale-grey-800 before:content-[''] before:absolute before:inset-0 before:p-px before:rounded-md before:[background:linear-gradient(180deg,rgba(241,244,248,0.25)_0%,rgba(29,32,37,0.25)_100%)] before:[-webkit-mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[-webkit-mask-composite:xor] before:mask-exclude] before:z-1 before:pointer-events-none hover:before:[background:linear-gradient(to_bottom,rgba(255,134,134,0.25)_0%,rgba(255,48,48,0.25)_100%)] transition-colors duration-1000"
+                        className="group inline-flex items-center justify-center gap-2.5 py-3 px-6 relative flex-[0_0_auto] h-10.25 bg-[rgba(255,255,255,0.03)] rounded-md border-[none] border-color-greyscale-grey-800 before:content-[''] before:absolute before:inset-0 before:p-px before:rounded-md before:[background:linear-gradient(180deg,rgba(241,244,248,0.25)_0%,rgba(29,32,37,0.25)_100%)] before:[-webkit-mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[-webkit-mask-composite:xor] before:mask-exclude before:z-1 before:pointer-events-none hover:before:[background:linear-gradient(to_bottom,rgba(255,134,134,0.25)_0%,rgba(255,48,48,0.25)_100%)] transition-colors duration-1000"
                       >
                         <span
                           className={clsx(
@@ -162,4 +167,4 @@ export const CreatFolderModal = ({ isOpen, onClose }: CreatFolderModalProps) => 
   );
 };
 
-export default CreatFolderModal;
+export default CreateFolderModal;

@@ -127,7 +127,7 @@ const GuidePage = () => {
               turns your products into ad-ready creatives.
             </div>
             <OpenBtn />
-            <div className="mt-17 max-h-120 max-w-240 min-2 bg-Grey-700">
+            <div className="mt-17 max-h-120 max-w-240 bg-Grey-700">
               <video
                 autoPlay
                 loop

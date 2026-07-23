@@ -16,8 +16,10 @@ const CATEGORIES: Category[] = [
 export default function Portfolio() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const categoryParam = searchParams.get(QUERY_KEYS.PORTFOLIO_CATEGORY);
+
   const category =
-    (searchParams.get(QUERY_KEYS.PORTFOLIO_CATEGORY) as Category) ||
+    CATEGORIES.find((category) => category === categoryParam) ??
     PORTFOLIO_CATEGORY.ALL;
 
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
@@ -59,7 +61,7 @@ export default function Portfolio() {
       </div>
 
       {allUrls.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-px gap-x-2 grid-flow-dense">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-0.25 gap-x-2 grid-flow-dense">
           {allUrls.map((u, i) => (
             <MediaItem key={`${u}-${i}`} src={u} />
           ))}
