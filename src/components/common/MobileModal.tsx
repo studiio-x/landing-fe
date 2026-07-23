@@ -36,7 +36,7 @@ const MobileModal = () => {
           <Close className="w-6 h-6" />
         </button>
 
-        <h1 className="Subhead_2_semibold text-Grey-100 mt-13text-center whitespace-pre-line">
+        <h1 className="Subhead_2_semibold text-Grey-100 mt-13 text-center whitespace-pre-line">
           {t("title")}
         </h1>
 
