@@ -1,7 +1,7 @@
-import { isAxiosError } from "axios";
 import { useCallback, useEffect, useState } from "react";
 
 import { getRawPresign, postCutoutImage } from "@/apis/imageApi";
+import { getErrorMessage } from "@/utils/apiUtils";
 
 const ERROR_FADE_DELAY_MS = 1500;
 const ERROR_FADE_DURATION_MS = 300;
@@ -53,10 +53,9 @@ export const useImageUploadAndCutout = (folderId: number) => {
         setCutoutImageObjectKey(resultObjectKey);
         setProjectId(resultProjectId);
       } catch (error) {
-        const reason = isAxiosError(error)
-          ? (error.response?.data?.reason ?? "이미지 처리 중 오류가 발생했습니다.")
-          : "이미지 처리 중 오류가 발생했습니다.";
-        setCutoutError(reason);
+        setCutoutError(
+          getErrorMessage(error, "이미지 처리 중 오류가 발생했습니다."),
+        );
       } finally {
         setIsProcessing(false);
       }
