@@ -26,7 +26,7 @@ const PasswordResetStep = ({ isLoading, onComplete }: PasswordResetStepProps) =>
   };
 
   return (
-    <div className="my-[1.5625rem]">
+    <div className="my-6.25">
       <div className="Heading_3_semibold text-Grey-50 mb-3">{t("title")}</div>
       <p className="Body_2_medium text-Grey-300 mb-7">{t("description")}</p>
       <form onSubmit={handleSubmit}>

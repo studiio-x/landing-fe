@@ -5,18 +5,18 @@ interface ReviewProps {
   content: string;
 }
 
-const Review: React.FC<ReviewProps> = ({ title, content }) => {
+const Review = ({ title, content }: ReviewProps) => {
   return (
     <div
-      className="flex h-[16.3rem] w-[26rem] flex-col bg-cover bg-center bg-no-repeat px-7 pt-20"
+      className="flex h-[16.3rem] w-104 flex-col bg-cover bg-center bg-no-repeat px-7 pt-20"
       style={{
         backgroundImage: `url('/images/landing/review.png')`,
       }}
     >
-      <div className="Subhead_1_semibold w-[22rem] whitespace-normal">
+      <div className="Subhead_1_semibold w-88 whitespace-normal">
         {title}
       </div>
-      <div className="Body_3_regular mt-4 w-[22rem] whitespace-normal text-Grey-400">
+      <div className="Body_3_regular mt-4 w-88 whitespace-normal text-Grey-400">
         {content}
       </div>
     </div>

@@ -95,7 +95,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
   };
 
   return (
-    <header className="px-[6.125rem] pt-5 py-3 flex border-b-Grey-800 bg-Black z-[999] border-b-[1.5px] sticky top-0 left-0 h-[var(--header-height)] items-center">
+    <header className="px-24.5 pt-5 py-3 flex border-b-Grey-800 bg-Black z-999 border-b-[1.5px] sticky top-0 left-0 h-(--header-height) items-center">
       <div className="flex gap-4 items-center">
         {back && (
           <button
@@ -138,7 +138,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
                     type="button"
                     onClick={() => setModeQuery(tabItem.mode)}
                     className={clsx(
-                      "relative z-10 rounded-[100px] px-4 py-[2px] transition-colors duration-200 whitespace-nowrap",
+                      "relative z-10 rounded-[100px] px-4 py-0.5 transition-colors duration-200 whitespace-nowrap",
                       isActive
                         ? "text-Grey-50 Body_2_semibold"
                         : "text-Grey-500 Body_2_medium",
@@ -172,7 +172,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
 
           {isUserOpen && mypageData && (
             <div className="absolute top-full right-0 pt-5">
-              <div className="px-3 py-4 bg-[rgba(40,44,52,0.90)] backdrop-blur-[5px] rounded-[8px] flex flex-col gap-3 Caption_medium text-Grey-100 min-w-[252px] transition-opacity">
+              <div className="px-3 py-4 bg-[rgba(40,44,52,0.90)] backdrop-blur-[5px] rounded-[8px] flex flex-col gap-3 Caption_medium text-Grey-100 min-w-63 transition-opacity">
                 <div className="px-5 py-2">{mypageData.email}</div>
                 <div className="Body_2_medium text-Grey-300 flex flex-col gap-14">
                   <div className="border-t-Grey-500 border-t pt-2">

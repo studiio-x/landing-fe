@@ -31,7 +31,7 @@ const FreePlanSection = ({ isMonthly }: { isMonthly: boolean }) => {
         <OpenBtn />
       </div>
       <div className="flex flex-col lg:flex-row">
-        <div className="flex flex-col mr-[3.25rem] gap-3">
+        <div className="flex flex-col mr-13 gap-3">
           <div className="flex mt-2 items-end gap-1">
             <div className="font-calSans text-[2.5rem]/[2.4rem]">$0 USD</div>
             <div className="Body_2_medium text-Grey-300">/ mo</div>
@@ -62,7 +62,7 @@ const ReviewSection = () => (
     <div className="font-calSans text-[1.5rem] sm:text-[2rem] lg:text-[3rem] mb-6">
       See Why People Like Us
     </div>
-    <div className="flex gap-4 pl-6 mb-[3.25rem] Subhead_2_semibold sm:Subhead_1_semibold text-Grey-400 items-center">
+    <div className="flex gap-4 pl-6 mb-13 Subhead_2_semibold sm:Subhead_1_semibold text-Grey-400 items-center">
       Go to Gallery <Arrow className="w-12 h-12" />
     </div>
     <div className="w-screen py-6">
@@ -91,7 +91,7 @@ const PricePage = () => {
         }}
       >
         <div className="px-4 sm:px-6 lg:px-8 2xl:px-[6.12rem]">
-          <section className="flex flex-col items-center pt-[7.5rem]">
+          <section className="flex flex-col items-center pt-30">
             <div className="text-center font-calSans text-[2rem] sm:text-[3rem] lg:text-[4rem] mb-5">
               Choose a Plan
             </div>
@@ -104,7 +104,7 @@ const PricePage = () => {
               </div>
               <button
                 onClick={() => setIsMonthly(!isMonthly)}
-                className="w-[4.5rem] h-9 rounded-full bg-Grey-600 relative"
+                className="w-18 h-9 rounded-full bg-Grey-600 relative"
               >
                 <div
                   className={`absolute w-7 h-7 bg-white rounded-full transition-transform duration-300 top-1/2 -translate-y-1/2 left-0 ${
@@ -122,7 +122,7 @@ const PricePage = () => {
             <div className="Caption_medium text-Red-400 mb-16">
               Enjoy the same benefits at just 1% of the original plan’s price!
             </div>
-            <div className="grid 2xl:grid-cols-4 gap-4 w-full lg:grid-cols-2 grid-cols-[repeat(4,18.7rem)] overflow-x-auto -mr-4 sm:-mr-6 lg:-mr-0 ml-0">
+            <div className="grid 2xl:grid-cols-4 gap-4 w-full lg:grid-cols-2 grid-cols-[repeat(4,18.7rem)] overflow-x-auto -mr-4 sm:-mr-6 lg:mr-0 ml-0">
               {priceData.map((plan) => (
                 <PriceTag key={plan.name} plan={plan} isMonthly={isMonthly} />
               ))}
@@ -146,7 +146,7 @@ const PricePage = () => {
           </SectionWrapper>
 
           <SectionWrapper>
-            <section className="flex flex-col 2xl:flex-row mb-44 gap-y-8 sm:gap-y-[3.25rem] gap-x-[8.6305rem]">
+            <section className="flex flex-col 2xl:flex-row mb-44 gap-y-8 sm:gap-y-13 gap-x-[8.6305rem]">
               <div className="font-calSans text-[1.5rem] sm:text-[2rem] lg:text-[3rem] whitespace-nowrap">
                 StudioX FAQ
               </div>
@@ -162,7 +162,7 @@ const PricePage = () => {
             </section>
           </SectionWrapper>
 
-          <section className="font-calSans text-[1.5rem] sm:text-[2rem] lg:text-[3rem] 2xl:text-[4rem] flex flex-col gap-7 items-center mb-[17.5rem]">
+          <section className="font-calSans text-[1.5rem] sm:text-[2rem] lg:text-[3rem] 2xl:text-[4rem] flex flex-col gap-7 items-center mb-70">
             Ready to try our AI Studio?
             <OpenBtn />
           </section>

@@ -175,6 +175,8 @@
       },
       "editModeGuide": "Highlight all the parts you want to edit.",
       "uploadedImageAlt": "Uploaded image",
+      "retry": "Retry",
+      "cutoutErrorMessage": "An error occurred while processing the image.",
       "emptyState": {
         "title": "Ideas to Explore",
         "ideas": {
@@ -236,12 +238,15 @@
         "inputPlaceholder": "Tell the AI what you want to change.",
         "sendLabel": "Send",
         "attachmentAlt": "Attachment",
+        "refineDefaultMessage": "Please refine the marked area.",
+        "errorRetry": "An error occurred. Please try again.",
         "recommendedLabel": "Recommended",
         "plusMenu": {
           "add": "Add",
           "uploadReferenceImage": "Upload reference",
           "markEditArea": "Mark Areas\nto Edit"
         },
+        "selectConcept": "Generate with this concept",
         "recommendations": {
           "0": "I have a reference image I want to recreate.",
           "1": "I’ll describe the background, you create it.",

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+
 import { useTranslations } from "next-intl";
 
 import TabContent from "./TabContent";
@@ -11,10 +12,8 @@ import MarkCanvas from "@/components/dashboard/workbench/chatbot/MarkCanvas";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 import ProductImageRequiredModal from "@/components/dashboard/workbench/background/ProductImageRequiredModal";
 import { useImageUploadAndCutout } from "@/hooks/useImageUploadAndCutout";
-import {
-  useGetFolders,
-  useGetFolderDetail,
-} from "@/hooks/queries/useFolderApi";
+import { useGetFolders } from "@/hooks/queries/useFolderApi";
+import { useGetProjects } from "@/hooks/queries/useProjectApi";
 import type { WorkbenchMode } from "@/types/dashboard/mode.type";
 
 interface WorkbenchProps {
@@ -35,40 +34,49 @@ const Workbench = ({ mode }: WorkbenchProps) => {
 
   const imageContainerRef = useRef<HTMLElement>(null);
 
-  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(
     null,
   );
   const [isGenerating, setIsGenerating] = useState(false);
 
+  const searchParams = useSearchParams();
+  const folderIdParam = searchParams.get("folderId");
+
   const { data: foldersData } = useGetFolders();
-  const folderId = foldersData?.myProject[0]?.folderId ?? 0;
+  const folderId = folderIdParam
+    ? Number(folderIdParam)
+    : (foldersData?.myProject[0]?.folderId ?? 0);
 
-  const { data: folderDetail } = useGetFolderDetail(folderId);
-  const images = folderDetail?.folders[0]?.images ?? [];
+  const { data: projectsData } = useGetProjects(folderId);
+  const projects = projectsData?.projects ?? [];
 
-  const history: HistoryItem[] = [];
-
-  for (let i = 0; i < images.length; i += 2) {
-    history.push({
-      id: String(i),
-      imageUrls: [images[i], images[i + 1] ?? images[i]],
-    });
-  }
+  const history: HistoryItem[] = projects.map((p) => ({
+    id: String(p.projectId),
+    imageUrls: [p.thumbnailObjectKey, p.thumbnailObjectKey],
+  }));
 
   const {
+    uploadedImage,
+    setUploadedImage,
+    previewUrl,
     isProcessing,
+    isCutoutImageLoading,
+    setIsCutoutImageLoading,
     cutoutImageUrl,
     cutoutImageObjectKey,
     projectId,
-    uploadAndCutout,
-    resetCutout,
+    cutoutError,
+    isErrorVisible,
   } = useImageUploadAndCutout(folderId);
 
   const handleTabChange = (nextIdx: number) => {
+    const isBackgroundTab = nextIdx === 1 && mode !== "video";
     const isChatbotTab = nextIdx === 2;
+
+    if (isBackgroundTab && !cutoutImageObjectKey) {
+      setIsProductImageRequiredOpen(true);
+      return;
+    }
 
     if (isChatbotTab && !uploadedImage) {
       setIsProductImageRequiredOpen(true);
@@ -81,19 +89,6 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   useEffect(() => {
     setNaturalSize(null);
     setGeneratedImageUrl(null);
-    if (!uploadedImage) {
-      setPreviewUrl(null);
-      resetCutout();
-      return;
-    }
-
-    const url = URL.createObjectURL(uploadedImage);
-    setPreviewUrl(url);
-    uploadAndCutout(uploadedImage);
-
-    return () => {
-      URL.revokeObjectURL(url);
-    };
   }, [uploadedImage]);
 
   return (
@@ -116,7 +111,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
         />
       </div>
 
-      <div className="relative ml-[1.75rem] w-[36.875rem] h-[40.375rem] rounded-lg">
+      <div className="relative ml-7 w-147.5 h-161.5 rounded-lg">
         {isEditMode && !hasPaint && (
           <div className="absolute left-1/2 bottom-6 -translate-x-1/2 z-40">
             <div className="rounded-md bg-Grey-900 px-6 py-2 Subhead_2_medium text-White whitespace-nowrap">
@@ -153,9 +148,8 @@ const Workbench = ({ mode }: WorkbenchProps) => {
         >
           {previewUrl ? (
             <>
-              <Image
-                width={590}
-                height={646}
+              <img
+                crossOrigin="anonymous"
                 src={generatedImageUrl ?? cutoutImageUrl ?? previewUrl}
                 alt={t("uploadedImageAlt")}
                 className="w-full h-full object-contain"
@@ -165,12 +159,25 @@ const Workbench = ({ mode }: WorkbenchProps) => {
                     w: img.naturalWidth,
                     h: img.naturalHeight,
                   });
+                  setIsCutoutImageLoading(false);
                 }}
               />
 
-              {(isProcessing || isGenerating) && (
+              {(isProcessing || isGenerating || isCutoutImageLoading) && (
                 <div className="absolute inset-0 flex items-center justify-center bg-Grey-900/60">
                   <div className="w-10 h-10 border-4 border-Grey-600 border-t-White rounded-full animate-spin" />
+                </div>
+              )}
+
+              {cutoutError && !isProcessing && (
+                <div
+                  className={`absolute bottom-6 left-1/2 -translate-x-1/2 z-40 transition-opacity duration-300 ${
+                    isErrorVisible ? "opacity-100" : "opacity-0"
+                  }`}
+                >
+                  <div className="rounded-md bg-Grey-900 px-6 py-2 Subhead_2_medium text-White whitespace-nowrap">
+                    {cutoutError}
+                  </div>
                 </div>
               )}
 

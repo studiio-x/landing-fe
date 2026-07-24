@@ -16,7 +16,7 @@ export const pretendard = localFont({
     },
     { path: "../../public/fonts/Pretendard-Bold.woff2", weight: "700", style: "normal" },
   ],
-  variable: "--font-pretendard",
+  variable: "--pretendard",
   display: "swap",
   preload: true,
 });
@@ -24,7 +24,7 @@ export const pretendard = localFont({
 export const calSans = Cal_Sans({
   subsets: ["latin"],
   weight: "400",
-  variable: "--font-calSans",
+  variable: "--calSans",
   display: "swap",
   adjustFontFallback: false,
 });

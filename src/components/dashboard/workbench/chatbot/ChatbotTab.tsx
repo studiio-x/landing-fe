@@ -2,10 +2,14 @@
 
 import ChatContainer from "./ChatContainer";
 
-const ChatbotTab = () => {
+interface ChatbotTabProps {
+  projectId: number | null;
+}
+
+const ChatbotTab = ({ projectId }: ChatbotTabProps) => {
   return (
     <div className="mt-5">
-      <ChatContainer />
+      <ChatContainer projectId={projectId} />
     </div>
   );
 };

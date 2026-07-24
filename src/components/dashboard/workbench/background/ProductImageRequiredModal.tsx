@@ -11,7 +11,7 @@ const ProductImageRequiredModal = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <ModalOverlay onClose={onClose}>
-      <div className="relative w-[30rem] h-[31.0625rem] rounded-lg bg-Grey-700/90 p-5 flex flex-col items-center justify-center">
+      <div className="relative w-120 h-124.25 rounded-lg bg-Grey-700/90 p-5 flex flex-col items-center justify-center">
         <button
           onClick={onClose}
           className="absolute top-5 right-5"
@@ -29,7 +29,7 @@ const ProductImageRequiredModal = ({ onClose }: { onClose: () => void }) => {
         </p>
 
         <div className="relative mt-8 w-[20.15rem]">
-          <div className="absolute left-0 right-0 bottom-[-1px] h-px bg-Grey-400" />
+          <div className="absolute left-0 right-0 -bottom-px h-px bg-Grey-400" />
 
           <div className="flex">
             {STUDIO_TAB_KEYS.map((key, idx) => {
@@ -39,15 +39,15 @@ const ProductImageRequiredModal = ({ onClose }: { onClose: () => void }) => {
                 <div
                   key={key}
                   className={clsx(
-                    "Body_2_medium !text-[1.0176rem] text-center relative pb-[5.51px] flex-1",
-                    isActive ? "text-Red-400" : "text-Grey-400"
+                    "Body_2_medium text-[1.0176rem]! text-center relative pb-[5.51px] flex-1",
+                    isActive ? "text-Red-400" : "text-Grey-400",
                   )}
                 >
                   {t(`tabs.${key}`)}
                   <span
                     className={clsx(
-                      "absolute left-0 bottom-[-1px] h-px w-full",
-                      isActive ? "bg-Red-400" : "bg-transparent"
+                      "absolute left-0 -bottom-px h-px w-full",
+                      isActive ? "bg-Red-400" : "bg-transparent",
                     )}
                   />
                 </div>
@@ -78,14 +78,19 @@ const ProductImageRequiredModal = ({ onClose }: { onClose: () => void }) => {
               />
             </svg>
 
-            <div className={clsx("w-full h-full rounded-lg flex justify-center bg-Grey-900", locale === "ko" ? "pt-[2.38rem]" : "pt-[3.03rem]")}>
+            <div
+              className={clsx(
+                "w-full h-full rounded-lg flex justify-center bg-Grey-900",
+                locale === "ko" ? "pt-[2.38rem]" : "pt-[3.03rem]",
+              )}
+            >
               <div className="flex flex-col items-center gap-[1.02rem]">
                 <Download className="w-[1.3815rem] h-[1.3834rem]" />
-                <span className="Body_1_medium !text-[0.9159rem] text-Grey-200 text-center whitespace-pre-line">
+                <span className="Body_1_medium text-[0.9159rem]! text-Grey-200 text-center whitespace-pre-line">
                   {t("productImageRequiredModal.uploadGuide")}
                 </span>
               </div>
-              <div className="absolute w-full h-[3.875rem] bottom-0 bg-gradient-to-b from-Grey-700/0 to-Grey-700" />
+              <div className="absolute w-full h-15.5 bottom-0 bg-linear-to-b from-Grey-700/0 to-Grey-700" />
             </div>
           </div>
         </div>
