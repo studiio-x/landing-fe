@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import clsx from "clsx";
 import { LogoRed } from "@/assets/icons";
@@ -23,7 +23,11 @@ const ChatContainer = ({ projectId }: ChatContainerProps) => {
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
   const { messages, sendUserMessage, sendMarkImages, handleConceptSelect } =
-    useChatMessages(projectId, t("recommendations.0"), t("refineDefaultMessage"));
+    useChatMessages(
+      projectId,
+      t("recommendations.0"),
+      t("refineDefaultMessage"),
+    );
 
   const recommendations = [
     t("recommendations.0"),
@@ -33,13 +37,19 @@ const ChatContainer = ({ projectId }: ChatContainerProps) => {
 
   const isEmpty = messages.length === 0;
   const isPendingConceptSelect = messages.some((m) => m.conceptSelectable);
+  const [isSubmittingPaint, setIsSubmittingPaint] = useState(false);
 
   const handleSubmitPaint = useCallback(async () => {
     if (!commitPaint) return;
-    const region = await commitPaint();
-    if (!region) return;
-    setEditMode(false);
-    sendMarkImages(region);
+    setIsSubmittingPaint(true);
+    try {
+      const region = await commitPaint();
+      if (!region) return;
+      setEditMode(false);
+      await sendMarkImages(region);
+    } finally {
+      setIsSubmittingPaint(false);
+    }
   }, [commitPaint, setEditMode, sendMarkImages]);
 
   const handleClickRecommendation = useCallback(
@@ -90,7 +100,10 @@ const ChatContainer = ({ projectId }: ChatContainerProps) => {
       </div>
 
       <div className="flex flex-col gap-[0.65rem] items-center mt-5">
-        <ChatInput onSend={(payload) => sendUserMessage(payload)} disabled={isPendingConceptSelect} />
+        <ChatInput
+          onSend={(payload) => sendUserMessage(payload)}
+          disabled={isPendingConceptSelect}
+        />
         <span className="Caption_medium text-Grey-500">{t("disclaimer")}</span>
       </div>
 
@@ -117,7 +130,7 @@ const ChatContainer = ({ projectId }: ChatContainerProps) => {
                 "Body_2_semibold",
                 !canSubmit && "cursor-not-allowed",
               )}
-              disabled={!canSubmit}
+              disabled={!canSubmit || isSubmittingPaint}
               onClick={handleSubmitPaint}
             >
               {t("submitInput")}

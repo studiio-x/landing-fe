@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
 
 import { getRawPresign, postCutoutImage } from "@/apis/imageApi";
 import { getErrorMessage } from "@/utils/apiUtils";
@@ -7,6 +8,7 @@ const ERROR_FADE_DELAY_MS = 1500;
 const ERROR_FADE_DURATION_MS = 300;
 
 export const useImageUploadAndCutout = (folderId: number) => {
+  const t = useTranslations("dashboard.workbench");
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
@@ -37,7 +39,7 @@ export const useImageUploadAndCutout = (folderId: number) => {
         });
 
         if (!uploadResponse.ok) {
-          throw new Error("파일 업로드 실패");
+          throw new Error("Failed to upload file");
         }
 
         const {
@@ -53,14 +55,12 @@ export const useImageUploadAndCutout = (folderId: number) => {
         setCutoutImageObjectKey(resultObjectKey);
         setProjectId(resultProjectId);
       } catch (error) {
-        setCutoutError(
-          getErrorMessage(error, "이미지 처리 중 오류가 발생했습니다."),
-        );
+        setCutoutError(getErrorMessage(error, t("cutoutErrorMessage")));
       } finally {
         setIsProcessing(false);
       }
     },
-    [folderId],
+    [folderId, t],
   );
 
   const resetCutout = useCallback(() => {

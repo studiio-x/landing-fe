@@ -4,11 +4,20 @@ export const uploadBlobToPresignedUrl = async (
   objectKey: string,
   contentType?: string,
 ): Promise<string> => {
-  const blob = await fetch(sourceUrl).then((r) => r.blob());
-  await fetch(uploadUrl, {
+  const sourceResponse = await fetch(sourceUrl);
+  if (!sourceResponse.ok) {
+    throw new Error("Failed to fetch source image");
+  }
+  const blob = await sourceResponse.blob();
+
+  const uploadResponse = await fetch(uploadUrl, {
     method: "PUT",
     body: blob,
     headers: { "Content-Type": contentType ?? blob.type },
   });
+  if (!uploadResponse.ok) {
+    throw new Error("Failed to upload image");
+  }
+
   return objectKey;
 };

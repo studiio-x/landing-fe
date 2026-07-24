@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { getReferencePresign, getMaskPresign } from "@/apis/chatApi";
@@ -14,13 +15,12 @@ import type { ChatItem, ChatSendPayload } from "@/types/dashboard/chat.type";
 import { getErrorMessage } from "@/utils/apiUtils";
 import { uploadBlobToPresignedUrl } from "@/utils/uploadUtils";
 
-const DEFAULT_ERROR_MESSAGE = "오류가 발생했습니다. 다시 시도해주세요.";
-
 export const useChatMessages = (
   projectId: number | null,
   defaultConceptMessage: string,
   refineDefaultMessage: string,
 ) => {
+  const t = useTranslations("dashboard.workbench.chatbot");
   const queryClient = useQueryClient();
   const [messages, setMessages] = useState<ChatItem[]>([]);
   const hasInitialized = useRef(false);
@@ -74,10 +74,10 @@ export const useChatMessages = (
   const failTypingMessage = useCallback(
     (typingId: string, error: unknown) => {
       resolveTypingMessage(typingId, {
-        text: getErrorMessage(error, DEFAULT_ERROR_MESSAGE),
+        text: getErrorMessage(error, t("errorRetry")),
       });
     },
-    [resolveTypingMessage],
+    [resolveTypingMessage, t],
   );
 
   // 유저 메시지(선택) + typing 플레이스홀더를 추가한 뒤 execute를 호출해

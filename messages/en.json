@@ -176,6 +176,7 @@
       "editModeGuide": "Highlight all the parts you want to edit.",
       "uploadedImageAlt": "Uploaded image",
       "retry": "Retry",
+      "cutoutErrorMessage": "An error occurred while processing the image.",
       "emptyState": {
         "title": "Ideas to Explore",
         "ideas": {
@@ -238,6 +239,7 @@
         "sendLabel": "Send",
         "attachmentAlt": "Attachment",
         "refineDefaultMessage": "Please refine the marked area.",
+        "errorRetry": "An error occurred. Please try again.",
         "recommendedLabel": "Recommended",
         "plusMenu": {
           "add": "Add",
