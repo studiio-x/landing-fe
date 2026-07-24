@@ -1,11 +1,11 @@
 import { LanguageOption } from "@/types/mypage/language.type";
 import clsx from "clsx";
 
-type LanguageItemProps = {
+interface LanguageItemProps {
   option: LanguageOption;
   isSelected: boolean;
   onClick: () => void;
-};
+}
 
 const LanguageItem = ({ option, isSelected, onClick }: LanguageItemProps) => {
   return (
@@ -24,7 +24,7 @@ const LanguageItem = ({ option, isSelected, onClick }: LanguageItemProps) => {
       >
         {option.label}
       </span>
-      <span className="Caption_medium -mt-[0.125rem] text-Grey-300">
+      <span className="Caption_medium -mt-0.5 text-Grey-300">
         {option.subLabel}
       </span>
     </button>

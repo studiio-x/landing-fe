@@ -16,7 +16,11 @@ const CATEGORIES: Category[] = [
 export default function Portfolio() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const category = (searchParams.get(QUERY_KEYS.PORTFOLIO_CATEGORY) as Category) || PORTFOLIO_CATEGORY.ALL;
+  const categoryParam = searchParams.get(QUERY_KEYS.PORTFOLIO_CATEGORY);
+
+  const category =
+    CATEGORIES.find((category) => category === categoryParam) ??
+    PORTFOLIO_CATEGORY.ALL;
 
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
     useItemsInfinite(category, 20);
@@ -57,7 +61,7 @@ export default function Portfolio() {
       </div>
 
       {allUrls.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-[1px] gap-x-2 [grid-auto-flow:dense]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 auto-rows-0.25 gap-x-2 grid-flow-dense">
           {allUrls.map((u, i) => (
             <MediaItem key={`${u}-${i}`} src={u} />
           ))}
@@ -70,7 +74,7 @@ export default function Portfolio() {
             type="button"
             onClick={() => fetchNextPage()}
             disabled={isFetchingNextPage}
-            className="w-fit h-fit rounded-[2.25rem] bg-gradient-to-b from-[#F1F4F8]/50 to-[#1D2025]/50 p-[1px] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-fit h-fit rounded-[2.25rem] bg-linear-to-b from-[#F1F4F8]/50 to-[#1D2025]/50 p-px disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <div className="Body_2_semibold flex items-center justify-center rounded-[2.25rem] bg-[rgb(23,24,27)] px-6 py-3 text-White transition-colors duration-300 hover:bg-[rgb(33,34,37)]">
               {isFetchingNextPage ? "Loading..." : "Load More"}

@@ -8,7 +8,7 @@ import FolderItem from "@/components/dashboard/project/FolderItem";
 import GlassButton from "@/components/common/GlassButton";
 import DropDown from "@/components/common/DropDown";
 import useClickOutside from "@/hooks/useClickOutside";
-import CreatFolderModal from "@/components/dashboard/project/CreatFolderModal";
+import CreateFolderModal from "@/components/dashboard/project/CreateFolderModal";
 import AlertModal from "@/components/common/AlertModal";
 import InviteModal from "@/components/dashboard/project/InviteModal";
 
@@ -105,7 +105,7 @@ const ProjectPage = () => {
       </div>
 
       {/* 폴더 생성 모달 */}
-      <CreatFolderModal
+      <CreateFolderModal
         isOpen={createModalOpen}
         onClose={() => setCreateModalOpen(false)}
       />
@@ -140,20 +140,23 @@ const ProjectPage = () => {
 
       <div className="flex">
         <SideBar />
-        <div className="mt-[3.25rem] flex items-center flex-col flex-1 w-[62.25rem] mr-[1.125rem]">
-          <div className="w-[62.25rem] flex items-center gap-4">
-            <h1 className="Heading_1_bold bg-gradient-to-b from-Red-300 to-Red-500 bg-clip-text text-transparent  ">
+        <div className="mt-13 flex items-center flex-col flex-1 w-249 mr-4.5">
+          <div className="w-249 flex items-center gap-4">
+            <h1 className="Heading_1_bold bg-linear-to-b from-Red-300 to-Red-500 bg-clip-text text-transparent  ">
               프로젝트
             </h1>
-            <div className="flex gap-[0.25rem]">
+            <div className="flex gap-1">
               <span className="whitespace-nowrap Body_2_medium text-Grey-200">
                 {sharedProjectFromQuery ?? ""}의 프로젝트
               </span>
-              <button onClick={() => setInviteModalOpen(true)}>
+              <button
+                onClick={() => setInviteModalOpen(true)}
+                aria-label="프로젝트 초대"
+              >
                 {inviteModalOpen ? (
-                  <Up className="w-[1.5rem] h-[1.5rem]" color="#A9B4C6" />
+                  <Up className="w-6 h-6" color="#A9B4C6" />
                 ) : (
-                  <Down className="w-[1.5rem] h-[1.5rem]" color="#A9B4C6" />
+                  <Down className="w-6 h-6" color="#A9B4C6" />
                 )}
               </button>
             </div>

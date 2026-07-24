@@ -20,7 +20,7 @@ const TabPanel = ({ activeTab, onChange, mode }: TabPanelProps) => {
 
   return (
     <div className="relative pt-4">
-      <div className="absolute left-0 right-0 bottom-[-1px] h-px bg-Grey-400" />
+      <div className="absolute left-0 right-0 -bottom-px h-px bg-Grey-400" />
 
       <div className="flex">
         {tabKeys.map((key, idx) => {
@@ -40,14 +40,14 @@ const TabPanel = ({ activeTab, onChange, mode }: TabPanelProps) => {
                 "Subhead_2_medium text-center relative pb-2 transition-colors",
                 widthClass,
                 paddingClass,
-                isActive ? "text-Red-400" : "text-Grey-400"
+                isActive ? "text-Red-400" : "text-Grey-400",
               )}
             >
               {t(key)}
               <span
                 className={clsx(
-                  "absolute left-0 bottom-[-1px] h-px w-full transition-colors",
-                  isActive ? "bg-Red-400" : "bg-transparent"
+                  "absolute left-0 -bottom-px h-px w-full transition-colors",
+                  isActive ? "bg-Red-400" : "bg-transparent",
                 )}
               />
             </button>

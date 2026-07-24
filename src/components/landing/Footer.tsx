@@ -24,7 +24,7 @@ const Footer = () => {
 
   return (
     <footer className="bg-Grey-900 lg:px-[6.12rem] px-6 py-11">
-      <div className="flex flex-col sm:flex-row gap-[3.25rem] justify-between mb-8">
+      <div className="flex flex-col sm:flex-row gap-13 justify-between mb-8">
         <div className="flex flex-col">
           <Logo className="mb-8 h-6 w-28" />
           <div className="Body_2_medium mb-3 text-Grey-400">{t("tagline")}</div>

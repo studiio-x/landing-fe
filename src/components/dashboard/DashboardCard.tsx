@@ -32,8 +32,7 @@ const DashboardCard = ({
         }
       }}
       className={clsx(
-        "h-[12.5rem] w-[19.25rem] group rounded bg-gradient-to-b p-px",
-        isInteractive && "cursor-pointer",
+        "h-50 w-77 group rounded bg-linear-to-b p-px cursor-pointer",
         {
           "from-Grey-300 to-Grey-700 hover:from-Red-350 hover:to-Red-500":
             !isActive,
@@ -42,7 +41,7 @@ const DashboardCard = ({
       )}
     >
       <div className="h-full w-full rounded bg-Grey-800 overflow-hidden flex gap-4">
-        <div className="pl-[1.1875rem] flex flex-col py-5 justify-between w-[7.3125rem]">
+        <div className="pl-4.75 flex flex-col py-5 justify-between w-29.25">
           <h3
             className={clsx(
               "whitespace-pre-line",
@@ -57,7 +56,7 @@ const DashboardCard = ({
           </span>
         </div>
 
-        <div className="relative h-full w-[11.875rem] shrink-0">
+        <div className="relative h-full w-47.5 shrink-0">
           {isVideo(mediaSrc) ? (
             <video
               className="h-full w-full object-cover"

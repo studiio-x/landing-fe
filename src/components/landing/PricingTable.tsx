@@ -144,13 +144,13 @@ export default function PricingTable() {
           {/* Header */}
           <thead>
             <tr className="border-b border-Grey-500 ">
-              <th className="sticky left-0 z-20 text-center  px-6 py-4  Caption_medium lg:text-[0.77rem]  2xl:Body_2_medium  font-calSans 2xl:text-Body_2_medium text-Grey-400 after:absolute after:right-0 after:top-0 after:bottom-0 after:w-px after:bg-Grey-500 border-Grey-500 bg-Black font-medium w-[7.9rem] lg:w-[13.7rem] 2xl:w-[17.8rem] h-[2.24638rem] lg:h-[3.90363rem] 2xl:h-[5.0625rem]">
+              <th className="sticky left-0 z-20 text-center  px-6 py-4  Caption_medium lg:text-[0.77rem]  2xl:Body_2_medium  font-calSans 2xl:text-Body_2_medium text-Grey-400 after:absolute after:right-0 after:top-0 after:bottom-0 after:w-px after:bg-Grey-500 border-Grey-500 bg-Black font-medium w-[7.9rem] lg:w-[13.7rem] 2xl:w-[17.8rem] h-[2.24638rem] lg:h-[3.90363rem] 2xl:h-20.25">
                 Benefit / Feature
               </th>
               {plans.map((plan) => (
                 <th
                   key={plan.name}
-                  className={`px-6 py-4 text-center font-normal text-[0.688rem] lg:text-[1.13rem] 2xl:text-[1.75rem] font-calSans border-r border-Grey-500  text-Grey-100 last:border-r-0  w-[5.297rem] lg:w-[9.20481rem] 2xl:w-[11.9375rem] h-[3.2rem] lg:h-[3.3rem] 2xl:h-[4.3rem  `}
+                  className={`px-6 py-4 text-center font-normal text-[0.688rem] lg:text-[1.13rem] 2xl:text-[1.75rem] font-calSans border-r border-Grey-500  text-Grey-100 last:border-r-0  w-[5.297rem] lg:w-[9.20481rem] 2xl:w-47.75 h-[3.2rem] lg:h-[3.3rem] 2xl:h-[4.3rem  `}
                 >
                   {plan.name}
                 </th>

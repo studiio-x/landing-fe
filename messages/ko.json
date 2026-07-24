@@ -175,6 +175,8 @@
       },
       "editModeGuide": "수정하고 싶은 모든 부분을 표시해 주세요.",
       "uploadedImageAlt": "업로드 이미지",
+      "retry": "다시 시도",
+      "cutoutErrorMessage": "이미지 처리 중 오류가 발생했습니다.",
       "emptyState": {
         "title": "추천 아이디어",
         "ideas": {
@@ -236,12 +238,15 @@
         "inputPlaceholder": "AI에게 수정하고 싶은 내용을 알려주세요.",
         "sendLabel": "전송",
         "attachmentAlt": "첨부 이미지",
+        "refineDefaultMessage": "표시한 영역을 수정해줘.",
+        "errorRetry": "오류가 발생했습니다. 다시 시도해주세요.",
         "recommendedLabel": "추천",
         "plusMenu": {
           "add": "추가",
           "uploadReferenceImage": "참고 이미지 업로드",
           "markEditArea": "수정할 영역 표시하기"
         },
+        "selectConcept": "이 컨셉으로 생성하기",
         "recommendations": {
           "0": "재현하고 싶은 참고 이미지가 있어.",
           "1": "내가 배경을 설명하면 그대로 만들어줘.",

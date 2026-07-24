@@ -5,7 +5,7 @@ import clsx from "clsx";
 
 type Direction = "left" | "right";
 
-type Props = {
+interface MarqueeProps {
   children: React.ReactNode;
   gapPx?: number;
   speedSec?: number;
@@ -13,7 +13,7 @@ type Props = {
   pauseOnHover?: boolean;
   className?: string;
   trackClassName?: string;
-};
+}
 
 export default function Marquee({
   children,
@@ -23,7 +23,7 @@ export default function Marquee({
   pauseOnHover = false,
   className,
   trackClassName,
-}: Props) {
+}: MarqueeProps) {
   const items = React.Children.toArray(children);
   const dupA = items.map((child, i) => (
     <React.Fragment key={`a-${i}`}>{child}</React.Fragment>

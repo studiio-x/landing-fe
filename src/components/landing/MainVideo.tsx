@@ -2,7 +2,7 @@ import OpenBtn from "./OpenBtn";
 
 const MainVideo = () => {
   return (
-    <div className="relative flex h-[40rem] flex-col items-center justify-center">
+    <div className="relative flex h-160 flex-col items-center justify-center">
       <video
         autoPlay
         loop
@@ -30,7 +30,7 @@ const MainVideo = () => {
           </div>
         </div>
 
-        <div className="flex h-56 max-w-[54.75rem] w-full rounded-[2rem] bg-gradient-to-b from-Grey-50/40 to-Grey-800/70 p-[1px]">
+        <div className="flex h-56 max-w-219 w-full rounded-[2rem] bg-linear-to-b from-Grey-50/40 to-Grey-800/70 p-px">
           <div className="flex h-full w-full flex-col items-end justify-between rounded-[2rem] bg-[rgba(22,24,29,0.9)] pb-7 pl-6 pt-7 pr-8 sm:pl-14  sm:pt-10">
             <div className="Body/Body_2_medium sm:Subhead_2_medium self-start text-Grey-400">
               Chat your ad idea - we’ll create it.

@@ -7,8 +7,6 @@ import { Down } from "@/assets/icons";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
 
 type BackgroundItem = {
   id: string;
@@ -55,14 +53,14 @@ const BackgroundSwiper = ({
           <Down className="rotate-90 h-6 w-6" />
         </button>
 
-        <div className="w-[324px] min-w-0">
+        <div className="w-81 min-w-0">
           {showSkeleton ? (
             <div className="flex gap-3 justify-center">
               {Array.from({ length: 3 }, (_, i) => (
                 <div
                   key={i}
                   className={clsx(
-                    "w-[6.25rem] h-[6.25rem] rounded bg-Grey-700",
+                    "w-25 h-25 rounded bg-Grey-700",
                     isLoading && "animate-pulse",
                   )}
                 />
@@ -88,13 +86,13 @@ const BackgroundSwiper = ({
                     <button
                       type="button"
                       onClick={() => onSelect(item.id)}
-                      className="w-[6.25rem]"
+                      className="w-25"
                     >
                       <div
                         className={clsx(
-                          "relative w-full h-[6.25rem] rounded overflow-hidden",
+                          "relative w-full h-25 rounded overflow-hidden",
                           isSelected
-                            ? "bg-gradient-to-b from-Red-350 to-Red-500 p-[1.5px]"
+                            ? "bg-linear-to-b from-Red-350 to-Red-500 p-[1.5px]"
                             : "bg-Grey-800",
                         )}
                       >
