@@ -168,6 +168,7 @@ const FolderItem = ({ lists, index, setDeleteModalOpen, onClick }: FolderItemPro
             
             <div
               className={`relative h-6 self-end ${lists.isFolder ? "" : "mb-1.5"}`}
+              onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setIsOpenMeatball(!isOpenMeatball)}
