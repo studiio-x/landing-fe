@@ -24,7 +24,7 @@ const TabContent = ({ activeTab, uploadedImage, setUploadedImage, mode, cutoutIm
         ? <OptionsTab uploadedImage={uploadedImage} />
         : <BackgroundTab uploadedImage={uploadedImage} cutoutImageObjectKey={cutoutImageObjectKey} projectId={projectId} onGenerated={onGenerated} onGeneratingChange={onGeneratingChange} />;
     case 2:
-      return <ChatbotTab projectId={projectId} />;
+      return <ChatbotTab projectId={projectId} onGenerated={onGenerated} />;
     default:
       return null;
   }

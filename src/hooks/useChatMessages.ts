@@ -19,6 +19,7 @@ export const useChatMessages = (
   projectId: number | null,
   defaultConceptMessage: string,
   refineDefaultMessage: string,
+  onGenerated?: (imageUrl: string) => void,
 ) => {
   const t = useTranslations("dashboard.workbench.chatbot");
   const queryClient = useQueryClient();
@@ -177,6 +178,10 @@ export const useChatMessages = (
             body: { content: refineDefaultMessage, maskImageObjectKey },
           });
 
+          if (response.imageKeys.length > 0) {
+            onGenerated?.(response.imageKeys[0]);
+          }
+
           return {
             text: response.aiText,
             imageKeys:
@@ -185,7 +190,7 @@ export const useChatMessages = (
         },
       );
     },
-    [projectId, sendMessage, refineDefaultMessage, runExchange],
+    [projectId, sendMessage, refineDefaultMessage, runExchange, onGenerated],
   );
 
   const handleConceptSelect = useCallback(
@@ -207,6 +212,7 @@ export const useChatMessages = (
 
           if (response.imageKeys.length > 0) {
             queryClient.invalidateQueries({ queryKey: queryKeys.project.all });
+            onGenerated?.(response.imageKeys[0]);
           }
 
           return {
@@ -217,7 +223,7 @@ export const useChatMessages = (
         },
       );
     },
-    [projectId, selectConcept, queryClient, runExchange],
+    [projectId, selectConcept, queryClient, runExchange, onGenerated],
   );
 
   return {
