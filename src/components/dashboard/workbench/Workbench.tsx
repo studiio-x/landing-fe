@@ -29,6 +29,9 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   } | null>(null);
   const [isProductImageRequiredOpen, setIsProductImageRequiredOpen] =
     useState(false);
+  const [requiredModalVariant, setRequiredModalVariant] = useState<
+    "product" | "background"
+  >("product");
 
   const { isEditMode, hasPaint } = useStudioMarkStore();
 
@@ -82,13 +85,23 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     const isChatbotTab = nextIdx === 2;
 
     if (isBackgroundTab && !cutoutImageObjectKey) {
+      setRequiredModalVariant("product");
       setIsProductImageRequiredOpen(true);
       return;
     }
 
-    if (isChatbotTab && !uploadedImage) {
-      setIsProductImageRequiredOpen(true);
-      return;
+    if (isChatbotTab) {
+      if (!uploadedImage) {
+        setRequiredModalVariant("product");
+        setIsProductImageRequiredOpen(true);
+        return;
+      }
+
+      if (mode !== "video" && !generatedImageUrl) {
+        setRequiredModalVariant("background");
+        setIsProductImageRequiredOpen(true);
+        return;
+      }
     }
 
     setActiveTab(nextIdx);
@@ -216,6 +229,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
 
       {isProductImageRequiredOpen && (
         <ProductImageRequiredModal
+          variant={requiredModalVariant}
           onClose={() => setIsProductImageRequiredOpen(false)}
         />
       )}

@@ -5,9 +5,22 @@ import ModalOverlay from "@/components/common/ModalOverlay";
 
 const STUDIO_TAB_KEYS = ["product", "background", "aiChatbot"] as const;
 
-const ProductImageRequiredModal = ({ onClose }: { onClose: () => void }) => {
+interface ProductImageRequiredModalProps {
+  onClose: () => void;
+  variant?: "product" | "background";
+}
+
+const ProductImageRequiredModal = ({
+  onClose,
+  variant = "product",
+}: ProductImageRequiredModalProps) => {
   const locale = useLocale();
   const t = useTranslations("dashboard.workbench");
+  const textKey =
+    variant === "background"
+      ? "backgroundRequiredModal"
+      : "productImageRequiredModal";
+  const activeTabIdx = variant === "background" ? 1 : 0;
 
   return (
     <ModalOverlay onClose={onClose}>
@@ -15,17 +28,17 @@ const ProductImageRequiredModal = ({ onClose }: { onClose: () => void }) => {
         <button
           onClick={onClose}
           className="absolute top-5 right-5"
-          aria-label={t("productImageRequiredModal.closeLabel")}
+          aria-label={t(`${textKey}.closeLabel`)}
         >
           <Close className="w-6 h-6" />
         </button>
 
         <p className="Subhead_1_semibold text-White text-center whitespace-pre-line">
-          {t("productImageRequiredModal.title")}
+          {t(`${textKey}.title`)}
         </p>
 
         <p className="Body_2_medium text-Grey-300 mt-4 whitespace-pre-line">
-          {t("productImageRequiredModal.description")}
+          {t(`${textKey}.description`)}
         </p>
 
         <div className="relative mt-8 w-[20.15rem]">
@@ -33,7 +46,7 @@ const ProductImageRequiredModal = ({ onClose }: { onClose: () => void }) => {
 
           <div className="flex">
             {STUDIO_TAB_KEYS.map((key, idx) => {
-              const isActive = idx === 0;
+              const isActive = idx === activeTabIdx;
 
               return (
                 <div
@@ -87,7 +100,7 @@ const ProductImageRequiredModal = ({ onClose }: { onClose: () => void }) => {
               <div className="flex flex-col items-center gap-[1.02rem]">
                 <Download className="w-[1.3815rem] h-[1.3834rem]" />
                 <span className="Body_1_medium text-[0.9159rem]! text-Grey-200 text-center whitespace-pre-line">
-                  {t("productImageRequiredModal.uploadGuide")}
+                  {t(`${textKey}.uploadGuide`)}
                 </span>
               </div>
               <div className="absolute w-full h-15.5 bottom-0 bg-linear-to-b from-Grey-700/0 to-Grey-700" />

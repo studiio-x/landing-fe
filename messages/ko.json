@@ -191,6 +191,12 @@
         "description": "배경 이미지를 적용하려면 제품 이미지가 필요해요.",
         "uploadGuide": "클릭하여 상품 이미지를\n업로드해 주세요."
       },
+      "backgroundRequiredModal": {
+        "closeLabel": "닫기",
+        "title": "배경 이미지를\n먼저 선택해 주세요",
+        "description": "챗봇을 사용하려면 배경 이미지 생성이 필요해요.",
+        "uploadGuide": "배경 탭에서 이미지를\n선택하고 생성해 주세요."
+      },
       "historyPanel": {
         "emptyTitle": "첫 번째 이미지를\n생성해 보세요",
         "emptyDescription": "텍스트 하나로\n이미지를 만들어 보세요.",

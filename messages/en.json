@@ -191,6 +191,12 @@
         "description": "A product image is required\nto apply a background image.",
         "uploadGuide": "Click to upload product image"
       },
+      "backgroundRequiredModal": {
+        "closeLabel": "Close",
+        "title": "Please select\na background image first",
+        "description": "A generated background image is required\nto use the chatbot.",
+        "uploadGuide": "Select and generate a background\nin the Background tab."
+      },
       "historyPanel": {
         "emptyTitle": "Make your\nfirst generation",
         "emptyDescription": "Create beautiful images\nwith nothing but a text.",
