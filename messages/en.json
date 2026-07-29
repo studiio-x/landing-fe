@@ -245,6 +245,7 @@
         "sendLabel": "Send",
         "attachmentAlt": "Attachment",
         "refineDefaultMessage": "Please refine the marked area.",
+        "referenceImageDefaultMessage": "I have a reference image I want to recreate.",
         "errorRetry": "An error occurred. Please try again.",
         "recommendedLabel": "Recommended",
         "plusMenu": {

@@ -245,6 +245,7 @@
         "sendLabel": "전송",
         "attachmentAlt": "첨부 이미지",
         "refineDefaultMessage": "표시한 영역을 수정해줘.",
+        "referenceImageDefaultMessage": "재현하고 싶은 참고 이미지가 있어.",
         "errorRetry": "오류가 발생했습니다. 다시 시도해주세요.",
         "recommendedLabel": "추천",
         "plusMenu": {

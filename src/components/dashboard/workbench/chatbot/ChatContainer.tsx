@@ -26,7 +26,7 @@ const ChatContainer = ({ projectId, onGenerated }: ChatContainerProps) => {
   const { messages, sendUserMessage, sendMarkImages, handleConceptSelect } =
     useChatMessages(
       projectId,
-      t("recommendations.0"),
+      t("referenceImageDefaultMessage"),
       t("refineDefaultMessage"),
       onGenerated,
     );
