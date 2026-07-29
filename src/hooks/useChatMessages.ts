@@ -159,7 +159,7 @@ export const useChatMessages = (
           {
             id: crypto.randomUUID(),
             role: "user",
-            text: "",
+            text: refineDefaultMessage,
             status: "sent",
             attachments: [{ id: region.id, imageUrl: region.imageUrl }],
           },
