@@ -114,6 +114,19 @@ const ChatMessageList = ({
               <TypingDots />
             ) : (
               <div className={clsx("max-w-68 flex flex-col gap-2")}>
+                {m.text?.trim() && (
+                  <div
+                    className={clsx(
+                      "max-w-68 py-1.5 rounded-lg Body_3_medium whitespace-pre-line wrap-break-word",
+                      isUser
+                        ? "px-3 bg-Grey-700 text-Grey-50"
+                        : "text-Grey-100 bg-transparent",
+                    )}
+                  >
+                    {m.text}
+                  </div>
+                )}
+
                 {hasAttachments && (
                   <div
                     className={clsx(
@@ -121,6 +134,7 @@ const ChatMessageList = ({
                       (m.attachments?.length ?? 0) === 1
                         ? "grid-cols-1"
                         : "grid-cols-2",
+                      isUser ? "justify-items-end" : "justify-items-start",
                     )}
                   >
                     {m.attachments!.map((a) => (
@@ -132,19 +146,6 @@ const ChatMessageList = ({
                         loading="lazy"
                       />
                     ))}
-                  </div>
-                )}
-
-                {m.text?.trim() && (
-                  <div
-                    className={clsx(
-                      "max-w-68 py-1.5 rounded-lg Body_3_medium whitespace-pre-line wrap-break-word",
-                      isUser
-                        ? "px-3 bg-Grey-700 text-Grey-50"
-                        : "text-Grey-100 bg-transparent",
-                    )}
-                  >
-                    {m.text}
                   </div>
                 )}
 

@@ -31,11 +31,7 @@ const ChatContainer = ({ projectId, onGenerated }: ChatContainerProps) => {
       onGenerated,
     );
 
-  const recommendations = [
-    t("recommendations.0"),
-    t("recommendations.1"),
-    t("recommendations.2"),
-  ] as const;
+  const recommendations = [t("recommendations.0")] as const;
 
   const isEmpty = messages.length === 0;
   const isPendingConceptSelect = messages.some((m) => m.conceptSelectable);

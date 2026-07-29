@@ -254,9 +254,7 @@
         },
         "selectConcept": "Generate with this concept",
         "recommendations": {
-          "0": "I have a reference image I want to recreate.",
-          "1": "I’ll describe the background, you create it.",
-          "2": "Suggest a concept that matches the product."
+          "0": "Suggest a concept that matches the product."
         }
       }
     }

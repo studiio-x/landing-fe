@@ -109,10 +109,12 @@ export const useChatMessages = (
 
       if (!text && attachments.length === 0) return;
 
+      const content = text || defaultConceptMessage;
+
       await runExchange(
         (prev, typingId) => [
           ...prev,
-          { id: crypto.randomUUID(), role: "user", text, status: "sent", attachments },
+          { id: crypto.randomUUID(), role: "user", text: content, status: "sent", attachments },
           { id: typingId, role: "assistant", text: "", status: "typing" },
         ],
         async () => {
@@ -130,7 +132,7 @@ export const useChatMessages = (
             projectId,
             mode: "CONCEPT",
             body: {
-              content: text || defaultConceptMessage,
+              content,
               referenceImageObjectKey,
             },
           });
