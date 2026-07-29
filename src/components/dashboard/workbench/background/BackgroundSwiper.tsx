@@ -31,7 +31,11 @@ const BackgroundSwiper = ({
   onSelect,
   isLoading,
 }: BackgroundSwiperProps) => {
-  const showSkeleton = isLoading || items.length === 0;
+  if (!isLoading && items.length === 0) {
+    return null;
+  }
+
+  const showSkeleton = isLoading;
 
   return (
     <section className="w-full flex flex-col gap-2">

@@ -12,20 +12,27 @@ import GlassButton from "@/components/common/GlassButton";
 import { useTemplateKeywords, useTemplatesByKeyword, useSearchTemplates } from "@/hooks/queries/useTemplateApi";
 import { usePostImage } from "@/hooks/queries/useImageApi";
 import { TEMPLATE_KEYWORDS } from "@/constants/dashboard/template";
-import { TemplateKeyword } from "@/types/api/template.type";
+import { TemplateCategory, TemplateKeyword } from "@/types/api/template.type";
+import type { WorkbenchMode } from "@/types/dashboard/mode.type";
 
 interface BackgroundTabProps {
   uploadedImage: File | null;
   cutoutImageObjectKey: string | null;
   projectId: number | null;
+  mode: WorkbenchMode;
   onGenerated: (imageUrl: string) => void;
   onGeneratingChange: (isGenerating: boolean) => void;
 }
 
-const toItems = (templates: { templateId: number; imageObjectKey: string }[]) =>
-  templates.map((t) => ({ id: String(t.templateId), src: t.imageObjectKey }));
+const toItems = (
+  templates: { templateId: number; imageObjectKey: string; category: TemplateCategory }[],
+  category: TemplateCategory,
+) =>
+  templates
+    .filter((t) => t.category === category)
+    .map((t) => ({ id: String(t.templateId), src: t.imageObjectKey }));
 
-const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, onGenerated, onGeneratingChange }: BackgroundTabProps) => {
+const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, onGenerated, onGeneratingChange }: BackgroundTabProps) => {
   const t = useTranslations("dashboard.workbench.backgroundTab");
   const [isSearching, setIsSearching] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -54,8 +61,13 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, onGener
 
   const isLoading = isKeywordsLoading || isTemplatesLoading;
 
+  const modeCategory = mode.toUpperCase() as TemplateCategory;
+
   const findTemplates = (keyword: TemplateKeyword) =>
-    toItems(templatesData?.find((g) => g.keyword === keyword)?.templates ?? []);
+    toItems(
+      templatesData?.find((g) => g.keyword === keyword)?.templates ?? [],
+      modeCategory,
+    );
 
   const getTitle = (keyword: TemplateKeyword) =>
     keywords?.find((k) => k.keyword === keyword)?.title ?? "";
@@ -102,7 +114,7 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, onGener
           isSearchLoading || (searchResults && searchResults.length > 0) ? (
             <BackgroundSwiper
               id="search"
-              items={toItems(searchResults ?? [])}
+              items={toItems(searchResults ?? [], modeCategory)}
               selectedId={selectedBackground?.sectionId === "search" ? selectedBackground.itemId : null}
               onSelect={(itemId) => setSelectedBackground({ sectionId: "search", itemId })}
               isLoading={isSearchLoading}

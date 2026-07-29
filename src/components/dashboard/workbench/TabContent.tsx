@@ -22,7 +22,7 @@ const TabContent = ({ activeTab, uploadedImage, setUploadedImage, mode, cutoutIm
     case 1:
       return mode === "video"
         ? <OptionsTab uploadedImage={uploadedImage} />
-        : <BackgroundTab uploadedImage={uploadedImage} cutoutImageObjectKey={cutoutImageObjectKey} projectId={projectId} onGenerated={onGenerated} onGeneratingChange={onGeneratingChange} />;
+        : <BackgroundTab uploadedImage={uploadedImage} cutoutImageObjectKey={cutoutImageObjectKey} projectId={projectId} mode={mode} onGenerated={onGenerated} onGeneratingChange={onGeneratingChange} />;
     case 2:
       return <ChatbotTab projectId={projectId} onGenerated={onGenerated} />;
     default:
