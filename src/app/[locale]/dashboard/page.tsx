@@ -13,7 +13,7 @@ import { PATHS, QUERY_KEYS } from "@/constants/common/paths";
 import { useTemplatesByCategory } from "@/hooks/queries/useTemplateApi";
 import { TemplateCategory } from "@/types/api/template.type";
 
-const CATEGORY_MAP: TemplateCategory[] = ["STUDIO", "MODEL"];
+const CATEGORY_MAP: TemplateCategory[] = ["STUDIO", "MODEL", "VIDEO"];
 
 const DashboardPage = () => {
   const t = useTranslations("dashboard");

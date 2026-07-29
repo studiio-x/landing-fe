@@ -115,21 +115,20 @@ const FolderItem = ({ lists, index, setDeleteModalOpen, onClick }: FolderItemPro
               gridTemplateRows: "49px 49px 49px",
             }}
           >
-            {(lists.imageUrl as string[]).map(
-              (image, idx) =>
-                image && (
-                  <Image
-                    src={image}
-                    key={idx}
-                    alt="대시보드 이미지"
-                    width={92}
-                    height={92}
-                    className={clsx("w-full h-full object-cover rounded-xs", {
-                      "col-span-2 row-span-2": idx === 0,
-                    })}
-                  />
-                ),
-            )}
+            {(lists.imageUrl as string[])
+              .filter(Boolean)
+              .map((image, idx) => (
+                <Image
+                  src={image}
+                  key={idx}
+                  alt="대시보드 이미지"
+                  width={92}
+                  height={92}
+                  className={clsx("w-full h-full object-cover rounded-xs", {
+                    "col-span-2 row-span-2": idx === 0,
+                  })}
+                />
+              ))}
           </div>
         ) : (
           <div className="w-full h-full relative">
