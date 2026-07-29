@@ -33,6 +33,7 @@ const MarkCanvas = ({ imageContainerRef, naturalSize }: MarkCanvasProps) => {
   const { capturePaintedArea } = usePaintCapture(
     imageContainerRef,
     maskCanvasRef,
+    { tightCrop: true },
   );
 
   useEffect(() => {

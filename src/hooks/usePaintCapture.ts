@@ -11,7 +11,7 @@ export const usePaintCapture = (
   overlayCanvasRef: React.RefObject<HTMLCanvasElement | null>,
   options: UsePaintCaptureOptions = {},
 ) => {
-  const { debug = true, tightCrop = false, padding = 8 } = options;
+  const { debug = false, tightCrop = false, padding = 8 } = options;
 
   const capturePaintedArea = useCallback(async () => {
     const container = imageContainerRef.current;

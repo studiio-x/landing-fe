@@ -12,9 +12,10 @@ import { useChatMessages } from "@/hooks/useChatMessages";
 
 interface ChatContainerProps {
   projectId: number | null;
+  onGenerated?: (imageUrl: string) => void;
 }
 
-const ChatContainer = ({ projectId }: ChatContainerProps) => {
+const ChatContainer = ({ projectId, onGenerated }: ChatContainerProps) => {
   const t = useTranslations("dashboard.workbench.chatbot");
   const { isEditMode, hasPaint, commitPaint, setEditMode } =
     useStudioMarkStore();
@@ -25,15 +26,12 @@ const ChatContainer = ({ projectId }: ChatContainerProps) => {
   const { messages, sendUserMessage, sendMarkImages, handleConceptSelect } =
     useChatMessages(
       projectId,
-      t("recommendations.0"),
+      t("referenceImageDefaultMessage"),
       t("refineDefaultMessage"),
+      onGenerated,
     );
 
-  const recommendations = [
-    t("recommendations.0"),
-    t("recommendations.1"),
-    t("recommendations.2"),
-  ] as const;
+  const recommendations = [t("recommendations.0")] as const;
 
   const isEmpty = messages.length === 0;
   const isPendingConceptSelect = messages.some((m) => m.conceptSelectable);

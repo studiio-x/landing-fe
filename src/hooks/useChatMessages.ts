@@ -19,6 +19,7 @@ export const useChatMessages = (
   projectId: number | null,
   defaultConceptMessage: string,
   refineDefaultMessage: string,
+  onGenerated?: (imageUrl: string) => void,
 ) => {
   const t = useTranslations("dashboard.workbench.chatbot");
   const queryClient = useQueryClient();
@@ -108,10 +109,12 @@ export const useChatMessages = (
 
       if (!text && attachments.length === 0) return;
 
+      const content = text || defaultConceptMessage;
+
       await runExchange(
         (prev, typingId) => [
           ...prev,
-          { id: crypto.randomUUID(), role: "user", text, status: "sent", attachments },
+          { id: crypto.randomUUID(), role: "user", text: content, status: "sent", attachments },
           { id: typingId, role: "assistant", text: "", status: "typing" },
         ],
         async () => {
@@ -129,7 +132,7 @@ export const useChatMessages = (
             projectId,
             mode: "CONCEPT",
             body: {
-              content: text || defaultConceptMessage,
+              content,
               referenceImageObjectKey,
             },
           });
@@ -156,7 +159,7 @@ export const useChatMessages = (
           {
             id: crypto.randomUUID(),
             role: "user",
-            text: "",
+            text: refineDefaultMessage,
             status: "sent",
             attachments: [{ id: region.id, imageUrl: region.imageUrl }],
           },
@@ -177,6 +180,10 @@ export const useChatMessages = (
             body: { content: refineDefaultMessage, maskImageObjectKey },
           });
 
+          if (response.imageKeys.length > 0) {
+            onGenerated?.(response.imageKeys[0]);
+          }
+
           return {
             text: response.aiText,
             imageKeys:
@@ -185,7 +192,7 @@ export const useChatMessages = (
         },
       );
     },
-    [projectId, sendMessage, refineDefaultMessage, runExchange],
+    [projectId, sendMessage, refineDefaultMessage, runExchange, onGenerated],
   );
 
   const handleConceptSelect = useCallback(
@@ -207,6 +214,7 @@ export const useChatMessages = (
 
           if (response.imageKeys.length > 0) {
             queryClient.invalidateQueries({ queryKey: queryKeys.project.all });
+            onGenerated?.(response.imageKeys[0]);
           }
 
           return {
@@ -217,7 +225,7 @@ export const useChatMessages = (
         },
       );
     },
-    [projectId, selectConcept, queryClient, runExchange],
+    [projectId, selectConcept, queryClient, runExchange, onGenerated],
   );
 
   return {

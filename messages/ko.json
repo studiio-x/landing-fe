@@ -191,6 +191,12 @@
         "description": "배경 이미지를 적용하려면 제품 이미지가 필요해요.",
         "uploadGuide": "클릭하여 상품 이미지를\n업로드해 주세요."
       },
+      "backgroundRequiredModal": {
+        "closeLabel": "닫기",
+        "title": "배경 이미지를\n먼저 선택해 주세요",
+        "description": "챗봇을 사용하려면 배경 이미지 생성이 필요해요.",
+        "uploadGuide": "배경 탭에서 이미지를\n선택하고 생성해 주세요."
+      },
       "historyPanel": {
         "emptyTitle": "첫 번째 이미지를\n생성해 보세요",
         "emptyDescription": "텍스트 하나로\n이미지를 만들어 보세요.",
@@ -239,6 +245,7 @@
         "sendLabel": "전송",
         "attachmentAlt": "첨부 이미지",
         "refineDefaultMessage": "표시한 영역을 수정해줘.",
+        "referenceImageDefaultMessage": "재현하고 싶은 참고 이미지가 있어.",
         "errorRetry": "오류가 발생했습니다. 다시 시도해주세요.",
         "recommendedLabel": "추천",
         "plusMenu": {
@@ -248,9 +255,7 @@
         },
         "selectConcept": "이 컨셉으로 생성하기",
         "recommendations": {
-          "0": "재현하고 싶은 참고 이미지가 있어.",
-          "1": "내가 배경을 설명하면 그대로 만들어줘.",
-          "2": "제품에 어울리는 컨셉을 추천해줘."
+          "0": "제품에 어울리는 컨셉을 추천해줘."
         }
       }
     }

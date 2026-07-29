@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import FolderItem from "./FolderItem";
-import { useGetFolderDetail } from "@/hooks/queries/useFolderApi";
+import { useGetProjects } from "@/hooks/queries/useProjectApi";
 
 interface FolderItemContainerProps {
   folderId: number;
@@ -20,8 +20,8 @@ const FolderItemContainer = ({
 }: FolderItemContainerProps) => {
   const router = useRouter();
   const locale = useLocale();
-  const { data } = useGetFolderDetail(folderId);
-  const images = data?.folders[0]?.images ?? [];
+  const { data } = useGetProjects(folderId, 0, 6);
+  const images = data?.projects.map((p) => p.thumbnailObjectKey) ?? [];
 
   const handleClick = () => {
     router.push(`/${locale}/dashboard/workbench?mode=studio&folderId=${folderId}`);

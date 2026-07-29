@@ -29,6 +29,9 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   } | null>(null);
   const [isProductImageRequiredOpen, setIsProductImageRequiredOpen] =
     useState(false);
+  const [requiredModalVariant, setRequiredModalVariant] = useState<
+    "product" | "background"
+  >("product");
 
   const { isEditMode, hasPaint } = useStudioMarkStore();
 
@@ -50,10 +53,18 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   const { data: projectsData } = useGetProjects(folderId);
   const projects = projectsData?.projects ?? [];
 
-  const history: HistoryItem[] = projects.map((p) => ({
-    id: String(p.projectId),
-    imageUrls: [p.thumbnailObjectKey, p.thumbnailObjectKey],
-  }));
+  const [latest, second] = projects;
+  const history: HistoryItem[] = latest
+    ? [
+        {
+          id: String(latest.projectId),
+          imageUrls: [
+            latest.thumbnailObjectKey,
+            (second ?? latest).thumbnailObjectKey,
+          ],
+        },
+      ]
+    : [];
 
   const {
     uploadedImage,
@@ -74,13 +85,23 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     const isChatbotTab = nextIdx === 2;
 
     if (isBackgroundTab && !cutoutImageObjectKey) {
+      setRequiredModalVariant("product");
       setIsProductImageRequiredOpen(true);
       return;
     }
 
-    if (isChatbotTab && !uploadedImage) {
-      setIsProductImageRequiredOpen(true);
-      return;
+    if (isChatbotTab) {
+      if (!uploadedImage) {
+        setRequiredModalVariant("product");
+        setIsProductImageRequiredOpen(true);
+        return;
+      }
+
+      if (mode !== "video" && !generatedImageUrl) {
+        setRequiredModalVariant("background");
+        setIsProductImageRequiredOpen(true);
+        return;
+      }
     }
 
     setActiveTab(nextIdx);
@@ -208,6 +229,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
 
       {isProductImageRequiredOpen && (
         <ProductImageRequiredModal
+          variant={requiredModalVariant}
           onClose={() => setIsProductImageRequiredOpen(false)}
         />
       )}

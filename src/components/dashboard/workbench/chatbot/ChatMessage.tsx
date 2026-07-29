@@ -113,7 +113,20 @@ const ChatMessageList = ({
             {isTyping ? (
               <TypingDots />
             ) : (
-              <div className={clsx("max-w-80 flex flex-col gap-2")}>
+              <div className={clsx("max-w-68 flex flex-col gap-2")}>
+                {m.text?.trim() && (
+                  <div
+                    className={clsx(
+                      "max-w-68 py-1.5 rounded-lg Body_3_medium whitespace-pre-line wrap-break-word",
+                      isUser
+                        ? "px-3 bg-Grey-700 text-Grey-50"
+                        : "text-Grey-100 bg-transparent",
+                    )}
+                  >
+                    {m.text}
+                  </div>
+                )}
+
                 {hasAttachments && (
                   <div
                     className={clsx(
@@ -121,6 +134,7 @@ const ChatMessageList = ({
                       (m.attachments?.length ?? 0) === 1
                         ? "grid-cols-1"
                         : "grid-cols-2",
+                      isUser ? "justify-items-end" : "justify-items-start",
                     )}
                   >
                     {m.attachments!.map((a) => (
@@ -135,19 +149,6 @@ const ChatMessageList = ({
                   </div>
                 )}
 
-                {m.text?.trim() && (
-                  <div
-                    className={clsx(
-                      "max-w-80 px-3 py-1.5 rounded-lg Body_3_medium whitespace-pre-line",
-                      isUser
-                        ? "bg-Grey-700 text-Grey-50"
-                        : "text-Grey-100 bg-transparent",
-                    )}
-                  >
-                    {m.text}
-                  </div>
-                )}
-
                 {hasImageKeys && m.conceptSelectable && (
                   <ConceptImageGrid
                     messageId={m.id}
@@ -156,8 +157,9 @@ const ChatMessageList = ({
                   />
                 )}
 
-                {hasImageKeys && !m.conceptSelectable && (
-                  m.imageKeys!.length === 1 ? (
+                {hasImageKeys &&
+                  !m.conceptSelectable &&
+                  (m.imageKeys!.length === 1 ? (
                     <Image
                       src={m.imageKeys![0]}
                       width={272}
@@ -180,8 +182,7 @@ const ChatMessageList = ({
                         />
                       ))}
                     </div>
-                  )
-                )}
+                  ))}
               </div>
             )}
           </div>
@@ -212,7 +213,7 @@ const ChatRecommendations = ({
             key={text}
             type="button"
             onClick={() => onClickItem(text)}
-            className="max-w-80 rounded-md bg-Grey-700 px-3 py-1.5 Body_3_medium text-Grey-400 hover:text-Grey-50 text-left transition-colors"
+            className="max-w-68 rounded-md bg-Grey-700 px-3 py-1.5 Body_3_medium text-Grey-400 hover:text-Grey-50 text-left transition-colors"
           >
             {text}
           </button>
