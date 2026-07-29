@@ -5,8 +5,6 @@ export type MessageRole = "USER" | "AI";
 export type MessageType = "TEXT" | string;
 
 // POST /chat/{projectId}/message/{mode}
-// CONCEPT 모드: content + referenceImageObjectKey(선택)
-// REFINE 모드: content + imageId + maskImageObjectKey 필수
 export interface PostChatMessageRequest {
   content: string;
   referenceImageObjectKey?: string;
