@@ -50,10 +50,18 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   const { data: projectsData } = useGetProjects(folderId);
   const projects = projectsData?.projects ?? [];
 
-  const history: HistoryItem[] = projects.map((p) => ({
-    id: String(p.projectId),
-    imageUrls: [p.thumbnailObjectKey, p.thumbnailObjectKey],
-  }));
+  const [latest, second] = projects;
+  const history: HistoryItem[] = latest
+    ? [
+        {
+          id: String(latest.projectId),
+          imageUrls: [
+            latest.thumbnailObjectKey,
+            (second ?? latest).thumbnailObjectKey,
+          ],
+        },
+      ]
+    : [];
 
   const {
     uploadedImage,
