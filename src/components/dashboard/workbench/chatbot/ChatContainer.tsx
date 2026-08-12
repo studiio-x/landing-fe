@@ -15,9 +15,10 @@ interface ChatContainerProps {
   projectId: number | null;
   onGenerated?: (imageUrl: string) => void;
   mode?: WorkbenchMode;
+  videoImageId?: number | null;
 }
 
-const ChatContainer = ({ projectId, onGenerated, mode }: ChatContainerProps) => {
+const ChatContainer = ({ projectId, onGenerated, mode, videoImageId }: ChatContainerProps) => {
   const t = useTranslations("dashboard.workbench.chatbot");
   const { isEditMode, hasPaint, commitPaint, setEditMode } =
     useStudioMarkStore();
@@ -32,6 +33,7 @@ const ChatContainer = ({ projectId, onGenerated, mode }: ChatContainerProps) => 
       t("refineDefaultMessage"),
       onGenerated,
       mode,
+      videoImageId,
     );
 
   const recommendations = [t("recommendations.0")] as const;

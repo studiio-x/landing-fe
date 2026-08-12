@@ -20,7 +20,7 @@ const QUALITY_TYPE_MAP: Record<QualityKey, QualityType> = {
 interface OptionsTabProps {
   uploadedImage: File | null;
   folderId: number;
-  onGenerated: (videoUrl: string) => void;
+  onGenerated: (videoUrl: string, imageId: number) => void;
   onGeneratingChange: (isGenerating: boolean) => void;
 }
 

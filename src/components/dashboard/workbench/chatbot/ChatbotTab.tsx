@@ -7,12 +7,18 @@ interface ChatbotTabProps {
   projectId: number | null;
   onGenerated?: (imageUrl: string) => void;
   mode?: WorkbenchMode;
+  videoImageId?: number | null;
 }
 
-const ChatbotTab = ({ projectId, onGenerated, mode }: ChatbotTabProps) => {
+const ChatbotTab = ({ projectId, onGenerated, mode, videoImageId }: ChatbotTabProps) => {
   return (
     <div className="mt-5">
-      <ChatContainer projectId={projectId} onGenerated={onGenerated} mode={mode} />
+      <ChatContainer
+        projectId={projectId}
+        onGenerated={onGenerated}
+        mode={mode}
+        videoImageId={videoImageId}
+      />
     </div>
   );
 };

@@ -26,6 +26,7 @@ export interface PostVideoRequest {
 // 비디오 생성 응답
 export interface PostVideoResponse {
   videoUrl: string;
+  imageId: number;
   usedCredits: number;
   status: string;
 }

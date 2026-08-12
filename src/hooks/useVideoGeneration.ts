@@ -4,7 +4,7 @@ import type { MotionType, QualityType } from "@/types/api/video.type";
 
 interface UseVideoGenerationOptions {
   folderId: number;
-  onGenerated: (videoUrl: string) => void;
+  onGenerated: (videoUrl: string, imageId: number) => void;
   onGeneratingChange: (isGenerating: boolean) => void;
 }
 
@@ -35,12 +35,12 @@ export const useVideoGeneration = ({
         throw new Error("Failed to upload video source image");
       }
 
-      const { videoUrl } = await postVideo({
+      const { videoUrl, imageId } = await postVideo({
         params: { motionType, qualityType },
         body: { imageObjectKey: objectKey, folderId },
       });
 
-      onGenerated(videoUrl);
+      onGenerated(videoUrl, imageId);
     } finally {
       onGeneratingChange(false);
     }

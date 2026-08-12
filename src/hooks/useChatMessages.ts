@@ -22,6 +22,7 @@ export const useChatMessages = (
   refineDefaultMessage: string,
   onGenerated?: (imageUrl: string) => void,
   mode: WorkbenchMode = "studio",
+  videoImageId?: number | null,
 ) => {
   const isVideoMode = mode === "video";
 
@@ -144,6 +145,7 @@ export const useChatMessages = (
             body: {
               content,
               referenceImageObjectKey,
+              imageId: isVideoMode ? (videoImageId ?? undefined) : undefined,
             },
           });
 
@@ -156,7 +158,14 @@ export const useChatMessages = (
         },
       );
     },
-    [projectId, sendMessage, defaultConceptMessage, runExchange, isVideoMode],
+    [
+      projectId,
+      sendMessage,
+      defaultConceptMessage,
+      runExchange,
+      isVideoMode,
+      videoImageId,
+    ],
   );
 
   const sendMarkImages = useCallback(
@@ -187,7 +196,11 @@ export const useChatMessages = (
           const response = await sendMessage({
             projectId,
             mode: isVideoMode ? "VIDEO_REFINE" : "REFINE",
-            body: { content: refineDefaultMessage, maskImageObjectKey },
+            body: {
+              content: refineDefaultMessage,
+              maskImageObjectKey,
+              imageId: isVideoMode ? (videoImageId ?? undefined) : undefined,
+            },
           });
 
           if (response.imageKeys.length > 0) {
@@ -209,6 +222,7 @@ export const useChatMessages = (
       runExchange,
       onGenerated,
       isVideoMode,
+      videoImageId,
     ],
   );
 

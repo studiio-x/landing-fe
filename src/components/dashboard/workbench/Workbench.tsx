@@ -44,6 +44,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   const [generatedVideoUrl, setGeneratedVideoUrl] = useState<string | null>(
     null,
   );
+  const [videoImageId, setVideoImageId] = useState<number | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
   const searchParams = useSearchParams();
@@ -123,7 +124,13 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     setNaturalSize(null);
     setGeneratedImageUrl(null);
     setGeneratedVideoUrl(null);
+    setVideoImageId(null);
   }, [uploadedImage]);
+
+  const handleVideoGenerated = (videoUrl: string, imageId: number) => {
+    setGeneratedVideoUrl(videoUrl);
+    setVideoImageId(imageId);
+  };
 
   return (
     <div className="flex justify-center w-full">
@@ -143,7 +150,8 @@ const Workbench = ({ mode }: WorkbenchProps) => {
           projectId={projectId}
           onGenerated={setGeneratedImageUrl}
           onGeneratingChange={setIsGenerating}
-          onVideoGenerated={setGeneratedVideoUrl}
+          onVideoGenerated={handleVideoGenerated}
+          videoImageId={videoImageId}
           initialTemplateId={templateId}
         />
       </div>
