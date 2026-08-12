@@ -162,6 +162,17 @@
       "title": "원하는 작업을 선택해 주세요",
       "backButtonLabel": "이전 페이지로 이동"
     },
+    "project": {
+      "folderItem": {
+        "folderLabel": "Folder",
+        "projectLabel": "Project",
+        "folderThumbnailAlt": "대시보드 이미지",
+        "projectThumbnailAlt": "폴더이미지",
+        "noImage": "이미지 없음",
+        "nameInputLabel": "이름",
+        "moreOptions": "더보기"
+      }
+    },
     "workbench": {
       "tabs": {
         "product": "제품",

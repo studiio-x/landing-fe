@@ -33,7 +33,7 @@ export const attachApiLogger = (instance: AxiosInstance) => {
     (error: AxiosError) => {
       const config = error.config as RequestConfigWithTimestamp | undefined;
       const duration = config?._requestStartedAt ? `${Date.now() - config._requestStartedAt}ms` : "";
-      console.error(
+      console.warn(
         `%c[API] ✕ ${config?.method?.toUpperCase()} ${config?.url} ${error.response?.status ?? ""} ${duration}`,
         "color:#ef4444;font-weight:bold;",
         error.response?.data ?? error.message,

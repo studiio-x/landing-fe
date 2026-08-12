@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { getRawPresign, postCutoutImage } from "@/apis/imageApi";
@@ -95,6 +95,9 @@ export const useImageUploadAndCutout = (
     setCutoutError(null);
   }, []);
 
+  const uploadAndCutoutRef = useRef(uploadAndCutout);
+  uploadAndCutoutRef.current = uploadAndCutout;
+
   useEffect(() => {
     setIsCutoutImageLoading(false);
 
@@ -106,12 +109,12 @@ export const useImageUploadAndCutout = (
 
     const url = URL.createObjectURL(uploadedImage);
     setPreviewUrl(url);
-    uploadAndCutout(uploadedImage);
+    uploadAndCutoutRef.current(uploadedImage);
 
     return () => {
       URL.revokeObjectURL(url);
     };
-  }, [uploadedImage, resetCutout, uploadAndCutout]);
+  }, [uploadedImage, resetCutout]);
 
   useEffect(() => {
     if (cutoutImageUrl) setIsCutoutImageLoading(true);

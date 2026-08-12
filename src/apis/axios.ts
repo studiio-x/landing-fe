@@ -15,7 +15,6 @@ export const axiosInstance = axios.create({
     "Content-Type": "application/json",
   },
   withCredentials: true,
-  timeout: 20000,
 });
 
 attachApiLogger(axiosInstance);

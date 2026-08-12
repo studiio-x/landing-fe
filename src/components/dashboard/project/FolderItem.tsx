@@ -2,6 +2,7 @@ import { Folder, Meatball, NotFolder } from "@/assets/icons";
 import Image from "next/image";
 import clsx from "clsx";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import MeatballModal from "./MeatballModal";
 import useClickOutside from "@/hooks/useClickOutside";
 
@@ -17,6 +18,7 @@ interface FolderItemProps {
 }
 
 const FolderItem = ({ lists, index, setDeleteModalOpen, onClick }: FolderItemProps) => {
+  const t = useTranslations("dashboard.project.folderItem");
   const [isOpenMeatball, setIsOpenMeatball] = useState(false);
   const [renameModalOpen, setRenameModalOpen] = useState(false);
   const [name, setName] = useState<string>(lists.name);
@@ -100,7 +102,7 @@ const FolderItem = ({ lists, index, setDeleteModalOpen, onClick }: FolderItemPro
             "text-base top-[0.44rem] text-Grey-100 font-normal font-calSans absolute  left-4"
           }
         >
-          Folder {String(index + 1).padStart(2, "0")}
+          {t("folderLabel")} {String(index + 1).padStart(2, "0")}
         </span>
       )}
 
@@ -115,27 +117,33 @@ const FolderItem = ({ lists, index, setDeleteModalOpen, onClick }: FolderItemPro
               gridTemplateRows: "49px 49px 49px",
             }}
           >
-            {(lists.imageUrl as string[])
-              .filter(Boolean)
-              .map((image, idx) => (
+            {(lists.imageUrl as string[]).length === 0 ? (
+              <div className="col-span-3 row-span-3 w-full h-full rounded-xs bg-Grey-700 flex items-center justify-center">
+                <span className="Body_3_medium text-Grey-500">
+                  {t("noImage")}
+                </span>
+              </div>
+            ) : (
+              (lists.imageUrl as string[]).filter(Boolean).map((image, idx) => (
                 <Image
                   src={image}
                   key={idx}
-                  alt="대시보드 이미지"
+                  alt={t("folderThumbnailAlt")}
                   width={92}
                   height={92}
                   className={clsx("w-full h-full object-cover rounded-xs", {
                     "col-span-2 row-span-2": idx === 0,
                   })}
                 />
-              ))}
+              ))
+            )}
           </div>
         ) : (
           <div className="w-full h-full relative">
             {lists.imageUrl && (
               <Image
                 src={lists.imageUrl as string}
-                alt="폴더이미지"
+                alt={t("projectThumbnailAlt")}
                 width={292}
                 height={292}
                 className="object-cover w-73 h-full"
@@ -173,14 +181,14 @@ const FolderItem = ({ lists, index, setDeleteModalOpen, onClick }: FolderItemPro
                 onKeyDown={onKeyDown}
               />
             </div>
-            
+
             <div
               className={`relative h-6 self-end ${lists.isFolder ? "" : "mb-1.5"}`}
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setIsOpenMeatball(!isOpenMeatball)}
-                aria-label="더보기"
+                aria-label={t("moreOptions")}
               >
                 <Meatball
                   className={`${isOpenMeatball ? "text-Grey-50" : "text-Grey-300"} w-6 h-6 transition-colors`}

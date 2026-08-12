@@ -162,6 +162,17 @@
       "title": "Choose the task you want.",
       "backButtonLabel": "Go to previous page"
     },
+    "project": {
+      "folderItem": {
+        "folderLabel": "Folder",
+        "projectLabel": "Project",
+        "folderThumbnailAlt": "Dashboard image",
+        "projectThumbnailAlt": "Folder image",
+        "noImage": "No image",
+        "nameInputLabel": "Name",
+        "moreOptions": "More options"
+      }
+    },
     "workbench": {
       "tabs": {
         "product": "Product",
