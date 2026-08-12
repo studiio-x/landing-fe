@@ -9,23 +9,25 @@ interface TabContentProps {
   uploadedImage: File | null;
   setUploadedImage: (file: File | null) => void;
   mode: WorkbenchMode;
+  folderId: number;
   cutoutImageObjectKey: string | null;
   projectId: number | null;
   onGenerated: (imageUrl: string) => void;
   onGeneratingChange: (isGenerating: boolean) => void;
+  onVideoGenerated: (videoUrl: string) => void;
   initialTemplateId?: number | null;
 }
 
-const TabContent = ({ activeTab, uploadedImage, setUploadedImage, mode, cutoutImageObjectKey, projectId, onGenerated, onGeneratingChange, initialTemplateId }: TabContentProps) => {
+const TabContent = ({ activeTab, uploadedImage, setUploadedImage, mode, folderId, cutoutImageObjectKey, projectId, onGenerated, onGeneratingChange, onVideoGenerated, initialTemplateId }: TabContentProps) => {
   switch (activeTab) {
     case 0:
       return <ProductTab setUploadedImage={setUploadedImage} />;
     case 1:
       return mode === "video"
-        ? <OptionsTab uploadedImage={uploadedImage} />
+        ? <OptionsTab uploadedImage={uploadedImage} folderId={folderId} onGenerated={onVideoGenerated} onGeneratingChange={onGeneratingChange} />
         : <BackgroundTab uploadedImage={uploadedImage} cutoutImageObjectKey={cutoutImageObjectKey} projectId={projectId} mode={mode} onGenerated={onGenerated} onGeneratingChange={onGeneratingChange} initialTemplateId={initialTemplateId} />;
     case 2:
-      return <ChatbotTab projectId={projectId} onGenerated={onGenerated} />;
+      return <ChatbotTab projectId={projectId} onGenerated={onGenerated} mode={mode} />;
     default:
       return null;
   }

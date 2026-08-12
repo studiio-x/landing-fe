@@ -41,6 +41,9 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(
     null,
   );
+  const [generatedVideoUrl, setGeneratedVideoUrl] = useState<string | null>(
+    null,
+  );
   const [isGenerating, setIsGenerating] = useState(false);
 
   const searchParams = useSearchParams();
@@ -54,7 +57,9 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     : (foldersData?.myProject[0]?.folderId ?? 0);
 
   const { data: projectsData } = useGetProjects(folderId);
-  const projects = projectsData?.projects ?? [];
+  const projects = (projectsData?.projects ?? []).filter(
+    (p) => p.fileType === "IMAGE",
+  );
 
   const [latest, second] = projects;
   const history: HistoryItem[] = latest
@@ -117,6 +122,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   useEffect(() => {
     setNaturalSize(null);
     setGeneratedImageUrl(null);
+    setGeneratedVideoUrl(null);
   }, [uploadedImage]);
 
   return (
@@ -132,16 +138,18 @@ const Workbench = ({ mode }: WorkbenchProps) => {
           uploadedImage={uploadedImage}
           setUploadedImage={setUploadedImage}
           mode={mode}
+          folderId={folderId}
           cutoutImageObjectKey={cutoutImageObjectKey}
           projectId={projectId}
           onGenerated={setGeneratedImageUrl}
           onGeneratingChange={setIsGenerating}
+          onVideoGenerated={setGeneratedVideoUrl}
           initialTemplateId={templateId}
         />
       </div>
 
       <div className="relative ml-7 w-147.5 h-161.5 rounded-lg">
-        {isEditMode && !hasPaint && (
+        {isEditMode && !hasPaint && mode !== "video" && (
           <div className="absolute left-1/2 bottom-6 -translate-x-1/2 z-40">
             <div className="rounded-md bg-Grey-900 px-6 py-2 Subhead_2_medium text-White whitespace-nowrap">
               {t("editModeGuide")}
@@ -149,7 +157,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
           </div>
         )}
 
-        {isEditMode && (
+        {isEditMode && mode !== "video" && (
           <svg
             className="absolute -inset-1 w-[calc(100%+8px)] h-[calc(100%+8px)] pointer-events-none z-30"
             viewBox="0 0 100 100"
@@ -177,20 +185,30 @@ const Workbench = ({ mode }: WorkbenchProps) => {
         >
           {previewUrl ? (
             <>
-              <img
-                crossOrigin="anonymous"
-                src={generatedImageUrl ?? cutoutImageUrl ?? previewUrl}
-                alt={t("uploadedImageAlt")}
-                className="w-full h-full object-contain"
-                onLoad={(e) => {
-                  const img = e.currentTarget as HTMLImageElement;
-                  setNaturalSize({
-                    w: img.naturalWidth,
-                    h: img.naturalHeight,
-                  });
-                  setIsCutoutImageLoading(false);
-                }}
-              />
+              {mode === "video" && generatedVideoUrl ? (
+                <video
+                  src={generatedVideoUrl}
+                  controls
+                  autoPlay
+                  loop
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <img
+                  crossOrigin="anonymous"
+                  src={generatedImageUrl ?? cutoutImageUrl ?? previewUrl}
+                  alt={t("uploadedImageAlt")}
+                  className="w-full h-full object-contain"
+                  onLoad={(e) => {
+                    const img = e.currentTarget as HTMLImageElement;
+                    setNaturalSize({
+                      w: img.naturalWidth,
+                      h: img.naturalHeight,
+                    });
+                    setIsCutoutImageLoading(false);
+                  }}
+                />
+              )}
 
               {(isProcessing || isGenerating || isCutoutImageLoading) && (
                 <div className="absolute inset-0 flex flex-col gap-3 items-center justify-center bg-Grey-900/60">
@@ -215,12 +233,16 @@ const Workbench = ({ mode }: WorkbenchProps) => {
                 </div>
               )}
 
-              {isEditMode && naturalSize && !isProcessing && !isGenerating && (
-                <MarkCanvas
-                  imageContainerRef={imageContainerRef}
-                  naturalSize={naturalSize}
-                />
-              )}
+              {isEditMode &&
+                naturalSize &&
+                !isProcessing &&
+                !isGenerating &&
+                mode !== "video" && (
+                  <MarkCanvas
+                    imageContainerRef={imageContainerRef}
+                    naturalSize={naturalSize}
+                  />
+                )}
             </>
           ) : (
             <div className="flex flex-col gap-3 items-center">

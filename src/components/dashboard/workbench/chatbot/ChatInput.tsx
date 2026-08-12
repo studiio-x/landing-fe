@@ -7,6 +7,7 @@ import clsx from "clsx";
 import PlusMenu from "./PlusMenu";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 import { ChatAttachment, ChatSendPayload } from "@/types/dashboard/chat.type";
+import type { WorkbenchMode } from "@/types/dashboard/mode.type";
 
 const MIN_H = 24;
 const MAX_H = 80;
@@ -14,9 +15,10 @@ const MAX_H = 80;
 interface ChatInputProps {
   onSend: (payload: ChatSendPayload) => void;
   disabled?: boolean;
+  mode?: WorkbenchMode;
 }
 
-const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
+const ChatInput = ({ onSend, disabled, mode }: ChatInputProps) => {
   const t = useTranslations("dashboard.workbench.chatbot");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [value, setValue] = useState("");
@@ -68,7 +70,7 @@ const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
   return (
     <div
       className={clsx(
-        "relative rounded-md p-px",
+        "relative rounded-md p-px w-full",
         disabled
           ? "opacity-40 cursor-not-allowed"
           : hasValue
@@ -85,18 +87,20 @@ const ChatInput = ({ onSend, disabled }: ChatInputProps) => {
           placeholder={t("inputPlaceholder")}
           rows={1}
           disabled={disabled}
-          className="w-65.5 pt-0.5 bg-transparent min-h-6 max-h-20 placeholder:text-Grey-400 text-Grey-100 resize-none outline-none Body_3_medium disabled:cursor-not-allowed"
+          className="flex-1 min-w-0 pt-0.5 bg-transparent min-h-6 max-h-20 placeholder:text-Grey-400 text-Grey-100 resize-none outline-none Body_3_medium disabled:cursor-not-allowed"
         />
 
         <div className="flex items-start gap-2.5">
-          <PlusMenu
-            onUploadImage={handleUploadReferenceImage}
-            onClickMark={() => {
-              resetPaint();
-              setEditMode(true);
-            }}
-            disabled={disabled}
-          />
+          {mode !== "video" && (
+            <PlusMenu
+              onUploadImage={handleUploadReferenceImage}
+              onClickMark={() => {
+                resetPaint();
+                setEditMode(true);
+              }}
+              disabled={disabled}
+            />
+          )}
 
           <button type="button" aria-label={t("sendLabel")} onClick={sendMessage} disabled={disabled} className="group disabled:cursor-not-allowed">
             <Send className="w-6 h-6 transition-colors [&_path]:fill-Grey-200 group-hover:[&_path]:fill-Red-500" />

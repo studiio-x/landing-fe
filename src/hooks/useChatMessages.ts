@@ -12,6 +12,7 @@ import {
   useGetChatHistory,
 } from "@/hooks/queries/useChatApi";
 import type { ChatItem, ChatSendPayload } from "@/types/dashboard/chat.type";
+import type { WorkbenchMode } from "@/types/dashboard/mode.type";
 import { getErrorMessage } from "@/utils/apiUtils";
 import { uploadBlobToPresignedUrl } from "@/utils/uploadUtils";
 
@@ -20,7 +21,10 @@ export const useChatMessages = (
   defaultConceptMessage: string,
   refineDefaultMessage: string,
   onGenerated?: (imageUrl: string) => void,
+  mode: WorkbenchMode = "studio",
 ) => {
+  const isVideoMode = mode === "video";
+
   const t = useTranslations("dashboard.workbench.chatbot");
   const queryClient = useQueryClient();
   const [messages, setMessages] = useState<ChatItem[]>([]);
@@ -114,7 +118,13 @@ export const useChatMessages = (
       await runExchange(
         (prev, typingId) => [
           ...prev,
-          { id: crypto.randomUUID(), role: "user", text: content, status: "sent", attachments },
+          {
+            id: crypto.randomUUID(),
+            role: "user",
+            text: content,
+            status: "sent",
+            attachments,
+          },
           { id: typingId, role: "assistant", text: "", status: "typing" },
         ],
         async () => {
@@ -130,7 +140,7 @@ export const useChatMessages = (
 
           const response = await sendMessage({
             projectId,
-            mode: "CONCEPT",
+            mode: isVideoMode ? "VIDEO_REFINE" : "CONCEPT",
             body: {
               content,
               referenceImageObjectKey,
@@ -141,12 +151,12 @@ export const useChatMessages = (
             text: response.aiText,
             imageKeys:
               response.imageKeys.length > 0 ? response.imageKeys : undefined,
-            conceptSelectable: response.imageKeys.length > 0,
+            conceptSelectable: !isVideoMode && response.imageKeys.length > 0,
           };
         },
       );
     },
-    [projectId, sendMessage, defaultConceptMessage, runExchange],
+    [projectId, sendMessage, defaultConceptMessage, runExchange, isVideoMode],
   );
 
   const sendMarkImages = useCallback(
@@ -176,7 +186,7 @@ export const useChatMessages = (
 
           const response = await sendMessage({
             projectId,
-            mode: "REFINE",
+            mode: isVideoMode ? "VIDEO_REFINE" : "REFINE",
             body: { content: refineDefaultMessage, maskImageObjectKey },
           });
 
@@ -192,7 +202,14 @@ export const useChatMessages = (
         },
       );
     },
-    [projectId, sendMessage, refineDefaultMessage, runExchange, onGenerated],
+    [
+      projectId,
+      sendMessage,
+      refineDefaultMessage,
+      runExchange,
+      onGenerated,
+      isVideoMode,
+    ],
   );
 
   const handleConceptSelect = useCallback(

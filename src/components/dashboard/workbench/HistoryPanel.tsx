@@ -4,7 +4,7 @@ import type { WorkbenchMode } from "@/types/dashboard/mode.type";
 
 export type HistoryItem = {
   id: string;
-  imageUrls: [string, string];
+  imageUrls: [string | null, string | null];
 };
 
 interface HistoryPanelProps {
@@ -38,16 +38,19 @@ const HistoryPanel = ({ history, mode }: HistoryPanelProps) => {
       </h3>
 
       <div className="flex flex-col gap-4 w-full h-full">
-        {latest.imageUrls.slice(0, 2).map((url, idx) => (
-          <Image
-            key={`${latest.id}-${idx}`}
-            src={url}
-            alt={t("imageAlt", { index: idx + 1 })}
-            width={166}
-            height={166}
-            className="w-41.5 h-41.5 object-cover rounded-[0.3479rem]"
-          />
-        ))}
+        {latest.imageUrls
+          .slice(0, 2)
+          .filter((url): url is string => Boolean(url))
+          .map((url, idx) => (
+            <Image
+              key={`${latest.id}-${idx}`}
+              src={url}
+              alt={t("imageAlt", { index: idx + 1 })}
+              width={166}
+              height={166}
+              className="w-41.5 h-41.5 object-cover rounded-[0.3479rem]"
+            />
+          ))}
       </div>
     </section>
   );

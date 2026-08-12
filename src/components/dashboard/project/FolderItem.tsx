@@ -10,14 +10,19 @@ interface FolderItemProps {
   lists: {
     name: string;
     isFolder: boolean;
-    imageUrl: string | string[];
+    imageUrl: string | (string | null)[];
   };
   index: number;
   setDeleteModalOpen: (open: boolean) => void;
   onClick?: () => void;
 }
 
-const FolderItem = ({ lists, index, setDeleteModalOpen, onClick }: FolderItemProps) => {
+const FolderItem = ({
+  lists,
+  index,
+  setDeleteModalOpen,
+  onClick,
+}: FolderItemProps) => {
   const t = useTranslations("dashboard.project.folderItem");
   const [isOpenMeatball, setIsOpenMeatball] = useState(false);
   const [renameModalOpen, setRenameModalOpen] = useState(false);
@@ -77,7 +82,10 @@ const FolderItem = ({ lists, index, setDeleteModalOpen, onClick }: FolderItemPro
       const textarea = renameModalRef.current;
       if (textarea) {
         textarea.focus();
-        textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+        textarea.setSelectionRange(
+          textarea.value.length,
+          textarea.value.length,
+        );
       }
       setIsOpenMeatball(false);
     }
@@ -117,16 +125,24 @@ const FolderItem = ({ lists, index, setDeleteModalOpen, onClick }: FolderItemPro
               gridTemplateRows: "49px 49px 49px",
             }}
           >
-            {(lists.imageUrl as string[]).length === 0 ? (
-              <div className="col-span-3 row-span-3 w-full h-full rounded-xs bg-Grey-700 flex items-center justify-center">
-                <span className="Body_3_medium text-Grey-500">
-                  {t("noImage")}
-                </span>
-              </div>
-            ) : (
-              (lists.imageUrl as string[]).filter(Boolean).map((image, idx) => (
+            {(() => {
+              const visibleThumbnails = (
+                lists.imageUrl as (string | null)[]
+              ).filter((src): src is string => Boolean(src));
+
+              if (visibleThumbnails.length === 0) {
+                return (
+                  <div className="col-span-3 row-span-3 w-full h-full rounded-xs bg-Grey-700 flex items-center justify-center">
+                    <span className="Body_3_medium text-Grey-500">
+                      {t("noImage")}
+                    </span>
+                  </div>
+                );
+              }
+
+              return visibleThumbnails.map((src, idx) => (
                 <Image
-                  src={image}
+                  src={src}
                   key={idx}
                   alt={t("folderThumbnailAlt")}
                   width={92}
@@ -135,8 +151,8 @@ const FolderItem = ({ lists, index, setDeleteModalOpen, onClick }: FolderItemPro
                     "col-span-2 row-span-2": idx === 0,
                   })}
                 />
-              ))
-            )}
+              ));
+            })()}
           </div>
         ) : (
           <div className="w-full h-full relative">

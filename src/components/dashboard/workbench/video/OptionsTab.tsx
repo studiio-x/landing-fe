@@ -6,20 +6,48 @@ import { Plus, Video } from "@/assets/icons";
 import GlassButton from "@/components/common/GlassButton";
 import { useLocale, useTranslations } from "next-intl";
 import OptionCard from "./OptionCard";
+import ProductImageRequiredModal from "@/components/dashboard/workbench/background/ProductImageRequiredModal";
+import { useVideoGeneration } from "@/hooks/useVideoGeneration";
 import { ACTION_OPTIONS, QUALITY_OPTIONS } from "@/constants/dashboard/video-options";
 import { ActionKey, QualityKey } from "@/types/dashboard/video-option.type";
+import type { QualityType } from "@/types/api/video.type";
+
+const QUALITY_TYPE_MAP: Record<QualityKey, QualityType> = {
+  basic: "STANDARD",
+  premium: "HIGH",
+};
 
 interface OptionsTabProps {
   uploadedImage: File | null;
+  folderId: number;
+  onGenerated: (videoUrl: string) => void;
+  onGeneratingChange: (isGenerating: boolean) => void;
 }
 
 
-const OptionsTab = ({ uploadedImage }: OptionsTabProps) => {
+const OptionsTab = ({ uploadedImage, folderId, onGenerated, onGeneratingChange }: OptionsTabProps) => {
   const locale = useLocale();
   const t = useTranslations("dashboard.workbench.optionsTab");
   const [selected, setSelected] = useState<QualityKey>("basic");
   const [hovered, setHovered] = useState<QualityKey | null>(null);
   const [selectedAction, setSelectedAction] = useState<ActionKey | null>(null);
+  const [isProductImageModalOpen, setIsProductImageModalOpen] = useState(false);
+
+  const { generate, isGenerating } = useVideoGeneration({
+    folderId,
+    onGenerated,
+    onGeneratingChange,
+  });
+
+  const handleClickGenerate = () => {
+    if (!uploadedImage) {
+      setIsProductImageModalOpen(true);
+      return;
+    }
+    if (!selectedAction) return;
+
+    generate(uploadedImage, selectedAction, QUALITY_TYPE_MAP[selected]);
+  };
 
   return (
     <div className="mt-5">
@@ -117,10 +145,18 @@ const OptionsTab = ({ uploadedImage }: OptionsTabProps) => {
           variant="red"
           type="button"
           className="Body_2_semibold"
+          onClick={handleClickGenerate}
+          disabled={isGenerating || !selectedAction}
         >
           {t("generate")}
         </GlassButton>
       </div>
+
+      {isProductImageModalOpen && (
+        <ProductImageRequiredModal
+          onClose={() => setIsProductImageModalOpen(false)}
+        />
+      )}
     </div>
   );
 };

@@ -1,0 +1,50 @@
+import { getVideoImagePresign } from "@/apis/videoApi";
+import { usePostVideo } from "@/hooks/queries/useVideoApi";
+import type { MotionType, QualityType } from "@/types/api/video.type";
+
+interface UseVideoGenerationOptions {
+  folderId: number;
+  onGenerated: (videoUrl: string) => void;
+  onGeneratingChange: (isGenerating: boolean) => void;
+}
+
+// 업로드된 원본 이미지를 비디오 생성용 presign으로 S3에 올린 뒤,
+// 선택된 모션/화질로 비디오 생성을 요청하는 흐름을 캡슐화한다.
+export const useVideoGeneration = ({
+  folderId,
+  onGenerated,
+  onGeneratingChange,
+}: UseVideoGenerationOptions) => {
+  const { mutateAsync: postVideo, isPending: isGenerating } = usePostVideo();
+
+  const generate = async (
+    file: File,
+    motionType: MotionType,
+    qualityType: QualityType,
+  ) => {
+    onGeneratingChange(true);
+    try {
+      const { uploadUrl, objectKey } = await getVideoImagePresign();
+      const uploadResponse = await fetch(uploadUrl, {
+        method: "PUT",
+        body: file,
+        headers: { "Content-Type": file.type },
+      });
+
+      if (!uploadResponse.ok) {
+        throw new Error("Failed to upload video source image");
+      }
+
+      const { videoUrl } = await postVideo({
+        params: { motionType, qualityType },
+        body: { imageObjectKey: objectKey, folderId },
+      });
+
+      onGenerated(videoUrl);
+    } finally {
+      onGeneratingChange(false);
+    }
+  };
+
+  return { generate, isGenerating };
+};
