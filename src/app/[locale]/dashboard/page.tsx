@@ -110,7 +110,7 @@ const DashboardPage = () => {
                                 key={template.templateId}
                                 tabIndex={0}
                                 role="button"
-                                className="w-44 h-44 relative aspect-square rounded overflow-hidden bg-Grey-200 group box-border border border-transparent hover:border-Red-400"
+                                className="cursor-pointer w-44 h-44 relative aspect-square rounded overflow-hidden bg-Grey-200 group box-border border border-transparent hover:border-Red-400"
                                 onClick={() =>
                                   handleTemplateClick(template.templateId)
                                 }

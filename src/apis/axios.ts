@@ -3,6 +3,7 @@ import axios from "axios";
 import { BASE_URL } from "./config";
 import type { SuccessResponse } from "@/types/api/response.type";
 import { PATHS } from "@/constants/common/paths";
+import { attachApiLogger } from "@/utils/apiLogger";
 
 if (!BASE_URL) {
   throw new Error("API_BASE_URL이 정의되지 않았습니다");
@@ -16,6 +17,8 @@ export const axiosInstance = axios.create({
   withCredentials: true,
   timeout: 20000,
 });
+
+attachApiLogger(axiosInstance);
 
 axiosInstance.interceptors.response.use(
   (response) => {
