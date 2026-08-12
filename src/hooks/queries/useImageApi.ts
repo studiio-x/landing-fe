@@ -1,6 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
-import { postCutoutImage, postImage, getImage } from "@/apis/imageApi";
+import {
+  postCutoutImage,
+  postImage,
+  getImage,
+  postCustomBackgroundImage,
+} from "@/apis/imageApi";
 
 import { queryKeys } from "./queryKeys";
 
@@ -19,4 +24,9 @@ export const usePostCutoutImage = () =>
 export const usePostImage = () =>
   useMutation({
     mutationFn: postImage,
+  });
+
+export const usePostCustomBackgroundImage = () =>
+  useMutation({
+    mutationFn: postCustomBackgroundImage,
   });

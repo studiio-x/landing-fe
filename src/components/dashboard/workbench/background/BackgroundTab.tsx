@@ -11,6 +11,7 @@ import ProductImageRequiredModal from "./ProductImageRequiredModal";
 import GlassButton from "@/components/common/GlassButton";
 import { useTemplateKeywords, useTemplatesByKeyword, useSearchTemplates } from "@/hooks/queries/useTemplateApi";
 import { usePostImage } from "@/hooks/queries/useImageApi";
+import { useCustomBackgroundUpload } from "@/hooks/useCustomBackgroundUpload";
 import { TEMPLATE_KEYWORDS } from "@/constants/dashboard/template";
 import { TemplateCategory, TemplateKeyword } from "@/types/api/template.type";
 import type { WorkbenchMode } from "@/types/dashboard/mode.type";
@@ -49,6 +50,20 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, o
   const [isProductImageModalOpen, setIsProductImageModalOpen] = useState(false);
 
   const { mutate: postImage, isPending: isGenerating } = usePostImage();
+  const {
+    inputRef: customBackgroundInputRef,
+    isUploading: isUploadingCustomBackground,
+    openFilePicker: openCustomBackgroundPicker,
+    handleFileChange: handleCustomBackgroundFileChange,
+  } = useCustomBackgroundUpload({
+    cutoutImageObjectKey,
+    projectId,
+    onGenerated: (imageUrl) => {
+      setSelectedBackground(null);
+      onGenerated(imageUrl);
+    },
+    onGeneratingChange,
+  });
 
   const { data: keywords, isLoading: isKeywordsLoading } = useTemplateKeywords();
   const { data: templatesData, isLoading: isTemplatesLoading } = useTemplatesByKeyword({
@@ -76,6 +91,14 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, o
 
   const getTitle = (keyword: TemplateKeyword) =>
     keywords?.find((k) => k.keyword === keyword)?.title ?? "";
+
+  const handleClickUploadBackground = () => {
+    if (!uploadedImage) {
+      setIsProductImageModalOpen(true);
+      return;
+    }
+    openCustomBackgroundPicker();
+  };
 
   const handleClickGenerate = () => {
     if (!uploadedImage) {
@@ -145,11 +168,22 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, o
       </div>
 
       <div className="flex items-center justify-center gap-4 mt-6 Body_2_semibold">
+        <input
+          type="file"
+          ref={customBackgroundInputRef}
+          onChange={handleCustomBackgroundFileChange}
+          accept="image/*"
+          className="hidden"
+        />
+
         <GlassButton
           size="md"
           gap="sm"
+          type="button"
           className="Body_3_semibold"
           leftIcon={<Plus className="w-5.5 h-5.5" />}
+          onClick={handleClickUploadBackground}
+          disabled={isUploadingCustomBackground}
         >
           {t("uploadBackground")}
         </GlassButton>
@@ -160,7 +194,7 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, o
           type="button"
           className="Body_2_semibold"
           onClick={handleClickGenerate}
-          disabled={isGenerating}
+          disabled={isGenerating || isUploadingCustomBackground}
         >
           {t("generate")}
         </GlassButton>

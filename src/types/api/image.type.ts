@@ -39,3 +39,22 @@ export interface GetRawPresignResponse {
   objectKey: string;
   imageUrl: string;
 }
+
+// 커스텀 배경 이미지 presigned URL 조회 응답
+export interface GetCustomTemplatePresignResponse {
+  uploadUrl: string;
+  objectKey: string;
+}
+
+// 커스텀 배경 합성 요청
+export interface PostCustomBackgroundImageRequest {
+  cutoutImageObjectKey: string;
+  customBackgroundImageObjectKey: string;
+  projectId: number;
+}
+
+// 커스텀 배경 합성 응답
+export interface PostCustomBackgroundImageResponse {
+  imageId: number;
+  imageUrl: string;
+}
