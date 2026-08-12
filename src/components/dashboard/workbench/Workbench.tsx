@@ -12,6 +12,7 @@ import MarkCanvas from "@/components/dashboard/workbench/chatbot/MarkCanvas";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 import ProductImageRequiredModal from "@/components/dashboard/workbench/background/ProductImageRequiredModal";
 import { useImageUploadAndCutout } from "@/hooks/useImageUploadAndCutout";
+import type { VideoGeneratedResult } from "@/hooks/useVideoGeneration";
 import { useGetFolders } from "@/hooks/queries/useFolderApi";
 import { useGetProjects } from "@/hooks/queries/useProjectApi";
 import { QUERY_KEYS } from "@/constants/common/paths";
@@ -45,6 +46,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     null,
   );
   const [videoImageId, setVideoImageId] = useState<number | null>(null);
+  const [videoProjectId, setVideoProjectId] = useState<number | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
   const searchParams = useSearchParams();
@@ -125,11 +127,17 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     setGeneratedImageUrl(null);
     setGeneratedVideoUrl(null);
     setVideoImageId(null);
+    setVideoProjectId(null);
   }, [uploadedImage]);
 
-  const handleVideoGenerated = (videoUrl: string, imageId: number) => {
+  const handleVideoGenerated = ({
+    videoUrl,
+    imageId,
+    projectId: newVideoProjectId,
+  }: VideoGeneratedResult) => {
     setGeneratedVideoUrl(videoUrl);
     setVideoImageId(imageId);
+    setVideoProjectId(newVideoProjectId);
   };
 
   return (
@@ -152,6 +160,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
           onGeneratingChange={setIsGenerating}
           onVideoGenerated={handleVideoGenerated}
           videoImageId={videoImageId}
+          videoProjectId={videoProjectId}
           initialTemplateId={templateId}
         />
       </div>

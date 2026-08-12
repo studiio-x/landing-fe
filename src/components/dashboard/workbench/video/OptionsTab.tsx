@@ -7,7 +7,7 @@ import GlassButton from "@/components/common/GlassButton";
 import { useLocale, useTranslations } from "next-intl";
 import OptionCard from "./OptionCard";
 import ProductImageRequiredModal from "@/components/dashboard/workbench/background/ProductImageRequiredModal";
-import { useVideoGeneration } from "@/hooks/useVideoGeneration";
+import { useVideoGeneration, VideoGeneratedResult } from "@/hooks/useVideoGeneration";
 import { ACTION_OPTIONS, QUALITY_OPTIONS } from "@/constants/dashboard/video-options";
 import { ActionKey, QualityKey } from "@/types/dashboard/video-option.type";
 import type { QualityType } from "@/types/api/video.type";
@@ -20,7 +20,7 @@ const QUALITY_TYPE_MAP: Record<QualityKey, QualityType> = {
 interface OptionsTabProps {
   uploadedImage: File | null;
   folderId: number;
-  onGenerated: (videoUrl: string, imageId: number) => void;
+  onGenerated: (result: VideoGeneratedResult) => void;
   onGeneratingChange: (isGenerating: boolean) => void;
 }
 
