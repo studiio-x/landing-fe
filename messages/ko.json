@@ -177,6 +177,10 @@
       "uploadedImageAlt": "업로드 이미지",
       "retry": "다시 시도",
       "cutoutErrorMessage": "이미지 처리 중 오류가 발생했습니다.",
+      "processingStage": {
+        "cutout": "배경 제거중...",
+        "compositing": "배경 합성중..."
+      },
       "emptyState": {
         "title": "추천 아이디어",
         "ideas": {

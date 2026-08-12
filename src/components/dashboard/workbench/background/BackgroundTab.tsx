@@ -22,6 +22,7 @@ interface BackgroundTabProps {
   mode: WorkbenchMode;
   onGenerated: (imageUrl: string) => void;
   onGeneratingChange: (isGenerating: boolean) => void;
+  initialTemplateId?: number | null;
 }
 
 const toItems = (
@@ -32,14 +33,18 @@ const toItems = (
     .filter((t) => t.category === category)
     .map((t) => ({ id: String(t.templateId), src: t.imageObjectKey }));
 
-const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, onGenerated, onGeneratingChange }: BackgroundTabProps) => {
+const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, onGenerated, onGeneratingChange, initialTemplateId }: BackgroundTabProps) => {
   const t = useTranslations("dashboard.workbench.backgroundTab");
   const [isSearching, setIsSearching] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedBackground, setSelectedBackground] = useState<{
     sectionId: string;
     itemId: string;
-  } | null>(null);
+  } | null>(
+    initialTemplateId
+      ? { sectionId: "initial", itemId: String(initialTemplateId) }
+      : null,
+  );
 
   const [isProductImageModalOpen, setIsProductImageModalOpen] = useState(false);
 

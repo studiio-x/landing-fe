@@ -14,6 +14,7 @@ import ProductImageRequiredModal from "@/components/dashboard/workbench/backgrou
 import { useImageUploadAndCutout } from "@/hooks/useImageUploadAndCutout";
 import { useGetFolders } from "@/hooks/queries/useFolderApi";
 import { useGetProjects } from "@/hooks/queries/useProjectApi";
+import { QUERY_KEYS } from "@/constants/common/paths";
 import type { WorkbenchMode } from "@/types/dashboard/mode.type";
 
 interface WorkbenchProps {
@@ -44,6 +45,8 @@ const Workbench = ({ mode }: WorkbenchProps) => {
 
   const searchParams = useSearchParams();
   const folderIdParam = searchParams.get("folderId");
+  const templateIdParam = searchParams.get(QUERY_KEYS.TEMPLATE_ID);
+  const templateId = templateIdParam ? Number(templateIdParam) : null;
 
   const { data: foldersData } = useGetFolders();
   const folderId = folderIdParam
@@ -71,6 +74,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     setUploadedImage,
     previewUrl,
     isProcessing,
+    processingStage,
     isCutoutImageLoading,
     setIsCutoutImageLoading,
     cutoutImageUrl,
@@ -78,7 +82,10 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     projectId,
     cutoutError,
     isErrorVisible,
-  } = useImageUploadAndCutout(folderId);
+  } = useImageUploadAndCutout(folderId, {
+    templateId: mode !== "video" ? templateId : null,
+    onBackgroundGenerated: setGeneratedImageUrl,
+  });
 
   const handleTabChange = (nextIdx: number) => {
     const isBackgroundTab = nextIdx === 1 && mode !== "video";
@@ -129,6 +136,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
           projectId={projectId}
           onGenerated={setGeneratedImageUrl}
           onGeneratingChange={setIsGenerating}
+          initialTemplateId={templateId}
         />
       </div>
 
@@ -185,8 +193,13 @@ const Workbench = ({ mode }: WorkbenchProps) => {
               />
 
               {(isProcessing || isGenerating || isCutoutImageLoading) && (
-                <div className="absolute inset-0 flex items-center justify-center bg-Grey-900/60">
+                <div className="absolute inset-0 flex flex-col gap-3 items-center justify-center bg-Grey-900/60">
                   <div className="w-10 h-10 border-4 border-Grey-600 border-t-White rounded-full animate-spin" />
+                  {processingStage && (
+                    <span className="Body_2_medium text-White">
+                      {t(`processingStage.${processingStage}`)}
+                    </span>
+                  )}
                 </div>
               )}
 
