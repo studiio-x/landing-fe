@@ -127,13 +127,15 @@ const DashboardPage = () => {
                                     template.imageUrl,
                                   )
                                 }
-                                onKeyDown={(e) =>
-                                  (e.key === "Enter" || e.key === " ") &&
-                                  handleTemplateClick(
-                                    template.templateId,
-                                    template.imageUrl,
-                                  )
-                                }
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    handleTemplateClick(
+                                      template.templateId,
+                                      template.imageUrl,
+                                    );
+                                  }
+                                }}
                               >
                                 {category === "VIDEO" ? (
                                   <video

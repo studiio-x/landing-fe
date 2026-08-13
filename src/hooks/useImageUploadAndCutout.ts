@@ -74,12 +74,23 @@ export const useImageUploadAndCutout = (
 
         if (templateId) {
           onStageChange?.("compositing");
-          const { imageUrl } = await postImage({
-            cutoutImageObjectKey: resultObjectKey,
-            templateId,
-            projectId: resultProjectId,
-          });
-          onBackgroundGenerated?.(imageUrl);
+          try {
+            const { imageUrl } = await postImage({
+              cutoutImageObjectKey: resultObjectKey,
+              templateId,
+              projectId: resultProjectId,
+            });
+            onBackgroundGenerated?.(imageUrl);
+          } catch (compositeError) {
+            useToastStore
+              .getState()
+              .showToast(
+                getErrorMessage(
+                  compositeError,
+                  t("backgroundCompositeErrorMessage"),
+                ),
+              );
+          }
         }
       } catch (error) {
         const message = getErrorMessage(error, t("cutoutErrorMessage"));

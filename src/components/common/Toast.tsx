@@ -6,10 +6,12 @@ import { useToastStore } from "@/stores/useToastStore";
 const Toast = () => {
   const toasts = useToastStore((s) => s.toasts);
 
-  if (toasts.length === 0) return null;
-
   return (
-    <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-999 flex flex-col gap-2 items-center pointer-events-none">
+    <div
+      role="status"
+      aria-live="polite"
+      className="fixed bottom-8 left-1/2 -translate-x-1/2 z-999 flex flex-col gap-2 items-center pointer-events-none"
+    >
       {toasts.map((toast) => (
         <div
           key={toast.id}

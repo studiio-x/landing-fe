@@ -16,8 +16,9 @@ import type { VideoGeneratedResult } from "@/hooks/useVideoGeneration";
 import { useGetFolders } from "@/hooks/queries/useFolderApi";
 import { useGetProjects } from "@/hooks/queries/useProjectApi";
 import { QUERY_KEYS } from "@/constants/common/paths";
+import { parseActionKey } from "@/constants/dashboard/video-options";
+import { parsePositiveIntParam } from "@/utils/urlUtils";
 import type { WorkbenchMode } from "@/types/dashboard/mode.type";
-import type { ActionKey } from "@/types/dashboard/video-option.type";
 import type { ProcessingStage } from "@/types/dashboard/processing-stage.type";
 
 interface WorkbenchProps {
@@ -53,17 +54,17 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   const [processingStage, setProcessingStage] = useState<ProcessingStage>(null);
 
   const searchParams = useSearchParams();
-  const folderIdParam = searchParams.get("folderId");
-  const templateIdParam = searchParams.get(QUERY_KEYS.TEMPLATE_ID);
-  const templateId = templateIdParam ? Number(templateIdParam) : null;
-  const initialMotionType = searchParams.get(
-    QUERY_KEYS.MOTION_TYPE,
-  ) as ActionKey | null;
+  const folderIdParam = parsePositiveIntParam(searchParams.get("folderId"));
+  const templateId = parsePositiveIntParam(
+    searchParams.get(QUERY_KEYS.TEMPLATE_ID),
+  );
+  const initialMotionType = parseActionKey(
+    searchParams.get(QUERY_KEYS.MOTION_TYPE),
+  );
 
   const { data: foldersData } = useGetFolders();
-  const folderId = folderIdParam
-    ? Number(folderIdParam)
-    : (foldersData?.myProject[0]?.folderId ?? 0);
+  const folderId =
+    folderIdParam ?? (foldersData?.myProject[0]?.folderId ?? 0);
 
   const { data: projectsData } = useGetProjects(folderId, 0, 4);
   const projects = (projectsData?.projects ?? []).filter(

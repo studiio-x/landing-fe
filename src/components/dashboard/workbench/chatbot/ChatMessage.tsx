@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
-const isVideoUrl = (url: string) => /\.(mp4|webm|ogg|mov)$/i.test(url);
+const isVideoUrl = (url: string) => /\.(mp4|webm|ogg|mov)(?:[?#]|$)/i.test(url);
 
 const TypingDots = () => {
   return (

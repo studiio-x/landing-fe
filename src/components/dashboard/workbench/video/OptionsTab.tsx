@@ -20,6 +20,8 @@ import {
 import { ActionKey, QualityKey } from "@/types/dashboard/video-option.type";
 import type { QualityType } from "@/types/api/video.type";
 import type { ProcessingStage } from "@/types/dashboard/processing-stage.type";
+import { useToastStore } from "@/stores/useToastStore";
+import { getErrorMessage } from "@/utils/apiUtils";
 
 const QUALITY_TYPE_MAP: Record<QualityKey, QualityType> = {
   basic: "STANDARD",
@@ -62,6 +64,11 @@ const OptionsTab = ({
     onGenerated,
     onGeneratingChange,
     onStageChange,
+    onError: (error) => {
+      useToastStore
+        .getState()
+        .showToast(getErrorMessage(error, t("generateErrorMessage")));
+    },
   });
 
   const { data: videoTemplateData, isLoading: isMotionOptionsLoading } =

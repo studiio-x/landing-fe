@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { getVideoImagePresign } from "@/apis/videoApi";
 import { usePostVideo } from "@/hooks/queries/useVideoApi";
 import type { MotionType, QualityType } from "@/types/api/video.type";
@@ -14,6 +16,7 @@ interface UseVideoGenerationOptions {
   onGenerated: (result: VideoGeneratedResult) => void;
   onGeneratingChange: (isGenerating: boolean) => void;
   onStageChange?: (stage: ProcessingStage) => void;
+  onError?: (error: unknown) => void;
 }
 
 // 업로드된 원본 이미지를 비디오 생성용 presign으로 S3에 올린 뒤,
@@ -23,14 +26,19 @@ export const useVideoGeneration = ({
   onGenerated,
   onGeneratingChange,
   onStageChange,
+  onError,
 }: UseVideoGenerationOptions) => {
-  const { mutateAsync: postVideo, isPending: isGenerating } = usePostVideo();
+  const { mutateAsync: postVideo } = usePostVideo();
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const generate = async (
     file: File,
     motionType: MotionType,
     qualityType: QualityType,
   ) => {
+    if (isGenerating) return;
+
+    setIsGenerating(true);
     onGeneratingChange(true);
     onStageChange?.("generatingVideo");
     try {
@@ -51,7 +59,10 @@ export const useVideoGeneration = ({
       });
 
       onGenerated({ videoUrl, imageId, projectId });
+    } catch (error) {
+      onError?.(error);
     } finally {
+      setIsGenerating(false);
       onGeneratingChange(false);
       onStageChange?.(null);
     }

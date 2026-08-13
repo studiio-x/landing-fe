@@ -9,7 +9,11 @@ import BackgroundSwiper from "./BackgroundSwiper";
 import SearchBar from "./SearchBar";
 import ProductImageRequiredModal from "./ProductImageRequiredModal";
 import GlassButton from "@/components/common/GlassButton";
-import { useTemplateKeywords, useTemplatesByKeyword, useSearchTemplates } from "@/hooks/queries/useTemplateApi";
+import {
+  useTemplateKeywords,
+  useTemplatesByKeyword,
+  useSearchTemplates,
+} from "@/hooks/queries/useTemplateApi";
 import { usePostImage } from "@/hooks/queries/useImageApi";
 import { useCustomBackgroundUpload } from "@/hooks/useCustomBackgroundUpload";
 import { TEMPLATE_KEYWORDS } from "@/constants/dashboard/template";
@@ -29,14 +33,27 @@ interface BackgroundTabProps {
 }
 
 const toItems = (
-  templates: { templateId: number; imageObjectKey: string; category: TemplateCategory }[],
+  templates: {
+    templateId: number;
+    imageObjectKey: string;
+    category: TemplateCategory;
+  }[],
   category: TemplateCategory,
 ) =>
   templates
     .filter((t) => t.category === category)
     .map((t) => ({ id: String(t.templateId), src: t.imageObjectKey }));
 
-const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, onGenerated, onGeneratingChange, onStageChange, initialTemplateId }: BackgroundTabProps) => {
+const BackgroundTab = ({
+  uploadedImage,
+  cutoutImageObjectKey,
+  projectId,
+  mode,
+  onGenerated,
+  onGeneratingChange,
+  onStageChange,
+  initialTemplateId,
+}: BackgroundTabProps) => {
   const t = useTranslations("dashboard.workbench.backgroundTab");
   const [isSearching, setIsSearching] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -68,15 +85,15 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, o
     onStageChange,
   });
 
-  const { data: keywords, isLoading: isKeywordsLoading } = useTemplateKeywords();
-  const { data: templatesData, isLoading: isTemplatesLoading } = useTemplatesByKeyword({
-    keywords: TEMPLATE_KEYWORDS,
-    limitPerKeyword: 9,
-  });
-  const { data: searchResults, isLoading: isSearchLoading } = useSearchTemplates(
-    { keyword: searchKeyword },
-    !!searchKeyword,
-  );
+  const { data: keywords, isLoading: isKeywordsLoading } =
+    useTemplateKeywords();
+  const { data: templatesData, isLoading: isTemplatesLoading } =
+    useTemplatesByKeyword({
+      keywords: TEMPLATE_KEYWORDS,
+      limitPerKeyword: 9,
+    });
+  const { data: searchResults, isLoading: isSearchLoading } =
+    useSearchTemplates({ keyword: searchKeyword }, !!searchKeyword);
 
   useEffect(() => {
     if (!isSearching) setSearchKeyword("");
@@ -94,6 +111,13 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, o
 
   const getTitle = (keyword: TemplateKeyword) =>
     keywords?.find((k) => k.keyword === keyword)?.title ?? "";
+
+  const getSelectedId = (sectionId: string) =>
+    selectedBackground &&
+    (selectedBackground.sectionId === sectionId ||
+      selectedBackground.sectionId === "initial")
+      ? selectedBackground.itemId
+      : null;
 
   const handleClickUploadBackground = () => {
     if (!uploadedImage) {
@@ -143,7 +167,7 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, o
       <div
         className={clsx(
           "flex flex-col gap-4 overflow-y-auto",
-          isSearching ? "h-103.25" : "h-113"
+          isSearching ? "h-103.25" : "h-113",
         )}
       >
         {searchKeyword ? (
@@ -151,8 +175,10 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, o
             <BackgroundSwiper
               id="search"
               items={toItems(searchResults ?? [], modeCategory)}
-              selectedId={selectedBackground?.sectionId === "search" ? selectedBackground.itemId : null}
-              onSelect={(itemId) => setSelectedBackground({ sectionId: "search", itemId })}
+              selectedId={getSelectedId("search")}
+              onSelect={(itemId) =>
+                setSelectedBackground({ sectionId: "search", itemId })
+              }
               isLoading={isSearchLoading}
             />
           ) : (
@@ -167,8 +193,10 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, o
               id={keyword}
               title={getTitle(keyword)}
               items={findTemplates(keyword)}
-              selectedId={selectedBackground?.sectionId === keyword ? selectedBackground.itemId : null}
-              onSelect={(itemId) => setSelectedBackground({ sectionId: keyword, itemId })}
+              selectedId={getSelectedId(keyword)}
+              onSelect={(itemId) =>
+                setSelectedBackground({ sectionId: keyword, itemId })
+              }
               isLoading={isLoading}
             />
           ))

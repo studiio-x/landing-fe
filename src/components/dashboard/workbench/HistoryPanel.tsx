@@ -14,11 +14,12 @@ interface HistoryPanelProps {
 
 const HistoryPanel = ({ history, mode }: HistoryPanelProps) => {
   const t = useTranslations("dashboard.workbench.historyPanel");
-  const isEmpty = history.length === 0;
   const latest = history[0];
+  const imageUrls =
+    latest?.imageUrls.filter((url): url is string => Boolean(url)) ?? [];
   const isVideo = mode === "video";
 
-  if (isEmpty) {
+  if (!latest || imageUrls.length === 0) {
     return (
       <section className="w-49.5 h-112.5 flex flex-col gap-3 text-center items-center justify-center ml-8 rounded-lg bg-Grey-900">
         <h2 className="Body_2_semibold text-Grey-400 whitespace-pre-line">
@@ -38,19 +39,16 @@ const HistoryPanel = ({ history, mode }: HistoryPanelProps) => {
       </h3>
 
       <div className="flex flex-col gap-4 w-full h-full">
-        {latest.imageUrls
-          .slice(0, 2)
-          .filter((url): url is string => Boolean(url))
-          .map((url, idx) => (
-            <Image
-              key={`${latest.id}-${idx}`}
-              src={url}
-              alt={t("imageAlt", { index: idx + 1 })}
-              width={166}
-              height={166}
-              className="w-41.5 h-41.5 object-cover rounded-[0.3479rem]"
-            />
-          ))}
+        {imageUrls.map((url, idx) => (
+          <Image
+            key={`${latest.id}-${idx}`}
+            src={url}
+            alt={t("imageAlt", { index: idx + 1 })}
+            width={166}
+            height={166}
+            className="w-41.5 h-41.5 object-cover rounded-[0.3479rem]"
+          />
+        ))}
       </div>
     </section>
   );

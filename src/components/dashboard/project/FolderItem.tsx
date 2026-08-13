@@ -177,14 +177,14 @@ const FolderItem = ({
                 "text-[0.875rem] text-Grey-100 font-normal font-calSans opacity-100"
               }
             >
-              Project {String(index + 1).padStart(2, "0")}
+              {t("projectLabel")} {String(index + 1).padStart(2, "0")}
             </span>
           )}
           <div className={`flex flex-1 ${lists.isFolder ? "flex-col" : ""}`}>
             <div className="flex-1">
               <textarea
                 rows={1}
-                aria-label="name"
+                aria-label={t("nameInputLabel")}
                 className="bottom-5 Body_1_medium opacity-100 bg-transparent leading-tight pt-0 pb-0 w-full resize-none overflow-hidden focus:outline-none "
                 onChange={onNameChange}
                 ref={renameModalRef}

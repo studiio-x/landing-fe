@@ -56,7 +56,7 @@ export const useChatMessages = (
       imageKeys: m.imageKeys.length > 0 ? m.imageKeys : undefined,
     }));
 
-    if (isPending) {
+    if (isPending && !isVideoMode) {
       const lastWithImages = [...mapped]
         .reverse()
         .find((m) => m.role === "assistant" && m.imageKeys);
@@ -64,7 +64,7 @@ export const useChatMessages = (
     }
 
     setMessages(mapped);
-  }, [historyData]);
+  }, [historyData, isVideoMode]);
 
   const resolveTypingMessage = useCallback(
     (typingId: string, patch: Partial<ChatItem>) => {

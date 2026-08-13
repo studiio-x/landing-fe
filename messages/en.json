@@ -171,8 +171,8 @@
       "folderItem": {
         "folderLabel": "Folder",
         "projectLabel": "Project",
-        "folderThumbnailAlt": "Dashboard image",
-        "projectThumbnailAlt": "Folder image",
+        "folderThumbnailAlt": "Folder thumbnail",
+        "projectThumbnailAlt": "Project thumbnail",
         "noImage": "No image",
         "nameInputLabel": "Name",
         "moreOptions": "More options"
@@ -193,6 +193,7 @@
       "uploadedImageAlt": "Uploaded image",
       "retry": "Retry",
       "cutoutErrorMessage": "An error occurred while processing the image.",
+      "backgroundCompositeErrorMessage": "An error occurred while compositing the background. Please choose a background again.",
       "unsupportedImageFormat": "HEIC/HEIF files aren't supported.",
       "processingStage": {
         "cutout": "Removing background...",
@@ -241,7 +242,8 @@
         },
         "uploadBackground": "Upload Background",
         "generate": "Generate",
-        "noSearchResults": "No search results found"
+        "noSearchResults": "No search results found",
+        "customBackgroundErrorMessage": "An error occurred while uploading the background."
       },
       "optionsTab": {
         "selectQuality": "Select video quality",
@@ -250,7 +252,8 @@
         "premiumQuality": "Premium Quality",
         "creditsConsumed": "{credits} video credits\nwill be consumed.",
         "uploadBackground": "Upload Background",
-        "generate": "Generate"
+        "generate": "Generate",
+        "generateErrorMessage": "An error occurred while generating the video."
       },
       "searchBar": {
         "placeholder": "Search categories",

@@ -57,7 +57,10 @@ const BackgroundSwiper = ({
 
       <div className="relative items-center flex gap-3 justify-center">
         <button
+          type="button"
           className={clsx(`swiper-prev-${id}`, hideNavigation && "invisible")}
+          disabled={hideNavigation}
+          aria-hidden={hideNavigation}
           aria-label="이전"
         >
           <Down className="rotate-90 h-6 w-6" />
@@ -125,7 +128,10 @@ const BackgroundSwiper = ({
         </div>
 
         <button
+          type="button"
           className={clsx(`swiper-next-${id}`, hideNavigation && "invisible")}
+          disabled={hideNavigation}
+          aria-hidden={hideNavigation}
           aria-label="다음"
         >
           <Down className="-rotate-90 h-6 w-6" />
