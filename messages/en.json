@@ -219,6 +219,12 @@
         "description": "A generated background image is required\nto use the chatbot.",
         "uploadGuide": "Select and generate a background\nin the Background tab."
       },
+      "videoRequiredModal": {
+        "closeLabel": "Close",
+        "title": "Please finish\ngenerating a video first",
+        "description": "A generated video is required\nto use the chatbot.",
+        "uploadGuide": "Select a motion and generate\nin the Options tab."
+      },
       "historyPanel": {
         "emptyTitle": "Make your\nfirst generation",
         "emptyDescription": "Create beautiful images\nwith nothing but a text.",

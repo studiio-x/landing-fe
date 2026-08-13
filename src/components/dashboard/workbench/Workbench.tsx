@@ -34,7 +34,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   const [isProductImageRequiredOpen, setIsProductImageRequiredOpen] =
     useState(false);
   const [requiredModalVariant, setRequiredModalVariant] = useState<
-    "product" | "background"
+    "product" | "background" | "video"
   >("product");
 
   const { isEditMode, hasPaint } = useStudioMarkStore();
@@ -118,6 +118,12 @@ const Workbench = ({ mode }: WorkbenchProps) => {
 
       if (mode !== "video" && !generatedImageUrl) {
         setRequiredModalVariant("background");
+        setIsProductImageRequiredOpen(true);
+        return;
+      }
+
+      if (mode === "video" && (!generatedVideoUrl || isGenerating)) {
+        setRequiredModalVariant("video");
         setIsProductImageRequiredOpen(true);
         return;
       }
