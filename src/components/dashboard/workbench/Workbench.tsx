@@ -18,6 +18,7 @@ import { useGetProjects } from "@/hooks/queries/useProjectApi";
 import { QUERY_KEYS } from "@/constants/common/paths";
 import type { WorkbenchMode } from "@/types/dashboard/mode.type";
 import type { ActionKey } from "@/types/dashboard/video-option.type";
+import type { ProcessingStage } from "@/types/dashboard/processing-stage.type";
 
 interface WorkbenchProps {
   mode: WorkbenchMode;
@@ -49,6 +50,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   const [videoImageId, setVideoImageId] = useState<number | null>(null);
   const [videoProjectId, setVideoProjectId] = useState<number | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [processingStage, setProcessingStage] = useState<ProcessingStage>(null);
 
   const searchParams = useSearchParams();
   const folderIdParam = searchParams.get("folderId");
@@ -86,7 +88,6 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     setUploadedImage,
     previewUrl,
     isProcessing,
-    processingStage,
     isCutoutImageLoading,
     setIsCutoutImageLoading,
     cutoutImageUrl,
@@ -97,6 +98,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   } = useImageUploadAndCutout(folderId, {
     templateId: mode !== "video" ? templateId : null,
     onBackgroundGenerated: setGeneratedImageUrl,
+    onStageChange: setProcessingStage,
   });
 
   const handleTabChange = (nextIdx: number) => {
@@ -132,6 +134,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     setGeneratedVideoUrl(null);
     setVideoImageId(null);
     setVideoProjectId(null);
+    setProcessingStage(null);
   }, [uploadedImage]);
 
   const handleVideoGenerated = ({
@@ -162,6 +165,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
           projectId={projectId}
           onGenerated={setGeneratedImageUrl}
           onGeneratingChange={setIsGenerating}
+          onStageChange={setProcessingStage}
           onVideoGenerated={handleVideoGenerated}
           videoImageId={videoImageId}
           videoProjectId={videoProjectId}

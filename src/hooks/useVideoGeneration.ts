@@ -1,6 +1,7 @@
 import { getVideoImagePresign } from "@/apis/videoApi";
 import { usePostVideo } from "@/hooks/queries/useVideoApi";
 import type { MotionType, QualityType } from "@/types/api/video.type";
+import type { ProcessingStage } from "@/types/dashboard/processing-stage.type";
 
 export interface VideoGeneratedResult {
   videoUrl: string;
@@ -12,6 +13,7 @@ interface UseVideoGenerationOptions {
   folderId: number;
   onGenerated: (result: VideoGeneratedResult) => void;
   onGeneratingChange: (isGenerating: boolean) => void;
+  onStageChange?: (stage: ProcessingStage) => void;
 }
 
 // 업로드된 원본 이미지를 비디오 생성용 presign으로 S3에 올린 뒤,
@@ -20,6 +22,7 @@ export const useVideoGeneration = ({
   folderId,
   onGenerated,
   onGeneratingChange,
+  onStageChange,
 }: UseVideoGenerationOptions) => {
   const { mutateAsync: postVideo, isPending: isGenerating } = usePostVideo();
 
@@ -29,6 +32,7 @@ export const useVideoGeneration = ({
     qualityType: QualityType,
   ) => {
     onGeneratingChange(true);
+    onStageChange?.("generatingVideo");
     try {
       const { uploadUrl, objectKey } = await getVideoImagePresign();
       const uploadResponse = await fetch(uploadUrl, {
@@ -49,6 +53,7 @@ export const useVideoGeneration = ({
       onGenerated({ videoUrl, imageId, projectId });
     } finally {
       onGeneratingChange(false);
+      onStageChange?.(null);
     }
   };
 

@@ -15,6 +15,7 @@ import { useCustomBackgroundUpload } from "@/hooks/useCustomBackgroundUpload";
 import { TEMPLATE_KEYWORDS } from "@/constants/dashboard/template";
 import { TemplateCategory, TemplateKeyword } from "@/types/api/template.type";
 import type { WorkbenchMode } from "@/types/dashboard/mode.type";
+import type { ProcessingStage } from "@/types/dashboard/processing-stage.type";
 
 interface BackgroundTabProps {
   uploadedImage: File | null;
@@ -23,6 +24,7 @@ interface BackgroundTabProps {
   mode: WorkbenchMode;
   onGenerated: (imageUrl: string) => void;
   onGeneratingChange: (isGenerating: boolean) => void;
+  onStageChange?: (stage: ProcessingStage) => void;
   initialTemplateId?: number | null;
 }
 
@@ -34,7 +36,7 @@ const toItems = (
     .filter((t) => t.category === category)
     .map((t) => ({ id: String(t.templateId), src: t.imageObjectKey }));
 
-const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, onGenerated, onGeneratingChange, initialTemplateId }: BackgroundTabProps) => {
+const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, onGenerated, onGeneratingChange, onStageChange, initialTemplateId }: BackgroundTabProps) => {
   const t = useTranslations("dashboard.workbench.backgroundTab");
   const [isSearching, setIsSearching] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -63,6 +65,7 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, o
       onGenerated(imageUrl);
     },
     onGeneratingChange,
+    onStageChange,
   });
 
   const { data: keywords, isLoading: isKeywordsLoading } = useTemplateKeywords();
@@ -108,6 +111,7 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, o
     if (!cutoutImageObjectKey || !projectId || !selectedBackground) return;
 
     onGeneratingChange(true);
+    onStageChange?.("compositing");
     postImage(
       {
         cutoutImageObjectKey,
@@ -118,8 +122,12 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, mode, o
         onSuccess: (data) => {
           onGenerated(data.imageUrl);
           onGeneratingChange(false);
+          onStageChange?.(null);
         },
-        onError: () => onGeneratingChange(false),
+        onError: () => {
+          onGeneratingChange(false);
+          onStageChange?.(null);
+        },
       },
     );
   };

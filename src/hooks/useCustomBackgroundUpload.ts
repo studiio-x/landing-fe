@@ -2,12 +2,14 @@ import { useRef } from "react";
 
 import { getCustomTemplatePresign } from "@/apis/imageApi";
 import { usePostCustomBackgroundImage } from "@/hooks/queries/useImageApi";
+import type { ProcessingStage } from "@/types/dashboard/processing-stage.type";
 
 interface UseCustomBackgroundUploadOptions {
   cutoutImageObjectKey: string | null;
   projectId: number | null;
   onGenerated: (imageUrl: string) => void;
   onGeneratingChange: (isGenerating: boolean) => void;
+  onStageChange?: (stage: ProcessingStage) => void;
 }
 
 // 사용자가 배경 이미지를 직접 업로드하면, presign으로 S3에 올린 뒤
@@ -17,6 +19,7 @@ export const useCustomBackgroundUpload = ({
   projectId,
   onGenerated,
   onGeneratingChange,
+  onStageChange,
 }: UseCustomBackgroundUploadOptions) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const { mutateAsync: postCustomBackgroundImage, isPending: isUploading } =
@@ -35,6 +38,7 @@ export const useCustomBackgroundUpload = ({
     if (!file || !cutoutImageObjectKey || !projectId) return;
 
     onGeneratingChange(true);
+    onStageChange?.("compositing");
     try {
       const { uploadUrl, objectKey } = await getCustomTemplatePresign();
       const uploadResponse = await fetch(uploadUrl, {
@@ -56,6 +60,7 @@ export const useCustomBackgroundUpload = ({
       onGenerated(imageUrl);
     } finally {
       onGeneratingChange(false);
+      onStageChange?.(null);
     }
   };
 

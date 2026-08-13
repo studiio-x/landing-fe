@@ -19,6 +19,7 @@ import {
 } from "@/constants/dashboard/video-options";
 import { ActionKey, QualityKey } from "@/types/dashboard/video-option.type";
 import type { QualityType } from "@/types/api/video.type";
+import type { ProcessingStage } from "@/types/dashboard/processing-stage.type";
 
 const QUALITY_TYPE_MAP: Record<QualityKey, QualityType> = {
   basic: "STANDARD",
@@ -35,6 +36,7 @@ interface OptionsTabProps {
   folderId: number;
   onGenerated: (result: VideoGeneratedResult) => void;
   onGeneratingChange: (isGenerating: boolean) => void;
+  onStageChange?: (stage: ProcessingStage) => void;
   initialMotionType?: ActionKey | null;
 }
 
@@ -43,6 +45,7 @@ const OptionsTab = ({
   folderId,
   onGenerated,
   onGeneratingChange,
+  onStageChange,
   initialMotionType,
 }: OptionsTabProps) => {
   const locale = useLocale();
@@ -58,6 +61,7 @@ const OptionsTab = ({
     folderId,
     onGenerated,
     onGeneratingChange,
+    onStageChange,
   });
 
   const { data: videoTemplateData, isLoading: isMotionOptionsLoading } =

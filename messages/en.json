@@ -195,7 +195,8 @@
       "cutoutErrorMessage": "An error occurred while processing the image.",
       "processingStage": {
         "cutout": "Removing background...",
-        "compositing": "Compositing background..."
+        "compositing": "Compositing background...",
+        "generatingVideo": "Generating video..."
       },
       "emptyState": {
         "title": "Ideas to Explore",

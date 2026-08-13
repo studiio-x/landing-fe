@@ -5,6 +5,7 @@ import ChatbotTab from "@/components/dashboard/workbench/chatbot/ChatbotTab";
 import ProductTab from "@/components/dashboard/workbench/product/ProductTab";
 import type { VideoGeneratedResult } from "@/hooks/useVideoGeneration";
 import type { ActionKey } from "@/types/dashboard/video-option.type";
+import type { ProcessingStage } from "@/types/dashboard/processing-stage.type";
 
 interface TabContentProps {
   activeTab: number;
@@ -16,6 +17,7 @@ interface TabContentProps {
   projectId: number | null;
   onGenerated: (imageUrl: string) => void;
   onGeneratingChange: (isGenerating: boolean) => void;
+  onStageChange: (stage: ProcessingStage) => void;
   onVideoGenerated: (result: VideoGeneratedResult) => void;
   videoImageId: number | null;
   // 비디오 모드는 생성마다 새 프로젝트가 만들어지므로 채팅에 이 projectId를 써야 한다.
@@ -35,6 +37,7 @@ const TabContent = ({
   projectId,
   onGenerated,
   onGeneratingChange,
+  onStageChange,
   onVideoGenerated,
   videoImageId,
   videoProjectId,
@@ -53,6 +56,7 @@ const TabContent = ({
           folderId={folderId}
           onGenerated={onVideoGenerated}
           onGeneratingChange={onGeneratingChange}
+          onStageChange={onStageChange}
           initialMotionType={initialMotionType}
         />
       ) : (
@@ -63,6 +67,7 @@ const TabContent = ({
           mode={mode}
           onGenerated={onGenerated}
           onGeneratingChange={onGeneratingChange}
+          onStageChange={onStageChange}
           initialTemplateId={initialTemplateId}
         />
       );

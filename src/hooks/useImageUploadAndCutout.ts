@@ -4,20 +4,24 @@ import { useTranslations } from "next-intl";
 import { getRawPresign, postCutoutImage } from "@/apis/imageApi";
 import { usePostImage } from "@/hooks/queries/useImageApi";
 import { getErrorMessage } from "@/utils/apiUtils";
+import type { ProcessingStage } from "@/types/dashboard/processing-stage.type";
 
 const ERROR_FADE_DELAY_MS = 1500;
 const ERROR_FADE_DURATION_MS = 300;
 
-export type ProcessingStage = "cutout" | "compositing" | null;
-
 interface UseImageUploadAndCutoutOptions {
   templateId?: number | null;
   onBackgroundGenerated?: (imageUrl: string) => void;
+  onStageChange?: (stage: ProcessingStage) => void;
 }
 
 export const useImageUploadAndCutout = (
   folderId: number,
-  { templateId, onBackgroundGenerated }: UseImageUploadAndCutoutOptions = {},
+  {
+    templateId,
+    onBackgroundGenerated,
+    onStageChange,
+  }: UseImageUploadAndCutoutOptions = {},
 ) => {
   const t = useTranslations("dashboard.workbench");
   const { mutateAsync: postImage } = usePostImage();
@@ -25,7 +29,6 @@ export const useImageUploadAndCutout = (
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const [isProcessing, setIsProcessing] = useState(false);
-  const [processingStage, setProcessingStage] = useState<ProcessingStage>(null);
   const [isCutoutImageLoading, setIsCutoutImageLoading] = useState(false);
   const [cutoutImageUrl, setCutoutImageUrl] = useState<string | null>(null);
   const [cutoutImageObjectKey, setCutoutImageObjectKey] = useState<
@@ -38,7 +41,7 @@ export const useImageUploadAndCutout = (
   const uploadAndCutout = useCallback(
     async (file: File) => {
       setIsProcessing(true);
-      setProcessingStage("cutout");
+      onStageChange?.("cutout");
       setCutoutImageUrl(null);
       setCutoutImageObjectKey(null);
       setProjectId(null);
@@ -70,7 +73,7 @@ export const useImageUploadAndCutout = (
         setProjectId(resultProjectId);
 
         if (templateId) {
-          setProcessingStage("compositing");
+          onStageChange?.("compositing");
           const { imageUrl } = await postImage({
             cutoutImageObjectKey: resultObjectKey,
             templateId,
@@ -82,10 +85,10 @@ export const useImageUploadAndCutout = (
         setCutoutError(getErrorMessage(error, t("cutoutErrorMessage")));
       } finally {
         setIsProcessing(false);
-        setProcessingStage(null);
+        onStageChange?.(null);
       }
     },
-    [folderId, t, templateId, postImage, onBackgroundGenerated],
+    [folderId, t, templateId, postImage, onBackgroundGenerated, onStageChange],
   );
 
   const resetCutout = useCallback(() => {
@@ -144,7 +147,6 @@ export const useImageUploadAndCutout = (
     setUploadedImage,
     previewUrl,
     isProcessing,
-    processingStage,
     isCutoutImageLoading,
     setIsCutoutImageLoading,
     cutoutImageUrl,
