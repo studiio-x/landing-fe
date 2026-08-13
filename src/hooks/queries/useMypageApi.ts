@@ -9,6 +9,7 @@ export const useMypage = () =>
     queryKey: queryKeys.mypage.detail(),
     queryFn: getMypage,
     retry: false,
+    staleTime: 60 * 1000,
   });
 
 export const useUpdateUsername = () =>

@@ -30,6 +30,7 @@ export const QUERY_KEYS = {
   WORKBENCH_MODE: "mode",
   PORTFOLIO_CATEGORY: "category",
   TEMPLATE_ID: "templateId",
+  MOTION_TYPE: "motionType",
 } as const;
 
 export const PORTFOLIO_CATEGORY = {

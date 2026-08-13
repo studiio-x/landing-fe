@@ -10,6 +10,11 @@
     "title": "For the best experience,\nplease use a desktop.",
     "imageAlt": "Desktop usage guide"
   },
+  "sessionExpiredModal": {
+    "title": "Your session has expired",
+    "description": "For your security, you've been logged out.\nPlease log in again.",
+    "confirmLabel": "Log in"
+  },
   "login": {
     "title": "Log in to <brand>StudioX</brand>",
     "closeLabel": "Close",
@@ -162,6 +167,17 @@
       "title": "Choose the task you want.",
       "backButtonLabel": "Go to previous page"
     },
+    "project": {
+      "folderItem": {
+        "folderLabel": "Folder",
+        "projectLabel": "Project",
+        "folderThumbnailAlt": "Folder thumbnail",
+        "projectThumbnailAlt": "Project thumbnail",
+        "noImage": "No image",
+        "nameInputLabel": "Name",
+        "moreOptions": "More options"
+      }
+    },
     "workbench": {
       "tabs": {
         "product": "Product",
@@ -177,6 +193,13 @@
       "uploadedImageAlt": "Uploaded image",
       "retry": "Retry",
       "cutoutErrorMessage": "An error occurred while processing the image.",
+      "backgroundCompositeErrorMessage": "An error occurred while compositing the background. Please choose a background again.",
+      "unsupportedImageFormat": "HEIC/HEIF files aren't supported.",
+      "processingStage": {
+        "cutout": "Removing background...",
+        "compositing": "Compositing background...",
+        "generatingVideo": "Generating video..."
+      },
       "emptyState": {
         "title": "Ideas to Explore",
         "ideas": {
@@ -197,6 +220,12 @@
         "description": "A generated background image is required\nto use the chatbot.",
         "uploadGuide": "Select and generate a background\nin the Background tab."
       },
+      "videoRequiredModal": {
+        "closeLabel": "Close",
+        "title": "Please finish\ngenerating a video first",
+        "description": "A generated video is required\nto use the chatbot.",
+        "uploadGuide": "Select a motion and generate\nin the Options tab."
+      },
       "historyPanel": {
         "emptyTitle": "Make your\nfirst generation",
         "emptyDescription": "Create beautiful images\nwith nothing but a text.",
@@ -213,7 +242,8 @@
         },
         "uploadBackground": "Upload Background",
         "generate": "Generate",
-        "noSearchResults": "No search results found"
+        "noSearchResults": "No search results found",
+        "customBackgroundErrorMessage": "An error occurred while uploading the background."
       },
       "optionsTab": {
         "selectQuality": "Select video quality",
@@ -222,7 +252,8 @@
         "premiumQuality": "Premium Quality",
         "creditsConsumed": "{credits} video credits\nwill be consumed.",
         "uploadBackground": "Upload Background",
-        "generate": "Generate"
+        "generate": "Generate",
+        "generateErrorMessage": "An error occurred while generating the video."
       },
       "searchBar": {
         "placeholder": "Search categories",

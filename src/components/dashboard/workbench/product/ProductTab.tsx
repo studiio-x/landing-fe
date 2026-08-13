@@ -3,23 +3,27 @@ import { useTranslations } from "next-intl";
 
 import { Download } from "@/assets/icons";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
+import { acceptImageFile } from "@/utils/imageFileValidation";
 
 interface ProductTabProps {
   setUploadedImage: (file: File | null) => void;
 }
 
 const ProductTab = ({ setUploadedImage }: ProductTabProps) => {
-  const t = useTranslations("dashboard.workbench.productTab");
+  const t = useTranslations("dashboard.workbench");
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { resetPaint } = useStudioMarkStore();
 
+  const acceptFile = (file: File) => {
+    if (!acceptImageFile(file, t("unsupportedImageFormat"))) return;
+    resetPaint();
+    setUploadedImage(file);
+  };
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file && file.type.startsWith("image/")) {
-      resetPaint();
-      setUploadedImage(file);
-    }
+    if (file) acceptFile(file);
     event.target.value = "";
   };
 
@@ -42,10 +46,7 @@ const ProductTab = ({ setUploadedImage }: ProductTabProps) => {
     setIsDragging(false);
 
     const file = event.dataTransfer.files?.[0];
-    if (file && file.type.startsWith("image/")) {
-      resetPaint();
-      setUploadedImage(file);
-    }
+    if (file) acceptFile(file);
   };
 
   return (
@@ -88,7 +89,7 @@ const ProductTab = ({ setUploadedImage }: ProductTabProps) => {
         <div className="flex flex-col items-center gap-5">
           <Download className="w-7 h-7" />
           <span className="Body_1_medium text-Grey-200 text-center whitespace-pre-line">
-            {t("uploadGuide")}
+            {t("productTab.uploadGuide")}
           </span>
         </div>
       </button>

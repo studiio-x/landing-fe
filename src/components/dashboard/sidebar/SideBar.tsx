@@ -41,8 +41,6 @@ export default function SideBar() {
   const searchParams = useSearchParams();
   const sharedProjectFromQuery = searchParams.get("shared");
 
-  console.log("sharedProjectFromQuery", sharedProjectFromQuery);
-
   const CreatOnClick = () => {
     setIsCreateOpen((pre) => !pre);
   };

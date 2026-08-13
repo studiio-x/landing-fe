@@ -10,6 +10,7 @@ import { DASHBOARD_CARDS } from "@/constants/dashboard/card";
 import Header from "@/components/dashboard/Header";
 import SideBar from "@/components/dashboard/sidebar/SideBar";
 import { PATHS, QUERY_KEYS } from "@/constants/common/paths";
+import { getMotionTypeFromTemplateUrl } from "@/constants/dashboard/video-options";
 import { useTemplatesByCategory } from "@/hooks/queries/useTemplateApi";
 import { TemplateCategory } from "@/types/api/template.type";
 
@@ -40,13 +41,21 @@ const DashboardPage = () => {
   const templates = data?.templates ?? [];
   const showSkeleton = isLoading;
 
-  const handleTemplateClick = (templateId: number) => {
+  const handleTemplateClick = (templateId: number, imageUrl: string) => {
     if (activeIndex === null) return;
     const mode = DASHBOARD_CARDS[activeIndex].key;
     const params = new URLSearchParams({
       [QUERY_KEYS.WORKBENCH_MODE]: mode,
       [QUERY_KEYS.TEMPLATE_ID]: String(templateId),
     });
+
+    if (mode === "video") {
+      const motionType = getMotionTypeFromTemplateUrl(imageUrl);
+      if (motionType) {
+        params.set(QUERY_KEYS.MOTION_TYPE, motionType);
+      }
+    }
+
     router.push(`${PATHS.DASHBOARD_WORKBENCH}?${params.toString()}`);
   };
 
@@ -77,6 +86,7 @@ const DashboardPage = () => {
                       title={t(`cards.${card.key}.title`)}
                       content={t(`cards.${card.key}.content`)}
                       mediaSrc={card.mediaSrc}
+                      isVideo={card.key === "video"}
                       isActive={activeIndex === idx}
                     />
                   </div>
@@ -110,23 +120,44 @@ const DashboardPage = () => {
                                 key={template.templateId}
                                 tabIndex={0}
                                 role="button"
-                                className="w-44 h-44 relative aspect-square rounded overflow-hidden bg-Grey-200 group box-border border border-transparent hover:border-Red-400"
+                                className="cursor-pointer w-44 h-44 relative aspect-square rounded overflow-hidden bg-Grey-200 group box-border border border-transparent hover:border-Red-400"
                                 onClick={() =>
-                                  handleTemplateClick(template.templateId)
+                                  handleTemplateClick(
+                                    template.templateId,
+                                    template.imageUrl,
+                                  )
                                 }
-                                onKeyDown={(e) =>
-                                  (e.key === "Enter" || e.key === " ") &&
-                                  handleTemplateClick(template.templateId)
-                                }
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    handleTemplateClick(
+                                      template.templateId,
+                                      template.imageUrl,
+                                    );
+                                  }
+                                }}
                               >
-                                <Image
-                                  src={template.imageUrl}
-                                  alt={t("template.imageAlt", {
-                                    id: template.templateId,
-                                  })}
-                                  fill
-                                  className="object-cover"
-                                />
+                                {category === "VIDEO" ? (
+                                  <video
+                                    className="w-full h-full object-cover"
+                                    src={template.imageUrl}
+                                    muted
+                                    loop
+                                    autoPlay
+                                    playsInline
+                                    preload="metadata"
+                                  />
+                                ) : (
+                                  <Image
+                                    src={template.imageUrl}
+                                    alt={t("template.imageAlt", {
+                                      id: template.templateId,
+                                    })}
+                                    fill
+                                    sizes="176px"
+                                    className="object-cover"
+                                  />
+                                )}
                                 <div className="absolute inset-0 flex items-center justify-center bg-Grey-900 opacity-0 transition-opacity duration-150 group-hover:opacity-90">
                                   <span className="Body_3_semibold text-Grey-50 text-center whitespace-pre-line">
                                     {t("template.hoverText")}

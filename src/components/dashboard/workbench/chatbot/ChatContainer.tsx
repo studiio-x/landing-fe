@@ -9,13 +9,16 @@ import ChatMessage from "./ChatMessage";
 import GlassButton from "@/components/common/GlassButton";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 import { useChatMessages } from "@/hooks/useChatMessages";
+import type { WorkbenchMode } from "@/types/dashboard/mode.type";
 
 interface ChatContainerProps {
   projectId: number | null;
   onGenerated?: (imageUrl: string) => void;
+  mode?: WorkbenchMode;
+  videoImageId?: number | null;
 }
 
-const ChatContainer = ({ projectId, onGenerated }: ChatContainerProps) => {
+const ChatContainer = ({ projectId, onGenerated, mode, videoImageId }: ChatContainerProps) => {
   const t = useTranslations("dashboard.workbench.chatbot");
   const { isEditMode, hasPaint, commitPaint, setEditMode } =
     useStudioMarkStore();
@@ -29,6 +32,8 @@ const ChatContainer = ({ projectId, onGenerated }: ChatContainerProps) => {
       t("referenceImageDefaultMessage"),
       t("refineDefaultMessage"),
       onGenerated,
+      mode,
+      videoImageId,
     );
 
   const recommendations = [t("recommendations.0")] as const;
@@ -101,11 +106,12 @@ const ChatContainer = ({ projectId, onGenerated }: ChatContainerProps) => {
         <ChatInput
           onSend={(payload) => sendUserMessage(payload)}
           disabled={isPendingConceptSelect}
+          mode={mode}
         />
         <span className="Caption_medium text-Grey-500">{t("disclaimer")}</span>
       </div>
 
-      {isEditMode && (
+      {isEditMode && mode !== "video" && (
         <div className="absolute inset-0 z-40 flex flex-col items-center justify-center rounded-lg bg-Grey-900/90">
           <p className="text-center Body_1_medium text-Grey-50 whitespace-pre-line">
             {t("editModeGuide")}

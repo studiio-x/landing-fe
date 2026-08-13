@@ -12,6 +12,7 @@ import {
   useGetChatHistory,
 } from "@/hooks/queries/useChatApi";
 import type { ChatItem, ChatSendPayload } from "@/types/dashboard/chat.type";
+import type { WorkbenchMode } from "@/types/dashboard/mode.type";
 import { getErrorMessage } from "@/utils/apiUtils";
 import { uploadBlobToPresignedUrl } from "@/utils/uploadUtils";
 
@@ -20,7 +21,11 @@ export const useChatMessages = (
   defaultConceptMessage: string,
   refineDefaultMessage: string,
   onGenerated?: (imageUrl: string) => void,
+  mode: WorkbenchMode = "studio",
+  videoImageId?: number | null,
 ) => {
+  const isVideoMode = mode === "video";
+
   const t = useTranslations("dashboard.workbench.chatbot");
   const queryClient = useQueryClient();
   const [messages, setMessages] = useState<ChatItem[]>([]);
@@ -51,7 +56,7 @@ export const useChatMessages = (
       imageKeys: m.imageKeys.length > 0 ? m.imageKeys : undefined,
     }));
 
-    if (isPending) {
+    if (isPending && !isVideoMode) {
       const lastWithImages = [...mapped]
         .reverse()
         .find((m) => m.role === "assistant" && m.imageKeys);
@@ -59,7 +64,7 @@ export const useChatMessages = (
     }
 
     setMessages(mapped);
-  }, [historyData]);
+  }, [historyData, isVideoMode]);
 
   const resolveTypingMessage = useCallback(
     (typingId: string, patch: Partial<ChatItem>) => {
@@ -114,7 +119,13 @@ export const useChatMessages = (
       await runExchange(
         (prev, typingId) => [
           ...prev,
-          { id: crypto.randomUUID(), role: "user", text: content, status: "sent", attachments },
+          {
+            id: crypto.randomUUID(),
+            role: "user",
+            text: content,
+            status: "sent",
+            attachments,
+          },
           { id: typingId, role: "assistant", text: "", status: "typing" },
         ],
         async () => {
@@ -130,23 +141,37 @@ export const useChatMessages = (
 
           const response = await sendMessage({
             projectId,
-            mode: "CONCEPT",
+            mode: isVideoMode ? "VIDEO_REFINE" : "CONCEPT",
             body: {
               content,
               referenceImageObjectKey,
+              imageId: isVideoMode ? (videoImageId ?? undefined) : undefined,
             },
           });
+
+          // 비디오 모드는 컨셉 선택 없이 매 응답이 바로 결과물이므로, 나오는 즉시 반영한다.
+          if (isVideoMode && response.imageKeys.length > 0) {
+            onGenerated?.(response.imageKeys[0]);
+          }
 
           return {
             text: response.aiText,
             imageKeys:
               response.imageKeys.length > 0 ? response.imageKeys : undefined,
-            conceptSelectable: response.imageKeys.length > 0,
+            conceptSelectable: !isVideoMode && response.imageKeys.length > 0,
           };
         },
       );
     },
-    [projectId, sendMessage, defaultConceptMessage, runExchange],
+    [
+      projectId,
+      sendMessage,
+      defaultConceptMessage,
+      runExchange,
+      isVideoMode,
+      videoImageId,
+      onGenerated,
+    ],
   );
 
   const sendMarkImages = useCallback(
@@ -176,8 +201,12 @@ export const useChatMessages = (
 
           const response = await sendMessage({
             projectId,
-            mode: "REFINE",
-            body: { content: refineDefaultMessage, maskImageObjectKey },
+            mode: isVideoMode ? "VIDEO_REFINE" : "REFINE",
+            body: {
+              content: refineDefaultMessage,
+              maskImageObjectKey,
+              imageId: isVideoMode ? (videoImageId ?? undefined) : undefined,
+            },
           });
 
           if (response.imageKeys.length > 0) {
@@ -192,7 +221,15 @@ export const useChatMessages = (
         },
       );
     },
-    [projectId, sendMessage, refineDefaultMessage, runExchange, onGenerated],
+    [
+      projectId,
+      sendMessage,
+      refineDefaultMessage,
+      runExchange,
+      onGenerated,
+      isVideoMode,
+      videoImageId,
+    ],
   );
 
   const handleConceptSelect = useCallback(

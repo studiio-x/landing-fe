@@ -2,11 +2,16 @@ export function getSafeCallbackDestination(
   callbackUrl: string | null,
   fallback: string,
 ): string {
-  const isValid =
-    callbackUrl !== null &&
-    callbackUrl.startsWith("/") &&
-    !callbackUrl.startsWith("//") &&
-    !callbackUrl.includes(":");
+  if (!callbackUrl) return fallback;
 
-  return isValid ? callbackUrl : fallback;
+  try {
+    const currentOrigin = window.location.origin;
+    const resolved = new URL(callbackUrl, currentOrigin);
+
+    if (resolved.origin !== currentOrigin) return fallback;
+
+    return `${resolved.pathname}${resolved.search}${resolved.hash}`;
+  } catch {
+    return fallback;
+  }
 }

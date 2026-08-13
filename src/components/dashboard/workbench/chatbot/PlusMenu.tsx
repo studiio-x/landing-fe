@@ -4,6 +4,7 @@ import { Image, Plus, Scissor } from "@/assets/icons";
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { useLocale, useTranslations } from "next-intl";
+import { acceptImageFile } from "@/utils/imageFileValidation";
 
 interface PlusMenuProps {
   onUploadImage: (file: File) => void;
@@ -13,6 +14,7 @@ interface PlusMenuProps {
 
 const PlusMenu = ({ onUploadImage, onClickMark, disabled }: PlusMenuProps) => {
   const t = useTranslations("dashboard.workbench.chatbot.plusMenu");
+  const tWorkbench = useTranslations("dashboard.workbench");
   const locale = useLocale();
   const plusWrapRef = useRef<HTMLDivElement | null>(null);
 
@@ -95,11 +97,12 @@ const PlusMenu = ({ onUploadImage, onClickMark, disabled }: PlusMenuProps) => {
                   className="hidden"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
+                    e.target.value = "";
                     if (!file) return;
+                    if (!acceptImageFile(file, tWorkbench("unsupportedImageFormat"))) return;
                     setIsPlusPinned(false);
                     setIsPlusOpen(false);
                     onUploadImage(file);
-                    e.target.value = "";
                   }}
                 />
 

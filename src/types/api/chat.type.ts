@@ -1,5 +1,5 @@
-// CONCEPT: 컨셉 이미지 4개 생성 / REFINE: 선택한 이미지 마스크 영역 수정
-export type ChatMode = "CONCEPT" | "REFINE";
+// CONCEPT: 컨셉 이미지 4개 생성 / REFINE: 선택한 이미지 마스크 영역 수정 / VIDEO_REFINE: 비디오 모드에서의 마스크 영역 수정
+export type ChatMode = "CONCEPT" | "REFINE" | "VIDEO_REFINE";
 export type ChatStatus = "IDLE" | string;
 export type MessageRole = "USER" | "AI";
 export type MessageType = "TEXT" | string;

@@ -4,10 +4,11 @@ import { Close, Download } from "@/assets/icons";
 import ModalOverlay from "@/components/common/ModalOverlay";
 
 const STUDIO_TAB_KEYS = ["product", "background", "aiChatbot"] as const;
+const VIDEO_TAB_KEYS = ["product", "options", "aiChatbot"] as const;
 
 interface ProductImageRequiredModalProps {
   onClose: () => void;
-  variant?: "product" | "background";
+  variant?: "product" | "background" | "video";
 }
 
 const ProductImageRequiredModal = ({
@@ -19,8 +20,11 @@ const ProductImageRequiredModal = ({
   const textKey =
     variant === "background"
       ? "backgroundRequiredModal"
-      : "productImageRequiredModal";
-  const activeTabIdx = variant === "background" ? 1 : 0;
+      : variant === "video"
+        ? "videoRequiredModal"
+        : "productImageRequiredModal";
+  const activeTabIdx = variant === "background" || variant === "video" ? 1 : 0;
+  const tabKeys = variant === "video" ? VIDEO_TAB_KEYS : STUDIO_TAB_KEYS;
 
   return (
     <ModalOverlay onClose={onClose}>
@@ -45,7 +49,7 @@ const ProductImageRequiredModal = ({
           <div className="absolute left-0 right-0 -bottom-px h-px bg-Grey-400" />
 
           <div className="flex">
-            {STUDIO_TAB_KEYS.map((key, idx) => {
+            {tabKeys.map((key, idx) => {
               const isActive = idx === activeTabIdx;
 
               return (
