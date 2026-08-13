@@ -17,6 +17,7 @@ import { useGetFolders } from "@/hooks/queries/useFolderApi";
 import { useGetProjects } from "@/hooks/queries/useProjectApi";
 import { QUERY_KEYS } from "@/constants/common/paths";
 import type { WorkbenchMode } from "@/types/dashboard/mode.type";
+import type { ActionKey } from "@/types/dashboard/video-option.type";
 
 interface WorkbenchProps {
   mode: WorkbenchMode;
@@ -53,6 +54,9 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   const folderIdParam = searchParams.get("folderId");
   const templateIdParam = searchParams.get(QUERY_KEYS.TEMPLATE_ID);
   const templateId = templateIdParam ? Number(templateIdParam) : null;
+  const initialMotionType = searchParams.get(
+    QUERY_KEYS.MOTION_TYPE,
+  ) as ActionKey | null;
 
   const { data: foldersData } = useGetFolders();
   const folderId = folderIdParam
@@ -162,6 +166,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
           videoImageId={videoImageId}
           videoProjectId={videoProjectId}
           initialTemplateId={templateId}
+          initialMotionType={initialMotionType}
         />
       </div>
 

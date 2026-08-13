@@ -29,13 +29,16 @@ const OptionCard = ({
       />
 
       <div className="absolute inset-px rounded bg-Grey-800 flex flex-col">
-        <div className="h-31 w-full bg-Grey-700 rounded-t">
+        <div className="h-31 w-full bg-Grey-700 rounded-t overflow-hidden">
           {imageUrl && (
-            <img
+            <video
               src={imageUrl}
-              alt=""
               className="h-full w-full object-cover"
-              draggable={false}
+              muted
+              loop
+              autoPlay
+              playsInline
+              preload="metadata"
             />
           )}
         </div>

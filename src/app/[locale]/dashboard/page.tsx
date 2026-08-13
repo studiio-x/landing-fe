@@ -10,6 +10,7 @@ import { DASHBOARD_CARDS } from "@/constants/dashboard/card";
 import Header from "@/components/dashboard/Header";
 import SideBar from "@/components/dashboard/sidebar/SideBar";
 import { PATHS, QUERY_KEYS } from "@/constants/common/paths";
+import { getMotionTypeFromTemplateUrl } from "@/constants/dashboard/video-options";
 import { useTemplatesByCategory } from "@/hooks/queries/useTemplateApi";
 import { TemplateCategory } from "@/types/api/template.type";
 
@@ -40,13 +41,21 @@ const DashboardPage = () => {
   const templates = data?.templates ?? [];
   const showSkeleton = isLoading;
 
-  const handleTemplateClick = (templateId: number) => {
+  const handleTemplateClick = (templateId: number, imageUrl: string) => {
     if (activeIndex === null) return;
     const mode = DASHBOARD_CARDS[activeIndex].key;
     const params = new URLSearchParams({
       [QUERY_KEYS.WORKBENCH_MODE]: mode,
       [QUERY_KEYS.TEMPLATE_ID]: String(templateId),
     });
+
+    if (mode === "video") {
+      const motionType = getMotionTypeFromTemplateUrl(imageUrl);
+      if (motionType) {
+        params.set(QUERY_KEYS.MOTION_TYPE, motionType);
+      }
+    }
+
     router.push(`${PATHS.DASHBOARD_WORKBENCH}?${params.toString()}`);
   };
 
@@ -113,11 +122,17 @@ const DashboardPage = () => {
                                 role="button"
                                 className="cursor-pointer w-44 h-44 relative aspect-square rounded overflow-hidden bg-Grey-200 group box-border border border-transparent hover:border-Red-400"
                                 onClick={() =>
-                                  handleTemplateClick(template.templateId)
+                                  handleTemplateClick(
+                                    template.templateId,
+                                    template.imageUrl,
+                                  )
                                 }
                                 onKeyDown={(e) =>
                                   (e.key === "Enter" || e.key === " ") &&
-                                  handleTemplateClick(template.templateId)
+                                  handleTemplateClick(
+                                    template.templateId,
+                                    template.imageUrl,
+                                  )
                                 }
                               >
                                 {category === "VIDEO" ? (
