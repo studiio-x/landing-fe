@@ -23,6 +23,9 @@ interface BackgroundSwiperProps {
   isLoading?: boolean;
 }
 
+const SLIDES_PER_VIEW = 3;
+const SLIDES_PER_GROUP = 3;
+
 const BackgroundSwiper = ({
   id,
   title,
@@ -36,6 +39,9 @@ const BackgroundSwiper = ({
   }
 
   const showSkeleton = isLoading;
+  const canLoop = items.length >= SLIDES_PER_VIEW * 2;
+  const hasOverflow = items.length > SLIDES_PER_VIEW;
+  const hideNavigation = showSkeleton || !hasOverflow;
 
   return (
     <section className="w-full flex flex-col gap-2">
@@ -51,7 +57,7 @@ const BackgroundSwiper = ({
 
       <div className="relative items-center flex gap-3 justify-center">
         <button
-          className={clsx(`swiper-prev-${id}`, showSkeleton && "invisible")}
+          className={clsx(`swiper-prev-${id}`, hideNavigation && "invisible")}
           aria-label="이전"
         >
           <Down className="rotate-90 h-6 w-6" />
@@ -73,10 +79,10 @@ const BackgroundSwiper = ({
           ) : (
             <Swiper
               modules={[Navigation]}
-              slidesPerView={3}
-              slidesPerGroup={3}
+              slidesPerView={SLIDES_PER_VIEW}
+              slidesPerGroup={SLIDES_PER_GROUP}
               spaceBetween={12}
-              loop
+              loop={canLoop}
               navigation={{
                 prevEl: `.swiper-prev-${id}`,
                 nextEl: `.swiper-next-${id}`,
@@ -119,7 +125,7 @@ const BackgroundSwiper = ({
         </div>
 
         <button
-          className={clsx(`swiper-next-${id}`, showSkeleton && "invisible")}
+          className={clsx(`swiper-next-${id}`, hideNavigation && "invisible")}
           aria-label="다음"
         >
           <Down className="-rotate-90 h-6 w-6" />
