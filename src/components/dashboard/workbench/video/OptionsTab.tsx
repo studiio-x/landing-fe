@@ -178,19 +178,9 @@ const OptionsTab = ({
       <div className="flex items-center justify-center gap-4 mt-6 Body_2_semibold">
         <GlassButton
           size="md"
-          gap="sm"
-          type="button"
-          className="Body_3_semibold"
-          leftIcon={<Plus className="w-5.5 h-5.5" />}
-        >
-          {t("uploadBackground")}
-        </GlassButton>
-
-        <GlassButton
-          size="md"
           variant="red"
           type="button"
-          className="Body_2_semibold"
+          className="Body_2_semibold w-full"
           onClick={handleClickGenerate}
           disabled={isGenerating || !selectedAction}
         >
