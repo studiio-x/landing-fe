@@ -10,6 +10,11 @@
     "title": "For the best experience,\nplease use a desktop.",
     "imageAlt": "Desktop usage guide"
   },
+  "sessionExpiredModal": {
+    "title": "Your session has expired",
+    "description": "For your security, you've been logged out.\nPlease log in again.",
+    "confirmLabel": "Log in"
+  },
   "login": {
     "title": "Log in to <brand>StudioX</brand>",
     "closeLabel": "Close",

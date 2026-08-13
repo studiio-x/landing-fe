@@ -10,6 +10,11 @@
     "title": "원활한 이용을 위해\nPC 환경에서 접속해 주세요.",
     "imageAlt": "PC 이용 안내"
   },
+  "sessionExpiredModal": {
+    "title": "세션이 만료되었어요",
+    "description": "보안을 위해 로그인이 만료되었습니다.\n다시 로그인해 주세요.",
+    "confirmLabel": "로그인하기"
+  },
   "login": {
     "title": "<brand>StudioX</brand>로그인하기",
     "closeLabel": "닫기",
