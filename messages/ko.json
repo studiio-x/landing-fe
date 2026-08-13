@@ -193,6 +193,7 @@
       "uploadedImageAlt": "업로드 이미지",
       "retry": "다시 시도",
       "cutoutErrorMessage": "이미지 처리 중 오류가 발생했습니다.",
+      "unsupportedImageFormat": "HEIC/HEIF 형식은 지원하지 않아요.",
       "processingStage": {
         "cutout": "배경 제거 중...",
         "compositing": "배경 합성 중...",

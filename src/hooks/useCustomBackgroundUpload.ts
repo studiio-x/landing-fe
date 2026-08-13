@@ -1,7 +1,9 @@
 import { useRef } from "react";
+import { useTranslations } from "next-intl";
 
 import { getCustomTemplatePresign } from "@/apis/imageApi";
 import { usePostCustomBackgroundImage } from "@/hooks/queries/useImageApi";
+import { acceptImageFile } from "@/utils/imageFileValidation";
 import type { ProcessingStage } from "@/types/dashboard/processing-stage.type";
 
 interface UseCustomBackgroundUploadOptions {
@@ -21,6 +23,7 @@ export const useCustomBackgroundUpload = ({
   onGeneratingChange,
   onStageChange,
 }: UseCustomBackgroundUploadOptions) => {
+  const t = useTranslations("dashboard.workbench");
   const inputRef = useRef<HTMLInputElement>(null);
   const { mutateAsync: postCustomBackgroundImage, isPending: isUploading } =
     usePostCustomBackgroundImage();
@@ -36,6 +39,7 @@ export const useCustomBackgroundUpload = ({
     const file = event.target.files?.[0];
     event.target.value = "";
     if (!file || !cutoutImageObjectKey || !projectId) return;
+    if (!acceptImageFile(file, t("unsupportedImageFormat"))) return;
 
     onGeneratingChange(true);
     onStageChange?.("compositing");

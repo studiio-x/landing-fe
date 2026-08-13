@@ -3,11 +3,12 @@ import { useTranslations } from "next-intl";
 
 import { getRawPresign, postCutoutImage } from "@/apis/imageApi";
 import { usePostImage } from "@/hooks/queries/useImageApi";
+import { useToastStore } from "@/stores/useToastStore";
 import { getErrorMessage } from "@/utils/apiUtils";
 import type { ProcessingStage } from "@/types/dashboard/processing-stage.type";
 
-const ERROR_FADE_DELAY_MS = 1500;
-const ERROR_FADE_DURATION_MS = 300;
+// 에러를 토스트로 띄운 뒤, 재시도할 수 있게 업로드 상태를 초기화하기까지의 지연.
+const ERROR_RESET_DELAY_MS = 1800;
 
 interface UseImageUploadAndCutoutOptions {
   templateId?: number | null;
@@ -36,7 +37,6 @@ export const useImageUploadAndCutout = (
   >(null);
   const [projectId, setProjectId] = useState<number | null>(null);
   const [cutoutError, setCutoutError] = useState<string | null>(null);
-  const [isErrorVisible, setIsErrorVisible] = useState(false);
 
   const uploadAndCutout = useCallback(
     async (file: File) => {
@@ -82,7 +82,9 @@ export const useImageUploadAndCutout = (
           onBackgroundGenerated?.(imageUrl);
         }
       } catch (error) {
-        setCutoutError(getErrorMessage(error, t("cutoutErrorMessage")));
+        const message = getErrorMessage(error, t("cutoutErrorMessage"));
+        setCutoutError(message);
+        useToastStore.getState().showToast(message);
       } finally {
         setIsProcessing(false);
         onStageChange?.(null);
@@ -125,21 +127,13 @@ export const useImageUploadAndCutout = (
 
   useEffect(() => {
     if (!cutoutError) return;
-    setIsErrorVisible(true);
 
-    const fadeTimer = setTimeout(
-      () => setIsErrorVisible(false),
-      ERROR_FADE_DELAY_MS,
-    );
     const resetTimer = setTimeout(
       () => setUploadedImage(null),
-      ERROR_FADE_DELAY_MS + ERROR_FADE_DURATION_MS,
+      ERROR_RESET_DELAY_MS,
     );
 
-    return () => {
-      clearTimeout(fadeTimer);
-      clearTimeout(resetTimer);
-    };
+    return () => clearTimeout(resetTimer);
   }, [cutoutError]);
 
   return {
@@ -153,6 +147,5 @@ export const useImageUploadAndCutout = (
     cutoutImageObjectKey,
     projectId,
     cutoutError,
-    isErrorVisible,
   };
 };

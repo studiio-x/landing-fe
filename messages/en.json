@@ -193,6 +193,7 @@
       "uploadedImageAlt": "Uploaded image",
       "retry": "Retry",
       "cutoutErrorMessage": "An error occurred while processing the image.",
+      "unsupportedImageFormat": "HEIC/HEIF files aren't supported.",
       "processingStage": {
         "cutout": "Removing background...",
         "compositing": "Compositing background...",

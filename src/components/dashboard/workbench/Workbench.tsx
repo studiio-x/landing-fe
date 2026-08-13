@@ -93,8 +93,6 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     cutoutImageUrl,
     cutoutImageObjectKey,
     projectId,
-    cutoutError,
-    isErrorVisible,
   } = useImageUploadAndCutout(folderId, {
     templateId: mode !== "video" ? templateId : null,
     onBackgroundGenerated: setGeneratedImageUrl,
@@ -149,7 +147,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
 
   return (
     <div className="flex justify-center w-full">
-      <div className="flex flex-col">
+      <div className="flex flex-col ">
         <TabPanel
           activeTab={activeTab}
           onChange={handleTabChange}
@@ -244,18 +242,6 @@ const Workbench = ({ mode }: WorkbenchProps) => {
                       {t(`processingStage.${processingStage}`)}
                     </span>
                   )}
-                </div>
-              )}
-
-              {cutoutError && !isProcessing && (
-                <div
-                  className={`absolute bottom-6 left-1/2 -translate-x-1/2 z-40 transition-opacity duration-300 ${
-                    isErrorVisible ? "opacity-100" : "opacity-0"
-                  }`}
-                >
-                  <div className="rounded-md bg-Grey-900 px-6 py-2 Subhead_2_medium text-White whitespace-nowrap">
-                    {cutoutError}
-                  </div>
                 </div>
               )}
 
