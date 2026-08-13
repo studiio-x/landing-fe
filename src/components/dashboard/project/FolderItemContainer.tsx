@@ -20,11 +20,16 @@ const FolderItemContainer = ({
 }: FolderItemContainerProps) => {
   const router = useRouter();
   const locale = useLocale();
-  const { data } = useGetProjects(folderId, 0, 6);
-  const images = data?.projects.map((p) => p.thumbnailObjectKey) ?? [];
+  const { data } = useGetProjects(folderId, 0, 12);
+  const images = (data?.projects ?? [])
+    .filter((p) => p.fileType === "IMAGE")
+    .slice(0, 6)
+    .map((p) => p.thumbnailObjectKey);
 
   const handleClick = () => {
-    router.push(`/${locale}/dashboard/workbench?mode=studio&folderId=${folderId}`);
+    router.push(
+      `/${locale}/dashboard/workbench?mode=studio&folderId=${folderId}`,
+    );
   };
 
   return (
