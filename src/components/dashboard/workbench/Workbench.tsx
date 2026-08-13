@@ -59,7 +59,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     ? Number(folderIdParam)
     : (foldersData?.myProject[0]?.folderId ?? 0);
 
-  const { data: projectsData } = useGetProjects(folderId);
+  const { data: projectsData } = useGetProjects(folderId, 0, 4);
   const projects = (projectsData?.projects ?? []).filter(
     (p) => p.fileType === "IMAGE",
   );
