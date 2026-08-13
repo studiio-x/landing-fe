@@ -145,6 +145,14 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     setVideoProjectId(newVideoProjectId);
   };
 
+  const handleGenerated = (url: string) => {
+    if (mode === "video") {
+      setGeneratedVideoUrl(url);
+    } else {
+      setGeneratedImageUrl(url);
+    }
+  };
+
   return (
     <div className="flex justify-center w-full">
       <div className="flex flex-col ">
@@ -161,7 +169,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
           folderId={folderId}
           cutoutImageObjectKey={cutoutImageObjectKey}
           projectId={projectId}
-          onGenerated={setGeneratedImageUrl}
+          onGenerated={handleGenerated}
           onGeneratingChange={setIsGenerating}
           onStageChange={setProcessingStage}
           onVideoGenerated={handleVideoGenerated}

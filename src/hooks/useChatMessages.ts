@@ -149,6 +149,11 @@ export const useChatMessages = (
             },
           });
 
+          // 비디오 모드는 컨셉 선택 없이 매 응답이 바로 결과물이므로, 나오는 즉시 반영한다.
+          if (isVideoMode && response.imageKeys.length > 0) {
+            onGenerated?.(response.imageKeys[0]);
+          }
+
           return {
             text: response.aiText,
             imageKeys:
@@ -165,6 +170,7 @@ export const useChatMessages = (
       runExchange,
       isVideoMode,
       videoImageId,
+      onGenerated,
     ],
   );
 

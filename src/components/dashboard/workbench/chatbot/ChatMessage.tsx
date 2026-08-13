@@ -4,6 +4,8 @@ import clsx from "clsx";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 
+const isVideoUrl = (url: string) => /\.(mp4|webm|ogg|mov)$/i.test(url);
+
 const TypingDots = () => {
   return (
     <div className="inline-flex items-center gap-1.5 px-2 py-1 h-7 rounded-md bg-Grey-800">
@@ -113,11 +115,11 @@ const ChatMessageList = ({
             {isTyping ? (
               <TypingDots />
             ) : (
-              <div className={clsx("max-w-68 flex flex-col gap-2")}>
+              <div className={clsx("max-w-80 flex flex-col gap-2")}>
                 {m.text?.trim() && (
                   <div
                     className={clsx(
-                      "max-w-68 py-1.5 rounded-lg Body_3_medium whitespace-pre-line wrap-break-word",
+                      "max-w-80 py-1.5 rounded-lg Body_3_medium whitespace-pre-line wrap-break-word",
                       isUser
                         ? "px-3 bg-Grey-700 text-Grey-50"
                         : "text-Grey-100 bg-transparent",
@@ -160,27 +162,44 @@ const ChatMessageList = ({
                 {hasImageKeys &&
                   !m.conceptSelectable &&
                   (m.imageKeys!.length === 1 ? (
-                    <Image
-                      src={m.imageKeys![0]}
-                      width={272}
-                      height={272}
-                      alt={t("attachmentAlt")}
-                      className="w-68 h-68 rounded object-cover"
-                      loading="lazy"
-                    />
+                    isVideoUrl(m.imageKeys![0]) ? (
+                      <video
+                        src={m.imageKeys![0]}
+                        controls
+                        className="w-68 h-68 rounded object-cover"
+                      />
+                    ) : (
+                      <Image
+                        src={m.imageKeys![0]}
+                        width={272}
+                        height={272}
+                        alt={t("attachmentAlt")}
+                        className="w-68 h-68 rounded object-cover"
+                        loading="lazy"
+                      />
+                    )
                   ) : (
                     <div className="grid grid-cols-2 gap-2 w-68">
-                      {m.imageKeys!.map((key) => (
-                        <Image
-                          key={key}
-                          src={key}
-                          width={132}
-                          height={132}
-                          alt={t("attachmentAlt")}
-                          className="w-33 h-33 rounded object-cover"
-                          loading="lazy"
-                        />
-                      ))}
+                      {m.imageKeys!.map((key) =>
+                        isVideoUrl(key) ? (
+                          <video
+                            key={key}
+                            src={key}
+                            controls
+                            className="w-33 h-33 rounded object-cover"
+                          />
+                        ) : (
+                          <Image
+                            key={key}
+                            src={key}
+                            width={132}
+                            height={132}
+                            alt={t("attachmentAlt")}
+                            className="w-33 h-33 rounded object-cover"
+                            loading="lazy"
+                          />
+                        ),
+                      )}
                     </div>
                   ))}
               </div>
