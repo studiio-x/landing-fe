@@ -235,11 +235,6 @@
         "imageAlt": "Generated image {index}"
       },
       "backgroundTab": {
-        "categories": {
-          "display": "General Display",
-          "fabric": "Fabric & Velvet",
-          "outdoor": "Outdoor"
-        },
         "uploadBackground": "Upload Background",
         "generate": "Generate",
         "noSearchResults": "No search results found",

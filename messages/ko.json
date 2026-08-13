@@ -235,11 +235,6 @@
         "imageAlt": "생성 이미지 {index}"
       },
       "backgroundTab": {
-        "categories": {
-          "display": "일반 디스플레이",
-          "fabric": "패브릭 & 벨벳",
-          "outdoor": "아웃도어"
-        },
         "uploadBackground": "배경 업로드",
         "generate": "생성하기",
         "noSearchResults": "검색 결과가 없습니다",
