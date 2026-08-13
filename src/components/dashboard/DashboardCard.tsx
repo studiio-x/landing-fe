@@ -5,6 +5,7 @@ interface DashboardCardProps {
   title: string;
   content: string;
   mediaSrc: string;
+  isVideo?: boolean;
   isActive?: boolean;
   onClick?: () => void;
 }
@@ -13,10 +14,10 @@ const DashboardCard = ({
   title,
   content,
   mediaSrc,
+  isVideo = false,
   isActive,
   onClick,
 }: DashboardCardProps) => {
-  const isVideo = (src: string) => /\.(mp4|webm|ogg)$/i.test(src);
   const isInteractive = Boolean(onClick);
 
   return (
@@ -45,7 +46,7 @@ const DashboardCard = ({
           <h3
             className={clsx(
               "whitespace-pre-line",
-              isVideo(mediaSrc) ? "Body_2_semibold" : "Body_1_semibold",
+              isVideo ? "Body_2_semibold" : "Body_1_semibold",
               isActive ? "text-Red-300" : "text-white group-hover:text-Red-300",
             )}
           >
@@ -57,7 +58,7 @@ const DashboardCard = ({
         </div>
 
         <div className="relative h-full w-47.5 shrink-0">
-          {isVideo(mediaSrc) ? (
+          {isVideo ? (
             <video
               className="h-full w-full object-cover"
               src={mediaSrc}

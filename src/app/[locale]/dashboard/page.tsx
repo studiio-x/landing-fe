@@ -77,6 +77,7 @@ const DashboardPage = () => {
                       title={t(`cards.${card.key}.title`)}
                       content={t(`cards.${card.key}.content`)}
                       mediaSrc={card.mediaSrc}
+                      isVideo={card.key === "video"}
                       isActive={activeIndex === idx}
                     />
                   </div>
@@ -119,15 +120,27 @@ const DashboardPage = () => {
                                   handleTemplateClick(template.templateId)
                                 }
                               >
-                                <Image
-                                  src={template.imageUrl}
-                                  alt={t("template.imageAlt", {
-                                    id: template.templateId,
-                                  })}
-                                  fill
-                                  sizes="176px"
-                                  className="object-cover"
-                                />
+                                {category === "VIDEO" ? (
+                                  <video
+                                    className="w-full h-full object-cover"
+                                    src={template.imageUrl}
+                                    muted
+                                    loop
+                                    autoPlay
+                                    playsInline
+                                    preload="metadata"
+                                  />
+                                ) : (
+                                  <Image
+                                    src={template.imageUrl}
+                                    alt={t("template.imageAlt", {
+                                      id: template.templateId,
+                                    })}
+                                    fill
+                                    sizes="176px"
+                                    className="object-cover"
+                                  />
+                                )}
                                 <div className="absolute inset-0 flex items-center justify-center bg-Grey-900 opacity-0 transition-opacity duration-150 group-hover:opacity-90">
                                   <span className="Body_3_semibold text-Grey-50 text-center whitespace-pre-line">
                                     {t("template.hoverText")}
