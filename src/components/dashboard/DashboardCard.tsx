@@ -68,7 +68,13 @@ const DashboardCard = ({
               preload="metadata"
             />
           ) : (
-            <Image src={mediaSrc} alt={title} fill className="object-cover" />
+            <Image
+              src={mediaSrc}
+              alt={title}
+              fill
+              sizes="190px"
+              className="object-cover"
+            />
           )}
         </div>
       </div>

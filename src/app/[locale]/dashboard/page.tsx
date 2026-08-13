@@ -125,6 +125,7 @@ const DashboardPage = () => {
                                     id: template.templateId,
                                   })}
                                   fill
+                                  sizes="176px"
                                   className="object-cover"
                                 />
                                 <div className="absolute inset-0 flex items-center justify-center bg-Grey-900 opacity-0 transition-opacity duration-150 group-hover:opacity-90">
