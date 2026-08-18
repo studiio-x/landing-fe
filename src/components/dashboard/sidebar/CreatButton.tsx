@@ -12,7 +12,7 @@ interface CreateButtonProps {
 
 const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
   const router = useRouter();
-  const t = useTranslations("dashboard");
+  const t = useTranslations("sidebar");
 
   return (
     <div className="flex flex-col gap-3 w-full">
@@ -31,7 +31,7 @@ const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
                 className="w-full bg-[rgba(255,48,48,0.45)] rounded-[0.25rem] hover:bg-[rgba(255,48,48,0.75)] Body_2_semibold flex gap-[0.62rem]"
               >
                 <Plus className="w-6 h-6 [&_path]:fill-White" />
-                <span>{t("sidebar.newProject")}</span>
+                <span>{t("newProject")}</span>
               </GlassButton>
             </motion.div>
             <motion.div
@@ -46,7 +46,7 @@ const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
                 className="w-full"
               >
                 <Pencil className="w-4.5" />
-                {t("sidebar.continueProject")}
+                <span>{t("continueProject")}</span>
               </GlassButton>
             </motion.div>
           </>
@@ -119,9 +119,7 @@ const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
                 className="flex gap-[0.62rem] items-center"
               >
                 <Plus className="w-6 h-6 [&_path]:fill-White" />
-                <span className="Body_1_semibold">
-                  {t("sidebar.createButton")}
-                </span>
+                <span className="Body_1_semibold">{t("generate")}</span>
               </motion.div>
             )}
           </AnimatePresence>

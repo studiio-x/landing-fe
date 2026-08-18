@@ -11,15 +11,20 @@ import useClickOutside from "@/hooks/useClickOutside";
 import CreateFolderModal from "@/components/dashboard/project/CreateFolderModal";
 import AlertModal from "@/components/common/AlertModal";
 import InviteModal from "@/components/dashboard/project/InviteModal";
+import { useTranslations } from "next-intl";
+import { useDeleteFolder, useProject } from "@/hooks/queries/useProject";
+import { useMypage } from "@/hooks/queries/useMypageApi";
 
 const mockData = [
   {
     name: "Handbag",
+    folderId: 1,
     isFolder: true,
     imageUrl: [1, 2, 3, 4, 5, 6].map((_) => "/images/project/mockData.png"),
   },
   {
     name: "Cosmetics Visuals",
+    folderId: 2,
     isFolder: true,
     imageUrl: [
       "/images/project/mockData.png",
@@ -32,39 +37,50 @@ const mockData = [
   },
   {
     name: "Cosmetics Visuals",
+    folderId: 3,
     isFolder: true,
     imageUrl: [1, 2, 3, 4, 5, 6].map((_) => "/images/project/mockData.png"),
   },
   {
     name: "제목을 입력해주세요",
+    folderId: 4,
     isFolder: false,
     imageUrl: "/images/project/mockData.png",
   },
   {
     name: "제목을 입력해주세요",
+    folderId: 5,
     isFolder: false,
     imageUrl: "/images/project/mockData.png",
   },
 ];
 
 const ProjectPage = () => {
+  const t = useTranslations("project");
+  const { data } = useProject();
+  const { data: userData } = useMypage();
+  const { mutate: deleteFolder } = useDeleteFolder();
   const searchParams = useSearchParams();
-  const sharedProjectFromQuery = searchParams.get("shared");
+  const params = new URLSearchParams();
+  const sharedProjectFromQuery =
+    searchParams.get("shared") || searchParams.get("not-shared");
   const router = useRouter();
-  const [array, setArray] = useState("최신순");
+  const [array, setArray] = useState("newest");
   const [createModalOpen, setCreateModalOpen] = useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [renameModalOpen, setRenameModalOpen] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
-
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
   const dropDownRef = useRef<HTMLDivElement>(null);
 
+  const targetUserId = userData?.userId || null;
+
   useEffect(() => {
-    if (!sharedProjectFromQuery) {
-      router.replace("/dashboard/project?shared=my");
+    if (!sharedProjectFromQuery && data?.myProject.length) {
+      params.set("not-shared", data.myProject[0].name);
+      params.set("folderId", String(data.myProject[0].folderId));
+      router.replace(`/dashboard/project?${params.toString()}`);
     }
-  }, []);
+  }, [sharedProjectFromQuery]);
 
   useClickOutside(dropDownRef, () => setIsDropDownOpen(false), isDropDownOpen);
 
@@ -78,6 +94,20 @@ const ProjectPage = () => {
 
   const onCreatButtonClick = () => {
     setCreateModalOpen(true);
+  };
+  const onDelete = () => {
+    if (!deleteTargetId) return;
+
+    deleteFolder(deleteTargetId, {
+      onSuccess: () => {
+        console.log("폴더 삭제 성공:", deleteTargetId);
+        setDeleteTargetId(null);
+      },
+      onError: (error) => {
+        console.error("폴더 삭제 실패:", error);
+        setDeleteTargetId(null);
+      },
+    });
   };
 
   // 폴더와 프로젝트에 분리된 인덱스 부여
@@ -112,20 +142,20 @@ const ProjectPage = () => {
 
       {/* 제거 모달 */}
       <AlertModal
-        isOpen={deleteModalOpen}
-        onClose={() => setDeleteModalOpen(false)}
+        isOpen={!!deleteTargetId}
+        onClose={() => setDeleteTargetId(null)}
         title="정말 삭제하시겠습니까?"
         description="폴더를 삭제하면 하위의 폴더와 프로젝트가 모두 삭제되며, 복구할 수 없습니다."
         buttons={[
           {
             label: "닫기",
             variant: "default",
-            onClick: () => setDeleteModalOpen(false),
+            onClick: () => setDeleteTargetId(null),
           },
           {
             label: "삭제하기",
             variant: "red",
-            onClick: () => setDeleteModalOpen(false),
+            onClick: onDelete,
           },
         ]}
       />
@@ -134,6 +164,7 @@ const ProjectPage = () => {
       <InviteModal
         isOpen={inviteModalOpen}
         onClose={() => setInviteModalOpen(false)}
+        targetUserId={targetUserId}
       />
 
       <Header />
@@ -143,11 +174,11 @@ const ProjectPage = () => {
         <div className="mt-13 flex items-center flex-col flex-1 w-249 mr-4.5">
           <div className="w-249 flex items-center gap-4">
             <h1 className="Heading_1_bold bg-linear-to-b from-Red-300 to-Red-500 bg-clip-text text-transparent  ">
-              프로젝트
+              {t("title")}
             </h1>
             <div className="flex gap-1">
               <span className="whitespace-nowrap Body_2_medium text-Grey-200">
-                {sharedProjectFromQuery ?? ""}의 프로젝트
+                {t("subtitle", { user: sharedProjectFromQuery ?? "" })}
               </span>
               <button
                 onClick={() => setInviteModalOpen(true)}
@@ -188,7 +219,7 @@ const ProjectPage = () => {
                 lists={item}
                 index={item.displayIndex}
                 key={item.originalIndex}
-                setDeleteModalOpen={setDeleteModalOpen}
+                setDeleteTargetId={setDeleteTargetId}
               />
             ))}
           </section>

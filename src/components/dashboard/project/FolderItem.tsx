@@ -5,24 +5,21 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import MeatballModal from "./MeatballModal";
 import useClickOutside from "@/hooks/useClickOutside";
+import { useSearchParams } from "next/navigation";
+import { useMoveFolder, useUpdateFolderName } from "@/hooks/queries/useProject";
 
 interface FolderItemProps {
   lists: {
+    folderId: number;
     name: string;
     isFolder: boolean;
     imageUrl: string | (string | null)[];
   };
   index: number;
-  setDeleteModalOpen: (open: boolean) => void;
-  onClick?: () => void;
+  setDeleteTargetId: (folderId: number | null) => void;
 }
 
-const FolderItem = ({
-  lists,
-  index,
-  setDeleteModalOpen,
-  onClick,
-}: FolderItemProps) => {
+const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
   const t = useTranslations("dashboard.project.folderItem");
   const [isOpenMeatball, setIsOpenMeatball] = useState(false);
   const [renameModalOpen, setRenameModalOpen] = useState(false);
@@ -31,6 +28,13 @@ const FolderItem = ({
   const renameModalRef = useRef<HTMLTextAreaElement>(null);
   const meatballRef = useRef<HTMLDivElement>(null);
   const lastValidValue = useRef<string>(name);
+  const searchParams = useSearchParams();
+  const { mutate: moveFolder } = useMoveFolder();
+  const { mutate: updateFolderName } = useUpdateFolderName();
+
+  const folderId = Number(searchParams.get("folderId"));
+  const isDraggable = !folderId;
+
   useClickOutside(meatballRef, () => setIsOpenMeatball(false), isOpenMeatball);
 
   const adjustTextareaHeight = useCallback(() => {
@@ -71,8 +75,20 @@ const FolderItem = ({
   const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      setName(rename);
-      setRenameModalOpen(false);
+      updateFolderName(
+        { folderId: lists.folderId, newName: rename },
+        {
+          onSuccess: () => {
+            console.log("폴더 이름 변경 성공");
+            setName(rename);
+            setRenameModalOpen(false);
+          },
+          onError: (error) => {
+            console.error("폴더 이름 변경 실패:", error);
+            setRenameModalOpen(false);
+          },
+        }
+      );
     }
   };
 
@@ -96,8 +112,44 @@ const FolderItem = ({
     adjustTextareaHeight();
   }, [name, rename, adjustTextareaHeight]);
 
+  // 폴더 이동 핸들러
+  const onDragStart = (e: React.DragEvent<HTMLDivElement>) => {
+    e.dataTransfer.setData("draggedFolderId", String(lists.folderId));
+  };
+
+  const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+  };
+
+  const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const draggedFolderId = Number(e.dataTransfer.getData("draggedFolderId"));
+
+    moveFolder(
+      {
+        folderId: draggedFolderId,
+        newFolderId: lists.folderId,
+      },
+      {
+        onSuccess: () => {
+          console.log("폴더 이동 성공");
+        },
+        onError: (error) => {
+          console.error("폴더 이동 실패:", error);
+        },
+      },
+    );
+  };
+
   return (
-    <div key={index} className="relative w-77 cursor-pointer" onClick={onClick}>
+    <div
+      key={index}
+      className="relative w-77 cursor-pointer"
+      draggable={isDraggable}
+      onDragStart={onDragStart}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
+    >
       {lists.isFolder ? (
         <Folder className="w-77 h-50" />
       ) : (
@@ -191,8 +243,24 @@ const FolderItem = ({
                 value={renameModalOpen ? rename : name}
                 readOnly={!renameModalOpen}
                 onBlur={() => {
-                  setName(rename);
-                  setRenameModalOpen(false);
+                  if (rename !== name) {
+                    updateFolderName(
+                      { folderId: lists.folderId, newName: rename },
+                      {
+                        onSuccess: () => {
+                          console.log("폴더 이름 변경 성공");
+                          setName(rename);
+                          setRenameModalOpen(false);
+                        },
+                        onError: (error) => {
+                          console.error("폴더 이름 변경 실패:", error);
+                          setRenameModalOpen(false);
+                        },
+                      }
+                    );
+                  } else {
+                    setRenameModalOpen(false);
+                  }
                 }}
                 onKeyDown={onKeyDown}
               />
@@ -214,8 +282,9 @@ const FolderItem = ({
               {isOpenMeatball && (
                 <MeatballModal
                   meatballRef={meatballRef}
+                  folderId={lists.folderId}
                   setRenameModalOpen={setRenameModalOpen}
-                  setDeleteModalOpen={setDeleteModalOpen}
+                  setDeleteTargetId={setDeleteTargetId}
                   isFolder={lists.isFolder}
                 />
               )}

@@ -403,5 +403,57 @@
       "email": "이메일: {email}"
     },
     "copyright": "© 2026 Relex Inc. All Rights Reserved"
+  },
+  "sidebar": {
+    "pages": {
+      "dashboard": "대시보드",
+      "project": "프로젝트"
+    },
+    "sharedProject": "공유된 프로젝트",
+    "myProject": "내 프로젝트",
+    "generate": "생성하기",
+    "newProject": "새 프로젝트 시작하기",
+    "continueProject": "프로젝트 이어하기"
+  },
+  "dropdown": {
+    "sort": {
+      "newest": "최신순",
+      "oldest": "오래된순"
+    },
+    "auth": {
+      "FULL_ACCESS": "전체 허용",
+      "fullAccessDesc": "편집 및 다른 사람과 공유 허용",
+      "WRITE": "편집 허용",
+      "editOnlyDesc": "편집 허용, 다른 사람과 공유 불가",
+      "READ": "읽기 전용",
+      "readOnlyDesc": "편집 및 다른 사람과 공유 불가"
+    },
+    "lang": {
+      "ko": "한국어",
+      "en": "영어"
+    }
+  },
+  "project": {
+    "title": "프로젝트",
+    "subtitle": "{user}의 프로젝트"
+  },
+  "createFolder": {
+    "title": "폴더 생성하기",
+    "closeLabel": "닫기",
+    "folderNameLabel": "폴더 이름",
+    "folderNamePlaceholder": "제목없는 폴더",
+    "inviteByEmail": "이메일로 초대하기",
+    "optional": "선택",
+    "emailPlaceholder": "이메일을 입력해 주세요",
+    "inviteButton": "초대하기",
+    "createButton": "생성하기",
+    "creating": "생성 중..."
+  },
+  "inviteModal": {
+    "title": "{user}의 프로젝트",
+    "inviteByEmail": "이메일로 초대하기",
+    "emailPlaceholder": "이메일을 입력해 주세요",
+    "inviteButton": "초대하기",
+    "inviting": "초대 중..."
   }
 }

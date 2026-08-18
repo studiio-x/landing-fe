@@ -1,27 +1,29 @@
-export const ARRAY_OPTIONS = ["최신순", "오래된순"];
+export const ARRAY_OPTIONS = ["newest", "oldest"] as const;
 
 export const AUTH_OPTIONS = [
   {
-    name: "전체 허용",
-    description: "편집 및 다른 사람과 공유 허용",
+    key: "FULL_ACCESS",
+    description: "fullAccessDesc",
   },
   {
-    name: "편집 허용",
-    description: "편집 허용, 다른 사람과 공유 불가",
+    key: "WRITE",
+    description: "editOnlyDesc",
   },
   {
-    name: "읽기 전용",
-    description: "편집 및 다른 사람과 공유 불가",
+    key: "READ",
+    description: "readOnlyDesc",
   },
-];
+] as const;
 
 export const LANG_OPTIONS = [
   {
-    name: "한국어",
+    key: "ko",
+    name: "ko",
     description: "Korean",
   },
   {
-    name: "영어",
+    key: "en",
+    name: "en",
     description: "English",
   },
-];
+] as const;

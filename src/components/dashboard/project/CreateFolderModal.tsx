@@ -4,7 +4,12 @@ import GlassButton from "@/components/common/GlassButton";
 import ModalOverlay from "@/components/common/ModalOverlay";
 import clsx from "clsx";
 import InvitedUserItem from "./InvitedUserItem";
-import { MOCK_DATA_USERS } from "@/mocks/dashboard/user.mock";
+import { useTranslations } from "next-intl";
+import {
+  useGetInvitedFolders,
+  useMakeFolder,
+} from "@/hooks/queries/useProject";
+import { useSearchParams } from "next/navigation";
 
 interface CreateFolderModalProps {
   isOpen: boolean;
@@ -14,17 +19,37 @@ export const CreateFolderModal = ({
   isOpen,
   onClose,
 }: CreateFolderModalProps) => {
+  const t = useTranslations("createFolder");
   const [folderName, setFolderName] = useState("");
   const [inviteEmail, setInviteEmail] = useState("");
   const [isFolderNameFocused, setIsFolderNameFocused] = useState(false);
   const [isInviteEmailFocused, setIsInviteEmailFocused] = useState(false);
+  const searchParams = useSearchParams();
+  const rootFolderId = searchParams.get("folderId");
+  const { data } = useGetInvitedFolders(Number(rootFolderId), isOpen);
+
+  const { mutate: createFolder, isPending } = useMakeFolder();
 
   const handleInvite = () => {
     console.log("Inviting:", inviteEmail);
   };
 
   const handleCreate = () => {
-    console.log("Creating folder:", folderName);
+    createFolder(
+      {
+        rootFolderId: Number(rootFolderId),
+        folderName: folderName,
+      },
+      {
+        onSuccess: (data) => {
+          console.log("Folder created:", data);
+          onClose();
+        },
+        onError: (error) => {
+          console.error("Failed to create folder:", error);
+        },
+      },
+    );
   };
 
   if (!isOpen) return null;
@@ -35,18 +60,20 @@ export const CreateFolderModal = ({
         <div className="flex flex-col items-center gap-3 relative self-stretch w-full flex-[0_0_auto]">
           <header className="flex items-start justify-between pl-7 pr-5 pt-6 pb-0 relative self-stretch w-full flex-[0_0_auto]">
             <div className="inline-flex items-center justify-center gap-2.5 pl-4 pr-0 pt-1 pb-0 relative flex-[0_0_auto]">
-              <h1 className="relative w-fit mt-px  text-center whitespace-nowrap Subhead_1_semibold">
-                폴더 생성하기
+              <h1 className="relative w-fit -mt-px  text-center whitespace-nowrap Subhead_1_semibold">
+                {t("title")}
               </h1>
             </div>
 
             <button
               type="button"
-              aria-label="닫기"
+              aria-label={t("closeLabel")}
               className="cursor-pointer"
-              onClick={onClose}
             >
-              <Close className="relative! w-6! h-6! aspect-[1]! text-Grey-300" />
+              <Close
+                className="relative! w-6! h-6! aspect-[1]! text-Grey-300"
+                onClick={onClose}
+              />
             </button>
           </header>
 
@@ -60,7 +87,7 @@ export const CreateFolderModal = ({
                     htmlFor="folder-name"
                     className="-mt-px Body_2_semibold text-Grey-200 "
                   >
-                    폴더 이름
+                    {t("folderNameLabel")}
                   </label>
 
                   <div className="self-stretch w-full flex-[0_0_auto] relative rounded p-px bg-linear-to-b from-[rgba(255,48,48,0.45)] to-[rgba(255,48,48,0.15)]">
@@ -77,7 +104,7 @@ export const CreateFolderModal = ({
                       onChange={(e) => setFolderName(e.target.value)}
                       onFocus={() => setIsFolderNameFocused(true)}
                       onBlur={() => setIsFolderNameFocused(false)}
-                      placeholder="제목없는 폴더"
+                      placeholder={t("folderNamePlaceholder")}
                       className="w-full relative z-10 px-4 py-3 Body_2_medium placeholder:text-Grey-400 bg-Grey-900 rounded"
                     />
                   </div>
@@ -90,11 +117,11 @@ export const CreateFolderModal = ({
                         htmlFor="invite-email"
                         className="-mt-px Body_2_semibold text-Grey-200"
                       >
-                        이메일로 초대하기
+                        {t("inviteByEmail")}
                       </label>
 
                       <span className="Body_3_regular text-Grey-300">
-                        (선택)
+                        ({t("optional")})
                       </span>
                     </div>
 
@@ -113,7 +140,7 @@ export const CreateFolderModal = ({
                           onChange={(e) => setInviteEmail(e.target.value)}
                           onFocus={() => setIsInviteEmailFocused(true)}
                           onBlur={() => setIsInviteEmailFocused(false)}
-                          placeholder="이메일을 입력해 주세요"
+                          placeholder={t("emailPlaceholder")}
                           className="w-full relative z-10 px-4 py-3 placeholder:text-Grey-400 bg-Grey-900 rounded Body_2_medium"
                         />
                       </div>
@@ -130,7 +157,7 @@ export const CreateFolderModal = ({
                               : "text-Grey-50",
                           )}
                         >
-                          초대하기
+                          {t("inviteButton")}
                         </span>
                       </button>
                     </div>
@@ -138,8 +165,8 @@ export const CreateFolderModal = ({
 
                   <div className="flex flex-col items-start gap-14 relative self-stretch w-full flex-[0_0_auto]">
                     <div className="flex flex-col items-start pt-2 pb-0 px-0 relative self-stretch w-full flex-[0_0_auto] mt-[-0.50px] mb-[-0.50px] ml-[-0.50px] mr-[-0.50px] border-t border-Grey-500 ">
-                      {MOCK_DATA_USERS.map((user, index) => (
-                        <InvitedUserItem key={index} user={user} />
+                      {data?.managers.map((user) => (
+                        <InvitedUserItem key={user.userId} {...user} />
                       ))}
                     </div>
                   </div>
@@ -150,14 +177,15 @@ export const CreateFolderModal = ({
                 onClick={handleCreate}
                 className={clsx(
                   "w-full flex items-center justify-center gap-2.5 px-0 py-3 relative  hover:bg-[rgba(255,48,48,0.75)] flex-1 grow h-11.75 rounded Body_2_semibold ",
-                  folderName.trim() === ""
+                  folderName.trim() === "" || isPending
                     ? "pointer-events-none text-Grey-500 bg-[rgba(53,59,69,0.45)]"
                     : "text-Grey-50 bg-[rgba(255,48,48,0.45)]",
                 )}
                 type="button"
-                aria-label="생성하기"
+                aria-label={t("createButton")}
+                disabled={folderName.trim() === "" || isPending}
               >
-                생성하기
+                {isPending ? t("creating") : t("createButton")}
               </GlassButton>
             </div>
           </div>

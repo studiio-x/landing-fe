@@ -362,5 +362,57 @@
       "email": "Email: {email}"
     },
     "copyright": "© 2026 Relex Inc. All Rights Reserved"
+  },
+  "sidebar": {
+    "pages": {
+      "dashboard": "Dash board",
+      "project": "Projects"
+    },
+    "sharedProject": "Shared Projects",
+    "myProject": "My Project",
+    "generate": "Generate",
+    "newProject": "Start New Project",
+    "continueProject": "Continue Project"
+  },
+  "dropdown": {
+    "sort": {
+      "newest": "Newest",
+      "oldest": "Oldest"
+    },
+    "auth": {
+      "FULL_ACCESS": "Full Access",
+      "fullAccessDesc": "Edit and share with others",
+      "WRITE": "Edit Only",
+      "editOnlyDesc": "Edit allowed, no sharing",
+      "READ": "Read Only",
+      "readOnlyDesc": "No editing or sharing"
+    },
+    "lang": {
+      "ko": "Korean",
+      "en": "English"
+    }
+  },
+  "project": {
+    "title": "Projects",
+    "subtitle": "{user}'s Projects"
+  },
+  "createFolder": {
+    "title": "Create Folder",
+    "closeLabel": "Close",
+    "folderNameLabel": "Folder Name",
+    "folderNamePlaceholder": "Untitled Folder",
+    "inviteByEmail": "Invite by Email",
+    "optional": "Optional",
+    "emailPlaceholder": "Enter email address",
+    "inviteButton": "Invite",
+    "createButton": "Create",
+    "creating": "Creating..."
+  },
+  "inviteModal": {
+    "title": "{user}'s Project",
+    "inviteByEmail": "Invite by Email",
+    "emailPlaceholder": "Enter email address",
+    "inviteButton": "Invite",
+    "inviting": "Inviting..."
   }
 }

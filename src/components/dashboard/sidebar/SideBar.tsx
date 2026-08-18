@@ -1,15 +1,18 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Check } from "@/assets/icons";
 import Link from "next/link";
 import { useActivePage } from "@/hooks/useActivePage";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ProjectListItem from "./ProjectListItem";
 import CreateButton from "./CreatButton";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PAGE_CONFIG } from "@/constants/dashboard/sideBar";
 import { PATHS } from "@/constants/common/paths";
+import { useProject } from "@/hooks/queries/useProject";
+import useClickOutside from "@/hooks/useClickOutside";
 
 const MotionLink = motion(Link);
 
@@ -17,29 +20,18 @@ type PageName = keyof typeof PAGE_CONFIG;
 
 const PAGE_NAMES = Object.keys(PAGE_CONFIG) as PageName[];
 
-const mockSharedProjects = [
-  {
-    name: "임셈",
-  },
-  {
-    name: "류원",
-  },
-  {
-    name: "semin",
-  },
-  {
-    name: "임세민",
-  },
-];
-
 export default function SideBar() {
   const currentPage = useActivePage(PAGE_CONFIG);
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const createRef = useRef<HTMLDivElement>(null);
+  const { data, isLoading } = useProject();
 
   const router = useRouter();
   const searchParams = useSearchParams();
-  const sharedProjectFromQuery = searchParams.get("shared");
+  const currentFolderId = Number(searchParams.get("folderId") || null);
+  const t = useTranslations("sidebar");
+  const params = new URLSearchParams();
 
   const CreatOnClick = () => {
     setIsCreateOpen((pre) => !pre);
@@ -48,9 +40,14 @@ export default function SideBar() {
     setIsShareOpen((pre) => !pre);
   };
 
-  const handleSharedProject = (projectName: string) => {
-    router.push(`${PATHS.DASHBOARD_PROJECT}?shared=${projectName}`);
+  const handleSharedProject = (projectName: string, folderId: number) => {
+    params.set("shared", projectName);
+    params.set("folderId", String(folderId));
+    router.push(`${PATHS.DASHBOARD_PROJECT}?${params.toString()}`);
   };
+  useClickOutside(createRef, () => setIsCreateOpen(false), isCreateOpen);
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <aside className="bg-Grey-800 max-w-70.5 w-full left-0 sticky top-(--header-height) h-[calc(100vh-var(--header-height))] px-7 pt-7 pb-13 border-r border-Grey-600">
@@ -75,47 +72,70 @@ export default function SideBar() {
                 />
               )}
               <span className="relative z-10 hover:text-white  transition-colors">
-                {pageName}
+                {t(`pages.${pageName}`)}
               </span>
             </MotionLink>
           );
         })}
 
-        {/* 내 프로젝트 ~ 공유된 프로젝트*/}
-        <div className="flex flex-col Body_2_medium flex-1">
+        {/* 내 프로젝트*/}
+        <div
+          className={`flex flex-col Body_2_medium flex-1
+         `}
+        >
           <ProjectListItem
-            onClick={() => router.push(`${PATHS.DASHBOARD_PROJECT}?shared=my`)}
-            currentSharedProject={sharedProjectFromQuery}
+            onClick={() => {
+              params.set("not-shared", data?.myProject[0]?.name || "");
+              params.set(
+                "folderId",
+                String(data?.myProject[0]?.folderId || ""),
+              );
+              router.push(`${PATHS.DASHBOARD_PROJECT}?${params.toString()}`);
+            }}
+            currentSharedProject={currentFolderId}
           >
-            내 프로젝트
+            {t("myProject")}
           </ProjectListItem>
-          <span className="self-end w-46.5 h-px bg-Grey-700" />
-          <ProjectListItem isShareOpen={isShareOpen} onClick={shareOnClick}>
-            공유된 프로젝트
-          </ProjectListItem>
+
+          {/*공유된 프로젝트*/}
+          {data && data.sharedProject.length > 0 && (
+            <>
+              <span className="self-end w-46.5 h-px bg-Grey-700" />
+
+              <ProjectListItem
+                isShareOpen={isShareOpen}
+                onClick={shareOnClick}
+                currentSharedProject={currentFolderId}
+              >
+                {t("sharedProject")}
+              </ProjectListItem>
+            </>
+          )}
 
           {/* 공유된 프로젝트 리스트 */}
           {isShareOpen && (
             <>
               <span className="self-end w-46.5 h-px bg-Grey-700" />
-              {mockSharedProjects.map((project, index) => (
+              {data?.sharedProject.map((project) => (
                 <motion.button
-                  key={index}
+                  key={project.folderId}
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: "auto" }}
                   exit={{ opacity: 0, height: 0 }}
                   transition={{ duration: 0.25, ease: "easeOut" }}
-                  onClick={() => handleSharedProject(project.name)}
+                  onClick={() =>
+                    handleSharedProject(project.name, project.folderId)
+                  }
                   className="flex w-full text-left"
                 >
                   <div
                     className={`pl-12 py-2 text-Grey-300 hover:text-white  transition-colors cursor-pointer w-full
-                    ${sharedProjectFromQuery === project.name ? "text-white" : " text-Grey-300"}
+                    ${currentFolderId === project.folderId ? "text-white" : " text-Grey-300"}
                     `}
                   >
                     {project.name}의 프로젝트
                   </div>
-                  {sharedProjectFromQuery === project.name && (
+                  {currentFolderId === project.folderId && (
                     <Check className="w-5 justify-self-end" />
                   )}
                 </motion.button>
@@ -124,8 +144,9 @@ export default function SideBar() {
           )}
         </div>
 
-        {/* 하단 생성하기 버튼 */}
-        <CreateButton isCreateOpen={isCreateOpen} onClick={CreatOnClick} />
+        <div ref={createRef}>
+          <CreateButton isCreateOpen={isCreateOpen} onClick={CreatOnClick} />
+        </div>
       </div>
     </aside>
   );
