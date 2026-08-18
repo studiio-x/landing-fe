@@ -87,7 +87,7 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
             console.error("폴더 이름 변경 실패:", error);
             setRenameModalOpen(false);
           },
-        }
+        },
       );
     }
   };
@@ -256,7 +256,7 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
                           console.error("폴더 이름 변경 실패:", error);
                           setRenameModalOpen(false);
                         },
-                      }
+                      },
                     );
                   } else {
                     setRenameModalOpen(false);
