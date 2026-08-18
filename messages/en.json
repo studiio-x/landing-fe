@@ -2,8 +2,67 @@
   "notFound": {
     "badge": "404 error",
     "title": "Page not found",
-    "description": "The page you’re looking for may have been moved,\ndeleted, or the URL may be incorrect.",
+    "description": "The page you're looking for may have been moved,\ndeleted, or the URL may be incorrect.",
     "homeButton": "Go Home"
+  },
+  "price": {
+    "freePlan": {
+      "name": "Free",
+      "description": "Free forever",
+      "price": "$0 USD",
+      "perMonth": "/ mo",
+      "onlyMonthly": "&lt;Basic plan only available in monthly&gt;",
+      "credits": "100 credits / month",
+      "storage": "5GB cloud storage",
+      "downloads": "Image & video downloads<br/>(with watermark)"
+    },
+    "hero": {
+      "title": "Choose a Plan",
+      "yearly": "Yearly",
+      "monthly": "Monthly",
+      "discount": "Enjoy the same benefits at just 1% of the original plan's price!"
+    },
+    "plans": {
+      "basic": {
+        "name": "Basic",
+        "for": "for individual creators",
+        "subtitle": "Basic plan only available in monthly",
+        "buttonText": "Try for Free",
+        "features": ["300 credits / month", "10GB cloud storage", "Image & video downloads", "StudioX watermark removal", "Unlimited AI chat editing (text only)", "Reference image attachment: 15 times / month"]
+      },
+      "standard": {
+        "name": "Standard",
+        "for": "for professional creators",
+        "subtitle": {"yearly": "$3 USD/mo", "monthly": "$33 USD/mo"},
+        "buttonText": "Try for Free",
+        "features": ["900 credits / month", "50GB cloud storage", "Image & video downloads", "StudioX watermark removal", "Unlimited AI chat editing (with reference images)", "Image history & version management"]
+      },
+      "pro": {
+        "name": "Pro",
+        "for": "for professional marketers & teams",
+        "subtitle": {"yearly": "$5 USD/mo", "monthly": "$59 USD/mo"},
+        "buttonText": "Try for Free",
+        "features": ["3,000 credits / month", "200GB cloud storage", "Image & video downloads", "StudioX watermark removal", "Unlimited AI chat editing (with reference images)", "Image history & version management", "Team collaboration (invite up to 5 members)", "Priority chat & email support"]
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "for": "for organizations needing large-scale collaboration & custom support",
+        "subtitle": "Custom pricing",
+        "buttonText": "Book Demo",
+        "features": ["Flexible credits (including unlimited)", "1TB+ cloud storage", "Image & video downloads", "StudioX watermark removal", "Unlimited AI chat editing (with reference images)", "Image history & version management", "Team seats unlimited & real-time collaboration", "Brand-specific templates & brand kit", "Dedicated Customer Success Manager", "Custom onboarding & AI training", "Enterprise-grade security"]
+      }
+    },
+    "storageInfo": "High-resolution 4K image: 5~10MB<br/>Short video (15s): 150MB<br/>→ Basic 10GB = approx. 5,000 images + 500~1,000 short videos",
+    "review": {
+      "title": "See Why People Like Us",
+      "galleryLink": "Go to Gallery"
+    },
+    "faq": {
+      "title": "StudioX FAQ"
+    },
+    "cta": {
+      "title": "Ready to try our AI Studio?"
+    }
   },
   "mobileModal": {
     "closeLabel": "Close modal",

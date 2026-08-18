@@ -46,14 +46,18 @@ export default function PricingTable() {
       featureFont: true,
       values: [
         "With watermark",
-        ...[0, 1, 2, 3].map((index) => <Circle key={index} />),
+        ...[0, 1, 2, 3].map((index) => (
+          <Circle key={index} className="w-[1.5rem] h-[1.5rem]" />
+        )),
       ],
     },
     {
       feature: "Remove StudioX Watermark",
       values: [
-        <Close key={0} />,
-        ...[0, 1, 2, 3].map((index) => <Circle key={index} />),
+        <Close key={0} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />,
+        ...[0, 1, 2, 3].map((index) => (
+          <Circle key={index} className="w-[1.5rem] h-[1.5rem]" />
+        )),
       ],
     },
     {
@@ -74,15 +78,21 @@ export default function PricingTable() {
       feature: "Image History & Version Control",
       featureFont: true,
       values: [
-        ...[0, 1].map((index) => <Close key={index} />),
-        ...[0, 1, 2].map((index) => <Circle key={index} />),
+        ...[0, 1].map((index) => (
+          <Close key={index} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />
+        )),
+        ...[0, 1, 2].map((index) => (
+          <Circle key={index} className="w-[1.5rem] h-[1.5rem]" />
+        )),
       ],
     },
     {
       feature: "Short-form Video Generation",
       featureFont: true,
       values: [
-        ...[0, 1].map((index) => <Close key={index} />),
+        ...[0, 1].map((index) => (
+          <Close key={index} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />
+        )),
         "Up to 10 per month",
         "Unlimited",
         "Unlimited",
@@ -92,7 +102,9 @@ export default function PricingTable() {
       feature: "Team Invitation\n& Project Collaboration",
       featureFont: true,
       values: [
-        ...[0, 1, 2].map((index) => <Close key={index} />),
+        ...[0, 1, 2].map((index) => (
+          <Close key={index} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />
+        )),
         "Up to 5 members",
         "Unlimited",
       ],
@@ -100,39 +112,51 @@ export default function PricingTable() {
     {
       feature: "Priority Support",
       values: [
-        ...[0, 1, 2].map((index) => <Close key={index} />),
-        ...[0, 1].map((index) => <Circle key={index} />),
+        ...[0, 1, 2].map((index) => (
+          <Close key={index} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />
+        )),
+        ...[0, 1].map((index) => (
+          <Circle key={index} className="w-[1.5rem] h-[1.5rem]" />
+        )),
       ],
     },
     {
       feature: "Brand-specific Templates\n& Kits",
       featureFont: true,
       values: [
-        ...[0, 1, 2, 3].map((index) => <Close key={index} />),
-        <Circle key={0} />,
+        ...[0, 1, 2, 3].map((index) => (
+          <Close key={index} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />
+        )),
+        <Circle className="w-[1.5rem] h-[1.5rem]" />,
       ],
     },
     {
       feature: "Customer Success Manager",
       featureFont: true,
       values: [
-        ...[0, 1, 2, 3].map((index) => <Close key={index} />),
-        <Circle key={0} />,
+        ...[0, 1, 2, 3].map((index) => (
+          <Close key={index} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />
+        )),
+        <Circle className="w-[1.5rem] h-[1.5rem]" />,
       ],
     },
     {
       feature: "Custom Onboarding\n& AI Training",
       featureFont: true,
       values: [
-        ...[0, 1, 2, 3].map((index) => <Close key={index} />),
-        <Circle key={0} />,
+        ...[0, 1, 2, 3].map((index) => (
+          <Close key={index} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />
+        )),
+        <Circle className="w-[1.5rem] h-[1.5rem]" />,
       ],
     },
     {
       feature: "Enterprise-level Security",
       values: [
-        ...[0, 1, 2, 3].map((index) => <Close key={index} />),
-        <Circle key={0} />,
+        ...[0, 1, 2, 3].map((index) => (
+          <Close key={index} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />
+        )),
+        <Circle className="w-[1.5rem] h-[1.5rem]" />,
       ],
     },
   ];
@@ -173,26 +197,28 @@ export default function PricingTable() {
                 {row.values.map((value, i) => (
                   <td
                     key={i}
-                    className={`px-6 py-4 text-center text-[0.5rem]  ${row.valuesFontTwice === true ? `lg:${row.valuesFont}` : row.valuesFont ? "2xl:Body_1_medium" : "2xl:Subhead_2_medium"} lg:Body_3_medium  text-Grey-100 border-r border-Grey-500 last:border-r-0 whitespace-pre-line`}
+                    className={`px-6 py-4 text-[0.5rem]  ${row.valuesFontTwice === true ? `lg:${row.valuesFont}` : row.valuesFont ? "2xl:Body_1_medium" : "2xl:Subhead_2_medium"} lg:Body_3_medium  text-Grey-100 border-r border-Grey-500 last:border-r-0 whitespace-pre-line`}
                   >
-                    {typeof value === "string" ? (
-                      value
-                    ) : React.isValidElement(value) ? (
-                      value
-                    ) : typeof value === "object" &&
-                      value !== null &&
-                      "value" in value ? (
-                      <div>
-                        <div>{value.value}</div>
-                        {value.sub && (
-                          <div className="text-[0.5rem] lg:text-[0.45rem] 2xl:text-[0.63rem] text-grey-400 leading-[140%] text-Grey-300">
-                            {value.sub}
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      value
-                    )}
+                    <div className="flex items-center justify-center">
+                      {typeof value === "string" ? (
+                        value
+                      ) : React.isValidElement(value) ? (
+                        value
+                      ) : typeof value === "object" &&
+                        value !== null &&
+                        "value" in value ? (
+                        <div className="text-center">
+                          <div>{value.value}</div>
+                          {value.sub && (
+                            <div className="text-[0.5rem] lg:text-[0.45rem] 2xl:text-[0.63rem] text-grey-400 leading-[140%] text-Grey-300">
+                              {value.sub}
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        value
+                      )}
+                    </div>
                   </td>
                 ))}
               </tr>

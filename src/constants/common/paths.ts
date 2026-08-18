@@ -18,6 +18,11 @@ export const PATHS = {
 
   // User pages
   MYPAGE: "/mypage",
+
+  // Payment pages
+  SUBSCRIBE: "/dashboard/subscribe",
+  PAYMENT_SUCCESS: "/payment/success",
+  PAYMENT_FAIL: "/payment/fail",
 } as const;
 
 export const LANDING_SECTION_HASH = {
