@@ -18,6 +18,11 @@ export const PATHS = {
 
   // User pages
   MYPAGE: "/mypage",
+
+  // Payment pages
+  SUBSCRIBE: "/dashboard/subscribe",
+  PAYMENT_SUCCESS: "/payment/success",
+  PAYMENT_FAIL: "/payment/fail",
 } as const;
 
 export const LANDING_SECTION_HASH = {
@@ -30,6 +35,7 @@ export const QUERY_KEYS = {
   WORKBENCH_MODE: "mode",
   PORTFOLIO_CATEGORY: "category",
   TEMPLATE_ID: "templateId",
+  MOTION_TYPE: "motionType",
 } as const;
 
 export const PORTFOLIO_CATEGORY = {

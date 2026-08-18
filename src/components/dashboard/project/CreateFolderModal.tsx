@@ -11,14 +11,14 @@ import {
 } from "@/hooks/queries/useProject";
 import { useSearchParams } from "next/navigation";
 
-interface CreatFolderModalProps {
+interface CreateFolderModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
-export const CreatFolderModal = ({
+export const CreateFolderModal = ({
   isOpen,
   onClose,
-}: CreatFolderModalProps) => {
+}: CreateFolderModalProps) => {
   const t = useTranslations("createFolder");
   const [folderName, setFolderName] = useState("");
   const [inviteEmail, setInviteEmail] = useState("");
@@ -56,11 +56,11 @@ export const CreatFolderModal = ({
 
   return (
     <ModalOverlay onClose={onClose}>
-      <div className="inline-flex flex-col items-start gap-2.5 pt-0 pb-9 px-0 relative bg-[#272b33e6] rounded-[var(--border-radius-radius-8)]">
+      <div className="inline-flex flex-col items-start gap-2.5 pt-0 pb-9 px-0 relative bg-[#272b33e6] rounded-8">
         <div className="flex flex-col items-center gap-3 relative self-stretch w-full flex-[0_0_auto]">
           <header className="flex items-start justify-between pl-7 pr-5 pt-6 pb-0 relative self-stretch w-full flex-[0_0_auto]">
             <div className="inline-flex items-center justify-center gap-2.5 pl-4 pr-0 pt-1 pb-0 relative flex-[0_0_auto]">
-              <h1 className="relative w-fit mt-[-1.00px]  text-center whitespace-nowrap Subhead_1_semibold">
+              <h1 className="relative w-fit -mt-px  text-center whitespace-nowrap Subhead_1_semibold">
                 {t("title")}
               </h1>
             </div>
@@ -71,26 +71,26 @@ export const CreatFolderModal = ({
               className="cursor-pointer"
             >
               <Close
-                className="!relative !w-6 !h-6 !aspect-[1] text-Grey-300"
+                className="relative! w-6! h-6! aspect-[1]! text-Grey-300"
                 onClick={onClose}
               />
             </button>
           </header>
 
           <div className="inline-flex flex-col items-center gap-6 px-11 py-0 relative flex-[0_0_auto]">
-            <div className="w-full h-[0.0625rem] bg-Grey-600"></div>
+            <div className="w-full h-px bg-Grey-600" />
 
             <div className="inline-flex flex-col items-start gap-10 relative flex-[0_0_auto]">
               <div className="inline-flex flex-col items-start gap-6 relative flex-[0_0_auto]">
                 <div className="flex flex-col items-start gap-2 relative self-stretch w-full flex-[0_0_auto]">
                   <label
                     htmlFor="folder-name"
-                    className="mt-[-1.00px] Body_2_semibold text-Grey-200 "
+                    className="-mt-px Body_2_semibold text-Grey-200 "
                   >
                     {t("folderNameLabel")}
                   </label>
 
-                  <div className="self-stretch w-full flex-[0_0_auto] relative rounded p-[1px] bg-gradient-to-b from-[rgba(255,48,48,0.45)] to-[rgba(255,48,48,0.15)]">
+                  <div className="self-stretch w-full flex-[0_0_auto] relative rounded p-px bg-linear-to-b from-[rgba(255,48,48,0.45)] to-[rgba(255,48,48,0.15)]">
                     <div
                       className={clsx(
                         "absolute inset-0 bg-Grey-900 rounded transition-opacity duration-200 ease-in-out",
@@ -115,7 +115,7 @@ export const CreatFolderModal = ({
                     <div className="inline-flex items-center gap-1 relative flex-[0_0_auto]">
                       <label
                         htmlFor="invite-email"
-                        className="mt-[-1.00px] Body_2_semibold text-Grey-200"
+                        className="-mt-px Body_2_semibold text-Grey-200"
                       >
                         {t("inviteByEmail")}
                       </label>
@@ -126,7 +126,7 @@ export const CreatFolderModal = ({
                     </div>
 
                     <div className="inline-flex items-center gap-2 relative flex-[0_0_auto]">
-                      <div className="w-[386px] relative rounded p-[1px] bg-gradient-to-b from-[rgba(255,48,48,0.45)] to-[rgba(255,48,48,0.15)]">
+                      <div className="w-96.5 relative rounded p-px bg-linear-to-b from-[rgba(255,48,48,0.45)] to-[rgba(255,48,48,0.15)]">
                         <div
                           className={clsx(
                             "absolute inset-0 bg-Grey-900 rounded transition-opacity duration-200 ease-in-out",
@@ -147,11 +147,11 @@ export const CreatFolderModal = ({
                       <button
                         type="button"
                         onClick={handleInvite}
-                        className="group inline-flex items-center justify-center gap-2.5 py-3 px-6 relative flex-[0_0_auto] h-[2.5625rem] bg-[rgba(255,255,255,0.03)] rounded-md border-[none] border-color-greyscale-grey-800 before:content-[''] before:absolute before:inset-0 before:p-px before:rounded-md before:[background:linear-gradient(180deg,rgba(241,244,248,0.25)_0%,rgba(29,32,37,0.25)_100%)] before:[-webkit-mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[-webkit-mask-composite:xor] before:[mask-composite:exclude] before:z-[1] before:pointer-events-none hover:before:[background:linear-gradient(to_bottom,rgba(255,134,134,0.25)_0%,rgba(255,48,48,0.25)_100%)] transition-colors duration-1000"
+                        className="group inline-flex items-center justify-center gap-2.5 py-3 px-6 relative flex-[0_0_auto] h-10.25 bg-[rgba(255,255,255,0.03)] rounded-md border-[none] border-color-greyscale-grey-800 before:content-[''] before:absolute before:inset-0 before:p-px before:rounded-md before:[background:linear-gradient(180deg,rgba(241,244,248,0.25)_0%,rgba(29,32,37,0.25)_100%)] before:[-webkit-mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[-webkit-mask-composite:xor] before:mask-exclude before:z-1 before:pointer-events-none hover:before:[background:linear-gradient(to_bottom,rgba(255,134,134,0.25)_0%,rgba(255,48,48,0.25)_100%)] transition-colors duration-1000"
                       >
                         <span
                           className={clsx(
-                            "relative flex items-end justify-center w-fit mt-[-1.00px] Caption_semibold group-hover:text-Red-400",
+                            "relative flex items-end justify-center w-fit -mt-px Caption_semibold group-hover:text-Red-400",
                             inviteEmail.trim() === ""
                               ? "text-Grey-600"
                               : "text-Grey-50",
@@ -176,7 +176,7 @@ export const CreatFolderModal = ({
               <GlassButton
                 onClick={handleCreate}
                 className={clsx(
-                  "w-full flex items-center justify-center gap-2.5 px-0 py-3 relative  hover:bg-[rgba(255,48,48,0.75)] flex-1 grow h-[2.9375rem] rounded Body_2_semibold ",
+                  "w-full flex items-center justify-center gap-2.5 px-0 py-3 relative  hover:bg-[rgba(255,48,48,0.75)] flex-1 grow h-11.75 rounded Body_2_semibold ",
                   folderName.trim() === "" || isPending
                     ? "pointer-events-none text-Grey-500 bg-[rgba(53,59,69,0.45)]"
                     : "text-Grey-50 bg-[rgba(255,48,48,0.45)]",
@@ -195,4 +195,4 @@ export const CreatFolderModal = ({
   );
 };
 
-export default CreatFolderModal;
+export default CreateFolderModal;

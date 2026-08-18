@@ -7,12 +7,12 @@ import { LANGUAGE_OPTIONS } from "@/constants/mypage/tab";
 import { LanguageOption, LanguageType} from "@/types/mypage/language.type";
 import LanguageItem from "./LanguageItem";
 
-type LanguageDropdownProps = {
+interface LanguageDropdownProps {
   value: LanguageType;
   options?: LanguageOption[];
   onChange: (value: LanguageType) => void;
   className?: string;
-};
+}
 
 const LanguageDropdown = ({
   value,
@@ -58,7 +58,7 @@ useEffect(() => {
         onClick={() => setIsOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
-        className="w-[6.8125rem] h-[2.4375rem] bg-White/10 rounded pl-5 pr-3 py-2 flex items-center justify-between"
+        className="w-27.25 h-9.75 bg-White/10 rounded pl-5 pr-3 py-2 flex items-center justify-between"
       >
         <span
           className={clsx(
@@ -82,7 +82,7 @@ useEffect(() => {
       {isOpen && (
         <div
           role="listbox"
-          className="absolute left-0 top-[calc(100%+0.5rem)] z-50 w-[6.8125rem] rounded bg-White/15 p-3"
+          className="absolute left-0 top-[calc(100%+0.5rem)] z-50 w-27.25 rounded bg-White/15 p-3"
         >
           <div className="flex flex-col">
             {options.map((opt, idx) => {

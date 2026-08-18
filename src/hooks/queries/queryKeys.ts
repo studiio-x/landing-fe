@@ -30,4 +30,33 @@ export const queryKeys = {
     profileUploadUrl: () =>
       [...queryKeys.mypage.all, "profileUploadUrl"] as const,
   },
+
+  image: {
+    all: ["image"] as const,
+    detail: (imageId: number) => [...queryKeys.image.all, imageId] as const,
+    rawPresign: () => [...queryKeys.image.all, "rawPresign"] as const,
+  },
+
+  folder: {
+    all: ["folder"] as const,
+    list: () => [...queryKeys.folder.all, "list"] as const,
+    detail: (folderId: number, pageNum?: number, limit?: number) =>
+      [...queryKeys.folder.all, "detail", folderId, pageNum, limit] as const,
+  },
+
+  project: {
+    all: ["project"] as const,
+    list: (folderId: number, pageNum?: number, limit?: number) =>
+      [...queryKeys.project.all, "list", folderId, pageNum, limit] as const,
+  },
+
+  chat: {
+    all: ["chat"] as const,
+    history: (projectId: number, page?: number) =>
+      [...queryKeys.chat.all, "history", projectId, page] as const,
+    referencePresign: (projectId: number) =>
+      [...queryKeys.chat.all, "referencePresign", projectId] as const,
+    maskPresign: (projectId: number) =>
+      [...queryKeys.chat.all, "maskPresign", projectId] as const,
+  },
 } as const;

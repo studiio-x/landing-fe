@@ -7,11 +7,8 @@ export function useActivePage<T extends Record<string, string>>(
   const pathname = usePathname();
 
   return useMemo(() => {
-    // locale을 제거한 경로로 비교 (예: /ko/dashboard -> /dashboard)
-    const pathnameWithoutLocale = pathname.replace(/^\/(ko|en)/, "");
-    const entry = Object.entries(config).find(
-      ([_, path]) => pathnameWithoutLocale === path
-    );
+    const strippedPathname = "/" + pathname.split("/").slice(2).join("/");
+    const entry = Object.entries(config).find(([_, path]) => strippedPathname === path);
     return entry?.[0] as keyof T | undefined;
   }, [pathname, config]);
 }

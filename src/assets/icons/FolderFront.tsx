@@ -23,7 +23,6 @@ const SvgFolderFront = ({
     {title ? <title id={titleId}>{title}</title> : null}
     <foreignObject width={345.473} height={133} x={-20} y={-20}>
       <div
-        xmlns="http://www.w3.org/1999/xhtml"
         style={{
           backdropFilter: "blur(0)",
           clipPath: "url(#folderFront_svg__a)",

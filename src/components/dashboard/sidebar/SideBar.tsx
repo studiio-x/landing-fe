@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useActivePage } from "@/hooks/useActivePage";
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
-import ProjectListItem from "./projectListItem";
+import ProjectListItem from "./ProjectListItem";
 import CreateButton from "./CreatButton";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PAGE_CONFIG } from "@/constants/dashboard/sideBar";
@@ -50,7 +50,7 @@ export default function SideBar() {
   if (isLoading) return <div>Loading...</div>;
 
   return (
-    <aside className="bg-Grey-800 max-w-[17.625rem] w-full left-0 sticky top-[var(--header-height)] h-[calc(100vh-var(--header-height))] px-7 pt-7 pb-[3.25rem] border-r border-Grey-600">
+    <aside className="bg-Grey-800 max-w-70.5 w-full left-0 sticky top-(--header-height) h-[calc(100vh-var(--header-height))] px-7 pt-7 pb-13 border-r border-Grey-600">
       <div className="flex flex-col h-full">
         {PAGE_NAMES.map((pageName, index) => {
           const isActive = currentPage === pageName;
@@ -100,7 +100,7 @@ export default function SideBar() {
           {/*공유된 프로젝트*/}
           {data && data.sharedProject.length > 0 && (
             <>
-              <span className="self-end w-[11.625rem] h-px bg-Grey-700" />
+              <span className="self-end w-46.5 h-px bg-Grey-700" />
 
               <ProjectListItem
                 isShareOpen={isShareOpen}
@@ -115,7 +115,7 @@ export default function SideBar() {
           {/* 공유된 프로젝트 리스트 */}
           {isShareOpen && (
             <>
-              <span className="self-end w-[11.625rem] h-px bg-Grey-700" />
+              <span className="self-end w-46.5 h-px bg-Grey-700" />
               {data?.sharedProject.map((project) => (
                 <motion.button
                   key={project.folderId}
@@ -136,7 +136,7 @@ export default function SideBar() {
                     {project.name}의 프로젝트
                   </div>
                   {currentFolderId === project.folderId && (
-                    <Check className="w-[1.25rem] justify-self-end" />
+                    <Check className="w-5 justify-self-end" />
                   )}
                 </motion.button>
               ))}

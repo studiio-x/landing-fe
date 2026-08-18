@@ -11,15 +11,27 @@ const TIMER_SECONDS = 300;
 
 const CodeVerificationStep = ({
   email,
+  sentAt,
+  isLoading,
+  isResending,
+  isError,
   onNext,
   onResend,
 }: CodeVerificationStepProps) => {
   const t = useTranslations("passwordReset.codeVerification");
   const [code, setCode] = useState("");
-  const [remainingSeconds, setRemainingSeconds] = useState(TIMER_SECONDS);
+  const [remainingSeconds, setRemainingSeconds] = useState(() =>
+    Math.max(0, TIMER_SECONDS - Math.floor((Date.now() - sentAt) / 1000)),
+  );
 
   const isExpired = remainingSeconds <= 0;
   const isValidCode = /^\d{6}$/.test(code);
+
+  useEffect(() => {
+    setRemainingSeconds(
+      Math.max(0, TIMER_SECONDS - Math.floor((Date.now() - sentAt) / 1000)),
+    );
+  }, [sentAt]);
 
   useEffect(() => {
     if (isExpired) return;
@@ -45,14 +57,14 @@ const CodeVerificationStep = ({
     onNext({ code });
   };
 
-  const handleResend = useCallback(() => {
+  const handleResend = useCallback(async () => {
+    await onResend();
     setCode("");
     setRemainingSeconds(TIMER_SECONDS);
-    onResend();
   }, [onResend]);
 
   return (
-    <div className="my-[0.9375rem]">
+    <div className="my-3.75">
       <div className="Heading_3_semibold text-Grey-50 mb-3">{t("title")}</div>
       <p className="Body_2_medium text-Grey-300 mb-11">
         {t("description", { email })}
@@ -64,6 +76,12 @@ const CodeVerificationStep = ({
           onChange={handleChange}
           ariaLabel={t("codeAriaLabel")}
         />
+
+        {isError && (
+          <span className="Body_3_regular text-Red-350 mt-2 block">
+            {t("invalidCode")}
+          </span>
+        )}
 
         <div className="mt-9 text-left flex">
           {!isExpired && (
@@ -84,6 +102,7 @@ const CodeVerificationStep = ({
             variant="red"
             size="xl"
             className="Body_2_semibold mt-3 w-full"
+            disabled={isResending}
             onClick={handleResend}
           >
             {t("resend")}
@@ -94,7 +113,7 @@ const CodeVerificationStep = ({
             variant="red"
             size="xl"
             className="Body_2_semibold mt-3 w-full"
-            disabled={!isValidCode}
+            disabled={!isValidCode || isLoading}
           >
             {t("submit")}
           </GlassButton>

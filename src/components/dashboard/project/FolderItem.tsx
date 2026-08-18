@@ -2,6 +2,7 @@ import { Folder, Meatball, NotFolder } from "@/assets/icons";
 import Image from "next/image";
 import clsx from "clsx";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import MeatballModal from "./MeatballModal";
 import useClickOutside from "@/hooks/useClickOutside";
 import { useSearchParams } from "next/navigation";
@@ -12,13 +13,14 @@ interface FolderItemProps {
     folderId: number;
     name: string;
     isFolder: boolean;
-    imageUrl: string | string[];
+    imageUrl: string | (string | null)[];
   };
   index: number;
   setDeleteTargetId: (folderId: number | null) => void;
 }
 
 const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
+  const t = useTranslations("dashboard.project.folderItem");
   const [isOpenMeatball, setIsOpenMeatball] = useState(false);
   const [renameModalOpen, setRenameModalOpen] = useState(false);
   const [name, setName] = useState<string>(lists.name);
@@ -85,7 +87,7 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
             console.error("폴더 이름 변경 실패:", error);
             setRenameModalOpen(false);
           },
-        }
+        },
       );
     }
   };
@@ -93,7 +95,14 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
   useEffect(() => {
     if (renameModalOpen) {
       lastValidValue.current = rename;
-      renameModalRef.current?.focus();
+      const textarea = renameModalRef.current;
+      if (textarea) {
+        textarea.focus();
+        textarea.setSelectionRange(
+          textarea.value.length,
+          textarea.value.length,
+        );
+      }
       setIsOpenMeatball(false);
     }
     adjustTextareaHeight();
@@ -135,16 +144,16 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
   return (
     <div
       key={index}
-      className="relative w-[19.25rem]"
+      className="relative w-77 cursor-pointer"
       draggable={isDraggable}
       onDragStart={onDragStart}
       onDragOver={onDragOver}
       onDrop={onDrop}
     >
       {lists.isFolder ? (
-        <Folder className="w-[19.25rem] h-50" />
+        <Folder className="w-77 h-50" />
       ) : (
-        <NotFolder className="w-[19.25rem] h-50" />
+        <NotFolder className="w-77 h-50" />
       )}
 
       {lists.isFolder && (
@@ -153,48 +162,66 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
             "text-base top-[0.44rem] text-Grey-100 font-normal font-calSans absolute  left-4"
           }
         >
-          Folder {String(index + 1).padStart(2, "0")}
+          {t("folderLabel")} {String(index + 1).padStart(2, "0")}
         </span>
       )}
 
       <div
-        className={`${lists.isFolder ? "flex top-[2.5625rem] gap-4 w-fit" : "w-[18.25rem] h-[calc(100%-0.875rem)] top-[0.44rem]"} left-[0.5rem] absolute`}
+        className={`${lists.isFolder ? "flex top-10.25 gap-4 w-fit" : "w-73 h-[calc(100%-0.875rem)] top-[0.44rem]"} left-2 absolute`}
       >
         {lists.isFolder ? (
           <div
-            className="grid gap-[0.125rem]"
+            className="grid gap-0.5"
             style={{
               gridTemplateColumns: "49px 49px 49px",
               gridTemplateRows: "49px 49px 49px",
             }}
           >
-            {(lists.imageUrl as string[]).map((image, idx) => (
-              <Image
-                src={image}
-                key={idx}
-                alt="대시보드 이미지"
-                width={92}
-                height={92}
-                className={clsx("w-full h-full object-cover rounded-[2px]", {
-                  "col-span-2 row-span-2": idx === 0,
-                })}
-              />
-            ))}
+            {(() => {
+              const visibleThumbnails = (
+                lists.imageUrl as (string | null)[]
+              ).filter((src): src is string => Boolean(src));
+
+              if (visibleThumbnails.length === 0) {
+                return (
+                  <div className="col-span-3 row-span-3 w-full h-full rounded-xs bg-Grey-700 flex items-center justify-center">
+                    <span className="Body_3_medium text-Grey-500">
+                      {t("noImage")}
+                    </span>
+                  </div>
+                );
+              }
+
+              return visibleThumbnails.map((src, idx) => (
+                <Image
+                  src={src}
+                  key={idx}
+                  alt={t("folderThumbnailAlt")}
+                  width={92}
+                  height={92}
+                  className={clsx("w-full h-full object-cover rounded-xs", {
+                    "col-span-2 row-span-2": idx === 0,
+                  })}
+                />
+              ));
+            })()}
           </div>
         ) : (
           <div className="w-full h-full relative">
-            <Image
-              src={lists.imageUrl as string}
-              alt="폴더이미지"
-              width={292}
-              height={292}
-              className="object-cover w-[18.25rem] h-full"
-            />
+            {lists.imageUrl && (
+              <Image
+                src={lists.imageUrl as string}
+                alt={t("projectThumbnailAlt")}
+                width={292}
+                height={292}
+                className="object-cover w-73 h-full"
+              />
+            )}
           </div>
         )}
 
         <div
-          className={`${lists.isFolder ? "w-[7.75rem] relative" : "w-[18.25rem] bg-gradient-to-b from-Grey-900/70 to-Grey-800/70 absolute bottom-0 left-0 backdrop-blur-lg pt-1.5 pl-2 gap-1"} flex flex-col text-Grey-50 `}
+          className={`${lists.isFolder ? "w-31 relative" : "w-73 bg-linear-to-b from-Grey-900/70 to-Grey-800/70 absolute bottom-0 left-0 backdrop-blur-lg pt-1.5 pl-2 gap-1"} flex flex-col text-Grey-50 `}
         >
           {!lists.isFolder && (
             <span
@@ -202,14 +229,14 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
                 "text-[0.875rem] text-Grey-100 font-normal font-calSans opacity-100"
               }
             >
-              Project {String(index + 1).padStart(2, "0")}
+              {t("projectLabel")} {String(index + 1).padStart(2, "0")}
             </span>
           )}
           <div className={`flex flex-1 ${lists.isFolder ? "flex-col" : ""}`}>
             <div className="flex-1">
               <textarea
                 rows={1}
-                aria-label="name"
+                aria-label={t("nameInputLabel")}
                 className="bottom-5 Body_1_medium opacity-100 bg-transparent leading-tight pt-0 pb-0 w-full resize-none overflow-hidden focus:outline-none "
                 onChange={onNameChange}
                 ref={renameModalRef}
@@ -229,7 +256,7 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
                           console.error("폴더 이름 변경 실패:", error);
                           setRenameModalOpen(false);
                         },
-                      }
+                      },
                     );
                   } else {
                     setRenameModalOpen(false);
@@ -241,10 +268,11 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
 
             <div
               className={`relative h-6 self-end ${lists.isFolder ? "" : "mb-1.5"}`}
+              onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setIsOpenMeatball(!isOpenMeatball)}
-                aria-label="더보기"
+                aria-label={t("moreOptions")}
               >
                 <Meatball
                   className={`${isOpenMeatball ? "text-Grey-50" : "text-Grey-300"} w-6 h-6 transition-colors`}

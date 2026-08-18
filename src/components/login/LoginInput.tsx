@@ -27,7 +27,7 @@ const LoginInput = ({
 
   return (
     <div className="relative w-full">
-      <div className="rounded-[4px] p-[1px] bg-gradient-to-b from-[rgba(255,48,48,0.45)] to-[rgba(255,48,48,0.15)] relative">
+      <div className="rounded-[4px] p-px bg-linear-to-b from-[rgba(255,48,48,0.45)] to-[rgba(255,48,48,0.15)] relative">
         <div
           className={clsx(
             "absolute inset-0 bg-Grey-900 rounded-[4px] transition-opacity duration-200 ease-in-out",
@@ -55,7 +55,7 @@ const LoginInput = ({
       {watchIcon && (
         <button
           type="button"
-          className="absolute right-4 top-[13px] z-20"
+          className="absolute right-4 top-3.25 z-20"
           aria-label="비밀번호 표시/숨김"
           onClick={onClick}
         >

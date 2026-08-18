@@ -37,3 +37,20 @@ export interface SendVerificationEmailRequest {
   email: string;
   callbackUrl: string;
 }
+
+// 비밀번호 재설정 이메일 인증 요청
+export interface PasswordEmailVerificationRequest {
+  email: string;
+}
+
+// 비밀번호 재설정 코드 인증 요청
+export interface PasswordCodeVerificationRequest {
+  email: string;
+  code: string;
+}
+
+// 비밀번호 변경 요청
+export interface PasswordResetRequest {
+  email: string;
+  password: string;
+}

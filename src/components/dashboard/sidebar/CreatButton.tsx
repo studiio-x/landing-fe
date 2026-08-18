@@ -1,7 +1,9 @@
 import { Close, Pencil, Plus } from "@/assets/icons";
+import { PATHS } from "@/constants/common/paths";
+import { useRouter } from "@/i18n/routing";
 import { AnimatePresence, motion } from "framer-motion";
-import GlassButton from "../../common/GlassButton";
 import { useTranslations } from "next-intl";
+import GlassButton from "../../common/GlassButton";
 
 interface CreateButtonProps {
   isCreateOpen: boolean;
@@ -9,9 +11,11 @@ interface CreateButtonProps {
 }
 
 const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
+  const router = useRouter();
   const t = useTranslations("sidebar");
+
   return (
-    <div className="flex flex-col gap-[0.75rem] w-full">
+    <div className="flex flex-col gap-3 w-full">
       <AnimatePresence>
         {isCreateOpen && (
           <>
@@ -22,8 +26,11 @@ const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
               transition={{ duration: 0.25, ease: "easeOut" }}
               className="overflow-hidden Body_2_semibold text-grey-50"
             >
-              <GlassButton className="w-full bg-[rgba(255,48,48,0.45)] rounded-[0.25rem] hover:bg-[rgba(255,48,48,0.75)] Body_2_semibold flex gap-[0.62rem]">
-                <Plus className="w-[1.125rem]" />
+              <GlassButton
+                onClick={() => router.push(PATHS.DASHBOARD_CREATE)}
+                className="w-full bg-[rgba(255,48,48,0.45)] rounded-[0.25rem] hover:bg-[rgba(255,48,48,0.75)] Body_2_semibold flex gap-[0.62rem]"
+              >
+                <Plus className="w-6 h-6 [&_path]:fill-White" />
                 <span>{t("newProject")}</span>
               </GlassButton>
             </motion.div>
@@ -32,10 +39,13 @@ const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.25, ease: "easeOut", delay: 0.05 }}
-              className="overflow-hidden Body_2_semibold text-grey-50 flex gap-[1.125rem]"
+              className="overflow-hidden Body_2_semibold text-grey-50 flex gap-4.5"
             >
-              <GlassButton className="w-full">
-                <Pencil className="w-[1.125rem]" />
+              <GlassButton
+                onClick={() => router.push(PATHS.DASHBOARD_CONTINUE)}
+                className="w-full"
+              >
+                <Pencil className="w-4.5" />
                 <span>{t("continueProject")}</span>
               </GlassButton>
             </motion.div>
@@ -61,7 +71,7 @@ const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
               : undefined
           }
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className={`relative flex items-center justify-center h-[3.0625rem] ${
+          className={`relative flex items-center justify-center h-12.25 ${
             isCreateOpen
               ? "shadow-[0_1px_8px_0_rgba(18,18,18,0.12)]"
               : "Body_1_semibold"
@@ -108,7 +118,7 @@ const CreateButton = ({ isCreateOpen, onClick }: CreateButtonProps) => {
                 transition={{ duration: 0.15 }}
                 className="flex gap-[0.62rem] items-center"
               >
-                <Plus className="w-[1.125rem] h-[1.125rem]" color="white" />
+                <Plus className="w-6 h-6 [&_path]:fill-White" />
                 <span className="Body_1_semibold">{t("generate")}</span>
               </motion.div>
             )}

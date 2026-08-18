@@ -64,7 +64,7 @@ const InviteModal = ({ isOpen, onClose, targetUserId }: InviteModalProps) => {
         <div className="mt-10 flex flex-col gap-2 pl-2">
           <h1 className="Body_3_semibold">{t("inviteByEmail")}</h1>
           <div className="inline-flex items-center gap-2 relative flex-[0_0_auto]">
-            <div className="w-[386px] flex flex-col items-start gap-2.5 px-4 py-3 relative bg-Grey-900 rounded">
+            <div className="w-96.5 flex flex-col items-start gap-2.5 px-4 py-3 relative bg-Grey-900 rounded">
               <input
                 type="email"
                 id="invite-email"
@@ -73,7 +73,7 @@ const InviteModal = ({ isOpen, onClose, targetUserId }: InviteModalProps) => {
                 placeholder={t("emailPlaceholder")}
                 pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
                 required
-                className="peer w-full relative flex items-center justify-center mt-[-1.00px] placeholder:text-Grey-400 bg-transparent Body_2_medium"
+                className="peer w-full relative flex items-center justify-center -mt-px placeholder:text-Grey-400 bg-transparent Body_2_medium"
               />
             </div>
 
@@ -86,10 +86,10 @@ const InviteModal = ({ isOpen, onClose, targetUserId }: InviteModalProps) => {
                 })
               }
               disabled={!isValidEmail}
-              className="group inline-flex items-center justify-center gap-2.5 py-3 px-6 relative flex-[0_0_auto] bg-opacitywhite-3 rounded-md border-[none] border-color-greyscale-grey-800 before:content-[''] before:absolute before:inset-0 before:p-px before:rounded-md before:[background:linear-gradient(180deg,rgba(241,244,248,0.25)_0%,rgba(29,32,37,0.25)_100%)] before:[-webkit-mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[-webkit-mask-composite:xor] before:[mask-composite:exclude] before:z-[1] before:pointer-events-none disabled:pointer-events-none hover:focus:ring-Red-400 hover:before:[background:linear-gradient(180deg,rgba(255,134,134,0.25)_0%,rgba(255,48,48,0.25)_100%)] transition-all duration-1000"
+              className="group inline-flex items-center justify-center gap-2.5 py-3 px-6 relative flex-[0_0_auto] bg-white/3 rounded-md border-[none] border-color-greyscale-grey-800 before:content-[''] before:absolute before:inset-0 before:p-px before:rounded-md before:[background:linear-gradient(180deg,rgba(241,244,248,0.25)_0%,rgba(29,32,37,0.25)_100%)] before:[-webkit-mask:linear-gradient(#fff_0_0)_content-box,linear-gradient(#fff_0_0)] before:[-webkit-mask-composite:xor] before:mask-exclude before:z-1 before:pointer-events-none disabled:pointer-events-none hover:focus:ring-Red-400 hover:before:[background:linear-gradient(180deg,rgba(255,134,134,0.25)_0%,rgba(255,48,48,0.25)_100%)] transition-all duration-1000"
             >
               <span
-                className={`relative flex items-end justify-center w-fit mt-[-1.00px] Caption_semibold group-hover:text-Red-400 ${!isValidEmail ? "text-Grey-500" : "text-Grey-50"}`}
+                className={`relative flex items-end justify-center w-fit -mt-px Caption_semibold group-hover:text-Red-400 ${!isValidEmail ? "text-Grey-500" : "text-Grey-50"}`}
               >
                 {isPending ? t("inviting") : t("inviteButton")}
               </span>

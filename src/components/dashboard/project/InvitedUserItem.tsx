@@ -25,7 +25,7 @@ const InvitedUserItem = (user: Manager) => {
       key={user.userId}
       className="flex items-center justify-between relative self-stretch w-full flex-[0_0_auto]"
     >
-      <div className="flex w-[352px] items-start gap-2 pl-2 pr-0 py-1.5 relative">
+      <div className="flex w-88 items-start gap-2 pl-2 pr-0 py-1.5 relative">
         <img
           className="relative w-6 h-6 object-cover rounded-full"
           alt={`${user.username} 프로필`}
@@ -33,7 +33,7 @@ const InvitedUserItem = (user: Manager) => {
         />
 
         <div className="inline-flex flex-col items-start justify-center relative flex-[0_0_auto]">
-          <div className="mt-[-1.00px] Body_3_medium text-Grey-100 relative w-fit whitespace-nowrap ">
+          <div className="-mt-px Body_3_medium text-Grey-100 relative w-fit whitespace-nowrap ">
             {user.username}
           </div>
 
