@@ -43,4 +43,20 @@ export const queryKeys = {
     detail: (folderId: number, pageNum?: number, limit?: number) =>
       [...queryKeys.folder.all, "detail", folderId, pageNum, limit] as const,
   },
+
+  project: {
+    all: ["project"] as const,
+    list: (folderId: number, pageNum?: number, limit?: number) =>
+      [...queryKeys.project.all, "list", folderId, pageNum, limit] as const,
+  },
+
+  chat: {
+    all: ["chat"] as const,
+    history: (projectId: number, page?: number) =>
+      [...queryKeys.chat.all, "history", projectId, page] as const,
+    referencePresign: (projectId: number) =>
+      [...queryKeys.chat.all, "referencePresign", projectId] as const,
+    maskPresign: (projectId: number) =>
+      [...queryKeys.chat.all, "maskPresign", projectId] as const,
+  },
 } as const;

@@ -44,8 +44,8 @@ export default function Login() {
     <div className="min-h-dvh flex flex-col">
       <Header />
 
-      <main className="flex flex-col items-center justify-center flex-1 pb-[var(--header-height)]">
-        <div className="h-fit max-w-[28.75rem] pt-10 pb-12 px-[3.25rem] border-[1.5px] rounded-[0.5rem] border-[rgba(255,48,48,0.35)] bg-Grey-900 shadow-[0_0_8px_0_rgba(255,82,82,0.10),0_0_20px_0_rgba(8,8,8,0.12)] relative gap-[2.5rem] flex flex-col">
+      <main className="flex flex-col items-center justify-center flex-1 pb-(--header-height)">
+        <div className="h-fit max-w-115 pt-10 pb-12 px-13 border-[1.5px] rounded-[0.5rem] border-[rgba(255,48,48,0.35)] bg-Grey-900 shadow-[0_0_8px_0_rgba(255,82,82,0.10),0_0_20px_0_rgba(8,8,8,0.12)] relative gap-10 flex flex-col">
           <button
             onClick={() => router.back()}
             className="absolute top-5 right-5"
@@ -58,7 +58,7 @@ export default function Login() {
             <span className="Heading_3_semibold text-Grey-50">
               {t.rich("title", {
                 brand: (chunks) => (
-                  <span className="font-calSans text-[1.75rem] font-normal mr-[0.875rem]">
+                  <span className="font-calSans text-[1.75rem] font-normal mr-3.5">
                     {chunks}
                   </span>
                 ),
@@ -66,13 +66,13 @@ export default function Login() {
             </span>
           </div>
 
-          <div className="flex flex-col gap-[1.75rem]">
+          <div className="flex flex-col gap-7">
             <GoogleLoginButton />
 
-            <div className="w-full flex gap-[0.75rem] items-center">
-              <div className="flex-1 bg-Grey-600 w-full h-[0.0625rem]"></div>
+            <div className="w-full flex gap-3 items-center">
+              <div className="flex-1 bg-Grey-600 w-full h-px"></div>
               <div className="text-Grey-400 Body_1_medium">{t("or")}</div>
-              <div className="flex-1 bg-Grey-600 w-full h-[0.0625rem]"></div>
+              <div className="flex-1 bg-Grey-600 w-full h-px"></div>
             </div>
 
             <form onSubmit={handleSubmit}>

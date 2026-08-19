@@ -1,4 +1,4 @@
-import { PageInfo } from "./common.type";
+import { PageInfo, SortOrder } from "./common.type";
 
 export interface FolderItem {
   folderId: number;
@@ -25,5 +25,5 @@ export interface GetFolderDetailParams {
   folderId: number;
   pageNum: number;
   limit: number;
-  sort?: "ASC" | "DESC";
+  sort?: SortOrder;
 }

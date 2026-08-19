@@ -2,13 +2,112 @@
   "notFound": {
     "badge": "404 error",
     "title": "Page not found",
-    "description": "The page you’re looking for may have been moved,\ndeleted, or the URL may be incorrect.",
+    "description": "The page you're looking for may have been moved,\ndeleted, or the URL may be incorrect.",
     "homeButton": "Go Home"
+  },
+  "price": {
+    "freePlan": {
+      "name": "Free",
+      "description": "Free forever",
+      "price": "$0 USD",
+      "perMonth": "/ mo",
+      "onlyMonthly": "&lt;Basic plan only available in monthly&gt;",
+      "credits": "100 credits / month",
+      "storage": "5GB cloud storage",
+      "downloads": "Image & video downloads<br/>(with watermark)"
+    },
+    "hero": {
+      "title": "Choose a Plan",
+      "yearly": "Yearly",
+      "monthly": "Monthly",
+      "discount": "Enjoy the same benefits at just 1% of the original plan's price!"
+    },
+    "plans": {
+      "basic": {
+        "name": "Basic",
+        "for": "for individual creators",
+        "subtitle": "Basic plan only available in monthly",
+        "buttonText": "Try for Free",
+        "features": [
+          "300 credits / month",
+          "10GB cloud storage",
+          "Image & video downloads",
+          "StudioX watermark removal",
+          "Unlimited AI chat editing (text only)",
+          "Reference image attachment: 15 times / month"
+        ]
+      },
+      "standard": {
+        "name": "Standard",
+        "for": "for professional creators",
+        "subtitle": { "yearly": "$3 USD/mo", "monthly": "$33 USD/mo" },
+        "buttonText": "Try for Free",
+        "features": [
+          "900 credits / month",
+          "50GB cloud storage",
+          "Image & video downloads",
+          "StudioX watermark removal",
+          "Unlimited AI chat editing (with reference images)",
+          "Image history & version management"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "for": "for professional marketers & teams",
+        "subtitle": { "yearly": "$5 USD/mo", "monthly": "$59 USD/mo" },
+        "buttonText": "Try for Free",
+        "features": [
+          "3,000 credits / month",
+          "200GB cloud storage",
+          "Image & video downloads",
+          "StudioX watermark removal",
+          "Unlimited AI chat editing (with reference images)",
+          "Image history & version management",
+          "Team collaboration (invite up to 5 members)",
+          "Priority chat & email support"
+        ]
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "for": "for organizations needing large-scale collaboration & custom support",
+        "subtitle": "Custom pricing",
+        "buttonText": "Book Demo",
+        "features": [
+          "Flexible credits (including unlimited)",
+          "1TB+ cloud storage",
+          "Image & video downloads",
+          "StudioX watermark removal",
+          "Unlimited AI chat editing (with reference images)",
+          "Image history & version management",
+          "Team seats unlimited & real-time collaboration",
+          "Brand-specific templates & brand kit",
+          "Dedicated Customer Success Manager",
+          "Custom onboarding & AI training",
+          "Enterprise-grade security"
+        ]
+      }
+    },
+    "storageInfo": "High-resolution 4K image: 5~10MB<br/>Short video (15s): 150MB<br/>→ Basic 10GB = approx. 5,000 images + 500~1,000 short videos",
+    "review": {
+      "title": "See Why People Like Us",
+      "galleryLink": "Go to Gallery"
+    },
+    "faq": {
+      "title": "StudioX FAQ"
+    },
+    "cta": {
+      "title": "Ready to try our AI Studio?"
+    }
   },
   "mobileModal": {
     "closeLabel": "Close modal",
     "title": "For the best experience,\nplease use a desktop.",
     "imageAlt": "Desktop usage guide"
+  },
+  "sessionExpiredModal": {
+    "title": "Your session has expired",
+    "description": "For your security, you've been logged out.\nPlease log in again.",
+    "confirmLabel": "Log in"
   },
   "login": {
     "title": "Log in to <brand>StudioX</brand>",
@@ -162,6 +261,17 @@
       "title": "Choose the task you want.",
       "backButtonLabel": "Go to previous page"
     },
+    "project": {
+      "folderItem": {
+        "folderLabel": "Folder",
+        "projectLabel": "Project",
+        "folderThumbnailAlt": "Folder thumbnail",
+        "projectThumbnailAlt": "Project thumbnail",
+        "noImage": "No image",
+        "nameInputLabel": "Name",
+        "moreOptions": "More options"
+      }
+    },
     "workbench": {
       "tabs": {
         "product": "Product",
@@ -175,6 +285,15 @@
       },
       "editModeGuide": "Highlight all the parts you want to edit.",
       "uploadedImageAlt": "Uploaded image",
+      "retry": "Retry",
+      "cutoutErrorMessage": "An error occurred while processing the image.",
+      "backgroundCompositeErrorMessage": "An error occurred while compositing the background. Please choose a background again.",
+      "unsupportedImageFormat": "HEIC/HEIF files aren't supported.",
+      "processingStage": {
+        "cutout": "Removing background...",
+        "compositing": "Compositing background...",
+        "generatingVideo": "Generating video..."
+      },
       "emptyState": {
         "title": "Ideas to Explore",
         "ideas": {
@@ -189,6 +308,18 @@
         "description": "A product image is required\nto apply a background image.",
         "uploadGuide": "Click to upload product image"
       },
+      "backgroundRequiredModal": {
+        "closeLabel": "Close",
+        "title": "Please select\na background image first",
+        "description": "A generated background image is required\nto use the chatbot.",
+        "uploadGuide": "Select and generate a background\nin the Background tab."
+      },
+      "videoRequiredModal": {
+        "closeLabel": "Close",
+        "title": "Please finish\ngenerating a video first",
+        "description": "A generated video is required\nto use the chatbot.",
+        "uploadGuide": "Select a motion and generate\nin the Options tab."
+      },
       "historyPanel": {
         "emptyTitle": "Make your\nfirst generation",
         "emptyDescription": "Create beautiful images\nwith nothing but a text.",
@@ -198,14 +329,10 @@
         "imageAlt": "Generated image {index}"
       },
       "backgroundTab": {
-        "categories": {
-          "display": "General Display",
-          "fabric": "Fabric & Velvet",
-          "outdoor": "Outdoor"
-        },
         "uploadBackground": "Upload Background",
         "generate": "Generate",
-        "noSearchResults": "No search results found"
+        "noSearchResults": "No search results found",
+        "customBackgroundErrorMessage": "An error occurred while uploading the background."
       },
       "optionsTab": {
         "selectQuality": "Select video quality",
@@ -214,7 +341,8 @@
         "premiumQuality": "Premium Quality",
         "creditsConsumed": "{credits} video credits\nwill be consumed.",
         "uploadBackground": "Upload Background",
-        "generate": "Generate"
+        "generate": "Generate",
+        "generateErrorMessage": "An error occurred while generating the video."
       },
       "searchBar": {
         "placeholder": "Search categories",
@@ -236,16 +364,18 @@
         "inputPlaceholder": "Tell the AI what you want to change.",
         "sendLabel": "Send",
         "attachmentAlt": "Attachment",
+        "refineDefaultMessage": "Please refine the marked area.",
+        "referenceImageDefaultMessage": "I have a reference image I want to recreate.",
+        "errorRetry": "An error occurred. Please try again.",
         "recommendedLabel": "Recommended",
         "plusMenu": {
           "add": "Add",
           "uploadReferenceImage": "Upload reference",
           "markEditArea": "Mark Areas\nto Edit"
         },
+        "selectConcept": "Generate with this concept",
         "recommendations": {
-          "0": "I have a reference image I want to recreate.",
-          "1": "I’ll describe the background, you create it.",
-          "2": "Suggest a concept that matches the product."
+          "0": "Suggest a concept that matches the product."
         }
       }
     }
@@ -267,5 +397,57 @@
       "email": "Email: {email}"
     },
     "copyright": "© 2026 Relex Inc. All Rights Reserved"
+  },
+  "sidebar": {
+    "pages": {
+      "dashboard": "Dash board",
+      "project": "Projects"
+    },
+    "sharedProject": "Shared Projects",
+    "myProject": "My Project",
+    "generate": "Generate",
+    "newProject": "Start New Project",
+    "continueProject": "Continue Project"
+  },
+  "dropdown": {
+    "sort": {
+      "newest": "Newest",
+      "oldest": "Oldest"
+    },
+    "auth": {
+      "FULL_ACCESS": "Full Access",
+      "fullAccessDesc": "Edit and share with others",
+      "WRITE": "Edit Only",
+      "editOnlyDesc": "Edit allowed, no sharing",
+      "READ": "Read Only",
+      "readOnlyDesc": "No editing or sharing"
+    },
+    "lang": {
+      "ko": "Korean",
+      "en": "English"
+    }
+  },
+  "project": {
+    "title": "Projects",
+    "subtitle": "{user}"
+  },
+  "createFolder": {
+    "title": "Create Folder",
+    "closeLabel": "Close",
+    "folderNameLabel": "Folder Name",
+    "folderNamePlaceholder": "Untitled Folder",
+    "inviteByEmail": "Invite by Email",
+    "optional": "Optional",
+    "emailPlaceholder": "Enter email address",
+    "inviteButton": "Invite",
+    "createButton": "Create",
+    "creating": "Creating..."
+  },
+  "inviteModal": {
+    "title": "{user}",
+    "inviteByEmail": "Invite by Email",
+    "emailPlaceholder": "Enter email address",
+    "inviteButton": "Invite",
+    "inviting": "Inviting..."
   }
 }

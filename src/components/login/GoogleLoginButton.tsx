@@ -25,9 +25,9 @@ const GoogleLoginButton = () => {
     <button
       type="button"
       onClick={handleGoogleLogin}
-      className="bg-Grey-700 rounded-[0.25rem] flex py-[0.75rem] w-full justify-center items-center gap-[0.75rem] "
+      className="bg-Grey-700 rounded-[0.25rem] flex py-3 w-full justify-center items-center gap-3"
     >
-      <Google className="w-[1.75rem] h-[1.75rem]" />
+      <Google className="w-7 h-7" />
       <span className="text-Grey-100">{t("googleContinue")}</span>
     </button>
   );

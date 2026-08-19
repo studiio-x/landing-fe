@@ -4,7 +4,7 @@ import { PageInfo } from "@/types/api/common.type";
 export type TemplateKeyword = "GENERAL_DISPLAY" | "FABRIC_VELVET" | "OUTDOOR";
 
 // 템플릿 카테고리 타입
-export type TemplateCategory = "MODEL" | "STUDIO" | "IMAGE" | "VIDEO";
+export type TemplateCategory = "MODEL" | "STUDIO" | "VIDEO";
 
 // 키워드 기준 템플릿 아이템
 export interface TemplateItem {

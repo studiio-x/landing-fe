@@ -107,7 +107,7 @@ const SettingsContent = () => {
     <>
       {/* 프로필 */}
       <div className="flex items-center pl-5 pb-8">
-        <div className="flex flex-col gap-[0.875rem]">
+        <div className="flex flex-col gap-3.5">
           <span className="Subhead_2_semibold text-Grey-50">프로필</span>
 
           <div className="flex items-center gap-5">
@@ -120,11 +120,11 @@ const SettingsContent = () => {
                   alt="프로필 이미지"
                   width={72}
                   height={72}
-                  className="w-[4.5rem] h-[4.5rem] rounded-full object-cover"
+                  className="w-18 h-18 rounded-full object-cover"
                   onError={() => setImageError(true)}
                 />
               ) : (
-                <ProfileDefault className="w-[4.5rem] h-[4.5rem]" />
+                <ProfileDefault className="w-18 h-18" />
               )}
               <input
                 ref={fileInputRef}
@@ -203,11 +203,11 @@ const SettingsContent = () => {
       </div>
 
       {/* 로그아웃 */}
-      <div className="flex justify-end pt-[7.1875rem]">
+      <div className="flex justify-end pt-28.75">
         <GlassButton
           variant="default"
           size="lg"
-          className="Body_2_semibold !w-[12.375rem]"
+          className="Body_2_semibold w-49.5!"
         >
           로그아웃
         </GlassButton>

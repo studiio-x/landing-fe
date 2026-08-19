@@ -46,14 +46,18 @@ export default function PricingTable() {
       featureFont: true,
       values: [
         "With watermark",
-        ...[0, 1, 2, 3].map((index) => <Circle key={index} />),
+        ...[0, 1, 2, 3].map((index) => (
+          <Circle key={index} className="w-[1.5rem] h-[1.5rem]" />
+        )),
       ],
     },
     {
       feature: "Remove StudioX Watermark",
       values: [
-        <Close key={0} />,
-        ...[0, 1, 2, 3].map((index) => <Circle key={index} />),
+        <Close key={0} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />,
+        ...[0, 1, 2, 3].map((index) => (
+          <Circle key={index} className="w-[1.5rem] h-[1.5rem]" />
+        )),
       ],
     },
     {
@@ -74,15 +78,21 @@ export default function PricingTable() {
       feature: "Image History & Version Control",
       featureFont: true,
       values: [
-        ...[0, 1].map((index) => <Close key={index} />),
-        ...[0, 1, 2].map((index) => <Circle key={index} />),
+        ...[0, 1].map((index) => (
+          <Close key={index} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />
+        )),
+        ...[0, 1, 2].map((index) => (
+          <Circle key={index} className="w-[1.5rem] h-[1.5rem]" />
+        )),
       ],
     },
     {
       feature: "Short-form Video Generation",
       featureFont: true,
       values: [
-        ...[0, 1].map((index) => <Close key={index} />),
+        ...[0, 1].map((index) => (
+          <Close key={index} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />
+        )),
         "Up to 10 per month",
         "Unlimited",
         "Unlimited",
@@ -92,7 +102,9 @@ export default function PricingTable() {
       feature: "Team Invitation\n& Project Collaboration",
       featureFont: true,
       values: [
-        ...[0, 1, 2].map((index) => <Close key={index} />),
+        ...[0, 1, 2].map((index) => (
+          <Close key={index} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />
+        )),
         "Up to 5 members",
         "Unlimited",
       ],
@@ -100,39 +112,51 @@ export default function PricingTable() {
     {
       feature: "Priority Support",
       values: [
-        ...[0, 1, 2].map((index) => <Close key={index} />),
-        ...[0, 1].map((index) => <Circle key={index} />),
+        ...[0, 1, 2].map((index) => (
+          <Close key={index} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />
+        )),
+        ...[0, 1].map((index) => (
+          <Circle key={index} className="w-[1.5rem] h-[1.5rem]" />
+        )),
       ],
     },
     {
       feature: "Brand-specific Templates\n& Kits",
       featureFont: true,
       values: [
-        ...[0, 1, 2, 3].map((index) => <Close key={index} />),
-        <Circle key={0} />,
+        ...[0, 1, 2, 3].map((index) => (
+          <Close key={index} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />
+        )),
+        <Circle className="w-[1.5rem] h-[1.5rem]" />,
       ],
     },
     {
       feature: "Customer Success Manager",
       featureFont: true,
       values: [
-        ...[0, 1, 2, 3].map((index) => <Close key={index} />),
-        <Circle key={0} />,
+        ...[0, 1, 2, 3].map((index) => (
+          <Close key={index} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />
+        )),
+        <Circle className="w-[1.5rem] h-[1.5rem]" />,
       ],
     },
     {
       feature: "Custom Onboarding\n& AI Training",
       featureFont: true,
       values: [
-        ...[0, 1, 2, 3].map((index) => <Close key={index} />),
-        <Circle key={0} />,
+        ...[0, 1, 2, 3].map((index) => (
+          <Close key={index} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />
+        )),
+        <Circle className="w-[1.5rem] h-[1.5rem]" />,
       ],
     },
     {
       feature: "Enterprise-level Security",
       values: [
-        ...[0, 1, 2, 3].map((index) => <Close key={index} />),
-        <Circle key={0} />,
+        ...[0, 1, 2, 3].map((index) => (
+          <Close key={index} className="w-[1.5rem] h-[1.5rem] text-Grey-400" />
+        )),
+        <Circle className="w-[1.5rem] h-[1.5rem]" />,
       ],
     },
   ];
@@ -144,13 +168,13 @@ export default function PricingTable() {
           {/* Header */}
           <thead>
             <tr className="border-b border-Grey-500 ">
-              <th className="sticky left-0 z-20 text-center  px-6 py-4  Caption_medium lg:text-[0.77rem]  2xl:Body_2_medium  font-calSans 2xl:text-Body_2_medium text-Grey-400 after:absolute after:right-0 after:top-0 after:bottom-0 after:w-px after:bg-Grey-500 border-Grey-500 bg-Black font-medium w-[7.9rem] lg:w-[13.7rem] 2xl:w-[17.8rem] h-[2.24638rem] lg:h-[3.90363rem] 2xl:h-[5.0625rem]">
+              <th className="sticky left-0 z-20 text-center  px-6 py-4  Caption_medium lg:text-[0.77rem]  2xl:Body_2_medium  font-calSans 2xl:text-Body_2_medium text-Grey-400 after:absolute after:right-0 after:top-0 after:bottom-0 after:w-px after:bg-Grey-500 border-Grey-500 bg-Black font-medium w-[7.9rem] lg:w-[13.7rem] 2xl:w-[17.8rem] h-[2.24638rem] lg:h-[3.90363rem] 2xl:h-20.25">
                 Benefit / Feature
               </th>
               {plans.map((plan) => (
                 <th
                   key={plan.name}
-                  className={`px-6 py-4 text-center font-normal text-[0.688rem] lg:text-[1.13rem] 2xl:text-[1.75rem] font-calSans border-r border-Grey-500  text-Grey-100 last:border-r-0  w-[5.297rem] lg:w-[9.20481rem] 2xl:w-[11.9375rem] h-[3.2rem] lg:h-[3.3rem] 2xl:h-[4.3rem  `}
+                  className={`px-6 py-4 text-center font-normal text-[0.688rem] lg:text-[1.13rem] 2xl:text-[1.75rem] font-calSans border-r border-Grey-500  text-Grey-100 last:border-r-0  w-[5.297rem] lg:w-[9.20481rem] 2xl:w-47.75 h-[3.2rem] lg:h-[3.3rem] 2xl:h-[4.3rem  `}
                 >
                   {plan.name}
                 </th>
@@ -173,26 +197,28 @@ export default function PricingTable() {
                 {row.values.map((value, i) => (
                   <td
                     key={i}
-                    className={`px-6 py-4 text-center text-[0.5rem]  ${row.valuesFontTwice === true ? `lg:${row.valuesFont}` : row.valuesFont ? "2xl:Body_1_medium" : "2xl:Subhead_2_medium"} lg:Body_3_medium  text-Grey-100 border-r border-Grey-500 last:border-r-0 whitespace-pre-line`}
+                    className={`px-6 py-4 text-[0.5rem]  ${row.valuesFontTwice === true ? `lg:${row.valuesFont}` : row.valuesFont ? "2xl:Body_1_medium" : "2xl:Subhead_2_medium"} lg:Body_3_medium  text-Grey-100 border-r border-Grey-500 last:border-r-0 whitespace-pre-line`}
                   >
-                    {typeof value === "string" ? (
-                      value
-                    ) : React.isValidElement(value) ? (
-                      value
-                    ) : typeof value === "object" &&
-                      value !== null &&
-                      "value" in value ? (
-                      <div>
-                        <div>{value.value}</div>
-                        {value.sub && (
-                          <div className="text-[0.5rem] lg:text-[0.45rem] 2xl:text-[0.63rem] text-grey-400 leading-[140%] text-Grey-300">
-                            {value.sub}
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      value
-                    )}
+                    <div className="flex items-center justify-center">
+                      {typeof value === "string" ? (
+                        value
+                      ) : React.isValidElement(value) ? (
+                        value
+                      ) : typeof value === "object" &&
+                        value !== null &&
+                        "value" in value ? (
+                        <div className="text-center">
+                          <div>{value.value}</div>
+                          {value.sub && (
+                            <div className="text-[0.5rem] lg:text-[0.45rem] 2xl:text-[0.63rem] text-grey-400 leading-[140%] text-Grey-300">
+                              {value.sub}
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        value
+                      )}
+                    </div>
                   </td>
                 ))}
               </tr>

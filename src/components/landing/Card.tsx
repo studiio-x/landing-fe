@@ -6,16 +6,16 @@ interface CardProps {
   imageSrc: string;
 }
 
-const Card: React.FC<CardProps> = ({ title, description, imageSrc }) => {
+const Card = ({ title, description, imageSrc }: CardProps) => {
   return (
-    <div className="relative flex flex-col justify-between w-full mb-[5.5rem]">
+    <div className="relative flex flex-col justify-between w-full mb-22">
       <div className="text-center font-calSans text-[1.4rem] lg:text-[1.75rem] mb-7">
         {title}
       </div>
       <Image
         src={imageSrc}
         alt={title}
-        className="w-full aspect-[608/460] rounded-2xl object-cover"
+        className="w-full aspect-608/460 rounded-2xl object-cover"
         loading="lazy"
         width={608}
         height={460}

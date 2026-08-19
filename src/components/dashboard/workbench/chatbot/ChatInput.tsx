@@ -7,21 +7,25 @@ import clsx from "clsx";
 import PlusMenu from "./PlusMenu";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 import { ChatAttachment, ChatSendPayload } from "@/types/dashboard/chat.type";
+import type { WorkbenchMode } from "@/types/dashboard/mode.type";
 
 const MIN_H = 24;
 const MAX_H = 80;
 
 interface ChatInputProps {
   onSend: (payload: ChatSendPayload) => void;
+  disabled?: boolean;
+  mode?: WorkbenchMode;
 }
 
-const ChatInput = ({ onSend }: ChatInputProps) => {
+const ChatInput = ({ onSend, disabled, mode }: ChatInputProps) => {
   const t = useTranslations("dashboard.workbench.chatbot");
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [value, setValue] = useState("");
 
   const { setEditMode, resetPaint } = useStudioMarkStore();
   const sendMessage = () => {
+    if (disabled) return;
     const text = value.trim();
     if (!text) return;
     onSend({ text });
@@ -66,33 +70,39 @@ const ChatInput = ({ onSend }: ChatInputProps) => {
   return (
     <div
       className={clsx(
-        "relative rounded-md p-[1px]",
-        hasValue
-          ? "bg-gradient-to-b from-Red-500/45 to-Red-500/15"
-          : "bg-transparent",
+        "relative rounded-md p-px w-full",
+        disabled
+          ? "opacity-40 cursor-not-allowed"
+          : hasValue
+            ? "bg-linear-to-b from-Red-500/45 to-Red-500/15"
+            : "bg-transparent",
       )}
     >
       <div className="bg-Grey-600 px-4 py-3 rounded-md flex gap-1">
         <textarea
           ref={textareaRef}
           value={value}
-          onChange={(e) => setValue(e.target.value)}
+          onChange={(e) => !disabled && setValue(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder={t("inputPlaceholder")}
           rows={1}
-          className="w-[16.375rem] pt-[2px] bg-transparent min-h-6 max-h-20 placeholder:text-Grey-400 text-Grey-100 resize-none outline-none Body_3_medium"
+          disabled={disabled}
+          className="flex-1 min-w-0 pt-0.5 bg-transparent min-h-6 max-h-20 placeholder:text-Grey-400 text-Grey-100 resize-none outline-none Body_3_medium disabled:cursor-not-allowed"
         />
 
-        <div className="flex items-start gap-[0.625rem]">
-          <PlusMenu
-            onUploadImage={handleUploadReferenceImage}
-            onClickMark={() => {
-              resetPaint();
-              setEditMode(true);
-            }}
-          />
+        <div className="flex items-start gap-2.5">
+          {mode !== "video" && (
+            <PlusMenu
+              onUploadImage={handleUploadReferenceImage}
+              onClickMark={() => {
+                resetPaint();
+                setEditMode(true);
+              }}
+              disabled={disabled}
+            />
+          )}
 
-          <button type="button" aria-label={t("sendLabel")} onClick={sendMessage} className="group">
+          <button type="button" aria-label={t("sendLabel")} onClick={sendMessage} disabled={disabled} className="group disabled:cursor-not-allowed">
             <Send className="w-6 h-6 transition-colors [&_path]:fill-Grey-200 group-hover:[&_path]:fill-Red-500" />
           </button>
         </div>

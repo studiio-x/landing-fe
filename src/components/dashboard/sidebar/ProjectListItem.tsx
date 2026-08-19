@@ -5,15 +5,15 @@ import { HTMLAttributes } from "react";
 interface ProjectListItemProps extends HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   isShareOpen?: boolean;
-  currentSharedProject?: string | null;
+  isActive?: boolean;
   onClick?: () => void;
 }
 
 const ProjectListItem = ({
   children,
   isShareOpen,
+  isActive,
   onClick,
-  currentSharedProject,
   ...props
 }: ProjectListItemProps) => {
   return (
@@ -25,10 +25,8 @@ const ProjectListItem = ({
       <span className="text-Grey-300">⋅</span>
       <button
         className={clsx(
-          "text-Grey-300 hover:text-white transition-colors flex-1 text-left",
-          currentSharedProject === "my" && currentSharedProject
-            ? "text-white"
-            : "text-Grey-300",
+          "hover:text-white transition-colors flex-1 text-left",
+          isActive ? "text-white" : "text-Grey-300",
         )}
       >
         {children}

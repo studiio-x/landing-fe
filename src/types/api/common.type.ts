@@ -4,3 +4,5 @@ export interface PageInfo {
   totalPages: number;
   totalElements: number;
 }
+
+export type SortOrder = "ASC" | "DESC";

@@ -4,50 +4,67 @@ import { Close, Download } from "@/assets/icons";
 import ModalOverlay from "@/components/common/ModalOverlay";
 
 const STUDIO_TAB_KEYS = ["product", "background", "aiChatbot"] as const;
+const VIDEO_TAB_KEYS = ["product", "options", "aiChatbot"] as const;
 
-const ProductImageRequiredModal = ({ onClose }: { onClose: () => void }) => {
+interface ProductImageRequiredModalProps {
+  onClose: () => void;
+  variant?: "product" | "background" | "video";
+}
+
+const ProductImageRequiredModal = ({
+  onClose,
+  variant = "product",
+}: ProductImageRequiredModalProps) => {
   const locale = useLocale();
   const t = useTranslations("dashboard.workbench");
+  const textKey =
+    variant === "background"
+      ? "backgroundRequiredModal"
+      : variant === "video"
+        ? "videoRequiredModal"
+        : "productImageRequiredModal";
+  const activeTabIdx = variant === "background" || variant === "video" ? 1 : 0;
+  const tabKeys = variant === "video" ? VIDEO_TAB_KEYS : STUDIO_TAB_KEYS;
 
   return (
     <ModalOverlay onClose={onClose}>
-      <div className="relative w-[30rem] h-[31.0625rem] rounded-lg bg-Grey-700/90 p-5 flex flex-col items-center justify-center">
+      <div className="relative w-120 h-124.25 rounded-lg bg-Grey-700/90 p-5 flex flex-col items-center justify-center">
         <button
           onClick={onClose}
           className="absolute top-5 right-5"
-          aria-label={t("productImageRequiredModal.closeLabel")}
+          aria-label={t(`${textKey}.closeLabel`)}
         >
           <Close className="w-6 h-6" />
         </button>
 
         <p className="Subhead_1_semibold text-White text-center whitespace-pre-line">
-          {t("productImageRequiredModal.title")}
+          {t(`${textKey}.title`)}
         </p>
 
         <p className="Body_2_medium text-Grey-300 mt-4 whitespace-pre-line">
-          {t("productImageRequiredModal.description")}
+          {t(`${textKey}.description`)}
         </p>
 
         <div className="relative mt-8 w-[20.15rem]">
-          <div className="absolute left-0 right-0 bottom-[-1px] h-px bg-Grey-400" />
+          <div className="absolute left-0 right-0 -bottom-px h-px bg-Grey-400" />
 
           <div className="flex">
-            {STUDIO_TAB_KEYS.map((key, idx) => {
-              const isActive = idx === 0;
+            {tabKeys.map((key, idx) => {
+              const isActive = idx === activeTabIdx;
 
               return (
                 <div
                   key={key}
                   className={clsx(
-                    "Body_2_medium !text-[1.0176rem] text-center relative pb-[5.51px] flex-1",
-                    isActive ? "text-Red-400" : "text-Grey-400"
+                    "Body_2_medium text-[1.0176rem]! text-center relative pb-[5.51px] flex-1",
+                    isActive ? "text-Red-400" : "text-Grey-400",
                   )}
                 >
                   {t(`tabs.${key}`)}
                   <span
                     className={clsx(
-                      "absolute left-0 bottom-[-1px] h-px w-full",
-                      isActive ? "bg-Red-400" : "bg-transparent"
+                      "absolute left-0 -bottom-px h-px w-full",
+                      isActive ? "bg-Red-400" : "bg-transparent",
                     )}
                   />
                 </div>
@@ -78,14 +95,19 @@ const ProductImageRequiredModal = ({ onClose }: { onClose: () => void }) => {
               />
             </svg>
 
-            <div className={clsx("w-full h-full rounded-lg flex justify-center bg-Grey-900", locale === "ko" ? "pt-[2.38rem]" : "pt-[3.03rem]")}>
+            <div
+              className={clsx(
+                "w-full h-full rounded-lg flex justify-center bg-Grey-900",
+                locale === "ko" ? "pt-[2.38rem]" : "pt-[3.03rem]",
+              )}
+            >
               <div className="flex flex-col items-center gap-[1.02rem]">
                 <Download className="w-[1.3815rem] h-[1.3834rem]" />
-                <span className="Body_1_medium !text-[0.9159rem] text-Grey-200 text-center whitespace-pre-line">
-                  {t("productImageRequiredModal.uploadGuide")}
+                <span className="Body_1_medium text-[0.9159rem]! text-Grey-200 text-center whitespace-pre-line">
+                  {t(`${textKey}.uploadGuide`)}
                 </span>
               </div>
-              <div className="absolute w-full h-[3.875rem] bottom-0 bg-gradient-to-b from-Grey-700/0 to-Grey-700" />
+              <div className="absolute w-full h-15.5 bottom-0 bg-linear-to-b from-Grey-700/0 to-Grey-700" />
             </div>
           </div>
         </div>

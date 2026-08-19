@@ -56,13 +56,10 @@ const GlassButton = ({
         "relative flex items-center justify-center rounded overflow-hidden",
         "shadow-[0_1px_8px_rgba(18,18,18,0.12)]",
         "transition-colors",
-
         SIZE_CLASS[size],
         GAP_CLASS[gap],
         disabled ? DISABLED_CLASS : VARIANT_CLASS[variant],
-
         fullWidth && "w-full",
-
         className,
       )}
     >
@@ -84,7 +81,16 @@ const GlassButton = ({
           maskComposite: "exclude",
         }}
       />
-      {leftIcon && <span className="flex items-center">{leftIcon}</span>}
+      {leftIcon && (
+        <span
+          className={clsx(
+            "flex items-center",
+            disabled && "[&_path]:fill-Grey-500 [&_path]:stroke-Grey-500",
+          )}
+        >
+          {leftIcon}
+        </span>
+      )}
       {children}
     </button>
   );

@@ -6,6 +6,9 @@ import {
   PostImageResponse,
   GetImageResponse,
   GetRawPresignResponse,
+  GetCustomTemplatePresignResponse,
+  PostCustomBackgroundImageRequest,
+  PostCustomBackgroundImageResponse,
 } from "@/types/api/image.type";
 
 export const getRawPresign = async (): Promise<GetRawPresignResponse> => {
@@ -13,6 +16,14 @@ export const getRawPresign = async (): Promise<GetRawPresignResponse> => {
     await axiosInstance.get<GetRawPresignResponse>("/s3/presign/raw")
   return response.data;
 };
+
+export const getCustomTemplatePresign =
+  async (): Promise<GetCustomTemplatePresignResponse> => {
+    const response = await axiosInstance.get<GetCustomTemplatePresignResponse>(
+      "/custom-template",
+    );
+    return response.data;
+  };
 
 export const postCutoutImage = async (
   body: PostCutoutImageRequest,
@@ -36,6 +47,17 @@ export const postImage = async (
 export const getImage = async (imageId: number): Promise<GetImageResponse> => {
   const response = await axiosInstance.get<GetImageResponse>(
     `/image/${imageId}`,
+  );
+
+  return response.data;
+};
+
+export const postCustomBackgroundImage = async (
+  body: PostCustomBackgroundImageRequest,
+): Promise<PostCustomBackgroundImageResponse> => {
+  const response = await axiosInstance.post<PostCustomBackgroundImageResponse>(
+    "/image/custom-background",
+    body,
   );
 
   return response.data;

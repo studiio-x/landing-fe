@@ -64,7 +64,7 @@ const CodeVerificationStep = ({
   }, [onResend]);
 
   return (
-    <div className="my-[0.9375rem]">
+    <div className="my-3.75">
       <div className="Heading_3_semibold text-Grey-50 mb-3">{t("title")}</div>
       <p className="Body_2_medium text-Grey-300 mb-11">
         {t("description", { email })}

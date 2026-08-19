@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+
 import { useTranslations } from "next-intl";
 
 import TabContent from "./TabContent";
@@ -11,11 +12,14 @@ import MarkCanvas from "@/components/dashboard/workbench/chatbot/MarkCanvas";
 import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 import ProductImageRequiredModal from "@/components/dashboard/workbench/background/ProductImageRequiredModal";
 import { useImageUploadAndCutout } from "@/hooks/useImageUploadAndCutout";
-import {
-  useGetFolders,
-  useGetFolderDetail,
-} from "@/hooks/queries/useFolderApi";
+import type { VideoGeneratedResult } from "@/hooks/useVideoGeneration";
+import { useGetFolders } from "@/hooks/queries/useFolderApi";
+import { useGetProjects } from "@/hooks/queries/useProjectApi";
+import { QUERY_KEYS } from "@/constants/common/paths";
+import { parseActionKey } from "@/constants/dashboard/video-options";
+import { parsePositiveIntParam } from "@/utils/urlUtils";
 import type { WorkbenchMode } from "@/types/dashboard/mode.type";
+import type { ProcessingStage } from "@/types/dashboard/processing-stage.type";
 
 interface WorkbenchProps {
   mode: WorkbenchMode;
@@ -30,49 +34,96 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   } | null>(null);
   const [isProductImageRequiredOpen, setIsProductImageRequiredOpen] =
     useState(false);
+  const [requiredModalVariant, setRequiredModalVariant] = useState<
+    "product" | "background" | "video"
+  >("product");
 
   const { isEditMode, hasPaint } = useStudioMarkStore();
 
   const imageContainerRef = useRef<HTMLElement>(null);
 
-  const [uploadedImage, setUploadedImage] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(
     null,
   );
+  const [generatedVideoUrl, setGeneratedVideoUrl] = useState<string | null>(
+    null,
+  );
+  const [videoImageId, setVideoImageId] = useState<number | null>(null);
+  const [videoProjectId, setVideoProjectId] = useState<number | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [processingStage, setProcessingStage] = useState<ProcessingStage>(null);
+
+  const searchParams = useSearchParams();
+  const folderIdParam = parsePositiveIntParam(searchParams.get("folderId"));
+  const templateId = parsePositiveIntParam(
+    searchParams.get(QUERY_KEYS.TEMPLATE_ID),
+  );
+  const initialMotionType = parseActionKey(
+    searchParams.get(QUERY_KEYS.MOTION_TYPE),
+  );
 
   const { data: foldersData } = useGetFolders();
-  const folderId = foldersData?.myProject[0]?.folderId ?? 0;
+  const folderId = folderIdParam ?? foldersData?.myProject[0]?.folderId ?? 0;
 
-  const { data: folderDetail } = useGetFolderDetail(folderId);
-  const images = folderDetail?.folders[0]?.images ?? [];
+  const { data: projectsData } = useGetProjects(folderId, 0, 4);
+  const folderImages = (projectsData?.folders ?? [])
+    .flatMap((f) => f.images)
+    .slice(0, 2);
 
-  const history: HistoryItem[] = [];
-
-  for (let i = 0; i < images.length; i += 2) {
-    history.push({
-      id: String(i),
-      imageUrls: [images[i], images[i + 1] ?? images[i]],
-    });
-  }
+  const history: HistoryItem[] =
+    folderImages.length > 0
+      ? [
+          {
+            id: String(folderId),
+            imageUrls: [folderImages[0], folderImages[1] ?? folderImages[0]],
+          },
+        ]
+      : [];
 
   const {
+    uploadedImage,
+    setUploadedImage,
+    previewUrl,
     isProcessing,
+    isCutoutImageLoading,
+    setIsCutoutImageLoading,
     cutoutImageUrl,
     cutoutImageObjectKey,
     projectId,
-    uploadAndCutout,
-    resetCutout,
-  } = useImageUploadAndCutout(folderId);
+  } = useImageUploadAndCutout(folderId, {
+    templateId: mode !== "video" ? templateId : null,
+    onBackgroundGenerated: setGeneratedImageUrl,
+    onStageChange: setProcessingStage,
+  });
 
   const handleTabChange = (nextIdx: number) => {
+    const isBackgroundTab = nextIdx === 1 && mode !== "video";
     const isChatbotTab = nextIdx === 2;
 
-    if (isChatbotTab && !uploadedImage) {
+    if (isBackgroundTab && !cutoutImageObjectKey) {
+      setRequiredModalVariant("product");
       setIsProductImageRequiredOpen(true);
       return;
+    }
+
+    if (isChatbotTab) {
+      if (!uploadedImage) {
+        setRequiredModalVariant("product");
+        setIsProductImageRequiredOpen(true);
+        return;
+      }
+
+      if (mode !== "video" && !generatedImageUrl) {
+        setRequiredModalVariant("background");
+        setIsProductImageRequiredOpen(true);
+        return;
+      }
+
+      if (mode === "video" && (!generatedVideoUrl || isGenerating)) {
+        setRequiredModalVariant("video");
+        setIsProductImageRequiredOpen(true);
+        return;
+      }
     }
 
     setActiveTab(nextIdx);
@@ -81,24 +132,33 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   useEffect(() => {
     setNaturalSize(null);
     setGeneratedImageUrl(null);
-    if (!uploadedImage) {
-      setPreviewUrl(null);
-      resetCutout();
-      return;
-    }
-
-    const url = URL.createObjectURL(uploadedImage);
-    setPreviewUrl(url);
-    uploadAndCutout(uploadedImage);
-
-    return () => {
-      URL.revokeObjectURL(url);
-    };
+    setGeneratedVideoUrl(null);
+    setVideoImageId(null);
+    setVideoProjectId(null);
+    setProcessingStage(null);
   }, [uploadedImage]);
+
+  const handleVideoGenerated = ({
+    videoUrl,
+    imageId,
+    projectId: newVideoProjectId,
+  }: VideoGeneratedResult) => {
+    setGeneratedVideoUrl(videoUrl);
+    setVideoImageId(imageId);
+    setVideoProjectId(newVideoProjectId);
+  };
+
+  const handleGenerated = (url: string) => {
+    if (mode === "video") {
+      setGeneratedVideoUrl(url);
+    } else {
+      setGeneratedImageUrl(url);
+    }
+  };
 
   return (
     <div className="flex justify-center w-full">
-      <div className="flex flex-col">
+      <div className="flex flex-col ">
         <TabPanel
           activeTab={activeTab}
           onChange={handleTabChange}
@@ -109,15 +169,22 @@ const Workbench = ({ mode }: WorkbenchProps) => {
           uploadedImage={uploadedImage}
           setUploadedImage={setUploadedImage}
           mode={mode}
+          folderId={folderId}
           cutoutImageObjectKey={cutoutImageObjectKey}
           projectId={projectId}
-          onGenerated={setGeneratedImageUrl}
+          onGenerated={handleGenerated}
           onGeneratingChange={setIsGenerating}
+          onStageChange={setProcessingStage}
+          onVideoGenerated={handleVideoGenerated}
+          videoImageId={videoImageId}
+          videoProjectId={videoProjectId}
+          initialTemplateId={templateId}
+          initialMotionType={initialMotionType}
         />
       </div>
 
-      <div className="relative ml-[1.75rem] w-[36.875rem] h-[40.375rem] rounded-lg">
-        {isEditMode && !hasPaint && (
+      <div className="relative ml-7 w-147.5 h-161.5 rounded-lg">
+        {isEditMode && !hasPaint && mode !== "video" && (
           <div className="absolute left-1/2 bottom-6 -translate-x-1/2 z-40">
             <div className="rounded-md bg-Grey-900 px-6 py-2 Subhead_2_medium text-White whitespace-nowrap">
               {t("editModeGuide")}
@@ -125,7 +192,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
           </div>
         )}
 
-        {isEditMode && (
+        {isEditMode && mode !== "video" && (
           <svg
             className="absolute -inset-1 w-[calc(100%+8px)] h-[calc(100%+8px)] pointer-events-none z-30"
             viewBox="0 0 100 100"
@@ -153,33 +220,52 @@ const Workbench = ({ mode }: WorkbenchProps) => {
         >
           {previewUrl ? (
             <>
-              <Image
-                width={590}
-                height={646}
-                src={generatedImageUrl ?? cutoutImageUrl ?? previewUrl}
-                alt={t("uploadedImageAlt")}
-                className="w-full h-full object-contain"
-                onLoad={(e) => {
-                  const img = e.currentTarget as HTMLImageElement;
-                  setNaturalSize({
-                    w: img.naturalWidth,
-                    h: img.naturalHeight,
-                  });
-                }}
-              />
+              {mode === "video" && generatedVideoUrl ? (
+                <video
+                  src={generatedVideoUrl}
+                  controls
+                  autoPlay
+                  loop
+                  className="w-full h-full object-contain"
+                />
+              ) : (
+                <img
+                  crossOrigin="anonymous"
+                  src={generatedImageUrl ?? cutoutImageUrl ?? previewUrl}
+                  alt={t("uploadedImageAlt")}
+                  className="w-full h-full object-contain"
+                  onLoad={(e) => {
+                    const img = e.currentTarget as HTMLImageElement;
+                    setNaturalSize({
+                      w: img.naturalWidth,
+                      h: img.naturalHeight,
+                    });
+                    setIsCutoutImageLoading(false);
+                  }}
+                />
+              )}
 
-              {(isProcessing || isGenerating) && (
-                <div className="absolute inset-0 flex items-center justify-center bg-Grey-900/60">
+              {(isProcessing || isGenerating || isCutoutImageLoading) && (
+                <div className="absolute inset-0 flex flex-col gap-3 items-center justify-center bg-Grey-900/60">
                   <div className="w-10 h-10 border-4 border-Grey-600 border-t-White rounded-full animate-spin" />
+                  {processingStage && (
+                    <span className="Body_2_medium text-White">
+                      {t(`processingStage.${processingStage}`)}
+                    </span>
+                  )}
                 </div>
               )}
 
-              {isEditMode && naturalSize && !isProcessing && !isGenerating && (
-                <MarkCanvas
-                  imageContainerRef={imageContainerRef}
-                  naturalSize={naturalSize}
-                />
-              )}
+              {isEditMode &&
+                naturalSize &&
+                !isProcessing &&
+                !isGenerating &&
+                mode !== "video" && (
+                  <MarkCanvas
+                    imageContainerRef={imageContainerRef}
+                    naturalSize={naturalSize}
+                  />
+                )}
             </>
           ) : (
             <div className="flex flex-col gap-3 items-center">
@@ -201,6 +287,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
 
       {isProductImageRequiredOpen && (
         <ProductImageRequiredModal
+          variant={requiredModalVariant}
           onClose={() => setIsProductImageRequiredOpen(false)}
         />
       )}

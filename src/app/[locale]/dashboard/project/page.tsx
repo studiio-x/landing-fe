@@ -8,63 +8,50 @@ import FolderItem from "@/components/dashboard/project/FolderItem";
 import GlassButton from "@/components/common/GlassButton";
 import DropDown from "@/components/common/DropDown";
 import useClickOutside from "@/hooks/useClickOutside";
-import CreatFolderModal from "@/components/dashboard/project/CreatFolderModal";
+import CreateFolderModal from "@/components/dashboard/project/CreateFolderModal";
 import AlertModal from "@/components/common/AlertModal";
 import InviteModal from "@/components/dashboard/project/InviteModal";
-
-const mockData = [
-  {
-    name: "Handbag",
-    isFolder: true,
-    imageUrl: [1, 2, 3, 4, 5, 6].map((_) => "/images/project/mockData.png"),
-  },
-  {
-    name: "Cosmetics Visuals",
-    isFolder: true,
-    imageUrl: [
-      "/images/project/mockData.png",
-      "/images/landing/product1.png",
-      "/images/landing/product2.png",
-      "/images/landing/product3.png",
-      "/images/landing/product4.png",
-      "/images/landing/product5.png",
-    ],
-  },
-  {
-    name: "Cosmetics Visuals",
-    isFolder: true,
-    imageUrl: [1, 2, 3, 4, 5, 6].map((_) => "/images/project/mockData.png"),
-  },
-  {
-    name: "제목을 입력해주세요",
-    isFolder: false,
-    imageUrl: "/images/project/mockData.png",
-  },
-  {
-    name: "제목을 입력해주세요",
-    isFolder: false,
-    imageUrl: "/images/project/mockData.png",
-  },
-];
+import { useTranslations } from "next-intl";
+import {
+  useDeleteFolder,
+  useFolderDetail,
+  useMoveFolder,
+  useProject,
+} from "@/hooks/queries/useProject";
+import { useMypage } from "@/hooks/queries/useMypageApi";
 
 const ProjectPage = () => {
+  const t = useTranslations("project");
+  const { data } = useProject();
+  const { data: userData } = useMypage();
+  const { mutate: deleteFolder } = useDeleteFolder();
+  const { mutate: moveFolder } = useMoveFolder();
   const searchParams = useSearchParams();
-  const sharedProjectFromQuery = searchParams.get("shared");
+  const params = new URLSearchParams();
+  const sharedProjectFromQuery =
+    searchParams.get("shared") || searchParams.get("not-shared");
+  const currentFolderId = Number(searchParams.get("folderId") || 0);
+  const { data: folderDetailData } = useFolderDetail(currentFolderId);
   const router = useRouter();
-  const [array, setArray] = useState("최신순");
+  const [array, setArray] = useState("newest");
   const [createModalOpen, setCreateModalOpen] = useState(false);
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [renameModalOpen, setRenameModalOpen] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
-
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  const [isParentDragOver, setIsParentDragOver] = useState(false);
   const dropDownRef = useRef<HTMLDivElement>(null);
 
+  const targetUserId = userData?.userId || null;
+  const rootFolderId = data?.myProject[0]?.folderId;
+  const isInSubFolder = !!currentFolderId && currentFolderId !== rootFolderId;
+
   useEffect(() => {
-    if (!sharedProjectFromQuery) {
-      router.replace("/dashboard/project?shared=my");
+    if (!sharedProjectFromQuery && data?.myProject.length) {
+      params.set("not-shared", data.myProject[0].name);
+      params.set("folderId", String(data.myProject[0].folderId));
+      router.replace(`/dashboard/project?${params.toString()}`);
     }
-  }, []);
+  }, [sharedProjectFromQuery]);
 
   useClickOutside(dropDownRef, () => setIsDropDownOpen(false), isDropDownOpen);
 
@@ -79,18 +66,32 @@ const ProjectPage = () => {
   const onCreatButtonClick = () => {
     setCreateModalOpen(true);
   };
+  const onDelete = () => {
+    if (!deleteTargetId) return;
 
-  // 폴더와 프로젝트에 분리된 인덱스 부여
-  const itemsWithIndex = useMemo(() => {
-    let folderCount = 0;
-    let projectCount = 0;
+    deleteFolder(deleteTargetId, {
+      onSuccess: () => {
+        console.log("폴더 삭제 성공:", deleteTargetId);
+        setDeleteTargetId(null);
+      },
+      onError: (error) => {
+        console.error("폴더 삭제 실패:", error);
+        setDeleteTargetId(null);
+      },
+    });
+  };
 
-    return mockData.map((item, originalIndex) => ({
-      ...item,
-      displayIndex: item.isFolder ? folderCount++ : projectCount++,
-      originalIndex,
+  const folderItems = useMemo(() => {
+    if (!folderDetailData?.folders) return [];
+
+    return folderDetailData.folders.map((folder, index) => ({
+      folderId: folder.folderId,
+      name: folder.folderName,
+      isFolder: true,
+      imageUrl: folder.images,
+      displayIndex: index,
     }));
-  }, [mockData]);
+  }, [folderDetailData]);
 
   return (
     <main className="relative min-h-screen w-full flex flex-col">
@@ -105,27 +106,27 @@ const ProjectPage = () => {
       </div>
 
       {/* 폴더 생성 모달 */}
-      <CreatFolderModal
+      <CreateFolderModal
         isOpen={createModalOpen}
         onClose={() => setCreateModalOpen(false)}
       />
 
       {/* 제거 모달 */}
       <AlertModal
-        isOpen={deleteModalOpen}
-        onClose={() => setDeleteModalOpen(false)}
+        isOpen={!!deleteTargetId}
+        onClose={() => setDeleteTargetId(null)}
         title="정말 삭제하시겠습니까?"
         description="폴더를 삭제하면 하위의 폴더와 프로젝트가 모두 삭제되며, 복구할 수 없습니다."
         buttons={[
           {
             label: "닫기",
             variant: "default",
-            onClick: () => setDeleteModalOpen(false),
+            onClick: () => setDeleteTargetId(null),
           },
           {
             label: "삭제하기",
             variant: "red",
-            onClick: () => setDeleteModalOpen(false),
+            onClick: onDelete,
           },
         ]}
       />
@@ -134,26 +135,74 @@ const ProjectPage = () => {
       <InviteModal
         isOpen={inviteModalOpen}
         onClose={() => setInviteModalOpen(false)}
+        targetUserId={targetUserId}
       />
 
       <Header />
 
       <div className="flex">
         <SideBar />
-        <div className="mt-[3.25rem] flex items-center flex-col flex-1 w-[62.25rem] mr-[1.125rem]">
-          <div className="w-[62.25rem] flex items-center gap-4">
-            <h1 className="Heading_1_bold bg-gradient-to-b from-Red-300 to-Red-500 bg-clip-text text-transparent  ">
-              프로젝트
+        <div className="mt-13 flex items-center flex-col flex-1 w-249 mr-4.5">
+          <div className="w-249 flex items-center gap-4">
+            <h1 className="Heading_1_bold bg-linear-to-b from-Red-300 to-Red-500 bg-clip-text text-transparent  ">
+              {t("title")}
             </h1>
-            <div className="flex gap-[0.25rem]">
+            {isInSubFolder && (
+              <div
+                role="button"
+                className={`Body_2_medium transition-colors rounded-lg px-3 py-1 border border-dashed cursor-pointer ${
+                  isParentDragOver
+                    ? "border-Red-400 bg-Red-400/10 text-white"
+                    : "border-Grey-500 text-Grey-300 hover:border-Grey-400 hover:text-Grey-200"
+                }`}
+                onClick={() => {
+                  const p = new URLSearchParams(searchParams.toString());
+                  p.set("folderId", String(rootFolderId));
+                  router.push(`/dashboard/project?${p.toString()}`);
+                }}
+                onDragEnter={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setIsParentDragOver(true);
+                }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onDragLeave={(e) => {
+                  e.stopPropagation();
+                  setIsParentDragOver(false);
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setIsParentDragOver(false);
+                  const draggedFolderId = Number(
+                    e.dataTransfer.getData("draggedFolderId"),
+                  );
+                  if (draggedFolderId && rootFolderId) {
+                    moveFolder({
+                      folderId: draggedFolderId,
+                      newFolderId: rootFolderId,
+                    });
+                  }
+                }}
+              >
+                ← 상위 폴더로
+              </div>
+            )}
+            <div className="flex gap-1">
               <span className="whitespace-nowrap Body_2_medium text-Grey-200">
-                {sharedProjectFromQuery ?? ""}의 프로젝트
+                {t("subtitle", { user: sharedProjectFromQuery ?? "" })}
               </span>
-              <button onClick={() => setInviteModalOpen(true)}>
+              <button
+                onClick={() => setInviteModalOpen(true)}
+                aria-label="프로젝트 초대"
+              >
                 {inviteModalOpen ? (
-                  <Up className="w-[1.5rem] h-[1.5rem]" color="#A9B4C6" />
+                  <Up className="w-6 h-6" color="#A9B4C6" />
                 ) : (
-                  <Down className="w-[1.5rem] h-[1.5rem]" color="#A9B4C6" />
+                  <Down className="w-6 h-6" color="#A9B4C6" />
                 )}
               </button>
             </div>
@@ -180,12 +229,12 @@ const ProjectPage = () => {
           </div>
 
           <section className="grid grid-cols-3  gap-x-9 gap-y-11 mt-8">
-            {itemsWithIndex.map((item) => (
+            {folderItems.map((item) => (
               <FolderItem
                 lists={item}
                 index={item.displayIndex}
-                key={item.originalIndex}
-                setDeleteModalOpen={setDeleteModalOpen}
+                key={item.folderId}
+                setDeleteTargetId={setDeleteTargetId}
               />
             ))}
           </section>

@@ -6,15 +6,15 @@ import { useStudioMarkStore } from "@/stores/useStudioMarkStore";
 import { usePaintCapture } from "@/hooks/usePaintCapture";
 import { clamp01, getContainedImageRect, inRect } from "@/utils/canvasUtils";
 
-type MarkCanvasProps = {
+interface MarkCanvasProps {
   imageContainerRef: React.RefObject<HTMLElement | null>;
   naturalSize: { w: number; h: number };
-};
+}
 
 const BRUSH = {
   radius: 40,
   step: 2,
-  fill: "rgba(255, 134, 134, 0.25)",
+  fill: "rgba(255,134,134,0.25)",
 };
 
 const MarkCanvas = ({ imageContainerRef, naturalSize }: MarkCanvasProps) => {
@@ -30,10 +30,10 @@ const MarkCanvas = ({ imageContainerRef, naturalSize }: MarkCanvasProps) => {
 
   const enabled = isEditMode;
 
-  const { capturePaintedArea, clearMask } = usePaintCapture(
+  const { capturePaintedArea } = usePaintCapture(
     imageContainerRef,
     maskCanvasRef,
-    { scale: 2, debug: false, tightCrop: true, padding: 8 }
+    { tightCrop: true },
   );
 
   useEffect(() => {
@@ -46,16 +46,26 @@ const MarkCanvas = ({ imageContainerRef, naturalSize }: MarkCanvasProps) => {
       const rect = container.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
 
-      for (const c of [mask, preview]) {
-        c.style.width = `${rect.width}px`;
-        c.style.height = `${rect.height}px`;
-        c.width = Math.max(1, Math.round(rect.width * dpr));
-        c.height = Math.max(1, Math.round(rect.height * dpr));
-        const ctx = c.getContext("2d");
-        if (!ctx) continue;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
+      mask.style.width = `${rect.width}px`;
+      mask.style.height = `${rect.height}px`;
+      mask.width = rect.width;
+      mask.height = rect.height;
+
+      const mctx = mask.getContext("2d");
+      if (mctx) {
+        mctx.setTransform(1, 0, 0, 1, 0, 0);
+        mctx.lineCap = "round";
+        mctx.lineJoin = "round";
+      }
+
+      preview.style.width = `${rect.width}px`;
+      preview.style.height = `${rect.height}px`;
+      preview.width = rect.width * dpr;
+      preview.height = rect.height * dpr;
+
+      const pctx = preview.getContext("2d");
+      if (pctx) {
+        pctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
 
       renderPreview();
@@ -81,7 +91,7 @@ const MarkCanvas = ({ imageContainerRef, naturalSize }: MarkCanvasProps) => {
       rect.width,
       rect.height,
       naturalSize.w,
-      naturalSize.h
+      naturalSize.h,
     );
 
     if (!inRect(x, y, imgRect)) return null;
@@ -94,22 +104,20 @@ const MarkCanvas = ({ imageContainerRef, naturalSize }: MarkCanvasProps) => {
     const ctx = c?.getContext("2d");
     if (!c || !ctx) return;
 
-    ctx.save();
-    ctx.globalCompositeOperation = "source-over";
-    ctx.fillStyle = "rgba(255,255,255,1)";
     ctx.beginPath();
     ctx.arc(x, y, BRUSH.radius, 0, Math.PI * 2);
+    ctx.fillStyle = "white";
     ctx.fill();
-    ctx.restore();
 
-    if (hasPaintRef.current) return;
-    hasPaintRef.current = true;
-    setHasPaint(true);
+    if (!hasPaintRef.current) {
+      hasPaintRef.current = true;
+      setHasPaint(true);
+    }
   };
 
   const stampMaskBetween = (
     a: { x: number; y: number },
-    b: { x: number; y: number }
+    b: { x: number; y: number },
   ) => {
     const dx = b.x - a.x;
     const dy = b.y - a.y;
@@ -166,7 +174,6 @@ const MarkCanvas = ({ imageContainerRef, naturalSize }: MarkCanvasProps) => {
       const imageUrl = await capturePaintedArea();
       if (!imageUrl) return null;
 
-      clearMask();
       clearPreview();
       resetPaint();
       hasPaintRef.current = false;
@@ -175,7 +182,7 @@ const MarkCanvas = ({ imageContainerRef, naturalSize }: MarkCanvasProps) => {
     });
 
     return () => setCommitPaint(null);
-  }, [setCommitPaint, capturePaintedArea, clearMask, resetPaint]);
+  }, [setCommitPaint, capturePaintedArea, resetPaint]);
 
   const onPointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if (!enabled) return;
@@ -191,7 +198,6 @@ const MarkCanvas = ({ imageContainerRef, naturalSize }: MarkCanvasProps) => {
     renderPreview();
 
     e.currentTarget.setPointerCapture(e.pointerId);
-    e.preventDefault();
   };
 
   const onPointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
@@ -235,7 +241,7 @@ const MarkCanvas = ({ imageContainerRef, naturalSize }: MarkCanvasProps) => {
         data-capture-ignore="true"
         className={clsx(
           "absolute inset-0",
-          enabled ? "pointer-events-auto" : "pointer-events-none"
+          enabled ? "pointer-events-auto" : "pointer-events-none",
         )}
         style={
           enabled

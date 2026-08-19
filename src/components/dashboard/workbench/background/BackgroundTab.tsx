@@ -9,44 +9,91 @@ import BackgroundSwiper from "./BackgroundSwiper";
 import SearchBar from "./SearchBar";
 import ProductImageRequiredModal from "./ProductImageRequiredModal";
 import GlassButton from "@/components/common/GlassButton";
-import { useTemplateKeywords, useTemplatesByKeyword, useSearchTemplates } from "@/hooks/queries/useTemplateApi";
+import {
+  useTemplateKeywords,
+  useTemplatesByKeyword,
+  useSearchTemplates,
+} from "@/hooks/queries/useTemplateApi";
 import { usePostImage } from "@/hooks/queries/useImageApi";
+import { useCustomBackgroundUpload } from "@/hooks/useCustomBackgroundUpload";
 import { TEMPLATE_KEYWORDS } from "@/constants/dashboard/template";
-import { TemplateKeyword } from "@/types/api/template.type";
+import { TemplateCategory, TemplateKeyword } from "@/types/api/template.type";
+import type { WorkbenchMode } from "@/types/dashboard/mode.type";
+import type { ProcessingStage } from "@/types/dashboard/processing-stage.type";
 
 interface BackgroundTabProps {
   uploadedImage: File | null;
   cutoutImageObjectKey: string | null;
   projectId: number | null;
+  mode: WorkbenchMode;
   onGenerated: (imageUrl: string) => void;
   onGeneratingChange: (isGenerating: boolean) => void;
+  onStageChange?: (stage: ProcessingStage) => void;
+  initialTemplateId?: number | null;
 }
 
-const toItems = (templates: { templateId: number; imageObjectKey: string }[]) =>
-  templates.map((t) => ({ id: String(t.templateId), src: t.imageObjectKey }));
+const toItems = (
+  templates: {
+    templateId: number;
+    imageObjectKey: string;
+    category: TemplateCategory;
+  }[],
+  category: TemplateCategory,
+) =>
+  templates
+    .filter((t) => t.category === category)
+    .map((t) => ({ id: String(t.templateId), src: t.imageObjectKey }));
 
-const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, onGenerated, onGeneratingChange }: BackgroundTabProps) => {
+const BackgroundTab = ({
+  uploadedImage,
+  cutoutImageObjectKey,
+  projectId,
+  mode,
+  onGenerated,
+  onGeneratingChange,
+  onStageChange,
+  initialTemplateId,
+}: BackgroundTabProps) => {
   const t = useTranslations("dashboard.workbench.backgroundTab");
   const [isSearching, setIsSearching] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
   const [selectedBackground, setSelectedBackground] = useState<{
     sectionId: string;
     itemId: string;
-  } | null>(null);
+  } | null>(
+    initialTemplateId
+      ? { sectionId: "initial", itemId: String(initialTemplateId) }
+      : null,
+  );
 
   const [isProductImageModalOpen, setIsProductImageModalOpen] = useState(false);
 
   const { mutate: postImage, isPending: isGenerating } = usePostImage();
-
-  const { data: keywords, isLoading: isKeywordsLoading } = useTemplateKeywords();
-  const { data: templatesData, isLoading: isTemplatesLoading } = useTemplatesByKeyword({
-    keywords: TEMPLATE_KEYWORDS,
-    limitPerKeyword: 9,
+  const {
+    inputRef: customBackgroundInputRef,
+    isUploading: isUploadingCustomBackground,
+    openFilePicker: openCustomBackgroundPicker,
+    handleFileChange: handleCustomBackgroundFileChange,
+  } = useCustomBackgroundUpload({
+    cutoutImageObjectKey,
+    projectId,
+    onGenerated: (imageUrl) => {
+      setSelectedBackground(null);
+      onGenerated(imageUrl);
+    },
+    onGeneratingChange,
+    onStageChange,
   });
-  const { data: searchResults, isLoading: isSearchLoading } = useSearchTemplates(
-    { keyword: searchKeyword },
-    !!searchKeyword,
-  );
+
+  const { data: keywords, isLoading: isKeywordsLoading } =
+    useTemplateKeywords();
+  const { data: templatesData, isLoading: isTemplatesLoading } =
+    useTemplatesByKeyword({
+      keywords: TEMPLATE_KEYWORDS,
+      limitPerKeyword: 9,
+    });
+  const { data: searchResults, isLoading: isSearchLoading } =
+    useSearchTemplates({ keyword: searchKeyword }, !!searchKeyword);
 
   useEffect(() => {
     if (!isSearching) setSearchKeyword("");
@@ -54,11 +101,31 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, onGener
 
   const isLoading = isKeywordsLoading || isTemplatesLoading;
 
+  const modeCategory = mode.toUpperCase() as TemplateCategory;
+
   const findTemplates = (keyword: TemplateKeyword) =>
-    toItems(templatesData?.find((g) => g.keyword === keyword)?.templates ?? []);
+    toItems(
+      templatesData?.find((g) => g.keyword === keyword)?.templates ?? [],
+      modeCategory,
+    );
 
   const getTitle = (keyword: TemplateKeyword) =>
     keywords?.find((k) => k.keyword === keyword)?.title ?? "";
+
+  const getSelectedId = (sectionId: string) =>
+    selectedBackground &&
+    (selectedBackground.sectionId === sectionId ||
+      selectedBackground.sectionId === "initial")
+      ? selectedBackground.itemId
+      : null;
+
+  const handleClickUploadBackground = () => {
+    if (!uploadedImage) {
+      setIsProductImageModalOpen(true);
+      return;
+    }
+    openCustomBackgroundPicker();
+  };
 
   const handleClickGenerate = () => {
     if (!uploadedImage) {
@@ -68,6 +135,7 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, onGener
     if (!cutoutImageObjectKey || !projectId || !selectedBackground) return;
 
     onGeneratingChange(true);
+    onStageChange?.("compositing");
     postImage(
       {
         cutoutImageObjectKey,
@@ -78,8 +146,12 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, onGener
         onSuccess: (data) => {
           onGenerated(data.imageUrl);
           onGeneratingChange(false);
+          onStageChange?.(null);
         },
-        onError: () => onGeneratingChange(false),
+        onError: () => {
+          onGeneratingChange(false);
+          onStageChange?.(null);
+        },
       },
     );
   };
@@ -95,16 +167,18 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, onGener
       <div
         className={clsx(
           "flex flex-col gap-4 overflow-y-auto",
-          isSearching ? "h-[413px]" : "h-[452px]"
+          isSearching ? "h-103.25" : "h-113",
         )}
       >
         {searchKeyword ? (
           isSearchLoading || (searchResults && searchResults.length > 0) ? (
             <BackgroundSwiper
               id="search"
-              items={toItems(searchResults ?? [])}
-              selectedId={selectedBackground?.sectionId === "search" ? selectedBackground.itemId : null}
-              onSelect={(itemId) => setSelectedBackground({ sectionId: "search", itemId })}
+              items={toItems(searchResults ?? [], modeCategory)}
+              selectedId={getSelectedId("search")}
+              onSelect={(itemId) =>
+                setSelectedBackground({ sectionId: "search", itemId })
+              }
               isLoading={isSearchLoading}
             />
           ) : (
@@ -119,8 +193,10 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, onGener
               id={keyword}
               title={getTitle(keyword)}
               items={findTemplates(keyword)}
-              selectedId={selectedBackground?.sectionId === keyword ? selectedBackground.itemId : null}
-              onSelect={(itemId) => setSelectedBackground({ sectionId: keyword, itemId })}
+              selectedId={getSelectedId(keyword)}
+              onSelect={(itemId) =>
+                setSelectedBackground({ sectionId: keyword, itemId })
+              }
               isLoading={isLoading}
             />
           ))
@@ -128,11 +204,22 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, onGener
       </div>
 
       <div className="flex items-center justify-center gap-4 mt-6 Body_2_semibold">
+        <input
+          type="file"
+          ref={customBackgroundInputRef}
+          onChange={handleCustomBackgroundFileChange}
+          accept="image/*"
+          className="hidden"
+        />
+
         <GlassButton
           size="md"
           gap="sm"
+          type="button"
           className="Body_3_semibold"
-          leftIcon={<Plus className="w-[1.375rem] h-[1.375rem]" />}
+          leftIcon={<Plus className="w-5.5 h-5.5" />}
+          onClick={handleClickUploadBackground}
+          disabled={isUploadingCustomBackground}
         >
           {t("uploadBackground")}
         </GlassButton>
@@ -143,7 +230,7 @@ const BackgroundTab = ({ uploadedImage, cutoutImageObjectKey, projectId, onGener
           type="button"
           className="Body_2_semibold"
           onClick={handleClickGenerate}
-          disabled={isGenerating}
+          disabled={isGenerating || isUploadingCustomBackground}
         >
           {t("generate")}
         </GlassButton>
