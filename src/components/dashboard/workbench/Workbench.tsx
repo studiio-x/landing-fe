@@ -63,26 +63,22 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   );
 
   const { data: foldersData } = useGetFolders();
-  const folderId =
-    folderIdParam ?? (foldersData?.myProject[0]?.folderId ?? 0);
+  const folderId = folderIdParam ?? foldersData?.myProject[0]?.folderId ?? 0;
 
   const { data: projectsData } = useGetProjects(folderId, 0, 4);
-  const projects = (projectsData?.projects ?? []).filter(
-    (p) => p.fileType === "IMAGE",
-  );
+  const folderImages = (projectsData?.folders ?? [])
+    .flatMap((f) => f.images)
+    .slice(0, 2);
 
-  const [latest, second] = projects;
-  const history: HistoryItem[] = latest
-    ? [
-        {
-          id: String(latest.projectId),
-          imageUrls: [
-            latest.thumbnailObjectKey,
-            (second ?? latest).thumbnailObjectKey,
-          ],
-        },
-      ]
-    : [];
+  const history: HistoryItem[] =
+    folderImages.length > 0
+      ? [
+          {
+            id: String(folderId),
+            imageUrls: [folderImages[0], folderImages[1] ?? folderImages[0]],
+          },
+        ]
+      : [];
 
   const {
     uploadedImage,

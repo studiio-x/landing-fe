@@ -9,35 +9,28 @@ interface FolderItemContainerProps {
   folderId: number;
   name: string;
   index: number;
-  setDeleteModalOpen: (open: boolean) => void;
+  setDeleteTargetId: (folderId: number | null) => void;
 }
 
 const FolderItemContainer = ({
   folderId,
   name,
   index,
-  setDeleteModalOpen,
+  setDeleteTargetId,
 }: FolderItemContainerProps) => {
   const router = useRouter();
   const locale = useLocale();
   const { data } = useGetProjects(folderId, 0, 12);
-  const images = (data?.projects ?? [])
-    .filter((p) => p.fileType === "IMAGE")
+  const images = (data?.folders ?? [])
     .slice(0, 6)
-    .map((p) => p.thumbnailObjectKey);
-
-  const handleClick = () => {
-    router.push(
-      `/${locale}/dashboard/workbench?mode=studio&folderId=${folderId}`,
-    );
-  };
+    .flatMap((f) => f.images)
+    .slice(0, 6);
 
   return (
     <FolderItem
-      lists={{ name, isFolder: true, imageUrl: images }}
+      lists={{ folderId, name, isFolder: true, imageUrl: images }}
       index={index}
-      setDeleteModalOpen={setDeleteModalOpen}
-      onClick={handleClick}
+      setDeleteTargetId={setDeleteTargetId}
     />
   );
 };
