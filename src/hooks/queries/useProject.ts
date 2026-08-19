@@ -36,10 +36,17 @@ export const useMakeFolder = () => {
   });
 };
 
-export const useInviteFolder = () =>
-  useMutation({
+export const useInviteFolder = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
     mutationFn: (params: postInviteFolderParams) => postInviteFolder(params),
+    onSuccess: (_data, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ["invitedFolders", variables.folderId],
+      });
+    },
   });
+};
 
 export const useGetInvitedFolders = (
   folderId: number,

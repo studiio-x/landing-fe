@@ -1,26 +1,21 @@
 import { Down, Up } from "@/assets/icons";
-import { useProject } from "@/hooks/queries/useProject";
 import clsx from "clsx";
-import { useSearchParams } from "next/navigation";
 import { HTMLAttributes } from "react";
 
 interface ProjectListItemProps extends HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
   isShareOpen?: boolean;
-  currentSharedProject?: number | null;
+  isActive?: boolean;
   onClick?: () => void;
 }
 
 const ProjectListItem = ({
   children,
   isShareOpen,
+  isActive,
   onClick,
-  currentSharedProject,
   ...props
 }: ProjectListItemProps) => {
-  const searchParams = useSearchParams();
-  const currentFolderId = searchParams.get("folderId");
-  const { data } = useProject();
   return (
     <div
       className="pt-3 pb-2 pl-9 flex items-center gap-2 hover:text-white cursor-pointer"
@@ -30,13 +25,8 @@ const ProjectListItem = ({
       <span className="text-Grey-300">⋅</span>
       <button
         className={clsx(
-          "text-Grey-300 hover:text-white transition-colors flex-1 text-left",
-          Number(currentFolderId) === Number(data?.myProject[0]?.folderId)
-            ? "text-white"
-            : "text-Grey-300",
-          currentSharedProject === data?.myProject[0]?.name
-            ? "text-white"
-            : " text-Grey-300",
+          "hover:text-white transition-colors flex-1 text-left",
+          isActive ? "text-white" : "text-Grey-300",
         )}
       >
         {children}
