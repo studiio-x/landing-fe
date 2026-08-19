@@ -6,20 +6,43 @@ import PriceToggle from "./PriceToggle";
 import PriceGrid from "./PriceGrid";
 import FreePlanSection from "./FreePlanSection";
 import { usePayment } from "@/hooks/usePayment";
-import type { PlanKey } from "@/types/api/payment.type";
+import { useMypage } from "@/hooks/queries/useMypageApi";
+import type { PlanKey, BillingPlan } from "@/types/api/payment.type";
+import { useRouter } from "next/navigation";
+import { PATHS } from "@/constants/common/paths";
+
+const PLAN_KEY_TO_BILLING: Record<string, BillingPlan> = {
+  basic: "BASIC",
+  standard: "STANDARD",
+  pro: "PRO",
+};
 
 const PriceHeroSection = () => {
   const [isMonthly, setIsMonthly] = useState(false);
   const t = useTranslations("price");
-  const { requestPayment } = usePayment();
+  const { requestBillingAuth } = usePayment();
+  const { data: user } = useMypage();
+  const router = useRouter();
 
-  const handleSelectPlan = async (planKey: PlanKey, monthly: boolean) => {
+  const handleSelectPlan = async (planKey: PlanKey, _isMonthly: boolean) => {
     if (planKey === "enterprise") {
       window.open(`mailto:${process.env.NEXT_PUBLIC_EMAIL_ADDRESS}`, "_blank");
       return;
     }
 
-    await requestPayment(planKey, monthly ? "monthly" : "yearly");
+    if (!user) {
+      router.push(`${PATHS.LOGIN}?callbackUrl=${encodeURIComponent(PATHS.SUBSCRIBE)}`);
+      return;
+    }
+
+    const billingPlan = PLAN_KEY_TO_BILLING[planKey];
+    if (!billingPlan) return;
+
+    try {
+      await requestBillingAuth(billingPlan, `studiox_${user.userId}`);
+    } catch (error) {
+      console.error("결제창 호출 실패:", error);
+    }
   };
 
   return (

@@ -1,33 +1,28 @@
 import { axiosInstance } from "./axios";
 import type {
-  PaymentOrderRequest,
-  PaymentOrderResponse,
-  PaymentConfirmRequest,
-  PaymentConfirmResponse,
-  SubscriptionInfo,
-  SubscriptionChangeRequest,
-  SubscriptionChangeResponse,
-  SubscriptionCancelResponse,
+  BillingPlan,
+  BillingKeyCardRequest,
+  BillingKeyAuthKeyRequest,
 } from "@/types/api/payment.type";
 
 export const paymentApi = {
-  /** 결제 주문 생성 */
-  createOrder: (data: PaymentOrderRequest) =>
-    axiosInstance.post<PaymentOrderResponse>("/payments/order", data),
+  /** 빌링키 등록 (카드 직접 입력) */
+  registerBillingKeyByCard: (plan: BillingPlan, data: BillingKeyCardRequest) =>
+    axiosInstance.post("/payment/billingKey/card", data, { params: { plan } }),
 
-  /** 결제 승인 확인 */
-  confirmPayment: (data: PaymentConfirmRequest) =>
-    axiosInstance.post<PaymentConfirmResponse>("/payments/confirm", data),
+  /** 빌링키 등록 (인증키) */
+  registerBillingKeyByAuthKey: (plan: BillingPlan, data: BillingKeyAuthKeyRequest) =>
+    axiosInstance.post("/payment/billingKey/authKey", data, { params: { plan } }),
 
-  /** 현재 구독 정보 조회 */
-  getSubscription: () =>
-    axiosInstance.get<SubscriptionInfo>("/subscription"),
+  /** 구독 가격 조회 */
+  getSubscriptionPrice: (plan: BillingPlan) =>
+    axiosInstance.get<number>("/subscription/price", { params: { plan } }),
 
-  /** 구독 변경 (업그레이드/다운그레이드) */
-  changeSubscription: (data: SubscriptionChangeRequest) =>
-    axiosInstance.post<SubscriptionChangeResponse>("/subscription/change", data),
+  /** 구독 변경 */
+  changeSubscription: (plan: BillingPlan) =>
+    axiosInstance.patch("/subscription", null, { params: { plan } }),
 
   /** 구독 취소 */
   cancelSubscription: () =>
-    axiosInstance.post<SubscriptionCancelResponse>("/subscription/cancel"),
+    axiosInstance.delete("/subscription"),
 };
