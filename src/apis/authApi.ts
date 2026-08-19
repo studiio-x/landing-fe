@@ -6,6 +6,9 @@ import {
   LoginResponse,
   SendVerificationEmailRequest,
   EmailValidationResponse,
+  PasswordEmailVerificationRequest,
+  PasswordCodeVerificationRequest,
+  PasswordResetRequest,
 } from "@/types/api/auth.type";
 
 // 토큰 갱신
@@ -45,4 +48,25 @@ export const checkEmailValidation = async (
     { params: { email } },
   );
   return response.data;
+};
+
+// 비밀번호 재설정 이메일 인증 요청
+export const sendPasswordEmailVerification = async (
+  body: PasswordEmailVerificationRequest,
+): Promise<void> => {
+  await axiosInstance.post("/auth/password/email/verification", body);
+};
+
+// 비밀번호 재설정 코드 인증
+export const verifyPasswordCode = async (
+  body: PasswordCodeVerificationRequest,
+): Promise<void> => {
+  await axiosInstance.post("/auth/password/code/verification", body);
+};
+
+// 비밀번호 변경
+export const resetPassword = async (
+  body: PasswordResetRequest,
+): Promise<void> => {
+  await axiosInstance.put("/auth/password", body);
 };

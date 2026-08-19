@@ -18,11 +18,11 @@ const SignupLayout = ({ children }: { children: ReactNode }) => {
           >
             <source src="/videos/guide-optimized.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-[rgba(8,8,8,0.80)] to-[rgba(8,8,8,0.45)]" />
-          <LogoRed className="z-20 w-[21rem] h-auto" />
+          <div className="absolute inset-0 bg-linear-to-b from-[rgba(8,8,8,0.80)] to-[rgba(8,8,8,0.45)]" />
+          <LogoRed className="z-20 w-84 h-auto" />
         </section>
 
-        <section className="flex-[44%] pt-[11.25rem] flex flex-col px-[8.5rem] relative">
+        <section className="flex-[44%] pt-45 flex flex-col px-34 relative">
           {children}
         </section>
       </main>

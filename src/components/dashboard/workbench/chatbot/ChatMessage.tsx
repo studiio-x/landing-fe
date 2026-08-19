@@ -1,6 +1,10 @@
+import { useState } from "react";
 import { ChatItem } from "@/types/dashboard/chat.type";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
+import Image from "next/image";
+
+const isVideoUrl = (url: string) => /\.(mp4|webm|ogg|mov)(?:[?#]|$)/i.test(url);
 
 const TypingDots = () => {
   return (
@@ -12,7 +16,87 @@ const TypingDots = () => {
   );
 };
 
-const ChatMessageList = ({ messages }: { messages: ChatItem[] }) => {
+const ConceptImageGrid = ({
+  messageId,
+  imageKeys,
+  onConceptSelect,
+}: {
+  messageId: string;
+  imageKeys: string[];
+  onConceptSelect: (messageId: string, index: number) => void;
+}) => {
+  const t = useTranslations("dashboard.workbench.chatbot");
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [btnHovered, setBtnHovered] = useState(false);
+
+  return (
+    <div className="flex flex-col gap-2 w-68">
+      <div className="grid grid-cols-2 gap-2">
+        {imageKeys.map((key, index) => (
+          <button
+            key={index}
+            type="button"
+            onClick={() => setSelectedIndex(index)}
+            className={clsx(
+              "rounded p-[1.5px] transition-colors",
+              selectedIndex === index
+                ? "bg-linear-to-b from-Red-350 to-Red-500"
+                : "bg-Grey-800",
+            )}
+          >
+            <div className="rounded overflow-hidden">
+              <Image
+                src={key}
+                width={132}
+                height={132}
+                alt={t("attachmentAlt")}
+                className="w-33 h-33 object-cover"
+                loading="lazy"
+                unoptimized
+              />
+            </div>
+          </button>
+        ))}
+      </div>
+
+      <div
+        className={clsx(
+          "w-35.25 p-px rounded-[36px] bg-linear-to-b transition-all",
+          selectedIndex !== null
+            ? "from-Grey-50/25 to-Grey-800/25 hover:from-Red-300/25 hover:to-Red-500/25"
+            : "from-Grey-50/25 to-Grey-800/25",
+        )}
+      >
+        <button
+          type="button"
+          disabled={selectedIndex === null}
+          onClick={() =>
+            selectedIndex !== null && onConceptSelect(messageId, selectedIndex)
+          }
+          onMouseEnter={() => setBtnHovered(true)}
+          onMouseLeave={() => setBtnHovered(false)}
+          style={{
+            background:
+              btnHovered && selectedIndex !== null
+                ? "linear-gradient(rgba(255,134,134,0.03),rgba(255,134,134,0.03)), #16181D"
+                : "linear-gradient(rgba(255,255,255,0.03),rgba(255,255,255,0.03)), #16181D",
+          }}
+          className="w-full py-3 rounded-[36px] Caption_semibold text-White hover:enabled:text-Red-400 disabled:text-Grey-600 disabled:cursor-not-allowed"
+        >
+          {t("selectConcept")}
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const ChatMessageList = ({
+  messages,
+  onConceptSelect,
+}: {
+  messages: ChatItem[];
+  onConceptSelect: (messageId: string, index: number) => void;
+}) => {
   const t = useTranslations("dashboard.workbench.chatbot");
 
   return (
@@ -21,6 +105,7 @@ const ChatMessageList = ({ messages }: { messages: ChatItem[] }) => {
         const isUser = m.role === "user";
         const isTyping = m.role === "assistant" && m.status === "typing";
         const hasAttachments = (m.attachments?.length ?? 0) > 0;
+        const hasImageKeys = (m.imageKeys?.length ?? 0) > 0;
 
         return (
           <div
@@ -31,6 +116,19 @@ const ChatMessageList = ({ messages }: { messages: ChatItem[] }) => {
               <TypingDots />
             ) : (
               <div className={clsx("max-w-80 flex flex-col gap-2")}>
+                {m.text?.trim() && (
+                  <div
+                    className={clsx(
+                      "max-w-80 py-1.5 rounded-lg Body_3_medium whitespace-pre-line wrap-break-word",
+                      isUser
+                        ? "px-3 bg-Grey-700 text-Grey-50"
+                        : "text-Grey-100 bg-transparent",
+                    )}
+                  >
+                    {m.text}
+                  </div>
+                )}
+
                 {hasAttachments && (
                   <div
                     className={clsx(
@@ -38,6 +136,7 @@ const ChatMessageList = ({ messages }: { messages: ChatItem[] }) => {
                       (m.attachments?.length ?? 0) === 1
                         ? "grid-cols-1"
                         : "grid-cols-2",
+                      isUser ? "justify-items-end" : "justify-items-start",
                     )}
                   >
                     {m.attachments!.map((a) => (
@@ -45,25 +144,64 @@ const ChatMessageList = ({ messages }: { messages: ChatItem[] }) => {
                         key={a.id}
                         src={a.imageUrl}
                         alt={t("attachmentAlt")}
-                        className="w-[8.25rem] h-[8.25rem] rounded object-cover"
+                        className="w-33 h-33 rounded object-cover"
                         loading="lazy"
                       />
                     ))}
                   </div>
                 )}
 
-                {m.text?.trim() && (
-                  <div
-                    className={clsx(
-                      "max-w-80 px-3 py-1.5 rounded-lg Body_3_medium whitespace-pre-line",
-                      isUser
-                        ? "bg-Grey-700 text-Grey-50"
-                        : "text-Grey-100 bg-transparent",
-                    )}
-                  >
-                    {m.text}
-                  </div>
+                {hasImageKeys && m.conceptSelectable && (
+                  <ConceptImageGrid
+                    messageId={m.id}
+                    imageKeys={m.imageKeys!}
+                    onConceptSelect={onConceptSelect}
+                  />
                 )}
+
+                {hasImageKeys &&
+                  !m.conceptSelectable &&
+                  (m.imageKeys!.length === 1 ? (
+                    isVideoUrl(m.imageKeys![0]) ? (
+                      <video
+                        src={m.imageKeys![0]}
+                        controls
+                        className="w-68 h-68 rounded object-cover"
+                      />
+                    ) : (
+                      <Image
+                        src={m.imageKeys![0]}
+                        width={272}
+                        height={272}
+                        alt={t("attachmentAlt")}
+                        className="w-68 h-68 rounded object-cover"
+                        loading="lazy"
+                      />
+                    )
+                  ) : (
+                    <div className="grid grid-cols-2 gap-2 w-68">
+                      {m.imageKeys!.map((key) =>
+                        isVideoUrl(key) ? (
+                          <video
+                            key={key}
+                            src={key}
+                            controls
+                            className="w-33 h-33 rounded object-cover"
+                          />
+                        ) : (
+                          <Image
+                            key={key}
+                            src={key}
+                            width={132}
+                            height={132}
+                            alt={t("attachmentAlt")}
+                            className="w-33 h-33 rounded object-cover"
+                            loading="lazy"
+                          />
+                        ),
+                      )}
+                    </div>
+                  ))}
               </div>
             )}
           </div>
@@ -94,7 +232,7 @@ const ChatRecommendations = ({
             key={text}
             type="button"
             onClick={() => onClickItem(text)}
-            className="max-w-80 rounded-md bg-Grey-700 px-3 py-1.5 Body_3_medium text-Grey-400 hover:text-Grey-50 text-left transition-colors"
+            className="max-w-68 rounded-md bg-Grey-700 px-3 py-1.5 Body_3_medium text-Grey-400 hover:text-Grey-50 text-left transition-colors"
           >
             {text}
           </button>

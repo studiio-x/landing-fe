@@ -15,7 +15,7 @@ const VerificationCompleteStep = ({
   return (
     <div className="flex flex-col">
       <EmailCheck className="w-16 h-16" />
-      <div className={`Subhead_1_medium text-Grey-50 ${locale === "en" ? "mb-[4.5rem]" : "mb-[6.69rem]"} mt-3`}>
+      <div className={`Subhead_1_medium text-Grey-50 ${locale === "en" ? "mb-18" : "mb-[6.69rem]"} mt-3`}>
         {t("title")}
       </div>
 

@@ -5,37 +5,49 @@ interface DashboardCardProps {
   title: string;
   content: string;
   mediaSrc: string;
+  isVideo?: boolean;
   isActive?: boolean;
+  onClick?: () => void;
 }
 
 const DashboardCard = ({
   title,
   content,
   mediaSrc,
+  isVideo = false,
   isActive,
+  onClick,
 }: DashboardCardProps) => {
-  const isVideo = (src: string) => /\.(mp4|webm|ogg)$/i.test(src);
+  const isInteractive = Boolean(onClick);
 
   return (
     <div
-      role="button"
-      tabIndex={0}
+      role={isInteractive ? "button" : undefined}
+      tabIndex={isInteractive ? 0 : -1}
+      onClick={onClick}
+      onKeyDown={(e) => {
+        if (!isInteractive) return;
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onClick?.();
+        }
+      }}
       className={clsx(
-        "h-[12.5rem] w-[19.25rem] group rounded bg-gradient-to-b p-px cursor-pointer",
+        "h-50 w-77 group rounded bg-linear-to-b p-px cursor-pointer",
         {
           "from-Grey-300 to-Grey-700 hover:from-Red-350 hover:to-Red-500":
             !isActive,
           "from-Red-350 to-Red-500": isActive,
-        }
+        },
       )}
     >
       <div className="h-full w-full rounded bg-Grey-800 overflow-hidden flex gap-4">
-        <div className="pl-[1.1875rem] flex flex-col py-5 justify-between w-[7.3125rem]">
+        <div className="pl-4.75 flex flex-col py-5 justify-between w-29.25">
           <h3
             className={clsx(
               "whitespace-pre-line",
-              isVideo(mediaSrc) ? "Body_2_semibold" : "Body_1_semibold",
-              isActive ? "text-Red-300" : "text-white group-hover:text-Red-300"
+              isVideo ? "Body_2_semibold" : "Body_1_semibold",
+              isActive ? "text-Red-300" : "text-white group-hover:text-Red-300",
             )}
           >
             {title}
@@ -45,8 +57,8 @@ const DashboardCard = ({
           </span>
         </div>
 
-        <div className="relative h-full w-[11.875rem] shrink-0">
-          {isVideo(mediaSrc) ? (
+        <div className="relative h-full w-47.5 shrink-0">
+          {isVideo ? (
             <video
               className="h-full w-full object-cover"
               src={mediaSrc}
@@ -57,7 +69,13 @@ const DashboardCard = ({
               preload="metadata"
             />
           ) : (
-            <Image src={mediaSrc} alt={title} fill className="object-cover" />
+            <Image
+              src={mediaSrc}
+              alt={title}
+              fill
+              sizes="190px"
+              className="object-cover"
+            />
           )}
         </div>
       </div>

@@ -69,6 +69,11 @@
     "title": "For the best experience,\nplease use a desktop.",
     "imageAlt": "Desktop usage guide"
   },
+  "sessionExpiredModal": {
+    "title": "Your session has expired",
+    "description": "For your security, you've been logged out.\nPlease log in again.",
+    "confirmLabel": "Log in"
+  },
   "login": {
     "title": "Log in to <brand>StudioX</brand>",
     "closeLabel": "Close",
@@ -102,7 +107,9 @@
     "error": {
       "emailSendFailed": {
         "title": "Failed to send email",
-        "description": "We couldn't send the email.\nPlease try again or contact support."
+        "description": "We’re having trouble sending the email right now.\nPlease try again in a moment,",
+        "contact": "or contact us if the issue persists:",
+        "contactEmail": "studiox.co.kr@gmail.com"
       },
       "emailAlreadyRegistered": {
         "title": "Email already registered",
@@ -147,6 +154,7 @@
       "codePlaceholder": "6-digit code",
       "codeAriaLabel": "Verification code",
       "submit": "Continue",
+      "invalidCode": "*Invalid verification code.",
       "noEmail": "Didn't receive the email?",
       "timerMinutes": "You can resend in {minutes}:{seconds}.",
       "timerSeconds": "You can resend in {seconds}s.",
@@ -203,6 +211,11 @@
       "hoverText": "Generate image\nwith this background",
       "empty": "No templates available"
     },
+    "sidebar": {
+      "createButton": "Create",
+      "newProject": "Start New Project",
+      "continueProject": "Continue Project"
+    },
     "create": {
       "badge": "Start New Project",
       "title": "Choose the task you want.",
@@ -212,6 +225,17 @@
       "badge": "Continue Project",
       "title": "Choose the task you want.",
       "backButtonLabel": "Go to previous page"
+    },
+    "project": {
+      "folderItem": {
+        "folderLabel": "Folder",
+        "projectLabel": "Project",
+        "folderThumbnailAlt": "Folder thumbnail",
+        "projectThumbnailAlt": "Project thumbnail",
+        "noImage": "No image",
+        "nameInputLabel": "Name",
+        "moreOptions": "More options"
+      }
     },
     "workbench": {
       "tabs": {
@@ -226,6 +250,15 @@
       },
       "editModeGuide": "Highlight all the parts you want to edit.",
       "uploadedImageAlt": "Uploaded image",
+      "retry": "Retry",
+      "cutoutErrorMessage": "An error occurred while processing the image.",
+      "backgroundCompositeErrorMessage": "An error occurred while compositing the background. Please choose a background again.",
+      "unsupportedImageFormat": "HEIC/HEIF files aren't supported.",
+      "processingStage": {
+        "cutout": "Removing background...",
+        "compositing": "Compositing background...",
+        "generatingVideo": "Generating video..."
+      },
       "emptyState": {
         "title": "Ideas to Explore",
         "ideas": {
@@ -240,6 +273,18 @@
         "description": "A product image is required\nto apply a background image.",
         "uploadGuide": "Click to upload product image"
       },
+      "backgroundRequiredModal": {
+        "closeLabel": "Close",
+        "title": "Please select\na background image first",
+        "description": "A generated background image is required\nto use the chatbot.",
+        "uploadGuide": "Select and generate a background\nin the Background tab."
+      },
+      "videoRequiredModal": {
+        "closeLabel": "Close",
+        "title": "Please finish\ngenerating a video first",
+        "description": "A generated video is required\nto use the chatbot.",
+        "uploadGuide": "Select a motion and generate\nin the Options tab."
+      },
       "historyPanel": {
         "emptyTitle": "Make your\nfirst generation",
         "emptyDescription": "Create beautiful images\nwith nothing but a text.",
@@ -249,14 +294,10 @@
         "imageAlt": "Generated image {index}"
       },
       "backgroundTab": {
-        "categories": {
-          "display": "General Display",
-          "fabric": "Fabric & Velvet",
-          "outdoor": "Outdoor"
-        },
         "uploadBackground": "Upload Background",
         "generate": "Generate",
-        "noSearchResults": "No search results found"
+        "noSearchResults": "No search results found",
+        "customBackgroundErrorMessage": "An error occurred while uploading the background."
       },
       "optionsTab": {
         "selectQuality": "Select video quality",
@@ -265,7 +306,8 @@
         "premiumQuality": "Premium Quality",
         "creditsConsumed": "{credits} video credits\nwill be consumed.",
         "uploadBackground": "Upload Background",
-        "generate": "Generate"
+        "generate": "Generate",
+        "generateErrorMessage": "An error occurred while generating the video."
       },
       "searchBar": {
         "placeholder": "Search categories",
@@ -287,18 +329,90 @@
         "inputPlaceholder": "Tell the AI what you want to change.",
         "sendLabel": "Send",
         "attachmentAlt": "Attachment",
+        "refineDefaultMessage": "Please refine the marked area.",
+        "referenceImageDefaultMessage": "I have a reference image I want to recreate.",
+        "errorRetry": "An error occurred. Please try again.",
         "recommendedLabel": "Recommended",
         "plusMenu": {
           "add": "Add",
           "uploadReferenceImage": "Upload reference",
           "markEditArea": "Mark Areas\nto Edit"
         },
+        "selectConcept": "Generate with this concept",
         "recommendations": {
-          "0": "I have a reference image I want to recreate.",
-          "1": "I’ll describe the background, you create it.",
-          "2": "Suggest a concept that matches the product."
+          "0": "Suggest a concept that matches the product."
         }
       }
     }
+  },
+  "footer": {
+    "tagline": "No prompts needed — just talk to your AI studio.",
+    "followUs": "Follow us",
+    "instagram": "Instagram",
+    "company": "Company",
+    "feedback": "Feedback",
+    "resources": "Resources",
+    "privacyPolicy": "Privacy policy",
+    "companyInfo": {
+      "name": "Relex Inc.",
+      "representatives": "Representatives: Ryuwon Kim, Semin Lim",
+      "businessNumber": "Business Registration: 432-81-03889",
+      "address": "Address: 402-B22, Aranya Plaza, 1 Wollang-ro 8-gil, Jeju-si, Jeju-do, South Korea",
+      "phone": "Tel: {phone}",
+      "email": "Email: {email}"
+    },
+    "copyright": "© 2026 Relex Inc. All Rights Reserved"
+  },
+  "sidebar": {
+    "pages": {
+      "dashboard": "Dash board",
+      "project": "Projects"
+    },
+    "sharedProject": "Shared Projects",
+    "myProject": "My Project",
+    "generate": "Generate",
+    "newProject": "Start New Project",
+    "continueProject": "Continue Project"
+  },
+  "dropdown": {
+    "sort": {
+      "newest": "Newest",
+      "oldest": "Oldest"
+    },
+    "auth": {
+      "FULL_ACCESS": "Full Access",
+      "fullAccessDesc": "Edit and share with others",
+      "WRITE": "Edit Only",
+      "editOnlyDesc": "Edit allowed, no sharing",
+      "READ": "Read Only",
+      "readOnlyDesc": "No editing or sharing"
+    },
+    "lang": {
+      "ko": "Korean",
+      "en": "English"
+    }
+  },
+  "project": {
+    "title": "Projects",
+    "subtitle": "{user}'s Projects"
+  },
+  "createFolder": {
+    "title": "Create Folder",
+    "closeLabel": "Close",
+    "folderNameLabel": "Folder Name",
+    "folderNamePlaceholder": "Untitled Folder",
+    "inviteByEmail": "Invite by Email",
+    "optional": "Optional",
+    "emailPlaceholder": "Enter email address",
+    "inviteButton": "Invite",
+    "createButton": "Create",
+    "creating": "Creating..."
+  },
+  "inviteModal": {
+    "title": "{user}'s Project",
+    "inviteByEmail": "Invite by Email",
+    "emailPlaceholder": "Enter email address",
+    "inviteButton": "Invite",
+    "inviting": "Inviting..."
   }
 }

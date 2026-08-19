@@ -13,6 +13,8 @@ export interface ChatItem {
   text: string;
   status?: ChatStatus;
   attachments?: ChatAttachment[];
+  imageKeys?: string[];        // AI 응답 이미지 (S3 key or URL)
+  conceptSelectable?: boolean; // CONCEPT 모드: 이미지 선택 UI 표시 여부
 }
 
 export interface ChatSendPayload {

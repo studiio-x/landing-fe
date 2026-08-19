@@ -4,14 +4,17 @@ import { Image, Plus, Scissor } from "@/assets/icons";
 import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { useLocale, useTranslations } from "next-intl";
+import { acceptImageFile } from "@/utils/imageFileValidation";
 
 interface PlusMenuProps {
   onUploadImage: (file: File) => void;
   onClickMark: () => void;
+  disabled?: boolean;
 }
 
-const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
+const PlusMenu = ({ onUploadImage, onClickMark, disabled }: PlusMenuProps) => {
   const t = useTranslations("dashboard.workbench.chatbot.plusMenu");
+  const tWorkbench = useTranslations("dashboard.workbench");
   const locale = useLocale();
   const plusWrapRef = useRef<HTMLDivElement | null>(null);
 
@@ -43,14 +46,16 @@ const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
   return (
     <div
       ref={plusWrapRef}
-      className="relative flex items-start gap-[0.625rem]"
+      className="relative flex items-start gap-2.5"
       onMouseEnter={openPlus}
       onMouseLeave={closePlus}
     >
       <button
         type="button"
         aria-label={t("add")}
+        disabled={disabled}
         onClick={() => {
+          if (disabled) return;
           setIsPlusPinned((prev) => !prev);
           setIsPlusOpen(true);
         }}
@@ -65,13 +70,13 @@ const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
 
       <div
         className={clsx(
-          "absolute bottom-full -right-[3.125rem] z-50 pb-5 transition duration-150",
+          "absolute bottom-full -right-12.5 z-50 pb-5 transition duration-150",
           showPlusPopup
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 translate-y-1 pointer-events-none",
         )}
       >
-        <div className="relative w-[13.25rem] rounded-md p-[1px] bg-gradient-to-b from-Red-500/25 backdrop-blur-[8px] to-Red-500/10 shadow-[0_0px_20px_rgba(8,8,8,0.12)]">
+        <div className="relative w-53 rounded-md p-px bg-linear-to-b from-Red-500/25 backdrop-blur-sm to-Red-500/10 shadow-[0_0px_20px_rgba(8,8,8,0.12)]">
           <div className="absolute inset-px bg-Grey-600/75 pointer-events-none rounded-md" />
           <div
             className={clsx(
@@ -92,16 +97,17 @@ const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
                   className="hidden"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
+                    e.target.value = "";
                     if (!file) return;
+                    if (!acceptImageFile(file, tWorkbench("unsupportedImageFormat"))) return;
                     setIsPlusPinned(false);
                     setIsPlusOpen(false);
                     onUploadImage(file);
-                    e.target.value = "";
                   }}
                 />
 
-                <div className="rounded-full p-[1px] bg-gradient-to-b from-Grey-500 to-Grey-700 group-hover:from-Red-300 group-hover:to-Red-500">
-                  <div className="h-[2.75rem] w-[2.75rem] rounded-full bg-Grey-800 group-hover:bg-Red-500 flex items-center justify-center">
+                <div className="rounded-full p-px bg-linear-to-b from-Grey-500 to-Grey-700 group-hover:from-Red-300 group-hover:to-Red-500">
+                  <div className="h-11 w-11 rounded-full bg-Grey-800 group-hover:bg-Red-500 flex items-center justify-center">
                     <Image className="w-6 h-6" />
                   </div>
                 </div>
@@ -120,8 +126,8 @@ const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
                   onClickMark();
                 }}
               >
-                <div className="group rounded-full p-[1px] bg-gradient-to-b from-Grey-500 to-Grey-700 group-hover:from-Red-300 group-hover:to-Red-500">
-                  <div className="h-[2.75rem] w-[2.75rem] rounded-full bg-Grey-800 group-hover:bg-Red-500 flex items-center justify-center">
+                <div className="group rounded-full p-px bg-linear-to-b from-Grey-500 to-Grey-700 group-hover:from-Red-300 group-hover:to-Red-500">
+                  <div className="h-11 w-11 rounded-full bg-Grey-800 group-hover:bg-Red-500 flex items-center justify-center">
                     <Scissor className="w-6 h-6" />
                   </div>
                 </div>
@@ -129,7 +135,7 @@ const PlusMenu = ({ onUploadImage, onClickMark }: PlusMenuProps) => {
                 <span
                   className={clsx(
                     "Caption_medium text-Grey-100 text-center whitespace-pre-line",
-                    locale === "en" && "w-[4.0625rem]",
+                    locale === "en" && "w-16.25",
                   )}
                 >
                   {t("markEditArea")}

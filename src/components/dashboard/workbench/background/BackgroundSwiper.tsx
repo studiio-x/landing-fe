@@ -7,8 +7,6 @@ import { Down } from "@/assets/icons";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
 
 type BackgroundItem = {
   id: string;
@@ -25,6 +23,9 @@ interface BackgroundSwiperProps {
   isLoading?: boolean;
 }
 
+const SLIDES_PER_VIEW = 3;
+const SLIDES_PER_GROUP = 3;
+
 const BackgroundSwiper = ({
   id,
   title,
@@ -33,7 +34,14 @@ const BackgroundSwiper = ({
   onSelect,
   isLoading,
 }: BackgroundSwiperProps) => {
-  const showSkeleton = isLoading || items.length === 0;
+  if (!isLoading && items.length === 0) {
+    return null;
+  }
+
+  const showSkeleton = isLoading;
+  const canLoop = items.length >= SLIDES_PER_VIEW * 2;
+  const hasOverflow = items.length > SLIDES_PER_VIEW;
+  const hideNavigation = showSkeleton || !hasOverflow;
 
   return (
     <section className="w-full flex flex-col gap-2">
@@ -47,21 +55,25 @@ const BackgroundSwiper = ({
         </h3>
       )}
 
-      <div className="relative items-center flex gap-3">
-        {!showSkeleton && (
-          <button className={`swiper-prev-${id}`} aria-label="이전">
-            <Down className="rotate-90 h-6 w-6" />
-          </button>
-        )}
+      <div className="relative items-center flex gap-3 justify-center">
+        <button
+          type="button"
+          className={clsx(`swiper-prev-${id}`, hideNavigation && "invisible")}
+          disabled={hideNavigation}
+          aria-hidden={hideNavigation}
+          aria-label="이전"
+        >
+          <Down className="rotate-90 h-6 w-6" />
+        </button>
 
-        <div className="flex-1 w-[324px] min-w-0">
+        <div className="w-81 min-w-0">
           {showSkeleton ? (
             <div className="flex gap-3 justify-center">
               {Array.from({ length: 3 }, (_, i) => (
                 <div
                   key={i}
                   className={clsx(
-                    "w-[6.25rem] h-[6.25rem] rounded bg-Grey-700",
+                    "w-25 h-25 rounded bg-Grey-700",
                     isLoading && "animate-pulse",
                   )}
                 />
@@ -70,10 +82,10 @@ const BackgroundSwiper = ({
           ) : (
             <Swiper
               modules={[Navigation]}
-              slidesPerView={3}
-              slidesPerGroup={3}
+              slidesPerView={SLIDES_PER_VIEW}
+              slidesPerGroup={SLIDES_PER_GROUP}
               spaceBetween={12}
-              loop
+              loop={canLoop}
               navigation={{
                 prevEl: `.swiper-prev-${id}`,
                 nextEl: `.swiper-next-${id}`,
@@ -87,13 +99,13 @@ const BackgroundSwiper = ({
                     <button
                       type="button"
                       onClick={() => onSelect(item.id)}
-                      className="w-full"
+                      className="w-25"
                     >
                       <div
                         className={clsx(
-                          "relative w-full h-[6.25rem] rounded overflow-hidden",
+                          "relative w-full h-25 rounded overflow-hidden",
                           isSelected
-                            ? "bg-gradient-to-b from-Red-350 to-Red-500 p-[1.5px]"
+                            ? "bg-linear-to-b from-Red-350 to-Red-500 p-[1.5px]"
                             : "bg-Grey-800",
                         )}
                       >
@@ -115,11 +127,15 @@ const BackgroundSwiper = ({
           )}
         </div>
 
-        {!showSkeleton && (
-          <button className={`swiper-next-${id}`} aria-label="다음">
-            <Down className="-rotate-90 h-6 w-6" />
-          </button>
-        )}
+        <button
+          type="button"
+          className={clsx(`swiper-next-${id}`, hideNavigation && "invisible")}
+          disabled={hideNavigation}
+          aria-hidden={hideNavigation}
+          aria-label="다음"
+        >
+          <Down className="-rotate-90 h-6 w-6" />
+        </button>
       </div>
     </section>
   );

@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 
-import { signup, login, sendVerificationEmail, checkEmailValidation } from "@/apis/authApi";
+import { signup, login, sendVerificationEmail, checkEmailValidation, sendPasswordEmailVerification, verifyPasswordCode, resetPassword } from "@/apis/authApi";
 
 export const useSignup = () =>
   useMutation({
@@ -20,4 +20,19 @@ export const useSendVerificationEmail = () =>
 export const useCheckEmailValidation = () =>
   useMutation({
     mutationFn: checkEmailValidation,
+  });
+
+export const useSendPasswordEmailVerification = () =>
+  useMutation({
+    mutationFn: sendPasswordEmailVerification,
+  });
+
+export const useVerifyPasswordCode = () =>
+  useMutation({
+    mutationFn: verifyPasswordCode,
+  });
+
+export const useResetPassword = () =>
+  useMutation({
+    mutationFn: resetPassword,
   });

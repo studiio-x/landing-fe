@@ -3,7 +3,9 @@ import "./globals.css";
 import { pretendard, calSans } from "./font";
 import QueryProvider from "./query-provider";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
+import { getMessages, setRequestLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import { headers } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Studio X",
@@ -15,19 +17,25 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headerStore = await headers();
+  const acceptLanguage = headerStore.get("accept-language") || "";
+  const browserLang = acceptLanguage.split(",")[0]?.split("-")[0];
+  const locale = browserLang && routing.locales.includes(browserLang as (typeof routing.locales)[number])
+    ? browserLang
+    : routing.defaultLocale;
+
+  setRequestLocale(locale);
   const messages = await getMessages();
 
   return (
     <html
-      lang="ko"
+      lang={locale}
       className={`${pretendard.variable} ${calSans.variable} scroll-smooth h-full`}
     >
       <body className="h-full antialiased">
-        <QueryProvider>
-          <NextIntlClientProvider messages={messages}>
-            {children}
-          </NextIntlClientProvider>
-        </QueryProvider>
+        <NextIntlClientProvider locale={locale} messages={messages}>
+          <QueryProvider>{children}</QueryProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

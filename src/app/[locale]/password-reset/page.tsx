@@ -13,6 +13,11 @@ import {
   PASSWORD_RESET_FUNNEL_ID,
   PASSWORD_RESET_STEPS,
 } from "@/constants/passwordReset/funnel";
+import {
+  useSendPasswordEmailVerification,
+  useVerifyPasswordCode,
+  useResetPassword,
+} from "@/hooks/queries/useAuthApi";
 
 import EmailInputStep from "@/components/passwordReset/EmailInputStep";
 import CodeVerificationStep from "@/components/passwordReset/CodeVerificationStep";
@@ -24,6 +29,10 @@ const PasswordResetPage = () => {
   const router = useRouter();
   const t = useTranslations("passwordReset");
   const [isCompleteModalOpen, setIsCompleteModalOpen] = useState(false);
+
+  const sendPasswordEmailVerification = useSendPasswordEmailVerification();
+  const verifyPasswordCode = useVerifyPasswordCode();
+  const resetPassword = useResetPassword();
 
   const funnel = useFunnel<PasswordResetFunnelSteps>({
     id: PASSWORD_RESET_FUNNEL_ID,
@@ -37,8 +46,8 @@ const PasswordResetPage = () => {
     <div className="min-h-dvh flex flex-col">
       <Header />
 
-      <main className="flex flex-col items-center justify-center flex-1 pb-[var(--header-height)]">
-        <div className="h-fit max-w-[28.75rem] w-full rounded-lg bg-gradient-to-b from-Red-500/35 to-Red-500/15 p-[1.5px] shadow-[0_0_8px_0_rgba(255,82,82,0.10),0_0_20px_0_rgba(8,8,8,0.12)]">
+      <main className="flex flex-col items-center justify-center flex-1 pb-(--header-height)">
+        <div className="h-fit max-w-115 w-full rounded-lg bg-linear-to-b from-Red-500/35 to-Red-500/15 p-[1.5px] shadow-[0_0_8px_0_rgba(255,82,82,0.10),0_0_20px_0_rgba(8,8,8,0.12)]">
           <div className="pt-10 pb-12 px-[3.15625rem] rounded-[calc(0.5rem-1.5px)] bg-Grey-900 relative">
             <button
               onClick={() =>
@@ -56,9 +65,12 @@ const PasswordResetPage = () => {
               EmailInput={({ context, history }) => (
                 <EmailInputStep
                   email={context.email ?? ""}
-                  onNext={({ email }) => {
+                  isLoading={sendPasswordEmailVerification.isPending}
+                  onNext={async ({ email }) => {
+                    await sendPasswordEmailVerification.mutateAsync({ email });
                     history.push(PASSWORD_RESET_STEPS.CODE_VERIFICATION, {
                       email,
+                      sentAt: Date.now(),
                     });
                   }}
                 />
@@ -66,20 +78,35 @@ const PasswordResetPage = () => {
               CodeVerification={({ context, history }) => (
                 <CodeVerificationStep
                   email={context.email}
-                  onNext={({ code }) => {
+                  sentAt={context.sentAt}
+                  isLoading={verifyPasswordCode.isPending}
+                  isResending={sendPasswordEmailVerification.isPending}
+                  isError={verifyPasswordCode.isError}
+                  onNext={async ({ code }) => {
+                    await verifyPasswordCode.mutateAsync({
+                      email: context.email,
+                      code,
+                    });
                     history.push(PASSWORD_RESET_STEPS.PASSWORD_RESET, {
                       ...context,
                       code,
                     });
                   }}
-                  onResend={() => {
-                    // TODO: 인증코드 재전송 API 호출
+                  onResend={async () => {
+                    await sendPasswordEmailVerification.mutateAsync({
+                      email: context.email,
+                    });
                   }}
                 />
               )}
               PasswordReset={({ context }) => (
                 <PasswordResetStep
-                  onComplete={() => {
+                  isLoading={resetPassword.isPending}
+                  onComplete={async ({ password }) => {
+                    await resetPassword.mutateAsync({
+                      email: context.email,
+                      password,
+                    });
                     setIsCompleteModalOpen(true);
                   }}
                 />
