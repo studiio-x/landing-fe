@@ -6,7 +6,11 @@ import { useTranslations } from "next-intl";
 import MeatballModal from "./MeatballModal";
 import useClickOutside from "@/hooks/useClickOutside";
 import { useSearchParams } from "next/navigation";
-import { useMoveFolder, useUpdateFolderName } from "@/hooks/queries/useProject";
+import {
+  useMoveFolder,
+  useUnlinkFolder,
+  useUpdateFolderName,
+} from "@/hooks/queries/useProject";
 
 interface FolderItemProps {
   lists: {
@@ -30,10 +34,12 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
   const lastValidValue = useRef<string>(name);
   const searchParams = useSearchParams();
   const { mutate: moveFolder } = useMoveFolder();
+  const { mutate: unlinkFolder } = useUnlinkFolder();
   const { mutate: updateFolderName } = useUpdateFolderName();
+  const [isDragOver, setIsDragOver] = useState(false);
 
   const folderId = Number(searchParams.get("folderId"));
-  const isDraggable = !folderId;
+  const isSubFolder = !!folderId;
 
   useClickOutside(meatballRef, () => setIsOpenMeatball(false), isOpenMeatball);
 
@@ -119,10 +125,16 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
 
   const onDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const onDragLeave = () => {
+    setIsDragOver(false);
   };
 
   const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
+    setIsDragOver(false);
     const draggedFolderId = Number(e.dataTransfer.getData("draggedFolderId"));
 
     moveFolder(
@@ -144,10 +156,11 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
   return (
     <div
       key={index}
-      className="relative w-77 cursor-pointer"
-      draggable={isDraggable}
+      className={`relative w-77 cursor-pointer transition-opacity ${isDragOver ? "opacity-60 ring-2 ring-Red-400 rounded-lg" : ""}`}
+      draggable
       onDragStart={onDragStart}
       onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
       onDrop={onDrop}
     >
       {lists.isFolder ? (
@@ -286,6 +299,18 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
                   setRenameModalOpen={setRenameModalOpen}
                   setDeleteTargetId={setDeleteTargetId}
                   isFolder={lists.isFolder}
+                  isSubFolder={isSubFolder}
+                  onUnlink={() => {
+                    unlinkFolder(lists.folderId, {
+                      onSuccess: () => {
+                        console.log("폴더 연결 해제 성공");
+                        setIsOpenMeatball(false);
+                      },
+                      onError: (error) => {
+                        console.error("폴더 연결 해제 실패:", error);
+                      },
+                    });
+                  }}
                 />
               )}
             </div>

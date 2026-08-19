@@ -8,6 +8,7 @@ import {
   moveFolder,
   deleteFolder,
   updateFolderName,
+  unlinkFolder,
 } from "@/apis/folderApi";
 import { GetFolderDetailParams } from "@/types/api/folder.type";
 import {
@@ -24,10 +25,16 @@ export const useProject = () =>
     queryFn: getFolders,
   });
 
-export const useMakeFolder = () =>
-  useMutation({
+export const useMakeFolder = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
     mutationFn: (params: makeFolderParams) => makefolder(params),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["project"] });
+      queryClient.invalidateQueries({ queryKey: ["folderDetail"] });
+    },
   });
+};
 
 export const useInviteFolder = () =>
   useMutation({
@@ -51,10 +58,27 @@ export const useUpdateUserPermission = () => {
   });
 };
 
-export const useMoveFolder = () =>
-  useMutation({
+export const useMoveFolder = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
     mutationFn: (params: moveFolderParams) => moveFolder(params),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["project"] });
+      queryClient.invalidateQueries({ queryKey: ["folderDetail"] });
+    },
   });
+};
+
+export const useUnlinkFolder = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (folderId: number) => unlinkFolder(folderId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["project"] });
+      queryClient.invalidateQueries({ queryKey: ["folderDetail"] });
+    },
+  });
+};
 
 export const useDeleteFolder = () => {
   const queryClient = useQueryClient();
@@ -83,7 +107,13 @@ export const useFolderDetail = (
   params?: Omit<GetFolderDetailParams, "folderId">,
 ) =>
   useQuery({
-    queryKey: ["folderDetail", folderId, params?.pageNum, params?.limit, params?.sort],
+    queryKey: [
+      "folderDetail",
+      folderId,
+      params?.pageNum,
+      params?.limit,
+      params?.sort,
+    ],
     queryFn: () =>
       getFolderDetail({
         folderId,
