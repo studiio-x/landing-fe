@@ -157,7 +157,7 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
   return (
     <div
       key={index}
-      className={`relative w-77 cursor-pointer transition-opacity ${isDragOver ? "opacity-60 ring-2 ring-Red-400 rounded-lg" : ""}`}
+      className={`relative w-77 cursor-pointer transition-all duration-200 hover:scale-[1.03] ${isDragOver ? "opacity-60 ring-2 ring-Red-400 rounded-lg" : ""}`}
       draggable
       onDragStart={onDragStart}
       onDragOver={onDragOver}

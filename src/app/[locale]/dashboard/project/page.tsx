@@ -15,8 +15,8 @@ import { useTranslations } from "next-intl";
 import {
   useDeleteFolder,
   useFolderDetail,
+  useMoveFolder,
   useProject,
-  useUnlinkFolder,
 } from "@/hooks/queries/useProject";
 import { useMypage } from "@/hooks/queries/useMypageApi";
 
@@ -25,7 +25,7 @@ const ProjectPage = () => {
   const { data } = useProject();
   const { data: userData } = useMypage();
   const { mutate: deleteFolder } = useDeleteFolder();
-  const { mutate: unlinkFolder } = useUnlinkFolder();
+  const { mutate: moveFolder } = useMoveFolder();
   const searchParams = useSearchParams();
   const params = new URLSearchParams();
   const sharedProjectFromQuery =
@@ -162,20 +162,29 @@ const ProjectPage = () => {
                 }}
                 onDragEnter={(e) => {
                   e.preventDefault();
+                  e.stopPropagation();
                   setIsParentDragOver(true);
                 }}
                 onDragOver={(e) => {
                   e.preventDefault();
+                  e.stopPropagation();
                 }}
-                onDragLeave={() => setIsParentDragOver(false)}
+                onDragLeave={(e) => {
+                  e.stopPropagation();
+                  setIsParentDragOver(false);
+                }}
                 onDrop={(e) => {
                   e.preventDefault();
+                  e.stopPropagation();
                   setIsParentDragOver(false);
                   const draggedFolderId = Number(
                     e.dataTransfer.getData("draggedFolderId"),
                   );
-                  if (draggedFolderId) {
-                    unlinkFolder(draggedFolderId);
+                  if (draggedFolderId && rootFolderId) {
+                    moveFolder({
+                      folderId: draggedFolderId,
+                      newFolderId: rootFolderId,
+                    });
                   }
                 }}
               >
