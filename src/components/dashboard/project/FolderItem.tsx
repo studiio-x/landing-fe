@@ -179,7 +179,7 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
           >
             {(() => {
               const visibleThumbnails = (
-                lists.imageUrl as (string | null)[]
+                (lists.imageUrl ?? []) as (string | null)[]
               ).filter((src): src is string => Boolean(src));
 
               if (visibleThumbnails.length === 0) {
