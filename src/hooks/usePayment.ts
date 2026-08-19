@@ -1,63 +1,63 @@
 "use client";
 
 import { loadTossPayments } from "@tosspayments/tosspayments-sdk";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { paymentApi } from "@/apis/paymentApi";
-import type { BillingCycle, PlanKey } from "@/types/api/payment.type";
+import type {
+  BillingPlan,
+  BillingKeyCardRequest,
+  BillingKeyAuthKeyRequest,
+} from "@/types/api/payment.type";
 
 const TOSS_CLIENT_KEY = process.env.NEXT_PUBLIC_TOSS_CLIENT_KEY || "";
 
 export const usePayment = () => {
-  /** 신규 결제 */
-  const requestPayment = async (planKey: PlanKey, billingCycle: BillingCycle) => {
-    const { data: order } = await paymentApi.createOrder({ planKey, billingCycle });
-
+  /** Toss 결제창으로 빌링키 인증 요청 (결제창형) */
+  const requestBillingAuth = async (plan: BillingPlan, customerKey: string) => {
     const tossPayments = await loadTossPayments(TOSS_CLIENT_KEY);
-    const payment = tossPayments.payment({ customerKey: order.customerEmail });
+    const payment = tossPayments.payment({ customerKey });
 
-    await payment.requestPayment({
+    await payment.requestBillingAuth({
       method: "CARD",
-      amount: { currency: "KRW", value: order.amount },
-      orderId: order.orderId,
-      orderName: order.orderName,
-      customerEmail: order.customerEmail,
-      customerName: order.customerName,
-      successUrl: `${window.location.origin}/payment/success`,
+      successUrl: `${window.location.origin}/payment/success?plan=${plan}`,
       failUrl: `${window.location.origin}/payment/fail`,
     });
   };
 
-  /** 구독 변경 (업그레이드/다운그레이드) - 환불+재결제 */
-  const changeSubscription = async (newPlanKey: PlanKey, newBillingCycle: BillingCycle) => {
-    const { data: changeOrder } = await paymentApi.changeSubscription({
-      newPlanKey,
-      newBillingCycle,
-    });
+  /** 빌링키 등록 (인증키 - success 페이지에서 호출) */
+  const registerBillingKeyByAuthKey = useMutation({
+    mutationFn: ({ plan, data }: { plan: BillingPlan; data: BillingKeyAuthKeyRequest }) =>
+      paymentApi.registerBillingKeyByAuthKey(plan, data),
+  });
 
-    // 추가 결제가 필요한 경우 (업그레이드)
-    if (changeOrder.amount > 0) {
-      const tossPayments = await loadTossPayments(TOSS_CLIENT_KEY);
-      const payment = tossPayments.payment({ customerKey: changeOrder.customerEmail });
+  /** 빌링키 등록 (카드 직접 입력) */
+  const registerBillingKeyByCard = useMutation({
+    mutationFn: ({ plan, data }: { plan: BillingPlan; data: BillingKeyCardRequest }) =>
+      paymentApi.registerBillingKeyByCard(plan, data),
+  });
 
-      await payment.requestPayment({
-        method: "CARD",
-        amount: { currency: "KRW", value: changeOrder.amount },
-        orderId: changeOrder.orderId,
-        orderName: changeOrder.orderName,
-        customerEmail: changeOrder.customerEmail,
-        customerName: changeOrder.customerName,
-        successUrl: `${window.location.origin}/payment/success`,
-        failUrl: `${window.location.origin}/payment/fail`,
-      });
-    }
-
-    return changeOrder;
-  };
+  /** 구독 변경 */
+  const changeSubscription = useMutation({
+    mutationFn: (plan: BillingPlan) => paymentApi.changeSubscription(plan),
+  });
 
   /** 구독 취소 */
-  const cancelSubscription = async () => {
-    const { data } = await paymentApi.cancelSubscription();
-    return data;
-  };
+  const cancelSubscription = useMutation({
+    mutationFn: () => paymentApi.cancelSubscription(),
+  });
 
-  return { requestPayment, changeSubscription, cancelSubscription };
+  return {
+    requestBillingAuth,
+    registerBillingKeyByAuthKey,
+    registerBillingKeyByCard,
+    changeSubscription,
+    cancelSubscription,
+  };
 };
+
+/** 구독 가격 조회 */
+export const useSubscriptionPrice = (plan: BillingPlan) =>
+  useQuery({
+    queryKey: ["subscriptionPrice", plan],
+    queryFn: () => paymentApi.getSubscriptionPrice(plan),
+  });

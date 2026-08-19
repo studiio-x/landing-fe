@@ -1,55 +1,24 @@
+/** UI에서 사용하는 플랜 키 (소문자) */
 export type PlanKey = "basic" | "standard" | "pro" | "enterprise";
-export type BillingCycle = "monthly" | "yearly";
 
-export interface SubscriptionInfo {
-  planKey: PlanKey;
-  billingCycle: BillingCycle;
-  startDate: string;
-  endDate: string;
-  creditsUsed: number;
-  creditsTotal: number;
+/** 결제 API에서 사용하는 플랜 (대문자) */
+export type BillingPlan = "FREE" | "BASIC" | "STANDARD" | "PRO";
+
+export interface BillingKeyCardRequest {
+  cardNumber: string;
+  cardExpirationMonth: string;
+  cardExpirationYear: string;
+  cardPassword: string;
+  customerIdentityNumber: string;
+  customerKey: string;
+  customerEmail?: string;
+  customerName?: string;
+  cavv?: { masking: string; plain: string };
+  eci?: { masking: string; plain: string };
+  xid?: { masking: string; plain: string };
 }
 
-export interface PaymentOrderRequest {
-  planKey: PlanKey;
-  billingCycle: BillingCycle;
-}
-
-export interface PaymentOrderResponse {
-  orderId: string;
-  orderName: string;
-  amount: number;
-  customerEmail: string;
-  customerName: string;
-}
-
-export interface PaymentConfirmRequest {
-  paymentKey: string;
-  orderId: string;
-  amount: number;
-}
-
-export interface PaymentConfirmResponse {
-  paymentKey: string;
-  orderId: string;
-  status: string;
-}
-
-export interface SubscriptionChangeRequest {
-  newPlanKey: PlanKey;
-  newBillingCycle: BillingCycle;
-}
-
-export interface SubscriptionChangeResponse {
-  refundAmount: number;
-  chargeAmount: number;
-  orderId: string;
-  orderName: string;
-  amount: number;
-  customerEmail: string;
-  customerName: string;
-}
-
-export interface SubscriptionCancelResponse {
-  refundAmount: number;
+export interface BillingKeyAuthKeyRequest {
+  authKey: string;
+  customerKey: string;
 }
