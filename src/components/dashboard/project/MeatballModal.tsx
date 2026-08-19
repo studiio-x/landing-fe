@@ -1,20 +1,16 @@
 interface MeatballModalProps {
   isFolder: boolean;
   folderId: number;
-  isSubFolder: boolean;
   setDeleteTargetId: (folderId: number | null) => void;
   setRenameModalOpen: (open: boolean) => void;
-  onUnlink?: () => void;
   meatballRef: React.RefObject<HTMLDivElement | null>;
 }
 
 const MeatballModal = ({
   isFolder,
   folderId,
-  isSubFolder,
   setDeleteTargetId,
   setRenameModalOpen,
-  onUnlink,
   meatballRef,
 }: MeatballModalProps) => {
   return (
@@ -33,18 +29,6 @@ const MeatballModal = ({
       <button type="button" onClick={() => setRenameModalOpen(true)}>
         이름 바꾸기
       </button>
-      {isSubFolder && onUnlink && (
-        <>
-          <span className="bg-Grey-500 h-px w-21"></span>
-          <button
-            type="button"
-            onClick={onUnlink}
-            className="cursor-pointer whitespace-nowrap"
-          >
-            연결 해제
-          </button>
-        </>
-      )}
     </div>
   );
 };

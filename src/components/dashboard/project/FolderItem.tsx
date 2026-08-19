@@ -6,11 +6,7 @@ import { useTranslations } from "next-intl";
 import MeatballModal from "./MeatballModal";
 import useClickOutside from "@/hooks/useClickOutside";
 import { useSearchParams, useRouter } from "next/navigation";
-import {
-  useMoveFolder,
-  useUnlinkFolder,
-  useUpdateFolderName,
-} from "@/hooks/queries/useProject";
+import { useMoveFolder, useUpdateFolderName } from "@/hooks/queries/useProject";
 import { PATHS } from "@/constants/common/paths";
 
 interface FolderItemProps {
@@ -36,12 +32,8 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { mutate: moveFolder } = useMoveFolder();
-  const { mutate: unlinkFolder } = useUnlinkFolder();
   const { mutate: updateFolderName } = useUpdateFolderName();
   const [isDragOver, setIsDragOver] = useState(false);
-
-  const folderId = Number(searchParams.get("folderId"));
-  const isSubFolder = !!folderId;
 
   const handleFolderClick = () => {
     if (!lists.isFolder) return;
@@ -309,18 +301,6 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
                   setRenameModalOpen={setRenameModalOpen}
                   setDeleteTargetId={setDeleteTargetId}
                   isFolder={lists.isFolder}
-                  isSubFolder={isSubFolder}
-                  onUnlink={() => {
-                    unlinkFolder(lists.folderId, {
-                      onSuccess: () => {
-                        console.log("폴더 연결 해제 성공");
-                        setIsOpenMeatball(false);
-                      },
-                      onError: (error) => {
-                        console.error("폴더 연결 해제 실패:", error);
-                      },
-                    });
-                  }}
                 />
               )}
             </div>

@@ -16,6 +16,7 @@ import {
   useDeleteFolder,
   useFolderDetail,
   useProject,
+  useUnlinkFolder,
 } from "@/hooks/queries/useProject";
 import { useMypage } from "@/hooks/queries/useMypageApi";
 
@@ -24,6 +25,7 @@ const ProjectPage = () => {
   const { data } = useProject();
   const { data: userData } = useMypage();
   const { mutate: deleteFolder } = useDeleteFolder();
+  const { mutate: unlinkFolder } = useUnlinkFolder();
   const searchParams = useSearchParams();
   const params = new URLSearchParams();
   const sharedProjectFromQuery =
@@ -36,9 +38,12 @@ const ProjectPage = () => {
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  const [isParentDragOver, setIsParentDragOver] = useState(false);
   const dropDownRef = useRef<HTMLDivElement>(null);
 
   const targetUserId = userData?.userId || null;
+  const rootFolderId = data?.myProject[0]?.folderId;
+  const isInSubFolder = !!currentFolderId && currentFolderId !== rootFolderId;
 
   useEffect(() => {
     if (!sharedProjectFromQuery && data?.myProject.length) {
@@ -142,6 +147,41 @@ const ProjectPage = () => {
             <h1 className="Heading_1_bold bg-linear-to-b from-Red-300 to-Red-500 bg-clip-text text-transparent  ">
               {t("title")}
             </h1>
+            {isInSubFolder && (
+              <div
+                role="button"
+                className={`Body_2_medium transition-colors rounded-lg px-3 py-1 border border-dashed cursor-pointer ${
+                  isParentDragOver
+                    ? "border-Red-400 bg-Red-400/10 text-white"
+                    : "border-Grey-500 text-Grey-300 hover:border-Grey-400 hover:text-Grey-200"
+                }`}
+                onClick={() => {
+                  const p = new URLSearchParams(searchParams.toString());
+                  p.set("folderId", String(rootFolderId));
+                  router.push(`/dashboard/project?${p.toString()}`);
+                }}
+                onDragEnter={(e) => {
+                  e.preventDefault();
+                  setIsParentDragOver(true);
+                }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                }}
+                onDragLeave={() => setIsParentDragOver(false)}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  setIsParentDragOver(false);
+                  const draggedFolderId = Number(
+                    e.dataTransfer.getData("draggedFolderId"),
+                  );
+                  if (draggedFolderId) {
+                    unlinkFolder(draggedFolderId);
+                  }
+                }}
+              >
+                ← 상위 폴더로
+              </div>
+            )}
             <div className="flex gap-1">
               <span className="whitespace-nowrap Body_2_medium text-Grey-200">
                 {t("subtitle", { user: sharedProjectFromQuery ?? "" })}
