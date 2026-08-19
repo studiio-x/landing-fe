@@ -12,67 +12,38 @@ import CreateFolderModal from "@/components/dashboard/project/CreateFolderModal"
 import AlertModal from "@/components/common/AlertModal";
 import InviteModal from "@/components/dashboard/project/InviteModal";
 import { useTranslations } from "next-intl";
-import { useDeleteFolder, useProject } from "@/hooks/queries/useProject";
+import {
+  useDeleteFolder,
+  useFolderDetail,
+  useMoveFolder,
+  useProject,
+} from "@/hooks/queries/useProject";
 import { useMypage } from "@/hooks/queries/useMypageApi";
-
-const mockData = [
-  {
-    name: "Handbag",
-    folderId: 1,
-    isFolder: true,
-    imageUrl: [1, 2, 3, 4, 5, 6].map((_) => "/images/project/mockData.png"),
-  },
-  {
-    name: "Cosmetics Visuals",
-    folderId: 2,
-    isFolder: true,
-    imageUrl: [
-      "/images/project/mockData.png",
-      "/images/landing/product1.png",
-      "/images/landing/product2.png",
-      "/images/landing/product3.png",
-      "/images/landing/product4.png",
-      "/images/landing/product5.png",
-    ],
-  },
-  {
-    name: "Cosmetics Visuals",
-    folderId: 3,
-    isFolder: true,
-    imageUrl: [1, 2, 3, 4, 5, 6].map((_) => "/images/project/mockData.png"),
-  },
-  {
-    name: "제목을 입력해주세요",
-    folderId: 4,
-    isFolder: false,
-    imageUrl: "/images/project/mockData.png",
-  },
-  {
-    name: "제목을 입력해주세요",
-    folderId: 5,
-    isFolder: false,
-    imageUrl: "/images/project/mockData.png",
-  },
-];
 
 const ProjectPage = () => {
   const t = useTranslations("project");
   const { data } = useProject();
   const { data: userData } = useMypage();
   const { mutate: deleteFolder } = useDeleteFolder();
+  const { mutate: moveFolder } = useMoveFolder();
   const searchParams = useSearchParams();
   const params = new URLSearchParams();
   const sharedProjectFromQuery =
     searchParams.get("shared") || searchParams.get("not-shared");
+  const currentFolderId = Number(searchParams.get("folderId") || 0);
+  const { data: folderDetailData } = useFolderDetail(currentFolderId);
   const router = useRouter();
   const [array, setArray] = useState("newest");
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
   const [inviteModalOpen, setInviteModalOpen] = useState(false);
   const [isDropDownOpen, setIsDropDownOpen] = useState(false);
+  const [isParentDragOver, setIsParentDragOver] = useState(false);
   const dropDownRef = useRef<HTMLDivElement>(null);
 
   const targetUserId = userData?.userId || null;
+  const rootFolderId = data?.myProject[0]?.folderId;
+  const isInSubFolder = !!currentFolderId && currentFolderId !== rootFolderId;
 
   useEffect(() => {
     if (!sharedProjectFromQuery && data?.myProject.length) {
@@ -110,17 +81,17 @@ const ProjectPage = () => {
     });
   };
 
-  // 폴더와 프로젝트에 분리된 인덱스 부여
-  const itemsWithIndex = useMemo(() => {
-    let folderCount = 0;
-    let projectCount = 0;
+  const folderItems = useMemo(() => {
+    if (!folderDetailData?.folders) return [];
 
-    return mockData.map((item, originalIndex) => ({
-      ...item,
-      displayIndex: item.isFolder ? folderCount++ : projectCount++,
-      originalIndex,
+    return folderDetailData.folders.map((folder, index) => ({
+      folderId: folder.folderId,
+      name: folder.folderName,
+      isFolder: true,
+      imageUrl: folder.images,
+      displayIndex: index,
     }));
-  }, [mockData]);
+  }, [folderDetailData]);
 
   return (
     <main className="relative min-h-screen w-full flex flex-col">
@@ -176,6 +147,50 @@ const ProjectPage = () => {
             <h1 className="Heading_1_bold bg-linear-to-b from-Red-300 to-Red-500 bg-clip-text text-transparent  ">
               {t("title")}
             </h1>
+            {isInSubFolder && (
+              <div
+                role="button"
+                className={`Body_2_medium transition-colors rounded-lg px-3 py-1 border border-dashed cursor-pointer ${
+                  isParentDragOver
+                    ? "border-Red-400 bg-Red-400/10 text-white"
+                    : "border-Grey-500 text-Grey-300 hover:border-Grey-400 hover:text-Grey-200"
+                }`}
+                onClick={() => {
+                  const p = new URLSearchParams(searchParams.toString());
+                  p.set("folderId", String(rootFolderId));
+                  router.push(`/dashboard/project?${p.toString()}`);
+                }}
+                onDragEnter={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setIsParentDragOver(true);
+                }}
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onDragLeave={(e) => {
+                  e.stopPropagation();
+                  setIsParentDragOver(false);
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setIsParentDragOver(false);
+                  const draggedFolderId = Number(
+                    e.dataTransfer.getData("draggedFolderId"),
+                  );
+                  if (draggedFolderId && rootFolderId) {
+                    moveFolder({
+                      folderId: draggedFolderId,
+                      newFolderId: rootFolderId,
+                    });
+                  }
+                }}
+              >
+                ← 상위 폴더로
+              </div>
+            )}
             <div className="flex gap-1">
               <span className="whitespace-nowrap Body_2_medium text-Grey-200">
                 {t("subtitle", { user: sharedProjectFromQuery ?? "" })}
@@ -214,11 +229,11 @@ const ProjectPage = () => {
           </div>
 
           <section className="grid grid-cols-3  gap-x-9 gap-y-11 mt-8">
-            {itemsWithIndex.map((item) => (
+            {folderItems.map((item) => (
               <FolderItem
                 lists={item}
                 index={item.displayIndex}
-                key={item.originalIndex}
+                key={item.folderId}
                 setDeleteTargetId={setDeleteTargetId}
               />
             ))}

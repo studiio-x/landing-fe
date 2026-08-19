@@ -186,6 +186,7 @@ const Header = ({ back = false, tab = false, video = false }: HeaderProps) => {
                     <button
                       type="button"
                       className="py-2 pl-5 w-full text-left"
+                      onClick={() => router.push(PATHS.SUBSCRIBE)}
                     >
                       {t("planManage")}
                     </button>

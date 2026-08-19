@@ -92,7 +92,7 @@ export default function SideBar() {
               );
               router.push(`${PATHS.DASHBOARD_PROJECT}?${params.toString()}`);
             }}
-            currentSharedProject={currentFolderId}
+            isActive={!!searchParams.get("not-shared")}
           >
             {t("myProject")}
           </ProjectListItem>
@@ -105,7 +105,7 @@ export default function SideBar() {
               <ProjectListItem
                 isShareOpen={isShareOpen}
                 onClick={shareOnClick}
-                currentSharedProject={currentFolderId}
+                isActive={!!searchParams.get("shared")}
               >
                 {t("sharedProject")}
               </ProjectListItem>

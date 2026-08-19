@@ -12,7 +12,7 @@ import { useGetFolders } from "@/hooks/queries/useFolderApi";
 const ContinuePage = () => {
   const router = useRouter();
   const t = useTranslations("dashboard");
-  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState<number | null>(null);
   const { data: foldersData } = useGetFolders();
   const folders = [
     ...(foldersData?.myProject ?? []),
@@ -50,7 +50,7 @@ const ContinuePage = () => {
                   folderId={folder.folderId}
                   name={folder.name}
                   index={index}
-                  setDeleteModalOpen={setDeleteModalOpen}
+                  setDeleteTargetId={setDeleteTargetId}
                 />
               </li>
             ))}
@@ -60,20 +60,20 @@ const ContinuePage = () => {
 
       {/* 제거 모달 */}
       <AlertModal
-        isOpen={deleteModalOpen}
-        onClose={() => setDeleteModalOpen(false)}
+        isOpen={deleteTargetId !== null}
+        onClose={() => setDeleteTargetId(null)}
         title="정말 삭제하시겠습니까?"
         description="폴더를 삭제하면 하위의 폴더와 프로젝트가 모두 삭제되며, 복구할 수 없습니다."
         buttons={[
           {
             label: "닫기",
             variant: "default",
-            onClick: () => setDeleteModalOpen(false),
+            onClick: () => setDeleteTargetId(null),
           },
           {
             label: "삭제하기",
             variant: "red",
-            onClick: () => setDeleteModalOpen(false),
+            onClick: () => setDeleteTargetId(null),
           },
         ]}
       />
