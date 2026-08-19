@@ -102,7 +102,11 @@ export default function SideBar() {
             <>
               <span className="self-end w-46.5 h-px bg-Grey-700" />
 
-              <ProjectListItem isShareOpen={isShareOpen} onClick={shareOnClick}>
+              <ProjectListItem
+                isShareOpen={isShareOpen}
+                onClick={shareOnClick}
+                isActive={!!searchParams.get("shared")}
+              >
                 {t("sharedProject")}
               </ProjectListItem>
             </>

@@ -444,7 +444,7 @@
     "creating": "Creating..."
   },
   "inviteModal": {
-    "title": "{user}'s Project",
+    "title": "{user}",
     "inviteByEmail": "Invite by Email",
     "emailPlaceholder": "Enter email address",
     "inviteButton": "Invite",

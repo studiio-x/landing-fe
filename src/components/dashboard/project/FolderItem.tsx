@@ -5,12 +5,13 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import MeatballModal from "./MeatballModal";
 import useClickOutside from "@/hooks/useClickOutside";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import {
   useMoveFolder,
   useUnlinkFolder,
   useUpdateFolderName,
 } from "@/hooks/queries/useProject";
+import { PATHS } from "@/constants/common/paths";
 
 interface FolderItemProps {
   lists: {
@@ -33,6 +34,7 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
   const meatballRef = useRef<HTMLDivElement>(null);
   const lastValidValue = useRef<string>(name);
   const searchParams = useSearchParams();
+  const router = useRouter();
   const { mutate: moveFolder } = useMoveFolder();
   const { mutate: unlinkFolder } = useUnlinkFolder();
   const { mutate: updateFolderName } = useUpdateFolderName();
@@ -40,6 +42,13 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
 
   const folderId = Number(searchParams.get("folderId"));
   const isSubFolder = !!folderId;
+
+  const handleFolderClick = () => {
+    if (!lists.isFolder) return;
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("folderId", String(lists.folderId));
+    router.push(`${PATHS.DASHBOARD_PROJECT}?${params.toString()}`);
+  };
 
   useClickOutside(meatballRef, () => setIsOpenMeatball(false), isOpenMeatball);
 
@@ -162,6 +171,7 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
+      onDoubleClick={handleFolderClick}
     >
       {lists.isFolder ? (
         <Folder className="w-77 h-50" />

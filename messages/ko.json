@@ -450,7 +450,7 @@
     "creating": "생성 중..."
   },
   "inviteModal": {
-    "title": "{user}의 프로젝트",
+    "title": "{user}",
     "inviteByEmail": "이메일로 초대하기",
     "emailPlaceholder": "이메일을 입력해 주세요",
     "inviteButton": "초대하기",
