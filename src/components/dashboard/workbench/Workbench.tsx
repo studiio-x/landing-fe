@@ -96,6 +96,9 @@ const Workbench = ({ mode }: WorkbenchProps) => {
       setGeneratedImageUrl(imageUrl);
       setActiveTab(2);
     },
+    onCutoutComplete: () => {
+      setActiveTab(1);
+    },
     onStageChange: setProcessingStage,
   });
 

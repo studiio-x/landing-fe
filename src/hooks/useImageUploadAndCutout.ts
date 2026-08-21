@@ -13,6 +13,7 @@ const ERROR_RESET_DELAY_MS = 1800;
 interface UseImageUploadAndCutoutOptions {
   templateId?: number | null;
   onBackgroundGenerated?: (imageUrl: string) => void;
+  onCutoutComplete?: () => void;
   onStageChange?: (stage: ProcessingStage) => void;
 }
 
@@ -21,6 +22,7 @@ export const useImageUploadAndCutout = (
   {
     templateId,
     onBackgroundGenerated,
+    onCutoutComplete,
     onStageChange,
   }: UseImageUploadAndCutoutOptions = {},
 ) => {
@@ -72,6 +74,10 @@ export const useImageUploadAndCutout = (
         setCutoutImageObjectKey(resultObjectKey);
         setProjectId(resultProjectId);
 
+        if (!templateId) {
+          onCutoutComplete?.();
+        }
+
         if (templateId) {
           onStageChange?.("compositing");
           try {
@@ -101,7 +107,7 @@ export const useImageUploadAndCutout = (
         onStageChange?.(null);
       }
     },
-    [folderId, t, templateId, postImage, onBackgroundGenerated, onStageChange],
+    [folderId, t, templateId, postImage, onBackgroundGenerated, onCutoutComplete, onStageChange],
   );
 
   const resetCutout = useCallback(() => {
