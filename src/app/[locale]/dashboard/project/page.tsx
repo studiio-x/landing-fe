@@ -18,6 +18,7 @@ import {
   useMoveFolder,
   useProject,
 } from "@/hooks/queries/useProject";
+import { useGetProjectsInFolder } from "@/hooks/queries/useProjectApi";
 import { useMypage } from "@/hooks/queries/useMypageApi";
 
 const ProjectPage = () => {
@@ -32,6 +33,7 @@ const ProjectPage = () => {
     searchParams.get("shared") || searchParams.get("not-shared");
   const currentFolderId = Number(searchParams.get("folderId") || 0);
   const { data: folderDetailData } = useFolderDetail(currentFolderId);
+  const { data: projectsData } = useGetProjectsInFolder(currentFolderId);
   const router = useRouter();
   const [array, setArray] = useState("newest");
   const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -92,6 +94,18 @@ const ProjectPage = () => {
       displayIndex: index,
     }));
   }, [folderDetailData]);
+
+  const projectItems = useMemo(() => {
+    if (!projectsData?.projects) return [];
+
+    return projectsData.projects.map((project, index) => ({
+      folderId: project.projectId,
+      name: project.title,
+      isFolder: false,
+      imageUrl: project.thumbnailObjectKey ?? "",
+      displayIndex: index,
+    }));
+  }, [projectsData]);
 
   return (
     <main className="relative min-h-screen w-full flex flex-col">
@@ -233,7 +247,15 @@ const ProjectPage = () => {
               <FolderItem
                 lists={item}
                 index={item.displayIndex}
-                key={item.folderId}
+                key={`folder-${item.folderId}`}
+                setDeleteTargetId={setDeleteTargetId}
+              />
+            ))}
+            {projectItems.map((item) => (
+              <FolderItem
+                lists={item}
+                index={item.displayIndex}
+                key={`project-${item.folderId}`}
                 setDeleteTargetId={setDeleteTargetId}
               />
             ))}
