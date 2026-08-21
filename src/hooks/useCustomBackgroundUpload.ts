@@ -1,11 +1,10 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { getCustomTemplatePresign } from "@/apis/imageApi";
 import { usePostCustomBackgroundImage } from "@/hooks/queries/useImageApi";
 import { useToastStore } from "@/stores/useToastStore";
 import { getErrorMessage } from "@/utils/apiUtils";
-import { acceptImageFile } from "@/utils/imageFileValidation";
 import type { ProcessingStage } from "@/types/dashboard/processing-stage.type";
 
 interface UseCustomBackgroundUploadOptions {
@@ -26,24 +25,13 @@ export const useCustomBackgroundUpload = ({
   onStageChange,
 }: UseCustomBackgroundUploadOptions) => {
   const t = useTranslations("dashboard.workbench");
-  const inputRef = useRef<HTMLInputElement>(null);
   const { mutateAsync: postCustomBackgroundImage } =
     usePostCustomBackgroundImage();
   const [isUploading, setIsUploading] = useState(false);
 
-  const openFilePicker = () => {
+  const uploadAndComposite = async (file: File) => {
     if (!cutoutImageObjectKey || !projectId) return;
-    inputRef.current?.click();
-  };
-
-  const handleFileChange = async (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0];
-    event.target.value = "";
-    if (!file || !cutoutImageObjectKey || !projectId) return;
     if (isUploading) return;
-    if (!acceptImageFile(file, t("unsupportedImageFormat"))) return;
 
     setIsUploading(true);
     onGeneratingChange(true);
@@ -80,5 +68,5 @@ export const useCustomBackgroundUpload = ({
     }
   };
 
-  return { inputRef, isUploading, openFilePicker, handleFileChange };
+  return { isUploading, uploadAndComposite };
 };
