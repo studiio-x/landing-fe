@@ -16,7 +16,6 @@ import {
 } from "@/hooks/queries/useTemplateApi";
 import { usePostImage } from "@/hooks/queries/useImageApi";
 import { useCustomBackgroundUpload } from "@/hooks/useCustomBackgroundUpload";
-import { TEMPLATE_KEYWORDS } from "@/constants/dashboard/template";
 import { TemplateCategory, TemplateKeyword } from "@/types/api/template.type";
 import type { WorkbenchMode } from "@/types/dashboard/mode.type";
 import type { ProcessingStage } from "@/types/dashboard/processing-stage.type";
@@ -87,11 +86,15 @@ const BackgroundTab = ({
 
   const { data: keywords, isLoading: isKeywordsLoading } =
     useTemplateKeywords();
+  const keywordValues = keywords?.map((k) => k.keyword) ?? [];
   const { data: templatesData, isLoading: isTemplatesLoading } =
-    useTemplatesByKeyword({
-      keywords: TEMPLATE_KEYWORDS,
-      limitPerKeyword: 9,
-    });
+    useTemplatesByKeyword(
+      {
+        keywords: keywordValues,
+        limitPerKeyword: 9,
+      },
+      keywordValues.length > 0,
+    );
   const { data: searchResults, isLoading: isSearchLoading } =
     useSearchTemplates({ keyword: searchKeyword }, !!searchKeyword);
 
@@ -187,7 +190,7 @@ const BackgroundTab = ({
             </p>
           )
         ) : (
-          TEMPLATE_KEYWORDS.map((keyword) => (
+          keywordValues.map((keyword: TemplateKeyword) => (
             <BackgroundSwiper
               key={keyword}
               id={keyword}

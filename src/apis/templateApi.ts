@@ -36,6 +36,15 @@ export const getTemplatesByKeyword = async (
     "/templates/keyword",
     {
       params,
+      paramsSerializer: (p) => {
+        const { keywords, ...rest } = p as GetTemplatesByKeywordParams;
+        const searchParams = new URLSearchParams();
+        searchParams.append("keywords", keywords.join(","));
+        Object.entries(rest).forEach(([key, value]) =>
+          searchParams.append(key, String(value)),
+        );
+        return searchParams.toString();
+      },
     },
   );
 
