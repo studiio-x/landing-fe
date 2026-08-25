@@ -28,6 +28,7 @@ export const usePostImage = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.project.all });
       queryClient.invalidateQueries({ queryKey: queryKeys.folder.all });
+      queryClient.invalidateQueries({ queryKey: ["projectsInFolder"] });
     },
   });
 };
@@ -39,6 +40,7 @@ export const usePostCustomBackgroundImage = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.project.all });
       queryClient.invalidateQueries({ queryKey: queryKeys.folder.all });
+      queryClient.invalidateQueries({ queryKey: ["projectsInFolder"] });
     },
   });
 };

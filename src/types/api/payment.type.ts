@@ -22,3 +22,9 @@ export interface BillingKeyAuthKeyRequest {
   authKey: string;
   customerKey: string;
 }
+
+export type CreditOption =
+  | "CREDIT_100"
+  | "CREDIT_200"
+  | "CREDIT_500"
+  | "CREDIT_1200";
