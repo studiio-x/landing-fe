@@ -42,8 +42,10 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
       router.push(`${PATHS.DASHBOARD_PROJECT}?${params.toString()}`);
     } else {
       const currentFolderId = searchParams.get("folderId");
-      const query = currentFolderId ? `?folderId=${currentFolderId}` : "";
-      router.push(`${PATHS.DASHBOARD_WORKBENCH}${query}`);
+      const params = new URLSearchParams();
+      if (currentFolderId) params.set("folderId", currentFolderId);
+      params.set("projectId", String(lists.folderId));
+      router.push(`${PATHS.DASHBOARD_WORKBENCH}?${params.toString()}`);
     }
   };
 

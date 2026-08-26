@@ -10,9 +10,10 @@ export type HistoryItem = {
 interface HistoryPanelProps {
   history: HistoryItem[];
   mode: WorkbenchMode;
+  onSelectImage?: (imageUrl: string) => void;
 }
 
-const HistoryPanel = ({ history, mode }: HistoryPanelProps) => {
+const HistoryPanel = ({ history, mode, onSelectImage }: HistoryPanelProps) => {
   const t = useTranslations("dashboard.workbench.historyPanel");
   const isVideo = mode === "video";
 
@@ -37,14 +38,20 @@ const HistoryPanel = ({ history, mode }: HistoryPanelProps) => {
 
       <div className="flex flex-col gap-4 w-full h-full overflow-y-auto">
         {history.map((item, idx) => (
-          <Image
+          <button
             key={item.id}
-            src={item.imageUrl}
-            alt={t("imageAlt", { index: idx + 1 })}
-            width={166}
-            height={166}
-            className="w-41.5 h-41.5 object-cover rounded-[0.3479rem] shrink-0"
-          />
+            type="button"
+            onClick={() => onSelectImage?.(item.imageUrl)}
+            className="shrink-0 rounded-[0.3479rem] overflow-hidden hover:ring-2 hover:ring-Red-400 transition-all cursor-pointer"
+          >
+            <Image
+              src={item.imageUrl}
+              alt={t("imageAlt", { index: idx + 1 })}
+              width={166}
+              height={166}
+              className="w-41.5 h-41.5 object-cover"
+            />
+          </button>
         ))}
       </div>
     </section>
