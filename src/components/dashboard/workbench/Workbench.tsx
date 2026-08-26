@@ -290,7 +290,11 @@ const Workbench = ({ mode }: WorkbenchProps) => {
         </section>
       </div>
 
-      <HistoryPanel history={history} mode={mode} />
+      <HistoryPanel
+        history={history}
+        mode={mode}
+        onSelectImage={(imageUrl) => setGeneratedImageUrl(imageUrl)}
+      />
 
       {isProductImageRequiredOpen && (
         <ProductImageRequiredModal
