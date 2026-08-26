@@ -55,6 +55,9 @@ const Workbench = ({ mode }: WorkbenchProps) => {
 
   const searchParams = useSearchParams();
   const folderIdParam = parsePositiveIntParam(searchParams.get("folderId"));
+  const urlProjectId = parsePositiveIntParam(
+    searchParams.get(QUERY_KEYS.PROJECT_ID),
+  );
   const templateId = parsePositiveIntParam(
     searchParams.get(QUERY_KEYS.TEMPLATE_ID),
   );
@@ -87,8 +90,10 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     onStageChange: setProcessingStage,
   });
 
+  const effectiveProjectId = projectId ?? urlProjectId ?? 0;
+
   const { data: projectImagesData } = useGetProjectImages(
-    projectId ?? 0,
+    effectiveProjectId,
     0,
     10,
   );
@@ -98,6 +103,20 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     id: String(img.imageId),
     imageUrl: img.imageUrl,
   }));
+
+  // 프로젝트 페이지에서 진입 시 히스토리가 있으면 AI 챗봇 탭으로 이동
+  const hasInitializedFromUrl = useRef(false);
+  useEffect(() => {
+    if (
+      urlProjectId &&
+      projectImages.length > 0 &&
+      !hasInitializedFromUrl.current
+    ) {
+      hasInitializedFromUrl.current = true;
+      setGeneratedImageUrl(projectImages[0].imageUrl);
+      setActiveTab(2);
+    }
+  }, [urlProjectId, projectImages]);
 
   const handleTabChange = (nextIdx: number) => {
     const isBackgroundTab = nextIdx === 1 && mode !== "video";
@@ -110,13 +129,15 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     }
 
     if (isChatbotTab) {
-      if (!uploadedImage) {
+      const hasExistingProject = !!urlProjectId && projectImages.length > 0;
+
+      if (!hasExistingProject && !uploadedImage) {
         setRequiredModalVariant("product");
         setIsProductImageRequiredOpen(true);
         return;
       }
 
-      if (mode !== "video" && !generatedImageUrl) {
+      if (!hasExistingProject && mode !== "video" && !generatedImageUrl) {
         setRequiredModalVariant("background");
         setIsProductImageRequiredOpen(true);
         return;
@@ -175,7 +196,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
           mode={mode}
           folderId={folderId}
           cutoutImageObjectKey={cutoutImageObjectKey}
-          projectId={projectId}
+          projectId={effectiveProjectId || null}
           onGenerated={handleGenerated}
           onGeneratingChange={setIsGenerating}
           onStageChange={setProcessingStage}
@@ -225,7 +246,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
           ref={imageContainerRef}
           className="relative w-full h-full flex items-center justify-center bg-Grey-800/75 rounded-lg overflow-hidden"
         >
-          {previewUrl ? (
+          {previewUrl || generatedImageUrl ? (
             <>
               {mode === "video" && generatedVideoUrl ? (
                 <video
@@ -238,7 +259,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
               ) : (
                 <img
                   crossOrigin="anonymous"
-                  src={generatedImageUrl ?? cutoutImageUrl ?? previewUrl}
+                  src={generatedImageUrl ?? cutoutImageUrl ?? previewUrl ?? ""}
                   alt={t("uploadedImageAlt")}
                   className="w-full h-full object-contain"
                   onLoad={(e) => {
@@ -290,7 +311,11 @@ const Workbench = ({ mode }: WorkbenchProps) => {
         </section>
       </div>
 
-      <HistoryPanel history={history} mode={mode} />
+      <HistoryPanel
+        history={history}
+        mode={mode}
+        onSelectImage={(imageUrl) => setGeneratedImageUrl(imageUrl)}
+      />
 
       {isProductImageRequiredOpen && (
         <ProductImageRequiredModal

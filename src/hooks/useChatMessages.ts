@@ -53,7 +53,7 @@ export const useChatMessages = (
       role: m.role === "USER" ? ("user" as const) : ("assistant" as const),
       text: m.content,
       status: "done" as const,
-      imageKeys: m.imageKeys.length > 0 ? m.imageKeys : undefined,
+      imageKeys: m.imageKeys && m.imageKeys.length > 0 ? m.imageKeys : undefined,
     }));
 
     if (isPending && !isVideoMode) {
