@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import {
   postCutoutImage,
@@ -21,12 +21,26 @@ export const usePostCutoutImage = () =>
     mutationFn: postCutoutImage,
   });
 
-export const usePostImage = () =>
-  useMutation({
+export const usePostImage = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
     mutationFn: postImage,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.project.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.folder.all });
+      queryClient.invalidateQueries({ queryKey: ["projectsInFolder"] });
+    },
   });
+};
 
-export const usePostCustomBackgroundImage = () =>
-  useMutation({
+export const usePostCustomBackgroundImage = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
     mutationFn: postCustomBackgroundImage,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.project.all });
+      queryClient.invalidateQueries({ queryKey: queryKeys.folder.all });
+      queryClient.invalidateQueries({ queryKey: ["projectsInFolder"] });
+    },
   });
+};

@@ -25,6 +25,7 @@ interface TabContentProps {
   initialTemplateId?: number | null;
   // 대시보드에서 비디오 템플릿을 골라 들어온 경우의 초기 모션
   initialMotionType?: ActionKey | null;
+  onGenerateComplete?: () => void;
 }
 
 const TabContent = ({
@@ -43,6 +44,7 @@ const TabContent = ({
   videoProjectId,
   initialTemplateId,
   initialMotionType,
+  onGenerateComplete,
 }: TabContentProps) => {
   const chatProjectId = mode === "video" ? videoProjectId : projectId;
 
@@ -68,6 +70,7 @@ const TabContent = ({
           onGenerated={onGenerated}
           onGeneratingChange={onGeneratingChange}
           onStageChange={onStageChange}
+          onGenerateComplete={onGenerateComplete}
           initialTemplateId={initialTemplateId}
         />
       );

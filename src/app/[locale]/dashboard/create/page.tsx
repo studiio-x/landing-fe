@@ -42,6 +42,7 @@ const CreatePage = () => {
                   title={t(`cards.${card.key}.title`)}
                   content={t(`cards.${card.key}.content`)}
                   mediaSrc={card.mediaSrc}
+                  isVideo={card.mediaSrc.endsWith(".mp4")}
                   onClick={() =>
                     router.push(
                       `${PATHS.DASHBOARD_WORKBENCH}?${QUERY_KEYS.WORKBENCH_MODE}=${card.key}`,

@@ -3,6 +3,7 @@ import type {
   BillingPlan,
   BillingKeyCardRequest,
   BillingKeyAuthKeyRequest,
+  CreditOption,
 } from "@/types/api/payment.type";
 
 export const paymentApi = {
@@ -25,4 +26,10 @@ export const paymentApi = {
   /** 구독 취소 */
   cancelSubscription: () =>
     axiosInstance.delete("/subscription"),
+
+  /** 크레딧 추가 구매 */
+  purchaseCredit: (option: CreditOption, paymentKey: string) =>
+    axiosInstance.post("/payment/credit", null, {
+      params: { option, paymentKey },
+    }),
 };

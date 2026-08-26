@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import clsx from "clsx";
 import { useTranslations } from "next-intl";
 import { Plus } from "@/assets/icons";
@@ -16,7 +16,6 @@ import {
 } from "@/hooks/queries/useTemplateApi";
 import { usePostImage } from "@/hooks/queries/useImageApi";
 import { useCustomBackgroundUpload } from "@/hooks/useCustomBackgroundUpload";
-import { TEMPLATE_KEYWORDS } from "@/constants/dashboard/template";
 import { TemplateCategory, TemplateKeyword } from "@/types/api/template.type";
 import type { WorkbenchMode } from "@/types/dashboard/mode.type";
 import type { ProcessingStage } from "@/types/dashboard/processing-stage.type";
@@ -29,6 +28,7 @@ interface BackgroundTabProps {
   onGenerated: (imageUrl: string) => void;
   onGeneratingChange: (isGenerating: boolean) => void;
   onStageChange?: (stage: ProcessingStage) => void;
+  onGenerateComplete?: () => void;
   initialTemplateId?: number | null;
 }
 
@@ -52,6 +52,7 @@ const BackgroundTab = ({
   onGenerated,
   onGeneratingChange,
   onStageChange,
+  onGenerateComplete,
   initialTemplateId,
 }: BackgroundTabProps) => {
   const t = useTranslations("dashboard.workbench.backgroundTab");
@@ -69,17 +70,25 @@ const BackgroundTab = ({
   const [isProductImageModalOpen, setIsProductImageModalOpen] = useState(false);
 
   const { mutate: postImage, isPending: isGenerating } = usePostImage();
+  const [customBackgroundFile, setCustomBackgroundFile] = useState<File | null>(
+    null,
+  );
+  const [customBackgroundPreview, setCustomBackgroundPreview] = useState<
+    string | null
+  >(null);
+  const customBackgroundInputRef = useRef<HTMLInputElement>(null);
   const {
-    inputRef: customBackgroundInputRef,
     isUploading: isUploadingCustomBackground,
-    openFilePicker: openCustomBackgroundPicker,
-    handleFileChange: handleCustomBackgroundFileChange,
+    uploadAndComposite,
   } = useCustomBackgroundUpload({
     cutoutImageObjectKey,
     projectId,
     onGenerated: (imageUrl) => {
+      setCustomBackgroundFile(null);
+      setCustomBackgroundPreview(null);
       setSelectedBackground(null);
       onGenerated(imageUrl);
+      onGenerateComplete?.();
     },
     onGeneratingChange,
     onStageChange,
@@ -87,11 +96,15 @@ const BackgroundTab = ({
 
   const { data: keywords, isLoading: isKeywordsLoading } =
     useTemplateKeywords();
+  const keywordValues = keywords?.map((k) => k.keyword) ?? [];
   const { data: templatesData, isLoading: isTemplatesLoading } =
-    useTemplatesByKeyword({
-      keywords: TEMPLATE_KEYWORDS,
-      limitPerKeyword: 9,
-    });
+    useTemplatesByKeyword(
+      {
+        keywords: keywordValues,
+        limitPerKeyword: 9,
+      },
+      keywordValues.length > 0,
+    );
   const { data: searchResults, isLoading: isSearchLoading } =
     useSearchTemplates({ keyword: searchKeyword }, !!searchKeyword);
 
@@ -124,7 +137,22 @@ const BackgroundTab = ({
       setIsProductImageModalOpen(true);
       return;
     }
-    openCustomBackgroundPicker();
+    customBackgroundInputRef.current?.click();
+  };
+
+  const handleCustomBackgroundFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+
+    setCustomBackgroundFile(file);
+    setSelectedBackground(null);
+
+    const url = URL.createObjectURL(file);
+    if (customBackgroundPreview) URL.revokeObjectURL(customBackgroundPreview);
+    setCustomBackgroundPreview(url);
   };
 
   const handleClickGenerate = () => {
@@ -132,7 +160,14 @@ const BackgroundTab = ({
       setIsProductImageModalOpen(true);
       return;
     }
-    if (!cutoutImageObjectKey || !projectId || !selectedBackground) return;
+    if (!cutoutImageObjectKey || !projectId) return;
+
+    if (customBackgroundFile) {
+      uploadAndComposite(customBackgroundFile);
+      return;
+    }
+
+    if (!selectedBackground) return;
 
     onGeneratingChange(true);
     onStageChange?.("compositing");
@@ -147,6 +182,7 @@ const BackgroundTab = ({
           onGenerated(data.imageUrl);
           onGeneratingChange(false);
           onStageChange?.(null);
+          onGenerateComplete?.();
         },
         onError: () => {
           onGeneratingChange(false);
@@ -187,7 +223,7 @@ const BackgroundTab = ({
             </p>
           )
         ) : (
-          TEMPLATE_KEYWORDS.map((keyword) => (
+          keywordValues.map((keyword: TemplateKeyword) => (
             <BackgroundSwiper
               key={keyword}
               id={keyword}
@@ -230,7 +266,11 @@ const BackgroundTab = ({
           type="button"
           className="Body_2_semibold"
           onClick={handleClickGenerate}
-          disabled={isGenerating || isUploadingCustomBackground}
+          disabled={
+            isGenerating ||
+            isUploadingCustomBackground ||
+            (!selectedBackground && !customBackgroundFile)
+          }
         >
           {t("generate")}
         </GlassButton>
