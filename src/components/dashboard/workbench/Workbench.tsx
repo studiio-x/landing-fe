@@ -92,7 +92,13 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     projectId,
   } = useImageUploadAndCutout(folderId, {
     templateId: mode !== "video" ? templateId : null,
-    onBackgroundGenerated: setGeneratedImageUrl,
+    onBackgroundGenerated: (imageUrl) => {
+      setGeneratedImageUrl(imageUrl);
+      setActiveTab(2);
+    },
+    onCutoutComplete: () => {
+      setActiveTab(1);
+    },
     onStageChange: setProcessingStage,
   });
 
@@ -180,6 +186,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
           videoProjectId={videoProjectId}
           initialTemplateId={templateId}
           initialMotionType={initialMotionType}
+          onGenerateComplete={() => setActiveTab(2)}
         />
       </div>
 

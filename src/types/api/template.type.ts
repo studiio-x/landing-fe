@@ -1,7 +1,7 @@
 import { PageInfo } from "@/types/api/common.type";
 
 // 템플릿 키워드 타입
-export type TemplateKeyword = "GENERAL_DISPLAY" | "FABRIC_VELVET" | "OUTDOOR";
+export type TemplateKeyword = string;
 
 // 템플릿 카테고리 타입
 export type TemplateCategory = "MODEL" | "STUDIO" | "VIDEO";

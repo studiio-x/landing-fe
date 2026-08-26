@@ -14,10 +14,14 @@ import {
   SearchTemplatesParams,
 } from "@/types/api/template.type";
 
-export const useTemplatesByKeyword = (params: GetTemplatesByKeywordParams) =>
+export const useTemplatesByKeyword = (
+  params: GetTemplatesByKeywordParams,
+  enabled: boolean = true,
+) =>
   useQuery({
     queryKey: queryKeys.templates.keywordList(params),
     queryFn: () => getTemplatesByKeyword(params),
+    enabled,
   });
 
 export const useTemplatesByCategory = (
