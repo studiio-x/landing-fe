@@ -35,11 +35,16 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
   const { mutate: updateFolderName } = useUpdateFolderName();
   const [isDragOver, setIsDragOver] = useState(false);
 
-  const handleFolderClick = () => {
-    if (!lists.isFolder) return;
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("folderId", String(lists.folderId));
-    router.push(`${PATHS.DASHBOARD_PROJECT}?${params.toString()}`);
+  const handleItemClick = () => {
+    if (lists.isFolder) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("folderId", String(lists.folderId));
+      router.push(`${PATHS.DASHBOARD_PROJECT}?${params.toString()}`);
+    } else {
+      const currentFolderId = searchParams.get("folderId");
+      const query = currentFolderId ? `?folderId=${currentFolderId}` : "";
+      router.push(`${PATHS.DASHBOARD_WORKBENCH}${query}`);
+    }
   };
 
   useClickOutside(meatballRef, () => setIsOpenMeatball(false), isOpenMeatball);
@@ -163,7 +168,7 @@ const FolderItem = ({ lists, index, setDeleteTargetId }: FolderItemProps) => {
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
-      onDoubleClick={handleFolderClick}
+      onDoubleClick={handleItemClick}
     >
       {lists.isFolder ? (
         <Folder className="w-77 h-50" />

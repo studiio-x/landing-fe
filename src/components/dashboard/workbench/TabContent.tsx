@@ -27,6 +27,7 @@ interface TabContentProps {
   initialMotionType?: ActionKey | null;
   onGenerateComplete?: () => void;
   generatedImageUrl?: string | null;
+  generatedVideoUrl?: string | null;
 }
 
 const TabContent = ({
@@ -47,6 +48,7 @@ const TabContent = ({
   initialMotionType,
   onGenerateComplete,
   generatedImageUrl,
+  generatedVideoUrl,
 }: TabContentProps) => {
   const chatProjectId = mode === "video" ? videoProjectId : projectId;
 
@@ -84,6 +86,7 @@ const TabContent = ({
           mode={mode}
           videoImageId={videoImageId}
           generatedImageUrl={generatedImageUrl}
+          generatedVideoUrl={generatedVideoUrl}
         />
       );
     default:

@@ -185,6 +185,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
           initialMotionType={initialMotionType}
           onGenerateComplete={() => setActiveTab(2)}
           generatedImageUrl={generatedImageUrl}
+          generatedVideoUrl={generatedVideoUrl}
         />
       </div>
 

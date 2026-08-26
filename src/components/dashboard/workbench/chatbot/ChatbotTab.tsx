@@ -10,6 +10,7 @@ interface ChatbotTabProps {
   mode?: WorkbenchMode;
   videoImageId?: number | null;
   generatedImageUrl?: string | null;
+  generatedVideoUrl?: string | null;
 }
 
 const ChatbotTab = ({
@@ -18,26 +19,30 @@ const ChatbotTab = ({
   mode,
   videoImageId,
   generatedImageUrl,
+  generatedVideoUrl,
 }: ChatbotTabProps) => {
+  const downloadUrl = mode === "video" ? generatedVideoUrl : generatedImageUrl;
+  const fileExt = mode === "video" ? "mp4" : "png";
+
   const handleDownload = async () => {
-    if (!generatedImageUrl) return;
+    if (!downloadUrl) return;
     try {
-      const response = await fetch(generatedImageUrl);
+      const response = await fetch(downloadUrl);
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `studiox_${Date.now()}.png`;
+      a.download = `studiox_${Date.now()}.${fileExt}`;
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      window.open(generatedImageUrl, "_blank");
+      window.open(downloadUrl, "_blank");
     }
   };
 
   return (
     <div className="mt-5 flex flex-col gap-3">
-      {generatedImageUrl && (
+      {downloadUrl && (
         <div className="flex justify-end">
           <button
             onClick={handleDownload}
