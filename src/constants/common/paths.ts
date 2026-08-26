@@ -36,6 +36,7 @@ export const QUERY_KEYS = {
   PORTFOLIO_CATEGORY: "category",
   TEMPLATE_ID: "templateId",
   MOTION_TYPE: "motionType",
+  PROJECT_ID: "projectId",
 } as const;
 
 export const PORTFOLIO_CATEGORY = {
