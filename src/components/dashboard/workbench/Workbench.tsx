@@ -14,7 +14,7 @@ import ProductImageRequiredModal from "@/components/dashboard/workbench/backgrou
 import { useImageUploadAndCutout } from "@/hooks/useImageUploadAndCutout";
 import type { VideoGeneratedResult } from "@/hooks/useVideoGeneration";
 import { useGetFolders } from "@/hooks/queries/useFolderApi";
-import { useGetProjects } from "@/hooks/queries/useProjectApi";
+import { useGetProjectImages } from "@/hooks/queries/useProjectApi";
 import { QUERY_KEYS } from "@/constants/common/paths";
 import { parseActionKey } from "@/constants/dashboard/video-options";
 import { parsePositiveIntParam } from "@/utils/urlUtils";
@@ -65,21 +65,6 @@ const Workbench = ({ mode }: WorkbenchProps) => {
   const { data: foldersData } = useGetFolders();
   const folderId = folderIdParam ?? foldersData?.myProject[0]?.folderId ?? 0;
 
-  const { data: projectsData } = useGetProjects(folderId, 0, 4);
-  const folderImages = (projectsData?.folders ?? [])
-    .flatMap((f) => f.images)
-    .slice(0, 2);
-
-  const history: HistoryItem[] =
-    folderImages.length > 0
-      ? [
-          {
-            id: String(folderId),
-            imageUrls: [folderImages[0], folderImages[1] ?? folderImages[0]],
-          },
-        ]
-      : [];
-
   const {
     uploadedImage,
     setUploadedImage,
@@ -101,6 +86,18 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     },
     onStageChange: setProcessingStage,
   });
+
+  const { data: projectImagesData } = useGetProjectImages(
+    projectId ?? 0,
+    0,
+    10,
+  );
+  const projectImages = projectImagesData?.images ?? [];
+
+  const history: HistoryItem[] = projectImages.map((img) => ({
+    id: String(img.imageId),
+    imageUrl: img.imageUrl,
+  }));
 
   const handleTabChange = (nextIdx: number) => {
     const isBackgroundTab = nextIdx === 1 && mode !== "video";
@@ -152,6 +149,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     setGeneratedVideoUrl(videoUrl);
     setVideoImageId(imageId);
     setVideoProjectId(newVideoProjectId);
+    setActiveTab(2);
   };
 
   const handleGenerated = (url: string) => {
@@ -187,6 +185,8 @@ const Workbench = ({ mode }: WorkbenchProps) => {
           initialTemplateId={templateId}
           initialMotionType={initialMotionType}
           onGenerateComplete={() => setActiveTab(2)}
+          generatedImageUrl={generatedImageUrl}
+          generatedVideoUrl={generatedVideoUrl}
         />
       </div>
 

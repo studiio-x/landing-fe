@@ -48,6 +48,8 @@ export const queryKeys = {
     all: ["project"] as const,
     list: (folderId: number, pageNum?: number, limit?: number) =>
       [...queryKeys.project.all, "list", folderId, pageNum, limit] as const,
+    images: (projectId: number, pageNum?: number, limit?: number) =>
+      [...queryKeys.project.all, "images", projectId, pageNum, limit] as const,
   },
 
   chat: {

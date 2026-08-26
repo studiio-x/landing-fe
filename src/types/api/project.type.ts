@@ -78,3 +78,14 @@ export interface moveFolderParams {
   folderId: number;
   newFolderId: number;
 }
+
+export interface ProjectImageItem {
+  imageId: number;
+  imageObjectKey: string;
+  imageUrl: string;
+}
+
+export interface GetProjectImagesResponse {
+  images: ProjectImageItem[];
+  pageInfo: PageInfo;
+}
