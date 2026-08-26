@@ -149,6 +149,7 @@ const Workbench = ({ mode }: WorkbenchProps) => {
     setGeneratedVideoUrl(videoUrl);
     setVideoImageId(imageId);
     setVideoProjectId(newVideoProjectId);
+    setActiveTab(2);
   };
 
   const handleGenerated = (url: string) => {
