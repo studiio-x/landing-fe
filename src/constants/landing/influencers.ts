@@ -33,7 +33,7 @@ export const influencers: Influencer[] = [
       "Editorial",
       "Lifestyle",
     ],
-    profileImage: "/images/landing/ai-influencer2.png",
+    profileImage: "/images/landing/ai-influencer5.png",
     gallery: [],
   },
   {
@@ -53,7 +53,7 @@ export const influencers: Influencer[] = [
       "Lifestyle",
       "Beauty",
     ],
-    profileImage: "/images/landing/ai-influencer3.png",
+    profileImage: "/images/landing/ai-influencer4.png",
     gallery: [],
   },
   {
@@ -74,7 +74,7 @@ export const influencers: Influencer[] = [
       "Lifestyle",
       "Mindfulness",
     ],
-    profileImage: "/images/landing/ai-influencer4.png",
+    profileImage: "/images/landing/ai-influencer3.png",
     gallery: [],
   },
   {
@@ -98,7 +98,7 @@ export const influencers: Influencer[] = [
       "Beach Culture",
       "Natural Beauty",
     ],
-    profileImage: "/images/landing/ai-influencer5.png",
+    profileImage: "/images/landing/ai-influencer2.png",
     gallery: [],
   },
   {
