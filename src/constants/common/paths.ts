@@ -3,6 +3,7 @@ export const PATHS = {
   HOME: "/",
   GUIDE: "/guide",
   PRICE: "/price",
+  INFLUENCER: "/influencer",
 
   // Auth pages
   LOGIN: "/login",

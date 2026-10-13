@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: `${PATHS.GUIDE}${LANDING_SECTION_HASH.CONTACT}`, label: "Contact Us" },
   { href: PATHS.PRICE, label: "Price" },
   { href: `${PATHS.HOME}${LANDING_SECTION_HASH.GALLERY}`, label: "Gallery" },
+  { href: PATHS.INFLUENCER, label: "AI Influencer" },
 ] as const;
 
 const Header = () => {
